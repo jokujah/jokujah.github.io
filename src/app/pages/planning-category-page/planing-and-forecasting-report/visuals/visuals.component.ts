@@ -147,6 +147,44 @@ export class VisualsComponent implements OnInit {
   dataFormat = "json";
   dataSource2 = data; 
 
+
+
+  // Donut
+  dataDonut = {
+    chart: {
+      caption: "Amount By Status",
+      subcaption: "For all Procurement Plans in 2022",
+      showpercentvalues: "1",
+      defaultcenterlabel: "",
+      aligncaptionwithcanvas: "0",
+      captionAlignment: 'center',
+      chartLeftMargin :20,
+      captionpadding: "0",
+      decimals: "1",
+      plottooltext:
+        "<b>$percentValue</b> of Procurement Plans are <b>$label</b>",
+      centerlabel: "UGX $value",
+      theme: "fusion"
+    },
+    data: [
+      {
+        label: "Initiated",
+        value: "3000"
+      },
+      {
+        label: "Not Initiated",
+        value: "5300"
+      }
+    ]
+  };
+
+  widthDonut = "600";
+  heightDonut = "400";
+  typeDonut = "doughnut2d";
+  dataFormatDonut = "json";
+  dataSourceDonut = this.dataDonut;
+  
+
   dataSource: Object;
   constructor() {
     //STEP 2 - Chart Data
