@@ -1,7 +1,8 @@
+import { SharedModule } from 'src/app/shared/shared.module';
+import { FusionChartsModule } from 'angular-fusioncharts';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
@@ -12,8 +13,12 @@ import {MatToolbarModule} from '@angular/material/toolbar';
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule,
-    MatToolbarModule
+    RouterModule,
+    MatToolbarModule,
+    SharedModule
+  ],
+  exports:[
+    DashboardComponent
   ]
 })
 export class DashboardModule { }

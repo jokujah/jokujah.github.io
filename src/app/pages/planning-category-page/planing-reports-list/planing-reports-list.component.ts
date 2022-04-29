@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-reports-list',
-  templateUrl: './reports-list.component.html',
-  styleUrls: ['./reports-list.component.scss']
+  selector: 'app-planing-reports-list',
+  templateUrl: './planing-reports-list.component.html',
+  styleUrls: ['./planing-reports-list.component.scss']
 })
-export class ReportsListComponent implements OnInit {
+export class PlaningReportsListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,

@@ -1,22 +1,46 @@
+import { ContractingManagementCategoryPageComponent } from './pages/contracting-management-category-page/contracting-management-category-page.component';
+import { ContractingCategoryPageComponent } from './pages/contracting-category-page/contracting-category-page.component';
+import { EvaluationCategoryPageComponent } from './pages/evaluation-category-page/evaluation-category-page.component';
+import { PlanningCategoryPageComponent } from './pages/planning-category-page/planning-category-page.component';
+import { DashboardModule } from './layouts/dashboard/dashboard.module';
+import { DashboardComponent } from './layouts/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { GoogleChartsModule } from 'angular-google-charts';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { SharedModule } from './shared/shared.module';
+import { FusionChartsModule } from "angular-fusioncharts";
+
+
+// Import FusionCharts library and chart modules
+import * as FusionCharts from "fusioncharts";
+import * as charts from "fusioncharts/fusioncharts.charts";
+import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import { PlanningCategoryPageModule } from './pages/planning-category-page/planning-category-page.module';
+FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // DashboardComponent,
+    // PlanningCategoryPageComponent,
+    // EvaluationCategoryPageComponent,
+    // ContractingCategoryPageComponent,
+    // ContractingManagementCategoryPageComponent   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    GoogleChartsModule,
+    SharedModule,
     BrowserAnimationsModule,
-    MatSliderModule
+    MatSliderModule,
+    HttpClientModule,
+    FusionChartsModule,
+    DashboardModule,
+    PlanningCategoryPageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,11 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit , ViewChild } from '@angular/core';
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-visuals',
+  templateUrl: './visuals.component.html',
+  styleUrls: ['./visuals.component.scss']
 })
-export class AppComponent {
-  title = 'egpReportsUI';
+export class VisualsComponent implements OnInit {  
 
   dataSource: Object;
   constructor() {
@@ -64,6 +64,6 @@ export class AppComponent {
     };
     this.dataSource = dataSource;
   }
-  
 
+  ngOnInit(): void {}
 }
