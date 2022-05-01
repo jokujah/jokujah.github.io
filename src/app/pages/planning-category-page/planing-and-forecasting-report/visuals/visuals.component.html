@@ -1,8 +1,8 @@
-<div class="max-w-6xl">
+<div class="max-w-7xl">
   <!-- Stats -->
 
   <div>
-    <div class="mt-5 md:grid md:grid-cols-4 flex flex-col space-y-2">
+    <div class="mt-5 md:grid md:grid-cols-4  md:space-y-0 flex flex-col space-y-2">
       <div class="flex flex-col px-2 py-2 overflow-hidden ">
         <span class="text-sm font-medium text-gray-500 truncate">Number of Procurement Plans</span>
         <span class="mt-1 text-xl font-bold text-gray-900">71,897</span>
@@ -27,21 +27,21 @@
   <!-- Graphs -->
   <div>
     <!-- Row 1 -->
-    <div class="flex flex-col space-y-4 md:flex-row md:space-x-6 md:space-y-0 mt-40">
-      <div class="w-1/2">
-        <fusioncharts  [height]="heightDonut" [type]="typeDonut" [dataFormat]="dataFormatDonut"
+    <div class="flex flex-col space-y-4 md:flex-row md:space-x-2 md:space-y-0 mt-4">
+      <div class="flex w-1/2">
+        <fusioncharts width="500"  [height]="heightDonut" [type]="typeDonut" [dataFormat]="dataFormatDonut"
           [dataSource]="dataSourceDonut">
         </fusioncharts>
       </div>
-      <div class="w-1/2">      
-        <fusioncharts    [height]="height" [type]="type" [dataFormat]="dataFormat" [dataSource]="dataSource2">
+      <div class="flex w-1/2">      
+        <fusioncharts  width="500"   [height]="height" [type]="type" [dataFormat]="dataFormat" [dataSource]="dataSource2">
         </fusioncharts>
       </div>
       
     </div>
     <!-- Row 2 -->
-    <div>
-      <fusioncharts width="400" height="400" type="Column2d" [dataSource]="dataSource">
+    <div class="mt-4">
+      <fusioncharts width="500" height="400" type="Column2d" [dataSource]="dataSource">
       </fusioncharts>
     </div>
   </div>
