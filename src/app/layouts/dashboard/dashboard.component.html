@@ -22,9 +22,9 @@
   <body class="h-full overflow-hidden">
   ```
 -->
-<div class="h-full flex">
+<div class="h-full flex bg-slate-50">
     <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-    <div class="fixed inset-0 flex z-40 lg:hidden" role="dialog" aria-modal="true">
+    <div *ngIf="showImage" class="fixed inset-0 flex z-40 lg:hidden" role="dialog" aria-modal="true">
       <!--
         Off-canvas menu overlay, show/hide based on off-canvas menu state.
   
@@ -35,7 +35,7 @@
           From: "opacity-100"
           To: "opacity-0"
       -->
-      <div class="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true"></div>
+      <div [@menuAnimation] class="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true"></div>
   
       <!--
         Off-canvas menu, show/hide based on off-canvas menu state.
@@ -47,7 +47,7 @@
           From: "translate-x-0"
           To: "-translate-x-full"
       -->
-      <div class="relative flex-1 flex flex-col max-w-xs w-full bg-white focus:outline-none">
+      <div [@menuAnimation] class="relative flex-1 flex flex-col max-w-xs w-full bg-primary-100 focus:outline-none">
         <!--
           Close button, show/hide based on off-canvas menu state.
   
@@ -58,8 +58,8 @@
             From: "opacity-100"
             To: "opacity-0"
         -->
-        <div class="absolute top-0 right-0 -mr-12 pt-2">
-          <button type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+        <div [@buttonAnimation] class="absolute top-0 right-0 -mr-12 pt-2">
+          <button (click)="onCloseOpen()" type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
             <span class="sr-only">Close sidebar</span>
             <!-- Heroicon name: outline/x -->
             <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -70,42 +70,42 @@
   
         <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
           <div class="flex-shrink-0 flex items-center px-4">
-            <img class="h-12 w-auto" src="./../../../assets/egp_logo.png" alt="EGP">
+            <img class="h-12 w-auto" src="./../../../assets/egp_logo_light.png" alt="EGP">
           </div>
           <nav aria-label="Sidebar" class="mt-5">
             <div class="px-2 space-y-1">
-              <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-              <a [routerLink]="['planing']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+              <!-- Current: "bg-gray-100 text-gray-900", Default: "text-white hover:bg-primary-900 hover:text-gray-200" -->
+              <a [routerLink]="['planing']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-base font-medium rounded-md">
                 <!--
                   Heroicon name: outline/home
   
-                  Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
+                  Current: "text-gray-500", Default: "text-gray-100 group-hover:text-gray-200"
                 -->
-                <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg class="text-gray-100 group-hover:text-gray-200 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
                 Planing
               </a>
   
-              <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+              <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-base font-medium rounded-md">
                 <!-- Heroicon name: outline/calendar -->
-                <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg class="text-gray-100 group-hover:text-gray-200 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 Evaluation
               </a>
   
-              <a [routerLink]="['contracting']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+              <a [routerLink]="['contracting']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-base font-medium rounded-md">
                 <!-- Heroicon name: outline/user-group -->
-                <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg class="text-gray-100 group-hover:text-gray-200 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 Contracting
               </a>
   
-              <a [routerLink]="['contract-management']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md" aria-current="page">
+              <a [routerLink]="['contract-management']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-base font-medium rounded-md" aria-current="page">
                 <!-- Heroicon name: outline/search-circle -->
-                <svg class="text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg class="text-gray-100 group-hover:text-gray-200 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Contract Management
@@ -120,7 +120,7 @@
                 <img class="inline-block h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
               </div>
               <div class="ml-3">
-                <p class="text-base font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
+                <p class="text-base font-medium text-gray-700 group-hover:text-gray-200">Tom Cook</p>
                 <p class="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
               </div>
             </div>
@@ -137,45 +137,45 @@
     <div class="hidden lg:flex lg:flex-shrink-0">
       <div class="flex flex-col w-64">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-gray-100">
+        <div class="flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-primary-100">
           <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center flex-shrink-0 px-4">
-              <img class="h-12 w-auto" src="../../../assets/egp_logo.png" alt="EGP">
+              <img class="h-12 w-auto" src="../../../assets/egp_logo_light.png" alt="EGP">
             </div>
             <nav class="mt-5 flex-1" aria-label="Sidebar">
               <div class="px-2 space-y-1">
-                <!-- Current: "bg-gray-200 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-                <a [routerLink]="['planing']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                <!-- Current: "bg-gray-200 text-gray-900", Default: "text-white hover:bg-primary-900 hover:text-gray-200" -->
+                <a [routerLink]="['planing']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                   <!--
                     Heroicon name: outline/home
   
-                    Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
+                    Current: "text-gray-500", Default: "text-gray-100 group-hover:text-gray-200"
                   -->
-                  <svg class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <svg class="text-gray-100 group-hover:text-gray-200 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                   Planing
                 </a>
   
-                <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                   <!-- Heroicon name: outline/calendar -->
-                  <svg class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <svg class="text-gray-100 group-hover:text-gray-200 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Evaluation
                 </a>
   
-                <a [routerLink]="['contracting']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                <a [routerLink]="['contracting']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                   <!-- Heroicon name: outline/user-group -->
-                  <svg class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <svg class="text-gray-100 group-hover:text-gray-200 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                   Contracting
                 </a>
   
-                <a [routerLink]="['contract-management']" routerLinkActive="activeButton" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md" >
+                <a [routerLink]="['contract-management']" routerLinkActive="activeButton" class="text-white hover:bg-primary-900 hover:text-gray-200 group flex items-center px-2 py-2 text-sm font-medium rounded-md" >
                   <!-- Heroicon name: outline/search-circle -->
-                  <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <svg class="text-gray-100 group-hover:text-gray-200 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   Contract Management
@@ -190,7 +190,7 @@
                   <img class="inline-block h-9 w-9 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                 </div>
                 <div class="ml-3">
-                  <p class="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
+                  <p class="text-sm font-medium text-gray-700 group-hover:text-gray-200">Tom Cook</p>
                   <p class="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
                 </div>
               </div>
@@ -203,10 +203,10 @@
       <div class="lg:hidden">
         <div class="flex items-center justify-between bg-gray-50 border-b border-gray-200 px-4 py-1.5">
           <div>
-            <img class="h-12 w-auto" src="../../../assets/egp_logo.png" alt="EGP">
+            <img class="h-12 w-auto" src="../../../assets/egp_logo_light.png" alt="EGP">
           </div>
           <div>
-            <button type="button" class="-mr-3 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-600">
+            <button (click)="onCloseOpen()" type="button" class="-mr-3 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-600">
               <span class="sr-only">Open sidebar</span>
               <!-- Heroicon name: outline/menu -->
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -246,24 +246,23 @@
           <article>
             <!-- Profile header -->
             <div>
-              <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+              <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
                 <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                  
                   <div class="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">                    
                     <div class="sm:hidden 2xl:block mt-6 min-w-0 flex flex-row">                    
-                      <h2 class="text-2xl font-bold text-gray-900 truncate first-letter:uppercase"> {{reportName}}</h2>                    
+                      <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase"> {{reportName}}</h2>                    
                     </div>                    
                   </div>
                 </div>
                 <div class="hidden sm:flex 2xl:hidden mt-6 min-w-0  flex-row">
-                  <h2 class="text-2xl font-bold text-gray-900 truncate first-letter:uppercase"> {{reportName}}</h2>                  
+                  <h2 class="text-2xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportName}}</h2>                  
                 </div>
               </div>
             </div>
 
            
-              <router-outlet></router-outlet>
-          
+              <router-outlet></router-outlet>       
             
 
 

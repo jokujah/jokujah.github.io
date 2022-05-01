@@ -1,13 +1,114 @@
 import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger(
+      'menuOverLayAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({
+              opacity: 0
+            }),
+            animate('0.3s ease-linear',
+              style({
+                opacity: 1
+              }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-linear',
+              style({
+                opacity: 0
+              }))
+          ]
+        )
+      ]
+    ),
+    trigger(
+      'menuAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({
+              'transform': 'translateX(-100%)'
+            }),
+            animate('0.3s ease-in-out',
+              style({
+                'transform': 'translateX(0px)'
+              }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({
+              'transform': 'translateX(0px)'
+            }),
+            animate('0.3s ease-in-out',
+              style({
+                'transform': 'translateX(-100%)'
+              }))
+          ]
+        )
+      ]
+    ),
+    trigger(
+      'buttonAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({
+              opacity: 0,
+            }),
+            animate('0.3s ease-in-out',
+              style({
+                opacity: 1,
+              }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({
+              opacity: 1,
+            }),
+            animate('0.3s ease-in-out',
+              style({
+                opacity: 0,
+              }))
+          ]
+        )
+      ]
+    )
+  ]
 })
 export class DashboardComponent implements OnInit {
+
+  showImage = false;
+  onCloseOpen() {
+    console.log(this.showImage)
+    this.showImage = !this.showImage;
+    console.log(this.showImage)
+  }
 
   isLoading:Boolean=false
   currentRoute: string='';

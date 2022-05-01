@@ -138,9 +138,13 @@ const data = {
 @Component({
   selector: 'app-visuals',
   templateUrl: './visuals.component.html',
-  styleUrls: ['./visuals.component.scss']
+  styleUrls: ['./visuals.component.scss'],
+  
 })
-export class VisualsComponent implements OnInit { 
+export class VisualsComponent implements OnInit {
+  
+  
+  
   width = "600";
   height = "400";
   type = "bubble";
@@ -161,6 +165,7 @@ export class VisualsComponent implements OnInit {
       chartLeftMargin :20,
       captionpadding: "0",
       decimals: "1",
+      doughnutRadius:"200",
       plottooltext:
         "<b>$percentValue</b> of Procurement Plans are <b>$label</b>",
       centerlabel: "UGX $value",
@@ -178,7 +183,7 @@ export class VisualsComponent implements OnInit {
     ]
   };
 
-  widthDonut = "600";
+  widthDonut = "320";
   heightDonut = "400";
   typeDonut = "doughnut2d";
   dataFormatDonut = "json";

@@ -1,60 +1,48 @@
-<div>
-  <div class=" flex flex-row">
-    <div>
-      <div>
-        <dl class="flex flex-row">
-          <div class="px-4 py-5  overflow-hidden sm:p-6">
-            <dt class="text-sm font-medium text-gray-500 truncate">Number of Procurement Plans</dt>
-            <dd class="mt-1 text-3xl font-semibold text-gray-900">71,897</dd>
-          </div>
+<div class="max-w-6xl">
+  <!-- Stats -->
 
-          <div class="px-4 py-5  overflow-hidden sm:p-6">
-            <dt class="text-sm font-medium text-gray-500 truncate">Total Budget Amount</dt>
-            <dd class="mt-1 text-3xl font-semibold text-gray-900">UGX 130,100,874,000</dd>
-          </div>
-        </dl>
+  <div>
+    <div class="mt-5 md:grid md:grid-cols-4 flex flex-col space-y-2">
+      <div class="flex flex-col px-2 py-2 overflow-hidden ">
+        <span class="text-sm font-medium text-gray-500 truncate">Number of Procurement Plans</span>
+        <span class="mt-1 text-xl font-bold text-gray-900">71,897</span>
       </div>
-      <div>
-        <fusioncharts [width]="widthDonut" [height]="heightDonut" [type]="typeDonut" [dataFormat]="dataFormatDonut"
-          [dataSource]="dataSourceDonut">
-        </fusioncharts>
-      </div>      
-      <div>
-        <fusioncharts width="600" height="400" type="Column2d" [dataSource]="dataSource">
-        </fusioncharts>
+
+      <div class="flex flex-col px-2 py-2 overflow-hidden ">
+        <span class="text-sm font-medium text-gray-500 truncate">Estimated Budget Amount</span>
+        <span class="mt-1 text-xl font-bold text-gray-900">UGX 130,100,874,000</span>
       </div>
-      <div>
-        <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
-          [dataSource]="dataSource2">
-        </fusioncharts>
+
+      <div class="flex flex-col px-2 py-2 overflow-hidden ">
+        <span class="text-sm font-medium text-gray-500 truncate">Initiated Budget Amount</span>
+        <span class="mt-1 text-xl font-bold text-gray-900">UGX 10,100,874,000</span>
+      </div>
+      <div class="flex flex-col px-2 py-2 overflow-hidden ">
+        <span class="text-sm font-medium text-gray-500 truncate">Financial Year</span>
+        <span class="mt-1 text-xl font-bold text-gray-900">2021 - 2022</span>
       </div>
     </div>
-    <div class="flex flex-row w-full"> 
+  </div>
 
-      <form class="mt-5 flex flex-row items-start">
+  <!-- Graphs -->
+  <div>
+    <!-- Row 1 -->
+    <div class="flex flex-col space-y-4 md:flex-row md:space-x-6 md:space-y-0 mt-40">
+      <div class="w-1/2">
+        <fusioncharts  [height]="heightDonut" [type]="typeDonut" [dataFormat]="dataFormatDonut"
+          [dataSource]="dataSourceDonut">
+        </fusioncharts>
+      </div>
+      <div class="w-1/2">      
+        <fusioncharts    [height]="height" [type]="type" [dataFormat]="dataFormat" [dataSource]="dataSource2">
+        </fusioncharts>
+      </div>
       
-        <div class="flex flex-col">
-          <label for="location" class="block text-sm font-medium text-gray-700">Filter By Financial Year</label>
-          <select id="location" name="location"
-            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-            <option>2022</option>
-            <option selected>2021</option>
-            <option>2020</option>
-          </select>
-        </div>
-        <button type="submit"
-          class="ml-3 mt-6 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
-      
-      </form>
-
-      <!-- <div class="py-5 flex-1">    
-        <label for="location" class="block text-sm font-medium text-gray-700">Financial Year</label>
-        <select id="location" name="location" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-          <option>2022</option>
-          <option selected>2021</option>
-          <option>2020</option>
-        </select>
-       </div>      -->
+    </div>
+    <!-- Row 2 -->
+    <div>
+      <fusioncharts width="400" height="400" type="Column2d" [dataSource]="dataSource">
+      </fusioncharts>
     </div>
   </div>
 </div>
