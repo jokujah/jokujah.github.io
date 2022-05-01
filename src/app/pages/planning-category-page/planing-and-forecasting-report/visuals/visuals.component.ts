@@ -3,11 +3,11 @@ import { Component, OnInit , ViewChild } from '@angular/core';
 
 const data = {
   chart: {
-    caption: "AdWords Campaign Analysis",
+    caption: "Procurements Above UGX 2Bn",
     subcaption: "Conversions as % of total",
     xaxisname: "# Conversions",
     yaxisname: "Cost Per Conversion",
-    numberprefix: "$",
+    numberprefix: "UGX",
     theme: "fusion",
     plottooltext: "$name : Share of total conversion: $zvalue%"
   },
@@ -134,6 +134,69 @@ const data = {
   ]
 };
 
+const dataGrouped = {
+  chart: {
+    caption: "Planned Procurements by Department",
+    subcaption: "March 2022 ",
+    plottooltext: "UGX $dataValue ",
+    yaxisname: "Amount",
+    xaxisname: "Departments",
+    theme: "fusion"
+  },
+  categories: [
+    {
+      category: [
+        {
+          label: "General"
+        },
+        {
+          label: "Finance and Administration"
+        },
+        {
+          label: "PDU"
+        },
+        {
+          label: "Human Resources"
+        },
+        {
+          label: "Inspection"
+        },
+        {
+          label: "Perfomance Mgt"
+        }
+      ]
+    }
+  ],
+  dataset: [
+    {
+      data: [
+        {
+          value: "97294205"
+        },
+        {
+          value: "95482197"
+        },
+        {
+          value: "60224172"
+        },
+        {
+          value: "33018247"
+        },
+        {
+          value: "31615028"
+        },
+        {
+          value: "28984878"
+        },
+        {
+          value: "25391784"
+        }
+      ]
+    }
+  ]
+};
+
+
 
 @Component({
   selector: 'app-visuals',
@@ -191,6 +254,15 @@ export class VisualsComponent implements OnInit {
   
 
   dataSource: Object;
+
+
+  widthGrouped = "500";
+  heightGrouped = "400";
+  typeGrouped = "scrollbar2d";
+  dataFormatGrouped = "json";
+  dataSourceGrouped = dataGrouped;
+
+
   constructor() {
     //STEP 2 - Chart Data
     const chartData = [
@@ -231,7 +303,7 @@ export class VisualsComponent implements OnInit {
     const dataSource = {
       chart: {
         //Set the chart caption
-        caption: "Countries With Most Oil Reserves [2017-18]",
+        caption: "Budget Allocation [2021-2022]",
         //Set the chart subcaption
         subCaption: "In MMbbl = One Million barrels",
         //Set the x-axis name
