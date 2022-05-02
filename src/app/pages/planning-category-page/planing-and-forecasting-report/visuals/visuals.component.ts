@@ -1,4 +1,5 @@
 import { Component, OnInit , ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 const data = {
@@ -263,7 +264,20 @@ export class VisualsComponent implements OnInit {
   dataSourceGrouped = dataGrouped;
 
 
-  constructor() {
+  options: FormGroup;
+  // colorControl = new FormControl('primary');
+  // fontSizeControl = new FormControl(16, Validators.min(10));
+
+  pdeControl = new FormControl('');
+  financialYearControl = new FormControl('2021-2022');
+
+  constructor(fb: FormBuilder) {
+    this.options = fb.group({
+      // color: this.colorControl,
+      // fontSize: this.fontSizeControl,
+      financialYear: this.financialYearControl,
+      pde:this.pdeControl
+    });
     //STEP 2 - Chart Data
     const chartData = [
       {
@@ -321,4 +335,8 @@ export class VisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  getFontSize() {
+    return Math.max(10, 12);
+  }
 }

@@ -8,6 +8,11 @@ import { PlanningCategoryPageComponent } from './planning-category-page.componen
 import { VisualsComponent } from './planing-and-forecasting-report/visuals/visuals.component';
 import { PlaningAndForecastingReportComponent } from './planing-and-forecasting-report/planing-and-forecasting-report.component';
 import { ReportsComponent } from './planing-and-forecasting-report/reports/reports.component';
+import {MatError, MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input'
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -21,7 +26,13 @@ import { ReportsComponent } from './planing-and-forecasting-report/reports/repor
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class PlanningCategoryPageModule { }

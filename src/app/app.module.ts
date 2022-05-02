@@ -21,6 +21,11 @@ import * as charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import { PlanningCategoryPageModule } from './pages/planning-category-page/planning-category-page.module';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+
+
 
 @NgModule({
   declarations: [
@@ -40,7 +45,12 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
     HttpClientModule,
     FusionChartsModule,
     DashboardModule,
-    PlanningCategoryPageModule
+    PlanningCategoryPageModule,
+    // MatFormFieldModule,
+    // FormsModule,
+    // MatSelectModule,
+    // ReactiveFormsModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
