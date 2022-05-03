@@ -1,3 +1,5 @@
+import { ContractingManagementCategoryPageModule } from './pages/contracting-management-category-page/contracting-management-category-page.module';
+import { ContractingCategoryPageModule } from './pages/contracting-category-page/contracting-category-page.module';
 import { EvaluationCategoryPageModule } from './pages/evaluation-category-page/evaluation-category-page.module';
 import { ContractingManagementCategoryPageComponent } from './pages/contracting-management-category-page/contracting-management-category-page.component';
 import { ContractingCategoryPageComponent } from './pages/contracting-category-page/contracting-category-page.component';
@@ -47,7 +49,9 @@ import {MatSelectModule} from '@angular/material/select';
     FusionChartsModule,
     DashboardModule,
     PlanningCategoryPageModule,
-    EvaluationCategoryPageModule
+    EvaluationCategoryPageModule,
+    ContractingCategoryPageModule,
+    ContractingManagementCategoryPageModule
     // MatFormFieldModule,
     // FormsModule,
     // MatSelectModule,

@@ -43,6 +43,7 @@ import { FrameWorkVisualsComponent } from './pages/contracting-management-catego
 import { CompletedContractsExcelReportsComponent } from './pages/contracting-management-category-page/completed-contracts-report/completed-contracts-excel-reports/completed-contracts-excel-reports.component';
 import { CompletedContractsVisualsComponent } from './pages/contracting-management-category-page/completed-contracts-report/completed-contracts-visuals/completed-contracts-visuals.component';
 import { CancelledTenderVisualsComponent } from './pages/contracting-management-category-page/cancelled-tender-report/cancelled-tender-visuals/cancelled-tender-visuals.component';
+import { AdministrativeReviewReportComponent } from './pages/contracting-category-page/administrative-review-report/administrative-review-report.component';
 
 const routes: Routes = [
   { 
@@ -186,7 +187,7 @@ const routes: Routes = [
             ]
           },
           {
-            path: 'procurement-method-average-average-contract-value',
+            path: 'procurement-method-average-contract-value-report',
             component:ProcurementMethodAverageContractValueReportComponent,
             children: [
               {
@@ -207,7 +208,7 @@ const routes: Routes = [
           },
           {
             path: 'administrative-review-report',
-            component:DueDeligenceReportComponent,
+            component:AdministrativeReviewReportComponent,
             children: [
               {
                 path: 'visuals',

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ContractingCategoryPageRoutingModule } from './contracting-category-page-routing.module';
 import { ContractingCategoryPageComponent } from './contracting-category-page.component';
 import { ContractingReportsListComponent } from './contracting-reports-list/contracting-reports-list.component';
 import { SignedContractsReportComponent } from './signed-contracts-report/signed-contracts-report.component';
@@ -23,6 +22,15 @@ import { ProcurementMethodAverageContractValueVisualsComponent } from './procure
 import { ProcurementMethodAverageContractValueExcelReportsComponent } from './procurement-method-average-contract-value-report/procurement-method-average-contract-value-excel-reports/procurement-method-average-contract-value-excel-reports.component';
 
 
+import {MatError, MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input'
+import {MatButtonModule} from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from './../../shared/shared.module';
+import { PdeAverageContractValueReportComponent } from './pde-average-contract-value-report/pde-average-contract-value-report.component';
+
 @NgModule({
   declarations: [
     ContractingCategoryPageComponent,
@@ -40,14 +48,25 @@ import { ProcurementMethodAverageContractValueExcelReportsComponent } from './pr
     ProcurementReportExcelReportsComponent,
     SignedContractsVisualsComponent,
     SignedContractsExcelReportsComponent,
+    PdeAverageContractValueReportComponent,
     PdeAverageContractValueVisualsComponent,
     PdeAverageContractValueExcelReportsComponent,
     ProcurementMethodAverageContractValueVisualsComponent,
-    ProcurementMethodAverageContractValueExcelReportsComponent
+    ProcurementMethodAverageContractValueExcelReportsComponent,
+    ContractingCategoryPageComponent,
   ],
   imports: [
     CommonModule,
-    ContractingCategoryPageRoutingModule
+    
+
+    RouterModule,
+    SharedModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class ContractingCategoryPageModule { }

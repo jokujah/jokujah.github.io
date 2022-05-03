@@ -1,6 +1,6 @@
 import { PlaningReportsListComponent } from './planing-reports-list/planing-reports-list.component';
-import { RouterModule } from '@angular/router';
-import { SharedModule } from './../../shared/shared.module';
+
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input'
 import {MatButtonModule} from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from './../../shared/shared.module';
 
 
 @NgModule({

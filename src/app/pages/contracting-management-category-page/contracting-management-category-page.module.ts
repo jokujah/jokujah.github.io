@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ContractingManagementCategoryPageRoutingModule } from './contracting-management-category-page-routing.module';
+//import { ContractingManagementCategoryPageRoutingModule } from './contracting-management-category-page-routing.module';
 import { ContractingManagementCategoryPageComponent } from './contracting-management-category-page.component';
 import { ContractManagementReportsListComponent } from './contract-management-reports-list/contract-management-reports-list.component';
 import { FrameWorkReportComponent } from './frame-work-report/frame-work-report.component';
@@ -17,6 +17,13 @@ import { FrameWorkExcelReportsComponent } from './frame-work-report/frame-work-e
 import { TerminatedContractsVisualsComponent } from './terminated-contracts-report/terminated-contracts-visuals/terminated-contracts-visuals.component';
 import { TerminatedContractsExcelReportsComponent } from './terminated-contracts-report/terminated-contracts-excel-reports/terminated-contracts-excel-reports.component';
 
+import {MatError, MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input'
+import {MatButtonModule} from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from './../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +44,16 @@ import { TerminatedContractsExcelReportsComponent } from './terminated-contracts
   ],
   imports: [
     CommonModule,
-    ContractingManagementCategoryPageRoutingModule
+    //ContractingManagementCategoryPageRoutingModule
+
+    RouterModule,
+    SharedModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class ContractingManagementCategoryPageModule { }
