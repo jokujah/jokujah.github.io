@@ -17,9 +17,11 @@ import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
-    PlanningCategoryPageComponent,
-    PlaningAndForecastingReportComponent,
+    PlanningCategoryPageComponent,    
     PlaningReportsListComponent,
+
+    PlaningAndForecastingReportComponent,
+    
     VisualsComponent,
     ReportsComponent
   ],
