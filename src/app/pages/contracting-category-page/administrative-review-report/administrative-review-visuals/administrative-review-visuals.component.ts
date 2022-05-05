@@ -267,6 +267,72 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
 
+  dataSource5: Object;
+  categories =  [
+    {
+      "category": [
+        { "label": "2022-2021" },
+        { "label": "2021-2020" },
+        { "label": "2020-2019" },
+        { "label": "2019-2018" }
+      ]
+    }
+  ]
+
+  dataset = [
+    {
+      //"seriesname": "Local",
+      "data": [
+      { "value": "64"},
+      { "value": "59"},
+      { "value": "30"},
+      { "value": "86"}
+      ]
+    },
+    // {
+    //   "seriesname": "Foreign",
+    //   "data": [
+    //     { "value": "84" },
+    //     { "value": "29" },
+    //     { "value": "50" },
+    //     { "value": "66" }
+    //   ]
+    // }
+  ]
+
+
+  dataSourceLine =  {
+    "chart": {
+      "theme": "fusion",
+      "caption": "Contract Value of reviewed contracts",
+      "numberPrefix": "UGX",
+      "xAxisName": "Financial Year",
+      "yAxisName": "Contract Value",
+      "lineThickness": "2",
+      "formatNumberScale": "1",
+      "formatNumber": "0",
+      "numberScaleValue": "1000,1000,1000",
+      "numberScaleUnit": "K,M,B",
+    },
+    "data": [{
+        "label": "2022-2021",
+        "value": "151236000"
+      },
+      {
+        "label": "2021-2020",
+        "value": "142335000"
+      },
+      {
+        "label": "2020-2019",
+        "value": "235070000"
+      },
+      {
+        "label": "2019-2018",
+        "value": "911020000"
+      }
+    ]
+  }
+
   constructor(fb: FormBuilder) {
     this.options = fb.group({
       // color: this.colorControl,
@@ -309,6 +375,9 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         value: "30"
       }
     ];
+
+   
+  //this.dataSourceLine = 
     // STEP 3 - Chart Configuration
     const dataSource = {
       chart: {
@@ -328,6 +397,26 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
       data: chartData
     };
     this.dataSource = dataSource;
+    this.dataSource5 = {
+      "chart": {
+        "theme": "fusion",
+        "caption": "Overall Number of Reviewed Contracts by Financial Year",
+        "xAxisname": "Financial Year",
+        "yAxisName": "No of Reviewed Contracts",
+        
+        "plotFillAlpha": "80",
+        "divLineIsDashed": "1",
+        "divLineDashLen": "1",
+        "divLineGapLen": "1",
+        // "formatNumberScale": "1",
+        // "formatNumber": "0",
+        // "numberScaleValue": "1000,1000,1000",
+        // "numberScaleUnit": "K,M,B",
+      },
+      "categories": this.categories,
+      "dataset": this.dataset,
+
+    };
   }
 
   ngOnInit(): void {}

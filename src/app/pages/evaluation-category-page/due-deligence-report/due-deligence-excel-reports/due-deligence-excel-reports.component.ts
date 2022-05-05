@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 import PDE from 'src/assets/PDE.json'
 
 @Component({
@@ -12,7 +13,8 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
   options: FormGroup;
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
-  pde = PDE
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
 
   constructor(fb: FormBuilder) { 
     this.options = fb.group({

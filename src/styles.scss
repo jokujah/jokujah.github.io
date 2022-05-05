@@ -27,3 +27,11 @@ html, body { height: 100%; }
 g.raphael-group-ELXaYZwV {
     display: none;
 }
+
+svg > g[class^="raphael-group-"] > text{
+    display: none;
+}
+
+g[class^='raphael-group-'][class$='-creditgroup'] {
+    display:none !important;
+}

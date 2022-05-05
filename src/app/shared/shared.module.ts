@@ -8,18 +8,22 @@ import { FusionChartsModule } from "angular-fusioncharts";
 import * as FusionCharts from "fusioncharts";
 import * as charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import { NumberSuffixPipe } from '../utils/pipes';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    NumberSuffixPipe,
+  ],
   imports: [
     CommonModule,
     FusionChartsModule
   ],
   exports:[
-    FusionChartsModule
+    FusionChartsModule,
+    NumberSuffixPipe
   ]
 })
 export class SharedModule { }

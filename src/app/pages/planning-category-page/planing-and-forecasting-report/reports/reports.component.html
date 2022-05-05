@@ -2,7 +2,7 @@
     <!-- Stats -->
     <div class="mt-4">
         <form
-            class="example-container flex flex-col space-y-2 md:flex-row  md:space-x-2 md:space-y-0 min-w-full items-baseline"
+            class="example-container flex-1 flex-col  md:flex md:flex-row  md:space-x-2 min-w-full items-baseline"
             [formGroup]="options" [style.fontSize.px]="getFontSize()">
             <div class="flex-1">
                 <mat-form-field class="min-w-full" appearance="outline">
@@ -29,7 +29,7 @@
         </form>
     </div>
 
-    <div>
+    <div class="mt-4">
         <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
             <li *ngFor="let item of pde" class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
               <div class="w-0 flex-1 flex items-center">
@@ -39,7 +39,7 @@
                 <span class="ml-2 flex-1 w-0 truncate"> {{item.PDE}} </span>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Download </a>
+                <a (click)="download()" class="font-medium text-indigo-600 hover:text-indigo-500"> Download </a>
               </div>
             </li>            
           </ul>

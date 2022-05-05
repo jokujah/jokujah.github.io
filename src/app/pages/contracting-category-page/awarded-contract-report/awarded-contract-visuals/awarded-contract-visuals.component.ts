@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
+import ROP from './../../../../../assets/ROP.json'
 
 
 const data = {
@@ -136,37 +136,19 @@ const data = {
   ]
 };
 
+
 const dataGrouped = {
   chart: {
-    caption: "Planned Procurements by Department",
-    subcaption: "March 2022 ",
+    caption: "Providers with Top 20 Highest Contract Value",
+    // subcaption: "March 2022 ",
     plottooltext: "UGX $dataValue ",
     yaxisname: "Amount",
-    xaxisname: "Departments",
+    xaxisname: "Providers",
     theme: "fusion"
   },
   categories: [
     {
-      category: [
-        {
-          label: "General"
-        },
-        {
-          label: "Finance and Administration"
-        },
-        {
-          label: "PDU"
-        },
-        {
-          label: "Human Resources"
-        },
-        {
-          label: "Inspection"
-        },
-        {
-          label: "Perfomance Mgt"
-        }
-      ]
+      category: ROP
     }
   ],
   dataset: [
@@ -192,7 +174,16 @@ const dataGrouped = {
         },
         {
           value: "25391784"
-        }
+        },
+        {
+          value: "23581733"
+        },
+        {
+          value: "12321215"
+        },
+        {
+          value: "10838161"
+        },
       ]
     }
   ]

@@ -1,5 +1,6 @@
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 
 
 const data = {
@@ -10,7 +11,8 @@ const data = {
     yaxisname: "Cost Per Conversion",
     numberprefix: "UGX",
     theme: "fusion",
-    plottooltext: "$name : Share of total conversion: $zvalue%"
+    plottooltext: "$name : Share of total conversion: $zvalue%",
+    exportEnabled: "1",
   },
   categories: [
     {
@@ -142,7 +144,8 @@ const dataGrouped = {
     plottooltext: "UGX $dataValue ",
     yaxisname: "Amount",
     xaxisname: "Departments",
-    theme: "fusion"
+    theme: "fusion",
+    exportEnabled: "1",
   },
   categories: [
     {
@@ -204,6 +207,9 @@ const dataGrouped = {
 })
 export class DueDeligenceVisualsComponent implements OnInit {
 
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
+
   width = "600";
   height = "400";
   type = "bubble";
@@ -228,7 +234,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
       plottooltext:
         "<b>$percentValue</b> of Procurement Plans are <b>$label</b>",
       centerlabel: "UGX $value",
-      theme: "fusion"
+      theme: "fusion",
+      exportEnabled: "1",
     },
     data: [
       {
@@ -263,8 +270,64 @@ export class DueDeligenceVisualsComponent implements OnInit {
   // colorControl = new FormControl('primary');
   // fontSizeControl = new FormControl(16, Validators.min(10));
 
-  pdeControl = new FormControl('');
+  pdeControl = new FormControl();
   financialYearControl = new FormControl('2021-2022');
+
+
+  dataSource5: Object;
+  categories =  [
+    {
+      "category": [
+        { "label": "2022-2021" },
+        { "label": "2021-2020" },
+        { "label": "2020-2019" },
+        { "label": "2019-2018" }
+      ]
+    }
+  ]
+
+  dataset = [
+    {
+      "seriesname": "Works",
+      "data": [
+        { "value": "8.5" },
+        { "value": "9.6" },
+        { "value": "7.3" },
+        { "value": "8.9" }
+      ]
+    },
+    {
+      "seriesname": "Supplies",
+      "data": [
+        { "value": "6.6" },
+        { "value": "9.2" },
+        { "value": "4.1" },
+        { "value": "5.6" }
+      ]
+    },
+    {
+      "seriesname": "Services",
+      "data": [
+        { "value": "7.6" },
+        { "value": "6.2" },
+        { "value": "8.1" },
+        { "value": "9.6" }
+      ]
+    },
+    {
+      "seriesname": "Consultancy and Non Consultancy",
+      "data": [
+        { "value": "4.6" },
+        { "value": "3.2" },
+        { "value": "5.1" },
+        { "value": "7.6" }
+      ]
+    }
+  ]
+
+  
+
+  
 
   constructor(fb: FormBuilder) {
     this.options = fb.group({
@@ -327,6 +390,25 @@ export class DueDeligenceVisualsComponent implements OnInit {
       data: chartData
     };
     this.dataSource = dataSource;
+
+    this.dataSource5 = {
+      "chart": {
+        "theme": "fusion",
+        "caption": "Average Bidder Perfomance by Procurement Type",
+        "xAxisname": "Financial Year",
+        "yAxisName": "Average Bidder Performance",
+        "numberPrefix": "",
+        "plotFillAlpha": "80",
+        "divLineIsDashed": "1",
+        "divLineDashLen": "1",
+        "divLineGapLen": "1"
+      },
+      "categories": this.categories,
+      "dataset": this.dataset,
+
+    };
+
+
   }
 
   ngOnInit(): void {}
