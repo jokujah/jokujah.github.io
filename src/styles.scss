@@ -35,3 +35,8 @@ svg > g[class^="raphael-group-"] > text{
 g[class^='raphael-group-'][class$='-creditgroup'] {
     display:none !important;
 }
+
+
+statsFigures{
+    @apply mt-1 text-lg font-semibold text-gray-700
+}
