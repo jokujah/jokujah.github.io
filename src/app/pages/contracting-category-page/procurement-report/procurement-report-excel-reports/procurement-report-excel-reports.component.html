@@ -39,7 +39,8 @@
                 <span class="ml-2 flex-1 w-0 truncate"> {{item.PDE}} </span>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <a href="https://egp.cengkuru.com/api/signed-contracts/procurement/download?fy[]=2020-2021&pde[]=Ministry+of+Finance" class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"> Download </a>
+                  <!-- procurement -->
+                <a (click)="download('Procurement Report','forecast')"  class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"> Download </a>
               </div>
             </li>            
           </ul>

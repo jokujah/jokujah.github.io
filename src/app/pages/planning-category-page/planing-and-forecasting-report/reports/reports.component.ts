@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import PDE from 'src/assets/PDE.json'
+import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -46,18 +48,12 @@ export class ReportsComponent implements OnInit {
 
 
 
-  download(){
-    this._planingCategoryService.downloadReport('').subscribe(
-      (resp) => {
-        // this.isLoading = false;
-        // this.toastr.success("Personal Profile Updated", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        // this.back()
-
-        console.log(resp)
-      },
+  download(fileName,filePath){
+    this._planingCategoryService.downloadReport(filePath,'').subscribe(
+      (blob )=>{ 
+         console.log(blob)
+         saveAs(blob, fileName)
+        },
       (error) => {
         // this.isLoading = false;
         // this.toastr.error("Something Went Wrong", '', {
@@ -68,5 +64,7 @@ export class ReportsComponent implements OnInit {
       }
     )
   }
+
+
 
 }

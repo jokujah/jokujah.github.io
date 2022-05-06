@@ -144,7 +144,7 @@ export class DashboardComponent implements OnInit {
         
         this.changePageHeading(this.currentRoute)
         //console.log(this.activeLinkStates)
-        
+        this.showImage = false
         this.isLoading = false
       }
 
