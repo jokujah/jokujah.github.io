@@ -200,6 +200,68 @@ const dataGrouped = {
   ]
 };
 
+const dataLine = {
+  chart: {
+    caption: "Average Bidder Perfomance by Procurement Method",
+    
+    
+    numbersuffix: " UGX",
+    rotatelabels: "1",
+    setadaptiveymin: "1",
+    theme: "fusion"
+  },
+  data: [
+    {
+      label: "2005",
+      value: "89.45"
+    },
+    {
+      label: "2006",
+      value: "89.87"
+    },
+    {
+      label: "2007",
+      value: "89.64"
+    },
+    {
+      label: "2008",
+      value: "90.13"
+    },
+    {
+      label: "2009",
+      value: "90.67"
+    },
+    {
+      label: "2010",
+      value: "90.54"
+    },
+    {
+      label: "2011",
+      value: "90.75"
+    },
+    {
+      label: "2012",
+      value: "90.8"
+    },
+    {
+      label: "2013",
+      value: "91.16"
+    },
+    {
+      label: "2014",
+      value: "91.37"
+    },
+    {
+      label: "2015",
+      value: "91.66"
+    },
+    {
+      label: "2016",
+      value: "91.8"
+    }
+  ]
+};
+
 @Component({
   selector: 'app-due-deligence-visuals',
   templateUrl: './due-deligence-visuals.component.html',
@@ -264,6 +326,12 @@ export class DueDeligenceVisualsComponent implements OnInit {
   typeGrouped = "scrollbar2d";
   dataFormatGrouped = "json";
   dataSourceGrouped = dataGrouped;
+
+  widthLine = "900";
+    heightLine = "400";
+    typeLine = "line";
+    dataFormatLine = "json";
+    dataSourceLine = dataLine;
 
 
   options: FormGroup;
@@ -407,6 +475,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
       "dataset": this.dataset,
 
     };
+
+    
 
 
   }

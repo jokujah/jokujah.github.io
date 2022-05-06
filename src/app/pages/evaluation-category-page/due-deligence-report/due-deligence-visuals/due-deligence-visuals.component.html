@@ -54,25 +54,26 @@
   <div>
     <!-- Row 1 -->
     <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex w-1/2 bg-white rounded-md">
-        <fusioncharts  width="47%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
+      <div class="flex min-w-full bg-white rounded-md">
+        <fusioncharts  width="93%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
         </fusioncharts>
       </div>
 
-      <div class="flex w-1/2 bg-white">
+      <!-- <div class="flex w-1/2 bg-white">
         <fusioncharts width="47%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
         </fusioncharts>
-      </div>
+      </div> -->
 
     </div>
     <!-- Row 2 -->
-    <!-- <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+    <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex bg-white">
-        <div class="flex bg-white">
-          <fusioncharts width="900" height="400" type="mscolumn2d" [dataSource]="dataSource5">
+        <div class="flex min-w-full bg-white">
+          <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
+            [dataSource]="dataSourceLine">
           </fusioncharts>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
