@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import PDE from 'src/assets/PDE.json'
 import { saveAs } from 'file-saver';
+import { getFinancialYears } from 'src/app/utils/helpers';
 
 @Component({
   selector: 'app-reports',
@@ -27,6 +28,8 @@ export class ReportsComponent implements OnInit {
     // names must be equal
     return 0;
   })
+
+  financialYears = getFinancialYears()
   
 
   constructor(

@@ -17,9 +17,7 @@
                 <mat-form-field class="min-w-full" appearance="outline">
                     <mat-label>Financial Year</mat-label>
                     <mat-select [formControl]="financialYearControl">
-                        <mat-option value="2021-2022">2021-2022</mat-option>
-                        <mat-option value="2020-2021">2020-2021</mat-option>
-                        <mat-option value="2019-2020">2019-2020</mat-option>
+                        <mat-option *ngFor="let item of financialYears" value="{{item}}">{{item}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

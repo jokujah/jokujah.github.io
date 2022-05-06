@@ -8,8 +8,9 @@ import { FusionChartsModule } from "angular-fusioncharts";
 import * as FusionCharts from "fusioncharts";
 import * as charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import * as excel from "fusioncharts/fusioncharts.excelexport";
 import { NumberSuffixPipe } from '../utils/pipes';
-FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
+FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
 
 

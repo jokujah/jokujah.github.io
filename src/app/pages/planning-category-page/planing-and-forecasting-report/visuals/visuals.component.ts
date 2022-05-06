@@ -1,16 +1,19 @@
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 
 
 const data = {
   chart: {
     caption: "Procurements Above UGX 2Bn",
-    subcaption: "Conversions as % of total",
+    
     xaxisname: "# Conversions",
     yaxisname: "Cost Per Conversion",
     numberprefix: "UGX",
     theme: "fusion",
-    plottooltext: "$name : Share of total conversion: $zvalue%"
+    plottooltext: "$name : Share of total conversion: $zvalue%",
+    exportEnabled: "1",
+    captionalignment: "left",
   },
   categories: [
     {
@@ -138,11 +141,12 @@ const data = {
 const dataGrouped = {
   chart: {
     caption: "Planned Procurements by Department",
-    subcaption: "March 2022 ",
+    exportEnabled: "1",
     plottooltext: "UGX $dataValue ",
     yaxisname: "Amount",
     xaxisname: "Departments",
-    theme: "fusion"
+    theme: "fusion",
+    captionalignment: "left",
   },
   categories: [
     {
@@ -206,6 +210,9 @@ const dataGrouped = {
   
 })
 export class VisualsComponent implements OnInit {
+
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
   
   
   
@@ -220,8 +227,7 @@ export class VisualsComponent implements OnInit {
   // Donut
   dataDonut = {
     chart: {
-      caption: "Amount By Status",
-      subcaption: "For all Procurement Plans in 2022",
+      caption: "Contract Value of Procurement Plans by Status",
       showpercentvalues: "1",
       defaultcenterlabel: "",
       aligncaptionwithcanvas: "0",
@@ -233,7 +239,9 @@ export class VisualsComponent implements OnInit {
       plottooltext:
         "<b>$percentValue</b> of Procurement Plans are <b>$label</b>",
       centerlabel: "UGX $value",
-      theme: "fusion"
+      theme: "fusion",
+      captionalignment: "left",
+      exportEnabled: "1",
     },
     data: [
       {
@@ -319,14 +327,16 @@ export class VisualsComponent implements OnInit {
         //Set the chart caption
         caption: "Budget Allocation [2021-2022]",
         //Set the chart subcaption
-        subCaption: "In MMbbl = One Million barrels",
+        
         //Set the x-axis name
         xAxisName: "Country",
         //Set the y-axis name
         yAxisName: "Reserves (MMbbl)",
         numberSuffix: "K",
         //Set the theme for your chart
-        theme: "fusion"
+        theme: "fusion",
+
+        exportEnabled: "1",
       },
       // Chart Data - from step 2
       data: chartData
