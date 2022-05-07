@@ -8,6 +8,8 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -110,6 +112,12 @@ export class DashboardComponent implements OnInit {
     console.log(this.showImage)
   }
 
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
+  options: FormGroup;
+  pdeControl = new FormControl('');
+  financialYearControl = new FormControl('2021-2022');
+
   isLoading:Boolean=false
   currentRoute: string='';
   pageHeading:string='';
@@ -125,7 +133,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    fb: FormBuilder
   ) {
 
     this.router.events.subscribe((event) => {
@@ -156,61 +165,11 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    
-    //STEP 2 - Chart Data
-    const chartData = [
-      {
-        label: "Venezuela",
-        value: "290"
-      },
-      {
-        label: "Saudi",
-        value: "260"
-      },
-      {
-        label: "Canada",
-        value: "180"
-      },
-      {
-        label: "Iran",
-        value: "140"
-      },
-      {
-        label: "Russia",
-        value: "115"
-      },
-      {
-        label: "UAE",
-        value: "100"
-      },
-      {
-        label: "US",
-        value: "30"
-      },
-      {
-        label: "China",
-        value: "30"
-      }
-    ];
-    // STEP 3 - Chart Configuration
-    const dataSource = {
-      chart: {
-        //Set the chart caption
-        caption: "Countries With Most Oil Reserves [2017-18]",
-        //Set the chart subcaption
-        subCaption: "In MMbbl = One Million barrels",
-        //Set the x-axis name
-        xAxisName: "Country",
-        //Set the y-axis name
-        yAxisName: "Reserves (MMbbl)",
-        numberSuffix: "K",
-        //Set the theme for your chart
-        theme: "fusion"
-      },
-      // Chart Data - from step 2
-      data: chartData
-    };
-    this.dataSource = dataSource;
+    this.options = fb.group({
+      financialYear: this.financialYearControl,
+      pde:this.pdeControl
+    });
+
    }
 
   ngOnInit(): void {
@@ -241,6 +200,10 @@ export class DashboardComponent implements OnInit {
         this.reportName = splitName.join(' ')
       }
     }
+  }
+
+  getFontSize() {
+    return Math.max(10, 12);
   }
 
 }

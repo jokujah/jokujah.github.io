@@ -21,14 +21,28 @@ export class VisualsComponent implements OnInit {
 
   myType = ChartType.BarChart
   myData = [
-    ['London', 8136000],
-    ['New York', 8538000],
-    ['Paris', 2244000],
-    ['Berlin', 3470000],
-    ['Kairo', 19500000],
-  ];
-  
-  chartColumns = ['City', 'Inhabitants'];
+    ['2022-2021', 8736000],
+    ['2021-2019', 7538000],
+    ['2019-2018', 3244000],
+    ['2018-2017', 2470000],
+    ['2017-2016', 1500000],
+  ];  
+  chartColumns = ['Financial Year', 'Contract Value'];
+
+
+  myType2 = ChartType.BarChart
+  myData2 = [
+    ['Works', 5736000],
+    ['Supplies', 3538000],
+    ['Consultancy Services', 3244000],
+    ['Non Consultancy Services', 2470000],
+    
+  ];  
+  chartColumns2 = ['Procurement Type', 'Contract Value'];
+
+
+
+
 
   constructor(fb: FormBuilder) {
     this.options = fb.group({
