@@ -12,7 +12,7 @@ import * as excel from "fusioncharts/fusioncharts.excelexport";
 import { NumberSuffixPipe } from '../utils/pipes';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
-
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -20,11 +20,13 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
   ],
   imports: [
     CommonModule,
-    FusionChartsModule
+    FusionChartsModule,
+    GoogleChartsModule
   ],
   exports:[
     FusionChartsModule,
-    NumberSuffixPipe
+    NumberSuffixPipe,
+    GoogleChartsModule
   ]
 })
 export class SharedModule { }
