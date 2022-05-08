@@ -108,6 +108,7 @@ export class VisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.getSummaryStats('plan-summary',this.financialYears[0],'')
   }
 
