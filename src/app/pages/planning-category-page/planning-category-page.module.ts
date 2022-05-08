@@ -15,7 +15,7 @@ import {MatInputModule} from '@angular/material/input'
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './../../shared/shared.module';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { SharedModule } from './../../shared/shared.module';
     MatSelectModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTooltipModule
   ]
 })
 export class PlanningCategoryPageModule { }

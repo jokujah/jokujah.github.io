@@ -39,7 +39,8 @@ export class PlaningAndForecastingReportComponent implements OnInit {
   }
 
   reset(){
-    
+    this.options.get('pde')?.setValue('');
+    this.options.get('financialYear')?.setValue(this.financialYears[0]);
   }
 
   getFontSize() {

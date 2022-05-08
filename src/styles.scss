@@ -55,3 +55,8 @@ g[class^='raphael-group-'][class$='-creditgroup'] {
     @apply h-full;
     animation: fade 1s;
   }
+
+
+  .example-tooltip-blue {
+    @apply bg-indigo-700 text-white;
+  }

@@ -18,6 +18,7 @@ export class VisualsComponent implements OnInit {
   options: FormGroup;
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
+  downloading = false
 
 
   myType = ChartType.BarChart
@@ -41,18 +42,40 @@ export class VisualsComponent implements OnInit {
   ];  
   chartColumns2 = ['Procurement Type', 'Contract Value'];
 
+  options2 = {
+    chartArea: {
+      width: '80%',
+      left:"20%",
+      top:"10%"
+    },
+    hAxis: {
+      title: 'Value',
+      minValue: 0
+    },
+    vAxis: {
+      title: 'Financial Year'
+    }
+  };
+
 
   @ViewChild('screen') screen: ElementRef;
   @ViewChild('canvas') canvas: ElementRef;
   @ViewChild('downloadLink') downloadLink: ElementRef;
 
-  downloadImage(){
-    html2canvas(this.screen.nativeElement).then(canvas => {
+  downloadImage(reportName){
+    this.downloading = true
+    console.log(this.screen.nativeElement.children[0].children[1].hidden)  
+    //return
+    this.screen.nativeElement.children[0].children[1].hidden = true
+
+    html2canvas(this.screen.nativeElement).then(canvas => {   
+       
       this.canvas.nativeElement.src = canvas.toDataURL();
       this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
-      this.downloadLink.nativeElement.download = 'marble-diagram.png';
+      this.downloadLink.nativeElement.download = `${reportName}.png`;
       this.downloadLink.nativeElement.click();
     });
+    this.downloading = false
   }
 
 
