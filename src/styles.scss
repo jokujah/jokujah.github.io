@@ -37,8 +37,8 @@ g[class^='raphael-group-'][class$='-creditgroup'] {
 }
 
 
-statsFigures{
-    @apply mt-1 text-lg font-semibold text-gray-700
+.graph-title{
+    @apply mt-1 text-lg font-semibold text-gray-600;
 }
 
 @keyframes fade {
