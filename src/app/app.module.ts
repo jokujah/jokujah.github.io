@@ -30,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 
 import { GoogleChartsModule } from 'angular-google-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 
@@ -55,7 +56,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
     EvaluationCategoryPageModule,
     ContractingCategoryPageModule,
     ContractingManagementCategoryPageModule,
-    GoogleChartsModule
+    GoogleChartsModule,
+    NgApexchartsModule,
     // MatFormFieldModule,
     // FormsModule,
     // MatSelectModule,

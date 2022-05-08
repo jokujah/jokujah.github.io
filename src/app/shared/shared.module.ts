@@ -13,6 +13,7 @@ import { NumberSuffixPipe } from '../utils/pipes';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
 import { GoogleChartsModule } from 'angular-google-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
   exports:[
     FusionChartsModule,
     NumberSuffixPipe,
-    GoogleChartsModule
+    GoogleChartsModule,
+    NgApexchartsModule
   ]
 })
 export class SharedModule { }

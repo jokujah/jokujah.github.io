@@ -1,6 +1,15 @@
 
 <div class="max-w-7xl">
-    <div class="mt-4  ">
+  <div class="mt-6">
+    <div class="flex flex-row space-x-2">
+      <span>Filters :</span>
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{financialYearControl.value}} </span>
+
+    </div>
+
+  </div>
+    <div class="mt-6  ">
         <form
           class="example-container flex-1 flex-col space-y-2  md:flex md:flex-row md:space-y-0  md:space-x-2 min-w-full items-baseline"
           [formGroup]="options" [style.fontSize.px]="getFontSize()">

@@ -1,6 +1,6 @@
 
 <div class="max-w-7xl">
-  <div class="mt-4">
+  <div class="mt-6">
     <div class="flex flex-row space-x-2">
       <span>Filters :</span>
       <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
@@ -9,7 +9,7 @@
     </div>
 
   </div>
-  <div class="mt-4 ">
+  <div class="mt-6 ">
     <form
       class="example-container flex-1 flex-col space-y-2  md:flex md:flex-row md:space-y-0  md:space-x-2 min-w-full items-baseline"
       [formGroup]="options" [style.fontSize.px]="getFontSize()">
@@ -79,7 +79,7 @@
   <div>
     <div class="mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
       <div class="flex flex-col px-4 py-2 overflow-hidden rounded-md bg-white items-center shadow">
-        <span class="mt-1 text-3xl font-semibold text-gray-500">{{numberOfPlannedContracts}}</span>
+        <span class="mt-1 text-3xl font-semibold text-gray-500">{{numberOfPlannedContracts | numberSuffix:1}}</span>
         <span class="text-sm font-medium text-gray-500 truncate">Procurement Plans</span>
       </div>
       <!-- <div class="border-r border-gray-200 h-3/4 max-w-0"></div> -->
@@ -100,9 +100,9 @@
   <!-- Graphs -->
   <div>
     <!-- Row 1 -->
-    <div class="mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4 sm:flex sm:flex-col space-y-4">
-      <div  class="flex-1 bg-white min-w-1/2 rounded-md overflow-hidden overflow-y-hidden shadow">
-        <div #screen class="flex flex-col px-4 py-2">
+    <div class="mt-4 ">
+      <!-- <div  class="flex-1 bg-white  rounded-md overflow-hidden overflow-y-hidden shadow">
+        <div #screen class="flex flex-col px-4 py-2" *ngIf="myData.length > 0">
           <div class="flex flex-row mb-2 items-center">
             <span class="graph-title flex r w-11/12">
               Procurement Plans by Financial Year
@@ -123,18 +123,22 @@
           <img #canvas>
           <a #downloadLink></a>
         </div>
-      </div>
+      </div> -->
 
-      <div class="flex-1 bg-white min-w-1/2 rounded-md overflow-hidden overflow-y-hidden shadow">
-        <div class="flex flex-col px-2 py-2">
-          <span class="graph-title">Procurement Plans by Procurement Type</span>
-          <google-chart style="width: 100%; height:400px;" [type]="myType2" [data]="myData2" [columns]="chartColumns2">
-          </google-chart>
+      <div class="flex flex-col bg-white overflow-hidden shadow rounded-lg   w-full  p-5">
+        <div class="text-base font-medium text-gray-500 hidden">Intersex Persons Education Status</div>
+        <div *ngIf="chartOptionsEducationStatus" id="chartEducationStatus" >
+          <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
+            [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
+            [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
+            [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"></apx-chart>
         </div>
-      </div>
+        <!-- <div *ngIf="!chartOptionsEducationStatus">
+          <app-loading-pulse></app-loading-pulse>
+        </div> -->
     </div>
     <!-- Row 2 -->
-    <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4  flex flex-col space-y-4 ">
+    <!-- <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4  flex flex-col space-y-4 ">
       <div class="flex-1 bg-white min-w-1/2 rounded-md overflow-hidden overflow-y-hidden shadow">
         <div class="flex flex-col px-2 py-2">
           <span class="graph-title">Procurement Plans by Contract Type</span>
@@ -150,7 +154,7 @@
           </google-chart>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <div class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
     <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
