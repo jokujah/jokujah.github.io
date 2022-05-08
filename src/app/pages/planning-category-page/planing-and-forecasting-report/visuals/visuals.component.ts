@@ -109,6 +109,7 @@ export class VisualsComponent implements OnInit {
 
   ngOnInit(): void {
     
+    
     this.getSummaryStats('plan-summary',this.financialYears[0],'')
   }
 
@@ -127,6 +128,7 @@ export class VisualsComponent implements OnInit {
 
 
   getSummaryStats(reportName,financialYear,procuringEntity){
+    this.isLoading=true
 
     this.numberOfPlannedContracts = 0
           this.totalValueofPlannedContracts = 0
@@ -135,7 +137,6 @@ export class VisualsComponent implements OnInit {
 
     this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
-        this.isLoading = true
         let data = response.data
         let  x = []
         let  y = []
