@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 
 @Component({
   selector: 'app-planing-and-forecasting-report',
@@ -7,9 +9,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlaningAndForecastingReportComponent implements OnInit {
 
-  constructor() { }
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
+  options: FormGroup;
+  pdeControl = new FormControl('');
+  financialYearControl = new FormControl('2021-2022');
+  
 
-  ngOnInit(): void {
+  pageForm!: FormGroup;
+
+  constructor(
+    fb: FormBuilder
+  ) { 
+    this.options = fb.group({
+      financialYear: this.financialYearControl,
+      pde:this.pdeControl
+    });
+  }
+
+  ngOnInit(): void {  }
+
+  submit(form: FormGroup) {
+    let data: any = {
+      'selectedPDE': form.controls.pde.value,
+      'selectedFinancialYear': form.controls.financialYear.value,
+    }
+
+    console.log(data)
+  }
+
+  reset(){
+    
+  }
+
+  getFontSize() {
+    return Math.max(10, 12);
   }
 
 }

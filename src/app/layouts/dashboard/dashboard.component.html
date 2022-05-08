@@ -22,7 +22,7 @@
   <body class="h-full overflow-hidden">
   ```
 -->
-<div class="h-full flex bg-slate-100">
+<div class="h-full flex bg-slate-50">
     <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
     <div *ngIf="showImage" class="fixed inset-0 flex z-40 lg:hidden" role="dialog" aria-modal="true">
       <!--
@@ -251,43 +251,16 @@
                  
                   <div class="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">                    
                     <div class="sm:hidden 2xl:block mt-6 min-w-0 flex flex-row">                    
-                      <h2 class="text-xl font-semibold text-gray-700 truncate  first-letter:uppercase"> {{reportName}}</h2>                    
+                      <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase"> {{reportName}}</h2>                    
                     </div>                    
                   </div>
                 </div>
                 <div class="hidden sm:flex 2xl:hidden mt-6 min-w-0  flex-row">
-                  <h2 class="text-xl font-semibold text-gray-700 truncate first-letter:uppercase">{{reportName}}</h2>                  
+                  <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportName}}</h2>                  
                 </div>
               </div>
             </div>
 
-            <div>
-              <div class="mt-2 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-                <form class="example-container flex-1 flex-col  md:flex md:flex-row  md:space-x-2 min-w-full items-baseline"
-                  [formGroup]="options" [style.fontSize.px]="getFontSize()">
-                  <div class="flex-1">
-                    <mat-form-field class="min-w-full" appearance="outline">
-                      <mat-label>Procuring and Disposal Entity</mat-label>
-                      <mat-select [formControl]="pdeControl">
-                        <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-            
-                  <div class="flex-1">
-                    <mat-form-field class="min-w-full" appearance="outline">
-                      <mat-label>Financial Year</mat-label>
-                      <mat-select [formControl]="financialYearControl">
-                        <mat-option *ngFor="let item of financialYears" value="{{item}}">{{item}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div>
-                    <button mat-flat-button color="primary">Search</button>
-                  </div>
-                </form>
-              </div>
-            </div>
            
               <router-outlet></router-outlet>       
             

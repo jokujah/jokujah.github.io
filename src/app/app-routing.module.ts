@@ -1,3 +1,4 @@
+import { HomePageComponent } from './pages/home-page/home-page.component';
 import { PdeAverageContractValueExcelReportsComponent } from './pages/contracting-category-page/pde-average-contract-value-report/pde-average-contract-value-excel-reports/pde-average-contract-value-excel-reports.component';
 import { DueDeligenceExcelReportsComponent } from './pages/evaluation-category-page/due-deligence-report/due-deligence-excel-reports/due-deligence-excel-reports.component';
 import { FrameWorkExcelReportsComponent } from './pages/contracting-management-category-page/frame-work-report/frame-work-excel-reports/frame-work-excel-reports.component';
@@ -87,7 +88,12 @@ const routes: Routes = [
         ]
        
       },
-      
+
+      {
+        path: 'home',
+        component:HomePageComponent,
+      },
+
       {
         path: '',
         redirectTo: 'planing',
