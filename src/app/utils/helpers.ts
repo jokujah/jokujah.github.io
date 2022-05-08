@@ -20,10 +20,23 @@ return PDE.sort(function(a, b) {
 
 export function getFinancialYears(){
     return [ 
-        "2022-2021",
-        "2021-2020",
-        "2020-2019",
-        "2019-2018",
-        "2018-2017",
+      "2021-2022",
+      "2020-2021",
+      "2019-2020",
+      "2018-2019",
+      "2017-2018",
     ]
 }
+
+
+export function addArrayValues(data) {
+  const initialValue = 0;
+  const sumWithInitial = data.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    initialValue
+  );
+
+  return sumWithInitial
+}
+
+

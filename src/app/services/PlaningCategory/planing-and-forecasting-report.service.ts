@@ -20,4 +20,16 @@ export class PlaningAndForecastingReportService {
   downloadReport(reportName,data): Observable<Blob> {
     return this.http.get( `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=2020-2021&pde[]=Ministry+of+Finance` , {responseType: 'blob'})    
   }
+
+  getSummaryStats(reportName,financialYear,procuringEntity): Observable<any> {
+    return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}`)    
+  }
+
+  getSummaryStatsPlanAbove(reportName): Observable<any> {
+    return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}`)    
+  }
+
+  getSummaryStatsBudgetAllocation(reportName): Observable<any> {
+    return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}`)    
+  }
 }
