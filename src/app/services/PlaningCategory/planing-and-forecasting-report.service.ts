@@ -25,7 +25,11 @@ export class PlaningAndForecastingReportService {
     return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}`)    
   }
 
-  getSummaryStatsPlanAbove(reportName): Observable<any> {
+  getSummaryStatsWithPDE(reportName,financialYear,procuringEntity): Observable<any> {
+    return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&pde[]=${procuringEntity}`)    
+  }
+
+  getSummaryStatsNeat(reportName): Observable<any> {
     return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}`)    
   }
 
