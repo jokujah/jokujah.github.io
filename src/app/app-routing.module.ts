@@ -96,7 +96,7 @@ const routes: Routes = [
 
       {
         path: '',
-        redirectTo: 'planing',
+        redirectTo: 'planning',
         pathMatch: 'full',
       },
 
