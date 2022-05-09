@@ -78,9 +78,10 @@ export class ReportsComponent implements OnInit {
 
 
 
-  download(fileName,filePath){
+  download(fileName,filePath,pde){
+    console.log(pde)
     this.isLoading = true;
-    this._planingCategoryService.downloadReport(filePath,'').subscribe(
+    this._planingCategoryService.downloadReport(filePath,pde).subscribe(
       (blob )=>{ 
          console.log(blob)
          saveAs(blob, fileName)

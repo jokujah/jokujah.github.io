@@ -18,6 +18,10 @@ export class PlaningAndForecastingReportService {
 
 
   downloadReport(reportName,data): Observable<Blob> {
+    return this.http.get( `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=2020-2021&pde[]=${data}` , {responseType: 'blob'})    
+  }
+
+  downloadReport2(reportName,data): Observable<Blob> {
     return this.http.get( `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=2020-2021&pde[]=Ministry+of+Finance` , {responseType: 'blob'})    
   }
 
