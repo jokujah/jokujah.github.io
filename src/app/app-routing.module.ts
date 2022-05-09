@@ -53,20 +53,20 @@ const routes: Routes = [
     component: DashboardComponent, 
     children:[
       {
-        path: 'planing',
+        path: 'planning',
         component:PlanningCategoryPageComponent,
         children: [
           {
-            path: 'planing-reports-list',
+            path: 'planning-reports-list',
             component:PlaningReportsListComponent,
           },
           {
             path: '',
-            redirectTo: 'planing-reports-list',
+            redirectTo: 'planning-reports-list',
             pathMatch: 'full',
           },
           {
-            path: 'planing-and-forecasting-report',
+            path: 'planning-and-forecasting-report',
             component:PlaningAndForecastingReportComponent,
             children: [
               {

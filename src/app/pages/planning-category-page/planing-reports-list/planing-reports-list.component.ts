@@ -17,7 +17,7 @@ export class PlaningReportsListComponent implements OnInit {
   }
 
   onClickReport(reportName:string){
-    this.router.navigate([`../dashboard/planing/${reportName}`])
+    this.router.navigate([`../dashboard/planning/${reportName}`])
   }
 
 }

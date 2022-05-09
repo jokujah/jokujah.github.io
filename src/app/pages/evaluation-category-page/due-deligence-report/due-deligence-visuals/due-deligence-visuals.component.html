@@ -2,8 +2,10 @@
   <div class="mt-6">
     <div class="flex flex-row space-x-2">
       <span>Filters :</span>
-      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
-      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{financialYearControl.value}} </span>
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+        {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+        {{financialYearControl.value}} </span>
 
     </div>
 
@@ -79,10 +81,10 @@
       <div class="statsCard">
         <span class="stats">{{numberOfBids}}</span>
         <span class="statsText">Bids</span>
-        
+
       </div>
 
-      <div class="statsCard">        
+      <div class="statsCard">
         <span class="stats">UGX {{valueOfBids | numberSuffix: 2}}</span>
         <span class="statsText">Bids Value</span>
       </div>
@@ -90,9 +92,9 @@
       <div class="statsCard">
         <span class="stats"> {{numberOfBidders }}</span>
         <span class="statsText">Bidders</span>
-        
+
       </div>
-      
+
     </div>
   </div>
 
@@ -114,7 +116,7 @@
     <!-- Row 2 -->
     <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex bg-white">
-        <div class="flex w-full bg-white">
+        <div *ngIf="!isLoading" class="flex w-full bg-white shadow rounded-lg overflow-hidden">
           <!-- <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
             [dataSource]="dataSourceLine">
           </fusioncharts> -->
@@ -131,20 +133,25 @@
               <app-loading-pulse></app-loading-pulse>
             </div>
           </div> -->
-        <div id="chart" class="w-full shadow rounded-lg overflow-hidden p-5">
-          <apx-chart
-            [series]="chartOptions.series"
-            [chart]="chartOptions.chart"
-            [yaxis]="chartOptions.yaxis"
-            [xaxis]="chartOptions.xaxis"
-            [labels]="chartOptions.labels"
-            [stroke]="chartOptions.stroke"
-            [title]="chartOptions.title"
-            [dataLabels]="chartOptions.dataLabels"
-            [fill]="chartOptions.fill"
-            [tooltip]="chartOptions.tooltip"
-          ></apx-chart>
+          <div id="chart" class="w-full  p-5">
+            <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
+              [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
+              [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+              [tooltip]="chartOptions.tooltip"></apx-chart>
+          </div>
+
         </div>
+        <div class="relative top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
+          <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
+          </span> -->
+          <div class="flex items-center justify-center h-80">
+            <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
+          </div>
         </div>
 
 
@@ -152,16 +159,5 @@
     </div>
   </div>
 
-  <div class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
-    <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-    </span>
-    <div class="flex items-center justify-center h-screen">
-      <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-        </path>
-      </svg>
-    </div>
-  </div>
+  
 </div>
