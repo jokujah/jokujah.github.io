@@ -2,22 +2,15 @@
   <div class="mt-6">
     <form
       class="flex-col items-baseline flex-1 min-w-full space-y-2 example-container md:flex md:flex-row md:space-y-0 md:space-x-2"
-      [formGroup]="options"
-      [style.fontSize.px]="getFontSize()"
-    >
+      [formGroup]="options" [style.fontSize.px]="getFontSize()">
       <div class="flex-1">
         <div
-          class="relative px-3 py-2 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600"
-        >
-          <label
-            for="name"
-            class="absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 -top-2 left-2 bg-neutral-50"
-            >Select Entity</label
-          >
-          <select
-            [formControl]="pdeControl"
-            class="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm"
-          >
+          class="relative px-3 py-2 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+          <label for="name"
+            class="absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 -top-2 left-2 bg-neutral-50">Select
+            Entity</label>
+          <select [formControl]="pdeControl"
+            class="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm">
             <option *ngFor="let item of pde" value="{{ item.PDE }}">
               {{ item.PDE }}
             </option>
@@ -26,17 +19,12 @@
       </div>
       <div class="flex-1">
         <div
-          class="relative px-3 py-2 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600"
-        >
-          <label
-            for="name"
-            class="absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 -top-2 left-2 bg-neutral-50"
-            >Financial Year</label
-          >
-          <select
-            [formControl]="financialYearControl"
-            class="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm"
-          >
+          class="relative px-3 py-2 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+          <label for="name"
+            class="absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 -top-2 left-2 bg-neutral-50">Financial
+            Year</label>
+          <select [formControl]="financialYearControl"
+            class="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm">
             <option *ngFor="let item of financialYears" value="{{ item }}">
               {{ item }}
             </option>
@@ -45,18 +33,12 @@
       </div>
 
       <div class="flex flex-row space-x-2">
-        <button
-          type="button"
-          (click)="submit(options)"
-          class="items-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
+        <button type="button" (click)="submit(options)"
+          class="items-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Search
         </button>
-        <button
-          type="button"
-          (click)="reset()"
-          class="items-center flex-1 px-4 py-2 text-sm font-medium text-indigo-600 bg-white border border-transparent rounded-md shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
+        <button type="button" (click)="reset()"
+          class="items-center flex-1 px-4 py-2 text-sm font-medium text-indigo-600 bg-white border border-transparent rounded-md shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Reset
         </button>
       </div>
@@ -90,65 +72,34 @@
         </form>
     </div> -->
 
-    <div class="mt-4">
-        <ul  *ngIf="!isLoading" role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
-            <li *ngFor="let item of pde" class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-              <div class="w-0 flex-1 flex items-center">
-                <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
-                </svg>
-                <span class="ml-2 flex-1 w-0 truncate"> {{item.PDE}} </span>
-              </div>
-              <div class="ml-4 flex-shrink-0">
-                <button type="button" (click)="download('Planing and Forecasting Report','forecast')" class="textButton"> Download </button>
-              </div>
-            </li>
-          </ul>
-          <div class="relative top-0 left-0 z-50 block w-full h-full  opacity-75" *ngIf="isLoading">
-            <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-            </span> -->
-            <div class="flex items-center justify-center h-80">
-              <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                </path>
-              </svg>
-            </div>
-          </div>
-
-  <div
-    class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75"
-    *ngIf="isLoading"
-  >
-    <span
-      class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2"
-      style="top: 50%"
-    >
-    </span>
-    <div class="flex items-center justify-center h-screen">
-      <svg
-        fill="none"
-        viewBox="0 0 24 24"
-        class="w-8 h-8 text-sky-500 animate-spin"
-      >
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
+  <div class="mt-4">
+    <ul *ngIf="!isLoading" role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
+      <li *ngFor="let item of pde" class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+        <div class="w-0 flex-1 flex items-center">
+          <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
+              clip-rule="evenodd" />
+          </svg>
+          <span class="ml-2 flex-1 w-0 truncate"> {{item.PDE}} </span>
+        </div>
+        <div class="ml-4 flex-shrink-0">
+          <button type="button" (click)="download('Planing and Forecasting Report','forecast',item.PDE)" class="textButton">
+            Download </button>
+        </div>
+      </li>
+    </ul>
+    <div class="relative top-0 left-0 z-50 block w-full h-full  opacity-75" *ngIf="isLoading">
+      <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
+              </span> -->
+      <div class="flex items-center justify-center h-80">
+        <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+          </path>
+        </svg>
+      </div>
     </div>
-
-
-
-
-</div>
+  </div>
