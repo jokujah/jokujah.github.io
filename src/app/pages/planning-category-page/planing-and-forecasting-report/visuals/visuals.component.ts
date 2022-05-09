@@ -67,64 +67,7 @@ export class VisualsComponent implements OnInit {
   topTenHighestContracts 
 
 
-  myType = ChartType.BarChart
-  // myData = [
-  //   ['2022-2021', 8736000],
-  //   ['2021-2019', 7538000],
-  //   ['2019-2018', 3244000],
-  //   ['2018-2017', 2470000],
-  //   ['2017-2016', 1500000],
-  // ];  
-
-  myData = []; 
-  chartColumns = ['Financial Year', 'Contract Value'];
-
-
-  myType2 = ChartType.BarChart
-  myData2 = [
-    ['Works', 5736000],
-    ['Supplies', 3538000],
-    ['Consultancy Services', 3244000],
-    ['Non Consultancy Services', 2470000],
-    
-  ];  
-  chartColumns2 = ['Procurement Type', 'Contract Value'];
-
-  options2 = {
-    chartArea: {
-      width: '80%',
-      left:"20%",
-      top:"10%"
-    },
-    hAxis: {
-      title: 'Value',
-      minValue: 0
-    },
-    vAxis: {
-      title: 'Financial Year'
-    }
-  };
-
-
-  @ViewChild('screen') screen: ElementRef;
-  @ViewChild('canvas') canvas: ElementRef;
-  @ViewChild('downloadLink') downloadLink: ElementRef;
-
-  downloadImage(reportName){
-    this.downloading = true
-    console.log(this.screen.nativeElement.children[0].children[1].hidden)  
-    //return
-    this.screen.nativeElement.children[0].children[1].hidden = true
-
-    html2canvas(this.screen.nativeElement).then(canvas => {   
-       
-      this.canvas.nativeElement.src = canvas.toDataURL();
-      this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
-      this.downloadLink.nativeElement.download = `${reportName}.png`;
-      this.downloadLink.nativeElement.click();
-    });
-    this.downloading = false
-  }
+  
 
 
 
@@ -140,8 +83,7 @@ export class VisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSummaryStats('plan-summary',this.financialYears[0],'')
-    // this.createEducationStatusGraph()
+    this.getSummaryStats('plan-summary',this.financialYears[0],'')    
   }
 
 
@@ -199,7 +141,6 @@ export class VisualsComponent implements OnInit {
         console.log(this.topTenHighestContracts)
         console.log(x)
         console.log(y)
-        this.myData = []
 
         let categories=[]
         let categorieValues=[]
@@ -209,7 +150,6 @@ export class VisualsComponent implements OnInit {
 
           var valueC = element?.estimated_amount.split(',')
           var valueD = parseInt(valueC.join(''))
-          this.myData.push([element.pde_name , valueD])
           categories.push(element.pde_name)
           categorieValues.push(valueD)
         });
@@ -267,12 +207,11 @@ export class VisualsComponent implements OnInit {
             }
           },
           title: {
-            text: "Procuring Entity with Top 10 Jighest Value of Planned contracts" +' '+ `(${financialYear})`
+            text: "Procuring Entity with Top 10 Highest Value of Planned contracts" +' '+ `(${financialYear})`
           },
         };
         
 
-          console.log(this.myData)
           this.numberOfPlannedContracts = addArrayValues(x)
           this.totalValueofPlannedContracts = addArrayValues(y) 
           this.yearOfPlannedContracts = financialYear
@@ -300,79 +239,6 @@ export class VisualsComponent implements OnInit {
     }
     this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
-
-  // createEducationStatusGraph(){
-  //   this.isLoading = true;
-  //   this._dashboardStatisticsService.getSummaryStatistics('educationStatus').subscribe(
-  //     (statistics) => {
-  //       this.isLoading = false;
-  //       var data = statistics.data;
-  //       let categories=[]
-  //       let categorieValues=[]
-
-        
-
-  //       data.forEach(element => {
-  //         categories.push(element?.levelofeducation)
-  //         categorieValues.push(element?.number)
-  //       });
-
-  //       this.chartOptionsEducationStatus = {
-  //         series: [
-  //           {
-  //             name: "Intersex Persons",
-  //             data: categorieValues.reverse(),
-  //             fontSize: "12px"
-  //           }
-  //         ],
-  //         chart: {
-  //           height: 350,
-  //           type: "bar",
-  //           events: {
-  //             click: function(chart, w, e) {
-  //               // console.log(chart, w, e)
-  //             }
-  //           }
-  //         },
-  //         colors: [
-  //           "#008FFB"          
-  //         ],
-  //         plotOptions: {
-  //           bar: {
-  //             columnWidth: "35%",
-  //             distributed: false,
-  //             horizontal:true
-  //           }
-  //         },
-  //         dataLabels: {
-  //           enabled: true
-  //         },
-  //         legend: {
-  //           show: false
-  //         },
-  //         grid: {
-  //           show: true
-  //         },
-  //         xaxis: {
-  //           categories: categories.reverse(),
-  //           labels: {
-  //             style: {
-  //               colors: [
-  //                 "#008FFB",
-  //                 "#D10CE8",
-  //               ],
-  //               fontSize: "12px"
-  //             }
-  //           }
-  //         },
-  //         title: {
-  //           text: "Intersex Persons Education Status" +' '+ `(${getTodaysDate()})`
-  //         },
-  //       };
-
-
-  //     })
-  // }
 }
 
 

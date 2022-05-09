@@ -79,13 +79,15 @@ export class ReportsComponent implements OnInit {
 
 
   download(fileName,filePath){
+    this.isLoading = true;
     this._planingCategoryService.downloadReport(filePath,'').subscribe(
       (blob )=>{ 
          console.log(blob)
          saveAs(blob, fileName)
+         this.isLoading = false;
         },
       (error) => {
-        // this.isLoading = false;
+         this.isLoading = false;
         // this.toastr.error("Something Went Wrong", '', {
         //   progressBar: true,
         //   positionClass: 'toast-top-right'

@@ -95,3 +95,10 @@ export function NumberSuffix(input,args)  {
 
 
 
+  export function sanitizeCurrencyToString(data){
+    var valueC = data.split(',')
+    var valueD = parseInt(valueC.join(''))
+    return valueD
+  }
+
+

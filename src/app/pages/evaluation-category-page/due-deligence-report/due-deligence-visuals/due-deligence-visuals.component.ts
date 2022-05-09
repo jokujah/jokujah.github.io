@@ -1,265 +1,41 @@
+import { DueDeligenceReportService } from './../../../../services/EvaluationCategory/due-deligence-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
+import { addArrayValues, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
+import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 
-const data = {
-  chart: {
-    caption: "Procurements Above UGX 2Bn",
-    subcaption: "Conversions as % of total",
-    xaxisname: "# Conversions",
-    yaxisname: "Cost Per Conversion",
-    numberprefix: "UGX",
-    theme: "fusion",
-    plottooltext: "$name : Share of total conversion: $zvalue%",
-    exportEnabled: "1",
-  },
-  categories: [
-    {
-      verticallinealpha: "20",
-      category: [
-        {
-          label: "0",
-          x: "0"
-        },
-        {
-          label: "1500",
-          x: "1500",
-          showverticalline: "1"
-        },
-        {
-          label: "3000",
-          x: "3000",
-          showverticalline: "1"
-        },
-        {
-          label: "4500",
-          x: "4500",
-          showverticalline: "1"
-        },
-        {
-          label: "6000",
-          x: "6000",
-          showverticalline: "1"
-        }
-      ]
-    }
-  ],
-  dataset: [
-    {
-      data: [
-        {
-          x: "5540",
-          y: "16.09",
-          z: "30.63",
-          name: "Campaign 1"
-        },
-        {
-          x: "4406",
-          y: "12.74",
-          z: "24.36",
-          name: "Campaign 2"
-        },
-        {
-          x: "1079",
-          y: "15.79",
-          z: "5.97",
-          name: "Campaign 3"
-        },
-        {
-          x: "1700",
-          y: "8.27",
-          z: "9.4",
-          name: "Campaign 4"
-        },
-        {
-          x: "853",
-          y: "15.89",
-          z: "4.71",
-          name: "Campaign 5"
-        },
-        {
-          x: "1202",
-          y: "10.74",
-          z: "6.65",
-          name: "Campaign 6"
-        },
-        {
-          x: "2018",
-          y: "6.14",
-          z: "11.16",
-          name: "Campaign 7"
-        },
-        {
-          x: "413",
-          y: "19.83",
-          z: "2.28",
-          name: "Campaign 8"
-        },
-        {
-          x: "586",
-          y: "13.96",
-          z: "3.24",
-          name: "Campaign 9"
-        },
-        {
-          x: "184",
-          y: "15.82",
-          z: "1.02",
-          name: "Campaign 10"
-        },
-        {
-          x: "311",
-          y: "5.83",
-          z: "1.72",
-          name: "Campaign 11"
-        },
-        {
-          x: "35",
-          y: "10.76",
-          z: "0.19",
-          name: "Campaign 12"
-        },
-        {
-          x: "55",
-          y: "2.73",
-          z: "0.3",
-          name: "Campaign 13"
-        },
-        {
-          x: "6",
-          y: "21.22",
-          z: "0.03",
-          name: "Campaign 14"
-        }
-      ]
-    }
-  ]
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart
+} from "ng-apexcharts";
+
+export type ChartOptionsEducationStatus = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+  tooltip: ApexTooltip;
+  fill: ApexFill;
+  legend: ApexLegend;
 };
 
-const dataGrouped = {
-  chart: {
-    caption: "Planned Procurements by Department",
-    subcaption: "March 2022 ",
-    plottooltext: "UGX $dataValue ",
-    yaxisname: "Amount",
-    xaxisname: "Departments",
-    theme: "fusion",
-    exportEnabled: "1",
-  },
-  categories: [
-    {
-      category: [
-        {
-          label: "General"
-        },
-        {
-          label: "Finance and Administration"
-        },
-        {
-          label: "PDU"
-        },
-        {
-          label: "Human Resources"
-        },
-        {
-          label: "Inspection"
-        },
-        {
-          label: "Perfomance Mgt"
-        }
-      ]
-    }
-  ],
-  dataset: [
-    {
-      data: [
-        {
-          value: "97294205"
-        },
-        {
-          value: "95482197"
-        },
-        {
-          value: "60224172"
-        },
-        {
-          value: "33018247"
-        },
-        {
-          value: "31615028"
-        },
-        {
-          value: "28984878"
-        },
-        {
-          value: "25391784"
-        }
-      ]
-    }
-  ]
-};
-
-const dataLine = {
-  chart: {
-    caption: "Average Bidder Perfomance by Procurement Method",
-    
-    
-    numbersuffix: " UGX",
-    rotatelabels: "1",
-    setadaptiveymin: "1",
-    theme: "fusion"
-  },
-  data: [
-    {
-      label: "2005",
-      value: "89.45"
-    },
-    {
-      label: "2006",
-      value: "89.87"
-    },
-    {
-      label: "2007",
-      value: "89.64"
-    },
-    {
-      label: "2008",
-      value: "90.13"
-    },
-    {
-      label: "2009",
-      value: "90.67"
-    },
-    {
-      label: "2010",
-      value: "90.54"
-    },
-    {
-      label: "2011",
-      value: "90.75"
-    },
-    {
-      label: "2012",
-      value: "90.8"
-    },
-    {
-      label: "2013",
-      value: "91.16"
-    },
-    {
-      label: "2014",
-      value: "91.37"
-    },
-    {
-      label: "2015",
-      value: "91.66"
-    },
-    {
-      label: "2016",
-      value: "91.8"
-    }
-  ]
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis | ApexYAxis[];
+  title: ApexTitleSubtitle;
+  labels: string[];
+  stroke: any; // ApexStroke;
+  dataLabels: any; // ApexDataLabels;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
 };
 
 @Component({
@@ -268,223 +44,288 @@ const dataLine = {
   styleUrls: ['./due-deligence-visuals.component.scss']
 })
 export class DueDeligenceVisualsComponent implements OnInit {
+  isLoading:boolean = false 
+  @ViewChild("chartEducationStatus")
+  chartEducationStatus!: ChartComponent;
+  chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
+
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+
+  
+
+
+  valueOfBids;
+  numberOfBids;
+  yearOfBids;
+  numberOfBidders;
+
+  topTenHighestContracts 
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
 
-  width = "600";
-  height = "400";
-  type = "bubble";
-  dataFormat = "json";
-  dataSource2 = data; 
-
-
-
-  // Donut
-  dataDonut = {
-    chart: {
-      caption: "Amount By Status",
-      subcaption: "For all Procurement Plans in 2022",
-      showpercentvalues: "1",
-      defaultcenterlabel: "",
-      aligncaptionwithcanvas: "0",
-      captionAlignment: 'center',
-      chartLeftMargin :20,
-      captionpadding: "0",
-      decimals: "1",
-      doughnutRadius:"200",
-      plottooltext:
-        "<b>$percentValue</b> of Procurement Plans are <b>$label</b>",
-      centerlabel: "UGX $value",
-      theme: "fusion",
-      exportEnabled: "1",
-    },
-    data: [
-      {
-        label: "Initiated",
-        value: "3000"
-      },
-      {
-        label: "Not Initiated",
-        value: "5300"
-      }
-    ]
-  };
-
-  widthDonut = "320";
-  heightDonut = "400";
-  typeDonut = "doughnut2d";
-  dataFormatDonut = "json";
-  dataSourceDonut = this.dataDonut;
-  
-
-  dataSource: Object;
-
-
-  widthGrouped = "500";
-  heightGrouped = "400";
-  typeGrouped = "scrollbar2d";
-  dataFormatGrouped = "json";
-  dataSourceGrouped = dataGrouped;
-
-  widthLine = "900";
-    heightLine = "400";
-    typeLine = "line";
-    dataFormatLine = "json";
-    dataSourceLine = dataLine;
-
-
   options: FormGroup;
-  // colorControl = new FormControl('primary');
-  // fontSizeControl = new FormControl(16, Validators.min(10));
-
-  pdeControl = new FormControl();
+  pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
 
 
-  dataSource5: Object;
-  categories =  [
-    {
-      "category": [
-        { "label": "2022-2021" },
-        { "label": "2021-2020" },
-        { "label": "2020-2019" },
-        { "label": "2019-2018" }
-      ]
-    }
-  ]
-
-  dataset = [
-    {
-      "seriesname": "Works",
-      "data": [
-        { "value": "8.5" },
-        { "value": "9.6" },
-        { "value": "7.3" },
-        { "value": "8.9" }
-      ]
-    },
-    {
-      "seriesname": "Supplies",
-      "data": [
-        { "value": "6.6" },
-        { "value": "9.2" },
-        { "value": "4.1" },
-        { "value": "5.6" }
-      ]
-    },
-    {
-      "seriesname": "Services",
-      "data": [
-        { "value": "7.6" },
-        { "value": "6.2" },
-        { "value": "8.1" },
-        { "value": "9.6" }
-      ]
-    },
-    {
-      "seriesname": "Consultancy and Non Consultancy",
-      "data": [
-        { "value": "4.6" },
-        { "value": "3.2" },
-        { "value": "5.1" },
-        { "value": "7.6" }
-      ]
-    }
-  ]
-
   
-
-  
-
-  constructor(fb: FormBuilder) {
+ 
+  constructor(
+    fb: FormBuilder,
+    private _dueDeligenceReportService: DueDeligenceReportService) {
     this.options = fb.group({
-      // color: this.colorControl,
-      // fontSize: this.fontSizeControl,
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
-    //STEP 2 - Chart Data
-    const chartData = [
-      {
-        label: "Venezuela",
-        value: "290"
-      },
-      {
-        label: "Saudi",
-        value: "260"
-      },
-      {
-        label: "Canada",
-        value: "180"
-      },
-      {
-        label: "Iran",
-        value: "140"
-      },
-      {
-        label: "Russia",
-        value: "115"
-      },
-      {
-        label: "UAE",
-        value: "100"
-      },
-      {
-        label: "US",
-        value: "30"
-      },
-      {
-        label: "China",
-        value: "30"
-      }
-    ];
-    // STEP 3 - Chart Configuration
-    const dataSource = {
+  }
+
+  ngOnInit(): void {
+    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
+    this.getSummaryStats('bids-summary',this.financialYears[0],'')
+    this.getVisualisation('bids-by-provider',this.financialYears[0],'')
+    this.chartOptions = {
+      series: [
+        {
+          name: "Contract Value",
+          type: "column",
+          data: [44000000, 50545555, 41454545, 67145454, 22745454, 4135422, 20122434, 35223434, 75223434, 32034242, 25723434, 16023434]
+        },
+        {
+          name: "Number of Bids",
+          type: "line",
+          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
+        }
+      ],
       chart: {
-        //Set the chart caption
-        caption: "Budget Allocation [2021-2022]",
-        //Set the chart subcaption
-        subCaption: "In MMbbl = One Million barrels",
-        //Set the x-axis name
-        xAxisName: "Country",
-        //Set the y-axis name
-        yAxisName: "Reserves (MMbbl)",
-        numberSuffix: "K",
-        //Set the theme for your chart
-        theme: "fusion"
+        height: 350,
+        type: "line"
       },
-      // Chart Data - from step 2
-      data: chartData
-    };
-    this.dataSource = dataSource;
-
-    this.dataSource5 = {
-      "chart": {
-        "theme": "fusion",
-        "caption": "Average Bidder Perfomance by Procurement Type",
-        "xAxisname": "Financial Year",
-        "yAxisName": "Average Bidder Performance",
-        "numberPrefix": "",
-        "plotFillAlpha": "80",
-        "divLineIsDashed": "1",
-        "divLineDashLen": "1",
-        "divLineGapLen": "1"
+      stroke: {
+        width: [0, 4]
       },
-      "categories": this.categories,
-      "dataset": this.dataset,
-
-    };
-
-    
-
+      title: {
+        text: "Bids and Bid Value "
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1]
+      },
+      labels: [
+        "01 Jan 2001",
+        "02 Jan 2001",
+        "03 Jan 2001",
+        "04 Jan 2001",
+        "05 Jan 2001",
+        "06 Jan 2001",
+        "07 Jan 2001",
+        "08 Jan 2001",
+        "09 Jan 2001",
+        "10 Jan 2001",
+        "11 Jan 2001",
+        "12 Jan 2001"
+      ],
+      xaxis: {
+        type: "datetime"
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Contract Value"
+          }
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Bids"
+          }
+        }
+      ]
+    };  
 
   }
 
-  ngOnInit(): void {}
-
   getFontSize() {
     return Math.max(10, 12);
+  }
+
+
+  reset(){
+    this.options.get('pde')?.setValue('');
+    this.options.get('financialYear')?.setValue(this.financialYears[0]);
+    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
+    this.getSummaryStats('bids-summary',this.financialYears[0],'')
+    this.getVisualisation('bids-by-provider',this.financialYears[0],'')
+
+  }
+
+  getSummaryStats(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfBids = 0
+    this.numberOfBids = 0
+    this.yearOfBids = financialYear
+    
+
+    console.log(reportName)
+
+    this._dueDeligenceReportService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        console.log(response)
+        let data = response.data[0]
+        
+        this.numberOfBids = data.number_of_bids_received
+        this.valueOfBids = sanitizeCurrencyToString(data.total_estimated_value)
+        this.numberOfBidders = data.number_of_bidders
+
+        this.isLoading = false
+        },
+      (error) => {
+        // this.isLoading = false;
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
+        this.isLoading = false
+        console.log(error)
+      }
+    )
+  }
+
+  getVisualisation(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfBids = 0
+    this.numberOfBids = 0
+    this.yearOfBids = 0
+
+    console.log(reportName)
+
+    this._dueDeligenceReportService.getEvaluationBidsByProvider(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        let data = response.data
+        let  x = []
+        let  y = []
+
+        console.log(data)
+        data.forEach(element => {
+          if (element.financial_year == financialYear)
+          {
+            x.push(element?.number_of_plans)
+            var e = element?.estimated_amount.split(',')
+            y.push(parseInt(e.join('')))
+          }
+        });
+
+         this.topTenHighestContracts = data.sort(function(a, b) {
+          var nameA = a?.estimated_amount.split(',') 
+          var nameB = b?.estimated_amount.split(',') 
+          var valueA = parseInt(nameA.join(''))
+          var valueB = parseInt(nameB.join(''))
+          
+          if (valueA >  valueB) {
+            return -1;
+          }
+          if (valueA < valueB) {
+            return 1;
+          }
+          return 0;
+        })
+
+        console.log(this.topTenHighestContracts)
+        console.log(x)
+        console.log(y)
+
+        let categories=[]
+        let categorieValues=[]
+
+
+        this.topTenHighestContracts.slice(0,10).forEach(element => {
+
+          var valueC = element?.estimated_amount.split(',')
+          var valueD = parseInt(valueC.join(''))
+          categories.push(element.pde_name)
+          categorieValues.push(valueD)
+        });
+
+
+        this.chartOptionsEducationStatus = {
+          series: [
+            {
+              name: "Planned Contract Value",
+              data: categorieValues,
+              fontSize: "12px"
+            }
+          ],
+          chart: {
+            height: 350,
+            type: "bar",
+            events: {
+              click: function(chart, w, e) {
+                // console.log(chart, w, e)
+              }
+            }
+          },
+          colors: [
+            "#008FFB"          
+          ],
+          plotOptions: {
+            bar: {
+              columnWidth: "35%",
+              distributed: false,
+              horizontal:true
+            }
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function(val) {
+              return NumberSuffix(val,2) 
+          },
+          },
+          legend: {
+            show: false
+          },
+          grid: {
+            show: true
+          },
+          xaxis: {
+            categories: categories,
+            labels: {
+              style: {
+                colors: [
+                  "#008FFB",
+                  "#D10CE8",
+                ],
+                fontSize: "12px"
+              }
+            }
+          },
+          title: {
+            text: "Procuring Entity with Top 10 Jighest Value of Planned contracts" +' '+ `(${financialYear})`
+          },
+        };
+          this.isLoading = false
+        },
+      (error) => {
+        // this.isLoading = false;
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
+        this.isLoading = false
+        console.log(error)
+      }
+    )
+  }
+
+  
+
+  submit(form: FormGroup) {
+    let data: any = {
+      'selectedPDE': form.controls.pde.value,
+      'selectedFinancialYear': form.controls.financialYear.value,
+    }
+    this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('bids-by-provider',this.financialYears[0],data?.selectedPDE)
   }
 
 }

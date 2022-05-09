@@ -1,6 +1,53 @@
 <div class="max-w-7xl mx-auto">
+  <div class="mt-6">
+    <div class="flex flex-row space-x-2">
+      <span>Filters :</span>
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{financialYearControl.value}} </span>
+
+    </div>
+
+  </div>
+  <div class="mt-6 ">
+    <form
+      class="example-container flex-1 flex-col space-y-2  md:flex md:flex-row md:space-y-0  md:space-x-2 min-w-full items-baseline"
+      [formGroup]="options" [style.fontSize.px]="getFontSize()">
+      <div class="flex-1">
+        <div
+          class="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+          <label for="name"
+            class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-neutral-50 text-xs font-medium text-gray-900">Procuring
+            and Disposal Entity</label>
+          <select [formControl]="pdeControl"
+            class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm">
+            <option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div
+          class="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+          <label for="name"
+            class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-neutral-50 text-xs font-medium text-gray-900">Financial
+            Year</label>
+          <select [formControl]="financialYearControl"
+            class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm">
+            <option *ngFor="let item of financialYears" value="{{item}}">{{item}}</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="flex flex-row space-x-2">
+        <button type="button" (click)="submit(options)"
+          class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+        <button type="button" (click)="reset()"
+          class="flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-indigo-600 bg-white hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Reset</button>
+      </div>
+    </form>
+  </div>
   <!-- Stats -->
-  <div class="mt-4">
+  <!-- <div class="mt-4">
     <form
       class="example-container flex flex-col space-y-2 md:flex-row  md:space-x-2 md:space-y-0 min-w-full items-baseline"
       [formGroup]="options" [style.fontSize.px]="getFontSize()">
@@ -25,55 +72,96 @@
         <button mat-flat-button color="primary">Search</button>
       </div>
     </form>
-  </div>
+  </div> -->
 
   <div>
-    <div class=" mt-2 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-      <div class="rounded-md flex flex-col px-2 py-2 overflow-hidden bg-white">
-        <span class="text-sm font-medium text-gray-500 truncate">Number of Post Qualification</span>
-        <span class="mt-1 text-lg font-semibold text-gray-700">13</span>
+    <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+      <div class="statsCard">
+        <span class="stats">{{numberOfBids}}</span>
+        <span class="statsText">Bids</span>
+        
       </div>
 
-      <div class="rounded-md flex flex-col px-2 py-2 overflow-hidden bg-white">
-        <span class="text-sm font-medium text-gray-500 truncate">Estimated Budget Amount</span>
-        <span class="mt-1 text-lg font-semibold text-gray-700">UGX {{130100874000 | numberSuffix: 2}}</span>
+      <div class="statsCard">        
+        <span class="stats">UGX {{valueOfBids | numberSuffix: 2}}</span>
+        <span class="statsText">Bids Value</span>
       </div>
 
-      <div class="rounded-md flex flex-col px-2 py-2 overflow-hidden bg-white">
-        <span class="text-sm font-medium text-gray-500 truncate">Initiated Budget Amount</span>
-        <span class="mt-1 text-xl font-semibold text-gray-700">UGX {{10100874000 | numberSuffix: 2}}</span>
+      <div class="statsCard">
+        <span class="stats"> {{numberOfBidders }}</span>
+        <span class="statsText">Bidders</span>
+        
       </div>
-      <div class="rounded-md flex flex-col px-2 py-2 overflow-hidden bg-white">
-        <span class="text-sm font-medium text-gray-500 truncate">Financial Year</span>
-        <span class="mt-1 text-xl font-semibold text-gray-700">2021 - 2022</span>
-      </div>
+      
     </div>
   </div>
 
   <!-- Graphs -->
   <div>
     <!-- Row 1 -->
-    <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+    <!-- <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex min-w-full bg-white rounded-md">
         <fusioncharts  width="93%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
         </fusioncharts>
       </div>
 
-      <!-- <div class="flex w-1/2 bg-white">
+      <div class="flex w-1/2 bg-white">
         <fusioncharts width="47%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
         </fusioncharts>
-      </div> -->
-
-    </div>
-    <!-- Row 2 -->
-    <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex bg-white">
-        <div class="flex min-w-full bg-white">
-          <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
-            [dataSource]="dataSourceLine">
-          </fusioncharts>
-        </div>
       </div>
+
+    </div> -->
+    <!-- Row 2 -->
+    <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex bg-white">
+        <div class="flex w-full bg-white">
+          <!-- <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
+            [dataSource]="dataSourceLine">
+          </fusioncharts> -->
+
+          <!-- <div class="flex flex-col bg-white overflow-hidden shadow rounded-lg   w-full  p-5">
+            <div class="text-base font-medium text-gray-500 hidden">Intersex Persons Education Status</div>
+            <div *ngIf="chartOptionsEducationStatus" id="chartEducationStatus" >
+              <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
+                [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
+                [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
+                [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"></apx-chart>
+            </div>
+            <div *ngIf="!chartOptionsEducationStatus">
+              <app-loading-pulse></app-loading-pulse>
+            </div>
+          </div> -->
+        <div id="chart" class="w-full shadow rounded-lg overflow-hidden p-5">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [yaxis]="chartOptions.yaxis"
+            [xaxis]="chartOptions.xaxis"
+            [labels]="chartOptions.labels"
+            [stroke]="chartOptions.stroke"
+            [title]="chartOptions.title"
+            [dataLabels]="chartOptions.dataLabels"
+            [fill]="chartOptions.fill"
+            [tooltip]="chartOptions.tooltip"
+          ></apx-chart>
+        </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
+    <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
+    </span>
+    <div class="flex items-center justify-center h-screen">
+      <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
+      </svg>
     </div>
   </div>
 </div>
