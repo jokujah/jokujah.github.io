@@ -18,6 +18,10 @@ export class PlaningAndForecastingReportService {
 
 
   downloadReport(reportName,data): Observable<Blob> {
+    return this.http.get( `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=2020-2021&pde[]=${data}` , {responseType: 'blob'})    
+  }
+
+  downloadReport2(reportName,data): Observable<Blob> {
     return this.http.get( `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=2020-2021&pde[]=Ministry+of+Finance` , {responseType: 'blob'})    
   }
 
@@ -25,7 +29,11 @@ export class PlaningAndForecastingReportService {
     return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}`)    
   }
 
-  getSummaryStatsPlanAbove(reportName): Observable<any> {
+  getSummaryStatsWithPDE(reportName,financialYear,procuringEntity): Observable<any> {
+    return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&pde[]=${procuringEntity}`)    
+  }
+
+  getSummaryStatsNeat(reportName): Observable<any> {
     return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}`)    
   }
 
