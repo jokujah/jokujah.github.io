@@ -85,14 +85,14 @@
                 <span class="ml-2 flex-1 w-0 truncate"> {{item.PDE}} </span>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <a (click)="download('Planing and Forecasting Report','forecast')" class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"> Download </a>
+                <button type="button" (click)="download('Planing and Forecasting Report','forecast')" class="textButton"> Download </button>
               </div>
             </li>            
           </ul>
 
     </div>
 
-    <div class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
+    <div class="absolute top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
       <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
       </span>
       <div class="flex items-center justify-center h-screen">

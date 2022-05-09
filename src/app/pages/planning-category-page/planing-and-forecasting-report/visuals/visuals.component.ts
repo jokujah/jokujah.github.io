@@ -207,7 +207,7 @@ export class VisualsComponent implements OnInit {
             }
           },
           title: {
-            text: "Procuring Entity with Top 10 Highest Value of Planned contracts" +' '+ `(${financialYear})`
+            text: "Top 10 Highest Plans By Value"
           },
         };
         

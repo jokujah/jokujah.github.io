@@ -219,13 +219,13 @@
       <div class="flex-1 relative z-0 flex overflow-hidden">
         <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
           <!-- Breadcrumb -->
-          <!-- <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
             
             <nav class="flex" aria-label="Breadcrumb">
               <ol role="list" class="flex items-center space-x-4">
                 <li>
                   <div>
-                    <a (click)="onClick()" class="cursor-pointer text-sm font-medium text-gray-500 hover:text-gray-700 first-letter:uppercase">{{pageHeading}}</a>
+                    <a (click)="onClick()" class="cursor-pointer text-sm font-medium text-gray-500 hover:text-gray-700 ">{{pageHeadingDisplay}}</a>
                   </div>
                 </li>
                 <li *ngIf="reportName">
@@ -236,12 +236,12 @@
                         d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                         clip-rule="evenodd" />
                     </svg>
-                    <a href="#" class="ml-4 activeText2 text-sm font-medium   first-letter:uppercase">{{reportName}}</a>
+                    <a href="#" class="ml-4 activeText2 text-sm font-medium   first-letter:uppercase">{{reportNameDisplay}}</a>
                   </div>
                 </li>
               </ol>
             </nav>
-          </div> -->
+          </div>
   
           <article>
             <!-- Profile header -->
@@ -251,12 +251,12 @@
                  
                   <div class="sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">                    
                     <div class="sm:hidden 2xl:block min-w-0 flex flex-row">                    
-                      <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportName}}</h2>                    
+                      <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportNameDisplay}}</h2>                    
                     </div>                    
                   </div>
                 </div>
                 <div class="hidden sm:flex 2xl:hidden min-w-0  flex-row mt-2">
-                  <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportName}}</h2>                  
+                  <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportNameDisplay}}</h2>                  
                 </div>
               </div>
             </div>
