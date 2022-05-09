@@ -1,99 +1,58 @@
-
 <div class="max-w-7xl">
-  <div class="mt-6">
-    <div class="flex flex-row space-x-2">
-      <span>Filters :</span>
-      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
-      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"> {{financialYearControl.value}} </span>
-
-    </div>
-
-  </div>
-  <div class="mt-6 ">
+  <div class="py-2 my-6">
     <form
-      class="example-container flex-1 flex-col space-y-2  md:flex md:flex-row md:space-y-0  md:space-x-2 min-w-full items-baseline"
+      class="flex-col items-baseline flex-1 min-w-full space-y-2 example-container md:flex md:flex-row md:space-y-0 md:space-x-2"
       [formGroup]="options" [style.fontSize.px]="getFontSize()">
       <div class="flex-1">
         <div
-          class="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+          class="relative px-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
           <label for="name"
-            class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-neutral-50 text-xs font-medium text-gray-900">Procuring
-            and Disposal Entity</label>
+            class="absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 -top-2 left-2 bg-neutral-50">Select Entity</label>
           <select [formControl]="pdeControl"
-            class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm">
+            class="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm">
             <option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</option>
           </select>
         </div>
       </div>
       <div class="flex-1">
         <div
-          class="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+          class="relative px-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
           <label for="name"
-            class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-neutral-50 text-xs font-medium text-gray-900">Financial
+            class="absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 -top-2 left-2 bg-neutral-50">Financial
             Year</label>
           <select [formControl]="financialYearControl"
-            class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm">
+            class="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm">
             <option *ngFor="let item of financialYears" value="{{item}}">{{item}}</option>
           </select>
         </div>
       </div>
 
-
       <div class="flex flex-row space-x-2">
         <button type="button" (click)="submit(options)"
-          class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+          class="items-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
         <button type="button" (click)="reset()"
-          class="flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-indigo-600 bg-white hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Reset</button>
+          class="items-center flex-1 px-4 py-2 text-sm font-medium text-indigo-600 bg-white border border-transparent rounded-md shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Reset</button>
       </div>
     </form>
   </div>
-  <!-- graph-title -->
-  <!-- <div class="mt-4">
-    <form class="example-container flex-1 flex-col  md:flex md:flex-row  md:space-x-2 min-w-full items-baseline"
-      [formGroup]="options" [style.fontSize.px]="getFontSize()">
-      <div class="flex-1">
-        <mat-form-field class="min-w-full" appearance="outline">
-          <mat-label>Procuring and Disposal Entity</mat-label>
-          <mat-select [formControl]="pdeControl">
-            <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="flex-1">
-        <mat-form-field class="min-w-full" appearance="outline">
-          <mat-label>Financial Year</mat-label>
-          <mat-select [formControl]="financialYearControl">
-            <mat-option *ngFor="let item of financialYears" value="{{item}}">{{item}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div>
-        <button mat-flat-button color="primary">Search</button>
-      </div>
-    </form>
-  </div> -->
-
- 
 
   <div>
-    <div class="mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-      <div class="flex flex-col px-4 py-2 overflow-hidden rounded-md bg-white items-center shadow">
-        <span class="mt-1 text-3xl font-semibold text-gray-500">{{numberOfPlannedContracts | numberSuffix:1}}</span>
-        <span class="text-sm font-medium text-gray-500 truncate">Procurement Plans</span>
-      </div>
-      <!-- <div class="border-r border-gray-200 h-3/4 max-w-0"></div> -->
-
-      <div class="flex flex-col px-4 py-2 overflow-hidden rounded-md bg-white items-center shadow">
-        <span class="mt-1 text-3xl font-semibold text-gray-500">UGX {{totalValueofPlannedContracts | numberSuffix: 2}}</span>
-        <span class="text-sm font-medium text-gray-500 text-ellipsis overflow-hidden ...">Amount Planned Procurements</span>
+    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
+      <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hiddsen">
+        <span class="mt-1 text-3xl font-medium text-gray-500">{{numberOfPlannedContracts | numberSuffix:1}}</span>
+        <span class="py-1 text-sm font-medium text-gray-500 truncate">Plan Items</span>
       </div>
 
-      <div class="flex flex-col px-4 py-2 overflow-hidden rounded-md bg-white items-center shadow">
-        <span class="mt-1 text-3xl font-semibold text-gray-500">{{numberOfRegisteredEntities}}</span>
-        <span class="text-sm font-medium text-gray-500 truncate ">Registered Entities</span>
+      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
+        <span class="mt-1 text-3xl font-medium text-gray-500">UGX {{totalValueofPlannedContracts | numberSuffix: 2}}</span>
+        <span class="py-1 text-sm font-medium text-gray-500 overflow -hidden text-ellipsis">Estimated Amount</span>
       </div>
-     
+
+      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
+        <span class="mt-1 text-3xl font-medium text-gray-500">{{numberOfRegisteredEntities}}</span>
+        <span class="py-1 text-sm font-medium text-gray-500 truncate ">Registered Entities</span>
+      </div>
+
     </div>
   </div>
 
@@ -101,60 +60,15 @@
   <div>
     <!-- Row 1 -->
     <div class="mt-4 ">
-      <!-- <div  class="flex-1 bg-white  rounded-md overflow-hidden overflow-y-hidden shadow">
-        <div #screen class="flex flex-col px-4 py-2" *ngIf="myData.length > 0">
-          <div class="flex flex-row mb-2 items-center">
-            <span class="graph-title flex r w-11/12">
-              Procurement Plans by Financial Year
-            </span>
-            <button id="downloadbutton"  [ngClass]="{'hidden': downloading }" class="mt-1 flex w-1/12" (click)="downloadImage('Procurement Plans by Financial Year')" #tooltip="matTooltip" matTooltip="Download" matTooltipClass="example-tooltip-blue" matTooltipPosition="above">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 justify-self-end" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                  clip-rule="evenodd" />
-              </svg>
-            </button>
-          </div>
-          
-          <google-chart style="width: 100%; height:400px;" [options] = "options2" [type]="myType" [data]="myData" [columns]="chartColumns">
-          </google-chart>
-        </div>
-        <div id="download" class="hidden">
-          <img #canvas>
-          <a #downloadLink></a>
-        </div>
-      </div> -->
-
-      <div class="flex flex-col bg-white overflow-hidden shadow rounded-lg   w-full  p-5">
-        <div class="text-base font-medium text-gray-500 hidden">Intersex Persons Education Status</div>
+      <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-md shadow">
+        <div class="hidden text-base font-medium text-gray-500">Initiation Status</div>
         <div *ngIf="chartOptionsEducationStatus" id="chartEducationStatus" >
           <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
             [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
             [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
             [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"></apx-chart>
         </div>
-        <!-- <div *ngIf="!chartOptionsEducationStatus">
-          <app-loading-pulse></app-loading-pulse>
-        </div> -->
     </div>
-    <!-- Row 2 -->
-    <!-- <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4  flex flex-col space-y-4 ">
-      <div class="flex-1 bg-white min-w-1/2 rounded-md overflow-hidden overflow-y-hidden shadow">
-        <div class="flex flex-col px-2 py-2">
-          <span class="graph-title">Procurement Plans by Contract Type</span>
-          <google-chart style="width: 100%; height:400px;" [type]="myType" [data]="myData" [columns]="chartColumns">
-          </google-chart>
-        </div>
-      </div>
-
-      <div class="flex-1 bg-white min-w-1/2 rounded-md overflow-hidden overflow-y-hidden shadow">
-        <div class="flex flex-col px-2 py-2">
-          <span class="graph-title">Procurement Plans by Procurement Category</span>
-          <google-chart style="width: 100%; height:400px;" [type]="myType" [data]="myData" [columns]="chartColumns">
-          </google-chart>
-        </div>
-      </div>
-    </div> -->
   </div>
   <div class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
     <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">

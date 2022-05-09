@@ -1,18 +1,16 @@
-import { Component, ElementRef, OnInit , ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { addArrayValues, getFinancialYears, getsortedPDEList, NumberSuffix } from 'src/app/utils/helpers';
-import { ChartType} from 'angular-google-charts';
-import html2canvas from 'html2canvas';
-import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ChartComponent } from 'ng-apexcharts';
 import {
+  ApexChart,
   ApexNonAxisChartSeries,
-  ApexResponsive,
-  ApexChart
+  ApexResponsive
 } from "ng-apexcharts";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 
-
-
+import { ChartType } from 'angular-google-charts';
+import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
+import html2canvas from 'html2canvas';
 
 export type ChartOptionsEducationStatus = {
   series: ApexAxisChartSeries;
@@ -32,7 +30,7 @@ export type ChartOptionsEducationStatus = {
   selector: 'app-visuals',
   templateUrl: './visuals.component.html',
   styleUrls: ['./visuals.component.scss'],
-  
+
 })
 export class VisualsComponent implements OnInit {
 
@@ -47,15 +45,15 @@ export class VisualsComponent implements OnInit {
   financialYearControl = new FormControl('2021-2022');
   downloading = false
 
-  isLoading:boolean = false 
+  isLoading:boolean = false
 
-  //number_of_plans  
+  //number_of_plans
   //estimated_amount
-  number_of_plans_2020_2021 
+  number_of_plans_2020_2021
   estimated_amount_2020_2021
-  number_of_plans_2019_2020 
+  number_of_plans_2019_2020
   estimated_amount_2019_2020
-  number_of_plans_2018_2019 
+  number_of_plans_2018_2019
   estimated_amount_2018_2019
 
 
@@ -64,10 +62,10 @@ export class VisualsComponent implements OnInit {
   yearOfPlannedContracts;
   numberOfRegisteredEntities = 0;
 
-  topTenHighestContracts 
+  topTenHighestContracts
 
 
-  
+
 
 
 
@@ -79,11 +77,11 @@ export class VisualsComponent implements OnInit {
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
-    
+
   }
 
   ngOnInit(): void {
-    this.getSummaryStats('plan-summary',this.financialYears[0],'')    
+    this.getSummaryStats('plan-summary',this.financialYears[0],'')
   }
 
 
@@ -108,7 +106,7 @@ export class VisualsComponent implements OnInit {
     this.numberOfRegisteredEntities = 0
 
     this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{ 
+      (response )=>{
         let data = response.data
         let  x = []
         let  y = []
@@ -124,11 +122,11 @@ export class VisualsComponent implements OnInit {
         });
 
          this.topTenHighestContracts = data.sort(function(a, b) {
-          var nameA = a?.estimated_amount.split(',') 
-          var nameB = b?.estimated_amount.split(',') 
+          var nameA = a?.estimated_amount.split(',')
+          var nameB = b?.estimated_amount.split(',')
           var valueA = parseInt(nameA.join(''))
           var valueB = parseInt(nameB.join(''))
-          
+
           if (valueA >  valueB) {
             return -1;
           }
@@ -143,7 +141,7 @@ export class VisualsComponent implements OnInit {
         console.log(y)
 
         let categories=[]
-        let categorieValues=[]
+        let categoryValues=[]
 
 
         this.topTenHighestContracts.slice(0,10).forEach(element => {
@@ -151,7 +149,7 @@ export class VisualsComponent implements OnInit {
           var valueC = element?.estimated_amount.split(',')
           var valueD = parseInt(valueC.join(''))
           categories.push(element.pde_name)
-          categorieValues.push(valueD)
+          categoryValues.push(valueD)
         });
 
 
@@ -159,11 +157,12 @@ export class VisualsComponent implements OnInit {
           series: [
             {
               name: "Planned Contract Value",
-              data: categorieValues,
+              data: categoryValues,
               fontSize: "12px"
             }
           ],
           chart: {
+            fontFamily: 'Trebuchet MS',
             height: 350,
             type: "bar",
             events: {
@@ -173,7 +172,7 @@ export class VisualsComponent implements OnInit {
             }
           },
           colors: [
-            "#008FFB"          
+            "#008FFB"
           ],
           plotOptions: {
             bar: {
@@ -185,7 +184,7 @@ export class VisualsComponent implements OnInit {
           dataLabels: {
             enabled: true,
             formatter: function(val) {
-              return NumberSuffix(val,2) 
+              return NumberSuffix(val,2)
           },
           },
           legend: {
@@ -207,13 +206,13 @@ export class VisualsComponent implements OnInit {
             }
           },
           title: {
-            text: "Procuring Entity with Top 10 Highest Value of Planned contracts" +' '+ `(${financialYear})`
+            text: "Top 10 Plans by Estimated Value"
           },
         };
-        
+
 
           this.numberOfPlannedContracts = addArrayValues(x)
-          this.totalValueofPlannedContracts = addArrayValues(y) 
+          this.totalValueofPlannedContracts = addArrayValues(y)
           this.yearOfPlannedContracts = financialYear
           this.numberOfRegisteredEntities = data[0].number_of_registered_pdes
           this.isLoading = false
@@ -230,7 +229,7 @@ export class VisualsComponent implements OnInit {
     )
   }
 
- 
+
 
   submit(form: FormGroup) {
     let data: any = {
