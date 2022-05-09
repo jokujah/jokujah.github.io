@@ -47,9 +47,9 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-  download(fileName,filePath){
+  download(fileName,filePath,pde){
     this.isLoading = true
-    this._planingCategoryService.downloadReport(filePath,'').subscribe(
+    this._planingCategoryService.downloadReport(filePath,pde).subscribe(
       (blob )=>{ 
         
          console.log(blob)
