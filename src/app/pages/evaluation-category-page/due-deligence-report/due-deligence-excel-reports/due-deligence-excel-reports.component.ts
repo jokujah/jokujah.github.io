@@ -82,9 +82,18 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
 
 
 
+  // reset(){
+  //   this.options.get('pde')?.setValue('');
+  //   this.options.get('financialYear')?.setValue(this.financialYears[0]);
+  // }
+
   reset(){
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
+    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
+    this.getSummaryStats('bids-summary',this.financialYears[0],'')
+    //this.getVisualisation('bids-by-provider',this.financialYears[0],'')
+
   }
 
   getSummaryStats(reportName,financialYear,procuringEntity){
