@@ -75,7 +75,7 @@
       </div>
 
     <div class="mt-4">
-        <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
+        <ul *ngIf="!isLoading" role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
             <li *ngFor="let item of pde" class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
               <div class="w-0 flex-1 flex items-center">
                 <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -84,16 +84,16 @@
                 <span class="ml-2 flex-1 w-0 truncate"> {{item.PDE}} </span>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <a (click)="download('Due Deligence/Post Qualification Report','post-qualification')"  class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"> Download </a>
+                <button type="button" (click)="download('Due Deligence/Post Qualification Report','post-qualification')" class="textButton"> Download </button>
               </div>
             </li>            
           </ul>
 
     </div>
-    <div class="fixed top-0 left-0 z-50 block w-full h-full bg-white opacity-75" *ngIf="isLoading">
+    <div class="relative top-0 left-0 z-50 block w-full h-full  opacity-75" *ngIf="isLoading">
       <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
       </span>
-      <div class="flex items-center justify-center h-screen">
+      <div class="flex items-center justify-center h-80">
         <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor"

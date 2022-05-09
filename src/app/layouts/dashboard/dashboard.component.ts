@@ -123,6 +123,9 @@ export class DashboardComponent implements OnInit {
   pageHeading:string='';
   reportName:string=''
 
+  pageHeadingDisplay:string='';
+  reportNameDisplay:string=''
+
 
 
 
@@ -190,14 +193,34 @@ export class DashboardComponent implements OnInit {
     console.log(words)
 
     this.pageHeading = `${words[2]}`
+
+    var splitPageHeading = this.pageHeading.split('-')
+    if(splitPageHeading.length > 0){
+      let holdCapitalizedHeadings=[]
+      console.log(splitPageHeading)
+      splitPageHeading.forEach(element=>{
+        holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
+      })
+      this.pageHeadingDisplay = holdCapitalizedHeadings.join(' ')
+    }else{
+      this.pageHeadingDisplay = this.capitalizeFirstLetter(this.capitalizeFirstLetter)
+    }
+
+
     this.reportName = `${words[3]?words[3]:''}`
 
     if(this.reportName == 'reports-list'){
       this.reportName = 'All Reports'
     }else if((this.reportName != '') || (this.reportName != undefined)){
       let splitName = [] = this.reportName.split('-')
+
       if(splitName.length>0){
+        let holdCapitalizedHeadings=[]
+        splitName.forEach(element=>{
+          holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
+        })       
         this.reportName = splitName.join(' ')
+        this.reportNameDisplay = holdCapitalizedHeadings.join(' ')
       }
     }
   }
@@ -205,5 +228,9 @@ export class DashboardComponent implements OnInit {
   getFontSize() {
     return Math.max(10, 12);
   }
+
+  capitalizeFirstLetter(string) {
+    return string[0].toUpperCase() + string.slice(1);
+}
 
 }

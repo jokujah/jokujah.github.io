@@ -59,7 +59,7 @@
           <nav aria-label="Sidebar" class="mt-5">
             <div class="px-2 space-y-1">
               <!-- Current: "bg-gray-100 text-gray-900", Default: "text-white hover:bg-primary-900 hover:text-gray-200" -->
-              <a [routerLink]="['planing']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+              <a [routerLink]="['planning']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
                 <!--
                   Heroicon name: outline/home
 
@@ -68,7 +68,7 @@
                 <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-                Planing
+                Planning
               </a>
 
               <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
@@ -129,7 +129,7 @@
             <nav class="flex-1 mt-5" aria-label="Sidebar">
               <div class="px-2 space-y-1">
                 <!-- Current: "bg-gray-200 text-gray-900", Default: "text-white hover:bg-primary-900 hover:text-gray-200" -->
-                <a [routerLink]="['planing']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+                <a [routerLink]="['planning']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
                   <!--
                     Heroicon name: outline/home
 
@@ -138,7 +138,7 @@
                   <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  Planing
+                  Planning
                 </a>
 
                 <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
@@ -202,19 +202,46 @@
       </div>
       <div class="relative z-0 flex flex-1 overflow-hidden">
         <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
+          <!-- Breadcrumb -->
+          <div class="px-4 pt-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
+
+            <nav class="flex" aria-label="Breadcrumb">
+              <ol role="list" class="flex items-center space-x-4">
+                <li>
+                  <div>
+                    <a (click)="onClick()" class="text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-700 ">{{pageHeadingDisplay}}</a>
+                  </div>
+                </li>
+                <li *ngIf="reportName">
+                  <div class="flex items-center">
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                      fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    <a href="#" class="ml-4 text-sm font-medium activeText2 first-letter:uppercase">{{reportNameDisplay}}</a>
+                  </div>
+                </li>
+              </ol>
+            </nav>
+          </div>
+
           <article>
             <!-- Profile header -->
-            <div class="px-4 mx-auto my-2 mt-8 max-w-7xl sm:px-6 lg:px-8">
-              <div class="sm:flex sm:items-end sm:space-x-5 mt-522">
+            <div>
+              <div class="px-4 mx-auto mb-2 max-w-7xl sm:px-6 lg:px-8">
+                <div class="sm:flex sm:items-end sm:space-x-5 mt-522">
 
-                <div class="sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-                  <div class="flex flex-row min-w-0 sm:hidden 2xl:block">
-                    <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportName}}</h2>
+                  <div class="sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
+                    <div class="flex flex-row min-w-0 sm:hidden 2xl:block">
+                      <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportNameDisplay}}</h2>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="flex-row hidden min-w-0 mt-2 sm:flex 2xl:hidden">
-                <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportName}}</h2>
+                <div class="flex-row hidden min-w-0 mt-2 sm:flex 2xl:hidden">
+                  <h2 class="text-xl font-bold text-gray-900 truncate first-letter:uppercase">{{reportNameDisplay}}</h2>
+                </div>
               </div>
             </div>
 

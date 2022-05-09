@@ -100,13 +100,15 @@ export class ReportsComponent implements OnInit {
   reset(){
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
+    this.getSummaryStats('plan-summary',this.financialYears[0],'')
   }
 
 
   getSummaryStats(reportName,financialYear,procuringEntity){
+    this.isLoading = true
     this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
-        this.isLoading = true
+        
         let data = response.data
         let  x = []
         let  y = []

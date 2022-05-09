@@ -57,7 +57,7 @@ export class VisualsComponent implements OnInit {
   estimated_amount_2018_2019
 
 
-  totalValueOfPlannedContracts;
+  totalValueofPlannedContracts;
   numberOfPlannedContracts;
   yearOfPlannedContracts;
   numberOfRegisteredEntities = 0;
@@ -101,7 +101,7 @@ export class VisualsComponent implements OnInit {
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
     this.numberOfPlannedContracts = 0
-    this.totalValueOfPlannedContracts = 0
+    this.totalValueofPlannedContracts = 0
     this.yearOfPlannedContracts = 0
     this.numberOfRegisteredEntities = 0
 
@@ -206,13 +206,13 @@ export class VisualsComponent implements OnInit {
             }
           },
           title: {
-            text: "Top 10 Plans by Estimated Value"
+            text: "Top 10 Highest Plans By Value"
           },
         };
 
 
           this.numberOfPlannedContracts = addArrayValues(x)
-          this.totalValueOfPlannedContracts = addArrayValues(y)
+          this.totalValueofPlannedContracts = addArrayValues(y)
           this.yearOfPlannedContracts = financialYear
           this.numberOfRegisteredEntities = data[0].number_of_registered_pdes
           this.isLoading = false
