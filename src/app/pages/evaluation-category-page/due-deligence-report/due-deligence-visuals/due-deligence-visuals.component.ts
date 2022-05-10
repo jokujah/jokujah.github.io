@@ -1,7 +1,6 @@
 import { DueDeligenceReportService } from './../../../../services/EvaluationCategory/due-deligence-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { addArrayValues, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
 import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
@@ -56,9 +55,9 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
 
   valueOfBids;
-  numberOfBids;
+  successfullEvaluatedBidders;
   yearOfBids;
-  numberOfBidders;
+  allEvavluatedBidders;
 
   topTenHighestContracts 
 
@@ -82,8 +81,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
-    this.getSummaryStats('bids-summary',this.financialYears[0],'')
+    this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
+    //this.getSummaryStats('bids-summary',this.financialYears[0],'')
     this.getVisualisation('bids-by-provider',this.financialYears[0],'')
     
 
@@ -97,8 +96,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
   reset(){
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
-    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
-    this.getSummaryStats('bids-summary',this.financialYears[0],'')
+    this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
+    //this.getSummaryStats('bids-summary',this.financialYears[0],'')
     this.getVisualisation('bids-by-provider',this.financialYears[0],'')
 
   }
@@ -106,7 +105,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
     this.valueOfBids = 0
-    this.numberOfBids = 0
+    this.successfullEvaluatedBidders = 0
     this.yearOfBids = financialYear
     
 
@@ -117,9 +116,9 @@ export class DueDeligenceVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfBids = data.number_of_bids_received
-        this.valueOfBids = sanitizeCurrencyToString(data.total_estimated_value)
-        this.numberOfBidders = data.number_of_bidders
+        this.successfullEvaluatedBidders = data.successful_evaluated_bidders
+        this.valueOfBids = sanitizeCurrencyToString(data.total_bid_estimate_value)
+        this.allEvavluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
         },
@@ -138,7 +137,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
     this.valueOfBids = 0
-    this.numberOfBids = 0
+    this.successfullEvaluatedBidders = 0
     this.yearOfBids = 0
 
     console.log(reportName)
@@ -199,7 +198,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
         this.chartOptions = {
           series: [
             {
-              name: "Contract Value",
+              name: "Estimate Value",
               type: "column",
               data: categorieValues
             },
@@ -217,7 +216,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
             width: [0, 4]
           },
           title: {
-            text: "Bids and Bid Value "
+            text: "Bid Providers and Bid Value "
           },
           dataLabels: {
             enabled: true,
@@ -227,27 +226,20 @@ export class DueDeligenceVisualsComponent implements OnInit {
           xaxis: {
             categories: categories,
             labels: {
-              style: {
-                colors: [
-                  "#008FFB",
-                  "#D10CE8",
-                ],
+              style: {                
                 fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
+              }
             }            
           },
           yaxis: [
             {
               title: {
-                text: "Contract Value"
+                text: "Estimated Value"
               },
               labels: {
                 style: {
                   colors: [
                     "#008FFB",
-                    "#D10CE8",
                   ],
                   fontSize: "12px"
                 },
@@ -291,7 +283,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
       'selectedPDE': form.controls.pde.value,
       'selectedFinancialYear': form.controls.financialYear.value,
     }
-    this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('bids-by-provider',this.financialYears[0],data?.selectedPDE)
   }
 

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import PDE from 'src/assets/PDE.json'
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
-
+import { getFinancialYears, getsortedPDEList, slowLoader } from 'src/app/utils/helpers';
 @Component({
   selector: 'app-awarded-contract-excel-reports',
   templateUrl: './awarded-contract-excel-reports.component.html',
@@ -11,10 +11,18 @@ import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCate
 })
 export class AwardedContractExcelReportsComponent implements OnInit {
 
+
+  isLoading:boolean = false 
+
   options: FormGroup;
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
-  pde = PDE
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
+  searchedPDE
+
+
+  
 
   constructor(fb: FormBuilder,private _planingCategoryService: PlaningAndForecastingReportService) { 
     this.options = fb.group({
@@ -30,9 +38,11 @@ export class AwardedContractExcelReportsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-  download(fileName,filePath){
-    this._planingCategoryService.downloadReport(filePath,'').subscribe(
+  download(fileName,filePath,pde){
+    this.isLoading = true
+    this._planingCategoryService.downloadReport2(filePath,this.pdeControl.value,pde).subscribe(
       (blob )=>{ 
+        this.isLoading = false
          console.log(blob)
          saveAs(blob, fileName)
         },
@@ -42,9 +52,38 @@ export class AwardedContractExcelReportsComponent implements OnInit {
         //   progressBar: true,
         //   positionClass: 'toast-top-right'
         // });
+        this.isLoading = false
         console.log(error)
       }
     )
+  }
+
+  
+
+  async submit(form: FormGroup) {
+    let data: any = {
+      'selectedPDE': form.controls.pde.value,
+      'selectedFinancialYear': form.controls.financialYear.value,
+    }
+
+    this.isLoading = true
+    await slowLoader()
+
+    this.searchedPDE = this.pde.filter(function(element) {
+      return element.PDE.toLowerCase().indexOf(form.controls.pde.value.toLowerCase()) !== -1
+    });
+
+    this.isLoading = false
+    
+  }
+
+  async reset(){
+    this.isLoading = true
+    await slowLoader()
+    this.options.get('pde')?.setValue('');
+    this.options.get('financialYear')?.setValue(this.financialYears[0]);
+    this.searchedPDE = []
+    this.isLoading = false
   }
 
 }

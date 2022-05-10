@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import PDE from 'src/assets/PDE.json'
 import { saveAs } from 'file-saver';
-import { getFinancialYears,addArrayValues } from 'src/app/utils/helpers';
+import { getFinancialYears,addArrayValues, slowLoader } from 'src/app/utils/helpers';
+import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 
 @Component({
   selector: 'app-reports',
@@ -43,6 +43,8 @@ export class ReportsComponent implements OnInit {
     return 0;
   })
 
+  searchedPDE;
+
   financialYears = getFinancialYears()
   
 
@@ -63,23 +65,28 @@ export class ReportsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-  submit(form: FormGroup) {
+
+
+  async submit(form: FormGroup) {
     let data: any = {
       'selectedPDE': form.controls.pde.value,
       'selectedFinancialYear': form.controls.financialYear.value,
     }
 
-    console.log(data)
+    this.isLoading = true
+    await slowLoader()
 
-    this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.searchedPDE = this.pde.filter(function(element) {
+      return element.PDE.toLowerCase().indexOf(form.controls.pde.value.toLowerCase()) !== -1
+    });
 
+    this.isLoading = false
     
   }
 
 
 
   download(fileName,filePath,pde){
-    console.log(pde)
     this.isLoading = true;
     this._planingCategoryService.downloadReport(filePath,pde).subscribe(
       (blob )=>{ 
@@ -98,10 +105,13 @@ export class ReportsComponent implements OnInit {
     )
   }
 
-  reset(){
+  async reset(){
+    this.isLoading = true
+    await slowLoader()
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
-    this.getSummaryStats('plan-summary',this.financialYears[0],'')
+    this.searchedPDE = []
+    this.isLoading = false
   }
 
 

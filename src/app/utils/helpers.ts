@@ -101,4 +101,8 @@ export function NumberSuffix(input,args)  {
     return valueD
   }
 
+  export async function slowLoader(){
+    await new Promise(resolve => setTimeout(resolve, 2000));    
+  }
+
 
