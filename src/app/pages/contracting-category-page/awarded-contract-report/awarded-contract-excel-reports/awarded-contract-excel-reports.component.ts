@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import PDE from 'src/assets/PDE.json'
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
-import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { getFinancialYears, getsortedPDEList, slowLoader } from 'src/app/utils/helpers';
 @Component({
   selector: 'app-awarded-contract-excel-reports',
   templateUrl: './awarded-contract-excel-reports.component.html',
@@ -19,6 +19,7 @@ export class AwardedContractExcelReportsComponent implements OnInit {
   financialYearControl = new FormControl('2021-2022');
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
+  searchedPDE
 
 
   
@@ -57,29 +58,32 @@ export class AwardedContractExcelReportsComponent implements OnInit {
     )
   }
 
-  reset(){
-    this.options.get('pde')?.setValue('');
-    this.options.get('financialYear')?.setValue(this.financialYears[0]);
-    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
-    //this.getSummaryStats('bids-summary',this.financialYears[0],'')
-    //this.getVisualisation('bids-by-provider',this.financialYears[0],'')
+  
 
-  }
-
-  submit(form: FormGroup) {
-     this.isLoading = true
+  async submit(form: FormGroup) {
     let data: any = {
       'selectedPDE': form.controls.pde.value,
       'selectedFinancialYear': form.controls.financialYear.value,
     }
 
-    console.log(data)
+    this.isLoading = true
+    await slowLoader()
+
+    this.searchedPDE = this.pde.filter(function(element) {
+      return element.PDE.toLowerCase().indexOf(form.controls.pde.value.toLowerCase()) !== -1
+    });
+
     this.isLoading = false
-   
-
-    //this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
-
     
+  }
+
+  async reset(){
+    this.isLoading = true
+    await slowLoader()
+    this.options.get('pde')?.setValue('');
+    this.options.get('financialYear')?.setValue(this.financialYears[0]);
+    this.searchedPDE = []
+    this.isLoading = false
   }
 
 }

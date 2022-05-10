@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { addArrayValues, getFinancialYears, getsortedPDEList, slowLoader } from 'src/app/utils/helpers';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 
 @Component({
@@ -12,15 +12,6 @@ import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCate
 export class DueDeligenceExcelReportsComponent implements OnInit {
 
   isLoading:boolean = false 
-
-  //number_of_plans  
-  //estimated_amount
-  // number_of_plans_2019_2020 
-  // estimated_amount_2019_2020
-  // number_of_plans_2018_2019 
-  // estimated_amount_2018_2019
-
-
   totalValueofPlannedContracts;
   numberOfPlannedContracts;
   yearOfPlannedContracts;
@@ -30,6 +21,7 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
   financialYearControl = new FormControl('2021-2022');
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
+  searchedPDE;
 
   constructor(
     fb: FormBuilder,
@@ -45,6 +37,23 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
 
   getFontSize() {
     return Math.max(10, 12);
+  }
+
+  async submit(form: FormGroup) {
+    let data: any = {
+      'selectedPDE': form.controls.pde.value,
+      'selectedFinancialYear': form.controls.financialYear.value,
+    }
+
+    this.isLoading = true
+    await slowLoader()
+
+    this.searchedPDE = this.pde.filter(function(element) {
+      return element.PDE.toLowerCase().indexOf(form.controls.pde.value.toLowerCase()) !== -1
+    });
+
+    this.isLoading = false
+    
   }
 
   download(fileName,filePath,pde){
@@ -67,33 +76,14 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
     )
   }
 
-  submit(form: FormGroup) {
-    let data: any = {
-      'selectedPDE': form.controls.pde.value,
-      'selectedFinancialYear': form.controls.financialYear.value,
-    }
 
-    console.log(data)
-
-    this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
-
-    
-  }
-
-
-
-  // reset(){
-  //   this.options.get('pde')?.setValue('');
-  //   this.options.get('financialYear')?.setValue(this.financialYears[0]);
-  // }
-
-  reset(){
+  async reset(){
+    this.isLoading = true
+    await slowLoader()
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
-    //this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
-    this.getSummaryStats('bids-summary',this.financialYears[0],'')
-    //this.getVisualisation('bids-by-provider',this.financialYears[0],'')
-
+    this.searchedPDE = []
+    this.isLoading = false
   }
 
   getSummaryStats(reportName,financialYear,procuringEntity){
