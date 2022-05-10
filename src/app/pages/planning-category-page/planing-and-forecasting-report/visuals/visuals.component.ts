@@ -1,4 +1,4 @@
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
   ApexNonAxisChartSeries,
@@ -9,8 +9,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
-import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import html2canvas from 'html2canvas';
+import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 
 export type ChartOptionsEducationStatus = {
   series: ApexAxisChartSeries;
@@ -49,6 +49,7 @@ export type ChartOptionsProcurementTypes = {
   stroke: ApexStroke;
   legend: ApexLegend;
   title: ApexTitleSubtitle;
+  theme:ApexTheme
 };
 
 
@@ -574,7 +575,6 @@ export class VisualsComponent implements OnInit {
               style: {
                 colors: [
                   "#008FFB",
-                  "#D10CE8",
                 ],
                 fontSize: "12px"
               },
@@ -598,8 +598,18 @@ export class VisualsComponent implements OnInit {
             }
           },
           title: {
-            text: "Budget Value byProcurement Types"
-          }
+            text: "Budget Value by Procurement Types"
+          },
+          theme: {
+            mode: 'light', 
+            palette: 'palette1', 
+            monochrome: {
+                enabled: false,
+                color: '#255aee',
+                shadeTo: 'light',
+                shadeIntensity: 0.65
+            },
+        }
         };
           this.isLoading = false
         },
