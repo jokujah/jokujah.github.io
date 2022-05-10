@@ -1,92 +1,231 @@
 [
+    
     {
-        "PDE": "National Social Security Fund"
+        "PDE": "western Regional Office"
+    },
+    {
+        "PDE": "UICT 2"
+    },
+    {
+        "PDE": "Uganda Road Fund"
     },
     {
         "PDE": "Uganda Revenue Authority"
     },
     {
-        "PDE": "Uganda Property Holdings"
+        "PDE": "Uganda Registration Services Bureau"
     },
     {
-        "PDE": "Masaka District Local Government"
+        "PDE": "UGANDA NATIONAL BUREAU OF STANDARDS"
     },
     {
-        "PDE": "Uganda National Roads Authority"
+        "PDE": "Uganda Institute of Information Communications and Technology"
     },
     {
-        "PDE": "Ministry of Finance Planning and Economic Development"
+        "PDE": "Uganda Human Rights Commission"
     },
     {
-        "PDE": "Uganda Electricity Distribution Company"
+        "PDE": "Uganda Civil Aviation Authority Training"
     },
     {
-        "PDE": "Law Development Centre"
+        "PDE": "Uganda Bureau of Standards"
     },
     {
-        "PDE": "Entebbe Municipal Council"
+        "PDE": "THE FUND"
     },
     {
-        "PDE": "Nebbi District Local Government"
+        "PDE": "Test PDE Joy"
     },
     {
-        "PDE": "Ministry of Education, Science, Technology and Sports"
+        "PDE": "State House"
     },
     {
-        "PDE": "Kampala Capital City Authority"
+        "PDE": "Rwampara DLG"
     },
     {
-        "PDE": "Office of the President"
+        "PDE": "Rural Electrification Agency"
     },
     {
-        "PDE": "National Water & Sewerage Corporation"
+        "PDE": "Public Service Commission"
     },
     {
-        "PDE": "Mityana District Local Government"
+        "PDE": "Public Procurement and Disposal of the Public Assets Authority"
     },
     {
-        "PDE": "Lira District Local Government"
+        "PDE": "PPMD AUTHORITY"
     },
     {
-        "PDE": "Uganda Communications Commission"
+        "PDE": "PPDA TRAINING AGENCY"
     },
     {
-        "PDE": "Kayunga District Local Government"
+        "PDE": "PPDA TOT's"
     },
     {
-        "PDE": "Tororo District Local Government"
+        "PDE": "PPDA MBARARA PDE"
+    },
+    {
+        "PDE": "PPDA KAMPALA PDE"
+    },
+    {
+        "PDE": "PPDA GULU PDE"
+    },
+    {
+        "PDE": "PPDA - TOT 1"
+    },
+    {
+        "PDE": "PHILIP LG"
+    },
+    {
+        "PDE": "PATRICIA CENTRAL AGENCY"
     },
     {
         "PDE": "Office of the Prime Minister"
     },
     {
-        "PDE": "Jinja District Local Government"
+        "PDE": "Office of the President"
     },
     {
-        "PDE": "Arua District Local Government"
+        "PDE": "NITA U"
     },
     {
-        "PDE": "Ministry of Water and Environment"
+        "PDE": "National Social Security Fund"
     },
     {
-        "PDE": "Kiboga District Local Government"
+        "PDE": "National Information Technology Authority Uganda"
     },
     {
-        "PDE": "Parliament of Uganda"
+        "PDE": "NATIONAL FUND"
     },
     {
-        "PDE": "Mbale District Local Government"
+        "PDE": "National Forestry Authority"
     },
     {
-        "PDE": "Ministry of Lands Housing and Urban Development"
+        "PDE": "National Agricultural Research Organization"
     },
     {
-        "PDE": "Makerere University"
+        "PDE": "Mpigi District Local Government"
     },
     {
-        "PDE": "Ministry of Gender, Labour and Social Development"
+        "PDE": "Mpigi District Local Gov"
     },
     {
-        "PDE": "Bukedea District Local Government"
+        "PDE": "MoWE Training PDE"
+    },
+    {
+        "PDE": "Mofped CC entity"
+    },
+    {
+        "PDE": "Ministry of Works and Transport"
+    },
+    {
+        "PDE": "Ministry of Trade, Industry and Cooperatives"
+    },
+    {
+        "PDE": "Ministry of Science, Technology and Innovation"
+    },
+    {
+        "PDE": "Ministry of Public Service"
+    },
+    {
+        "PDE": "Ministry of Local Government"
+    },
+    {
+        "PDE": "Ministry of Lands, Housing and Urban Development"
+    },
+    {
+        "PDE": "Ministry of Justice & Constitutional Affairs"
+    },
+    {
+        "PDE": "Ministry of Internal Affairs"
+    },
+    {
+        "PDE": "Ministry of Information, Communications Technology and National Guidance"
+    },
+    {
+        "PDE": "Ministry of Health"
+    },
+    {
+        "PDE": "Ministry of Gender, Labour& Social Development"
+    },
+    {
+        "PDE": "MINISTRY OF FOREIGN AFFAIRS (TRAINING)"
+    },
+    {
+        "PDE": "Ministry of Foreign Affairs"
+    },
+    {
+        "PDE": "Ministry of Finance"
+    },
+    {
+        "PDE": "Ministry of Education and Sports"
+    },
+    {
+        "PDE": "MAAC"
+    },
+    {
+        "PDE": "Kotido Municipal Council"
+    },
+    {
+        "PDE": "KCCA PLANNING PDE"
+    },
+    {
+        "PDE": "Kanungu DLG"
+    },
+    {
+        "PDE": "Kampala Capital City Authority"
+    },
+    {
+        "PDE": "KAMPALA CAPITAL CITY AGENCY"
+    },
+    {
+        "PDE": "Judicial Service Commission"
+    },
+    {
+        "PDE": "JUDICIAL SERVICE AGENCY"
+    },
+    {
+        "PDE": "JINJA DLG TRAINING"
+    },
+    {
+        "PDE": "INTERNS AUTHORITY"
+    },
+    {
+        "PDE": "Health Service Commission"
+    },
+    {
+        "PDE": "Financial Intellligence Authority"
+    },
+    {
+        "PDE": "Electricity Regulatory Authority"
+    },
+    {
+        "PDE": "EGP Developer team #2 [Local Government]"
+    },
+    {
+        "PDE": "EGP Developer team #1"
+    },
+    {
+        "PDE": "e-GP UNIT"
+    },
+    {
+        "PDE": "E-GP Demo PDE"
+    },
+    {
+        "PDE": "Deposit Protection Fund"
+    },
+    {
+        "PDE": "Dairy Development Authority"
+    },
+    {
+        "PDE": "Civil Aviation Authority"
+    },
+    {
+        "PDE": "CHARLES REGULATORY AUTHORITY"
+    },
+    {
+        "PDE": "BROVAD GOVERNMENT AGENCY"
+    },
+    {
+        "PDE": "ASSET MOVEMENT AUTHORITY"
     }
 ]
