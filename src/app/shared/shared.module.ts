@@ -1,3 +1,6 @@
+import { LoadingPulseModule } from './loading-pulse/loading-pulse.module';
+import { ErrorPageModule } from './error-page/error-page.module';
+import { LoadingIconModule } from './loading-icon/loading-icon.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -28,7 +31,10 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     FusionChartsModule,
     NumberSuffixPipe,
     GoogleChartsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    LoadingIconModule,
+    ErrorPageModule,
+    LoadingPulseModule
   ]
 })
 export class SharedModule { }
