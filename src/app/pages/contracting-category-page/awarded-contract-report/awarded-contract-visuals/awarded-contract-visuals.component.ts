@@ -69,201 +69,7 @@ export class AwardedContractVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chartOptions = {
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Bids",
-          type: "line",
-          data: []
-        }
-      ],
-      chart: {
-        height: 350,
-        type: "line"
-      },
-      stroke: {
-        width: [0, 4]
-      },
-      title: {
-        text: "Awarded Contract Type "
-      },
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1]
-      },
-
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            fontSize: "12px"
-          }
-        }
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Contract Value"
-          },
-          labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
-              fontSize: "12px"
-            },
-            formatter: function (val) {
-              return NumberSuffix(val, 2)
-            }
-          }
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Number of Contracts"
-          }
-        }
-      ],
-      noData: {
-        text: 'Loading Data...'
-      }
-    };
-
-    this.chartOptionsProcurementMethod = {
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Bids",
-          type: "line",
-          data: []
-        }
-      ],
-      chart: {
-        height: 350,
-        type: "line"
-      },
-      stroke: {
-        width: [0, 4]
-      },
-      title: {
-        text: "Awarded Contract Method"
-      },
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1]
-      },
-
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            fontSize: "12px"
-          }
-        }
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Contract Value"
-          },
-          labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
-              fontSize: "12px"
-            },
-            formatter: function (val) {
-              return NumberSuffix(val, 2)
-            }
-          }
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Number of Contracts"
-          }
-        }
-      ],
-      noData: {
-        text: 'Loading Data...'
-      }
-    };
-
-    this.chartOptionsProcurementType = {
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Contracts",
-          type: "line",
-          data: []
-        }
-      ],
-      chart: {
-        height: 350,
-        type: "line"
-      },
-      stroke: {
-        width: [0, 4]
-      },
-      title: {
-        text: "Awarded Contract Procurement Type"
-      },
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1]
-      },
-
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            fontSize: "12px"
-          }
-        }
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Contract Value"
-          },
-          labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
-              fontSize: "12px"
-            },
-            formatter: function (val) {
-              return NumberSuffix(val, 2)
-            }
-          }
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Number of Contracts"
-          }
-        }
-      ],
-      noData: {
-        text: 'Loading Data...'
-      }
-    };
-
+    this.initCharts() 
     this.getSummaryStats('contracts-summary', this.financialYears[0], '')
     this.getVisualisation('contracts-by-contract-type', this.financialYears[0], '')
     this.getVisualisation('contracts-by-procurement-method', this.financialYears[0], '')
@@ -579,6 +385,204 @@ export class AwardedContractVisualsComponent implements OnInit {
 
   getFontSize() {
     return Math.max(10, 12);
+  }
+
+  initCharts(){
+    this.chartOptions = {
+      series: [
+        {
+          name: "Contract Award Value",
+          type: "column",
+          data: []
+        },
+        {
+          name: "Number of Bids",
+          type: "line",
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      stroke: {        
+        curve: 'smooth'
+      },
+      title: {
+        text: "Awarded Contract Type "
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1]
+      },
+
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: "12px"
+          }
+        }
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Contract Value"
+          },
+          labels: {
+            style: {
+              colors: [
+                "#008FFB",
+              ],
+              fontSize: "12px"
+            },
+            formatter: function (val) {
+              return NumberSuffix(val, 2)
+            }
+          }
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Contracts"
+          }
+        }
+      ],
+      noData: {
+        text: 'Loading Data...'
+      }
+    };
+
+    this.chartOptionsProcurementMethod = {
+      series: [
+        {
+          name: "Contract Award Value",
+          type: "column",
+          data: []
+        },
+        {
+          name: "Number of Bids",
+          type: "line",
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      stroke: {        
+        curve: 'smooth'
+      },
+      title: {
+        text: "Awarded Contract Method"
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1]
+      },
+
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: "12px"
+          }
+        }
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Contract Value"
+          },
+          labels: {
+            style: {
+              colors: [
+                "#008FFB",
+              ],
+              fontSize: "12px"
+            },
+            formatter: function (val) {
+              return NumberSuffix(val, 2)
+            }
+          }
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Contracts"
+          }
+        }
+      ],
+      noData: {
+        text: 'Loading Data...'
+      }
+    };
+
+    this.chartOptionsProcurementType = {
+      series: [
+        {
+          name: "Contract Award Value",
+          type: "column",
+          data: []
+        },
+        {
+          name: "Number of Contracts",
+          type: "line",
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      stroke: {        
+        curve: 'smooth'
+      },
+      title: {
+        text: "Awarded Contract Procurement Type"
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1]
+      },
+
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: "12px"
+          }
+        }
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Contract Value"
+          },
+          labels: {
+            style: {
+              colors: [
+                "#008FFB",
+              ],
+              fontSize: "12px"
+            },
+            formatter: function (val) {
+              return NumberSuffix(val, 2)
+            }
+          }
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Contracts"
+          }
+        }
+      ],
+      noData: {
+        text: 'Loading Data...'
+      }
+    };
+
   }
 
 }

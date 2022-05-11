@@ -108,10 +108,17 @@
         <div class="flex ">
           <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
             <div id="chartProcurementType" class="w-full  p-5">
-              <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
-                [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
-                [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
-                [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
+              <apx-chart #chartProcurementType 
+              [series]="chartOptionsProcurementType.series" 
+              [chart]="chartOptionsProcurementType.chart" 
+              [yaxis]="chartOptionsProcurementType.yaxis"
+              [xaxis]="chartOptionsProcurementType.xaxis" 
+              [labels]="chartOptionsProcurementType.labels" 
+              [stroke]="chartOptionsProcurementType.stroke"
+              [title]="chartOptionsProcurementType.title" 
+              [dataLabels]="chartOptionsProcurementType.dataLabels" 
+              [fill]="chartOptionsProcurementType.fill"                
+              [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
             </div>
   
           </div>
