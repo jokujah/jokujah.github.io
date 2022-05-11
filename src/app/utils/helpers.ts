@@ -36,6 +36,7 @@ export function getPDEByValue(){
 
 export function getFinancialYears(){
     return [ 
+      "2022-2023",
       "2021-2022",
       "2020-2021",
       "2019-2020",
@@ -104,5 +105,10 @@ export function NumberSuffix(input,args)  {
   export async function slowLoader(){
     await new Promise(resolve => setTimeout(resolve, 2000));    
   }
+
+
+export function capitalizeFirstLetter(string) {
+  return string[0].toUpperCase() + string.slice(1);
+}
 
 

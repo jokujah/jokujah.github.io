@@ -57,36 +57,18 @@
   
     <!-- Graphs -->
     <div>
-      <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
         <div class="flex ">
-          <div *ngIf="!isLoading" class="flex w-full bg-white shadow rounded-lg overflow-hidden">
-            <!-- <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
-              [dataSource]="dataSourceLine">
-            </fusioncharts> -->
-  
-            <!-- <div class="flex flex-col bg-white overflow-hidden shadow rounded-lg   w-full  p-5">
-              <div class="text-base font-medium text-gray-500 hidden">Intersex Persons Education Status</div>
-              <div *ngIf="chartOptionsEducationStatus" id="chartEducationStatus" >
-                <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
-                  [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
-                  [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
-                  [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"></apx-chart>
-              </div>
-              <div *ngIf="!chartOptionsEducationStatus">
-                <app-loading-pulse></app-loading-pulse>
-              </div>
-            </div> -->
+          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
             <div id="chart" *ngIf="chartOptions"  class="w-full  p-5">
-              <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
+              <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
                 [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
                 [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
-                [tooltip]="chartOptions.tooltip"></apx-chart>
+                [tooltip]="chartOptions.tooltip" [noData]="chartOptions.noData"></apx-chart>
             </div>
   
           </div>
-          <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
-            <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-            </span> -->
+          <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
             <div class="flex items-center justify-center h-80">
               <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -95,8 +77,77 @@
                 </path>
               </svg>
             </div>
+          </div> -->
+        </div>
+        <div class="flex ">
+          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
+            
+            <div id="chart"  *ngIf="chartOptionsProcurementMethod"  class="w-full  p-5">
+
+              <apx-chart #chartProcurementMethod [series]="chartOptionsProcurementMethod.series" [chart]="chartOptionsProcurementMethod.chart" [yaxis]="chartOptionsProcurementMethod.yaxis"
+                [xaxis]="chartOptionsProcurementMethod.xaxis" [labels]="chartOptionsProcurementMethod.labels" [stroke]="chartOptionsProcurementMethod.stroke"
+                [title]="chartOptionsProcurementMethod.title" [dataLabels]="chartOptionsProcurementMethod.dataLabels" [fill]="chartOptionsProcurementMethod.fill"
+                [tooltip]="chartOptionsProcurementMethod.tooltip" [noData]="chartOptionsProcurementMethod.noData"></apx-chart>
+
+            </div>
+  
           </div>
+          <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
+            <div class="flex items-center justify-center h-80">
+              <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+        <div class="flex ">
+          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
+            <div id="chartProcurementType" class="w-full  p-5">
+              <apx-chart #chartProcurementType 
+              [series]="chartOptionsProcurementType.series" 
+              [chart]="chartOptionsProcurementType.chart" 
+              [yaxis]="chartOptionsProcurementType.yaxis"
+              [xaxis]="chartOptionsProcurementType.xaxis" 
+              [labels]="chartOptionsProcurementType.labels" 
+              [stroke]="chartOptionsProcurementType.stroke"
+              [title]="chartOptionsProcurementType.title" 
+              [dataLabels]="chartOptionsProcurementType.dataLabels" 
+              [fill]="chartOptionsProcurementType.fill"                
+              [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
+            </div>
+  
+          </div>
+          <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
+            <div class="flex items-center justify-center h-80">
+              <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
+
+
+
+  <!-- <div class="flex flex-col bg-white overflow-hidden shadow rounded-lg   w-full  p-5">
+    <div class="text-base font-medium text-gray-500 hidden">Intersex Persons Education Status</div>
+    <div *ngIf="chartOptionsEducationStatus" id="chartEducationStatus" >
+      <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
+        [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
+        [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
+        [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"></apx-chart>
+    </div>
+    <div *ngIf="!chartOptionsEducationStatus">
+      <app-loading-pulse></app-loading-pulse>
+    </div>
+  </div> -->
