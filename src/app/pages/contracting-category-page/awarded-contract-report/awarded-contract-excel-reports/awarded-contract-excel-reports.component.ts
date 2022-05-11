@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import PDE from 'src/assets/PDE.json'
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { getFinancialYears, getsortedPDEList, slowLoader } from 'src/app/utils/helpers';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-awarded-contract-excel-reports',
   templateUrl: './awarded-contract-excel-reports.component.html',
@@ -24,7 +25,11 @@ export class AwardedContractExcelReportsComponent implements OnInit {
 
   
 
-  constructor(fb: FormBuilder,private _planingCategoryService: PlaningAndForecastingReportService) { 
+  constructor(
+    fb: FormBuilder,
+    private _planingCategoryService: PlaningAndForecastingReportService,
+    private toastr: ToastrService
+    ) { 
     this.options = fb.group({
       financialYear: this.financialYearControl,
       pde:this.pdeControl
@@ -47,11 +52,11 @@ export class AwardedContractExcelReportsComponent implements OnInit {
          saveAs(blob, fileName)
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
         this.isLoading = false
         console.log(error)
       }
