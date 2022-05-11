@@ -1,4 +1,4 @@
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
   ApexNonAxisChartSeries,
@@ -23,6 +23,7 @@ export type ChartOptionsEducationStatus = {
   tooltip: ApexTooltip;
   fill: ApexFill;
   legend: ApexLegend;
+  noData:ApexNoData
 };
 
 export type ChartOptionsBudgetStatus = {
@@ -69,8 +70,6 @@ export class VisualsComponent implements OnInit {
   chartEducationStatus!: ChartComponent;
   chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
 
-
-
   @ViewChild("chartBudgetStatus") chart: ChartComponent;
   public chartOptionsBudgetStatus: Partial<ChartOptionsBudgetStatus>;
 
@@ -83,55 +82,120 @@ export class VisualsComponent implements OnInit {
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
   downloading = false
-
   isLoading:boolean = false
-
-  //number_of_plans
-  //estimated_amount
-  number_of_plans_2020_2021
-  estimated_amount_2020_2021
-  number_of_plans_2019_2020
-  estimated_amount_2019_2020
-  number_of_plans_2018_2019
-  estimated_amount_2018_2019
-
-
   registeredProviders
-
 
   totalValueofPlannedContracts;
   numberOfPlannedContracts;
   yearOfPlannedContracts;
   numberOfRegisteredEntities = 0;
-
   topTenHighestContracts
-
-
-
-
-
-
 
   constructor(
     fb: FormBuilder,
     private _planingCategoryService: PlaningAndForecastingReportService) {
+
     this.options = fb.group({
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
 
+
+   
+
   }
 
   ngOnInit(): void {
+    this.chartOptionsEducationStatus = {
+      series: [
+        {
+          name: "Planned Contract Value",
+          data: [],
+          fontSize: "12px"
+        }
+      ],
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        height: 'auto',
+        type: "bar",
+        events: {
+          click: function(chart, w, e) {
+            // console.log(chart, w, e)
+          }
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 2000,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 450
+          }
+      }
+
+      },
+      colors: [
+        "#008FFB"
+      ],
+      plotOptions: {
+        bar: {
+          columnWidth: "35%",
+          distributed: false,
+          horizontal:true
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return NumberSuffix(val,2)
+      },
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        show: true
+      },
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+              "#D10CE8",
+            ],
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+      title: {
+        text: "Top 10 Highest PDE Plans By Value"
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return "UGX " + NumberSuffix(val,2) ;
+          }
+        }
+      },
+      noData: {
+        text: 'Loading Data...'
+      }
+    };
+
+
     this.getSummaryStats('plan-summary',this.financialYears[0],'Ministry of Finance')
     this.getSummaryStatsBudget('plan-budget-status','','')
     this.getSummaryStatsProcurementType('plan-by-procurement-type','','')   
     
     //this.getSummaryStats('plan-by-funding-source',this.financialYears[0],'Ministry of Finance')
     //this.getSummaryStats('plan-budget-status',this.financialYears[0],'Ministry of Finance')
-    
-    
-    
   }
 
   submit(form: FormGroup) {
@@ -139,11 +203,10 @@ export class VisualsComponent implements OnInit {
       'selectedPDE': form.controls.pde.value,
       'selectedFinancialYear': form.controls.financialYear.value,
     }
-
+    this.getSummaryStats('plan-summary',data?.selectedFinancialYear,'')
     this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getSummaryStatsBudget('plan-budget-status','','')
     this.getSummaryStatsProcurementType('plan-by-procurement-type','','') 
-
     //this.getSummaryStatsWithPDE('plan-by-funding-source',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
   }
@@ -172,6 +235,26 @@ export class VisualsComponent implements OnInit {
     this.yearOfPlannedContracts = 0
     this.numberOfRegisteredEntities = 0
 
+    this.chartEducationStatus?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+              "#D10CE8",
+            ],
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+    })
+
     this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
@@ -179,7 +262,7 @@ export class VisualsComponent implements OnInit {
         let  y = []
         let  providersInSelectedYear = []
 
-        console.log(data)
+        console.log("SUMMARY STATS",data)
         data.forEach(element => {
           if (element.financial_year == financialYear)
           {
@@ -221,47 +304,16 @@ export class VisualsComponent implements OnInit {
           categoryValues.push(valueD)
         });
 
+        console.log(categories)
+        console.log(categoryValues)
+        
+        this.chartEducationStatus?.updateOptions({
 
-        this.chartOptionsEducationStatus = {
-          series: [
-            {
-              name: "Planned Contract Value",
-              data: categoryValues,
-              fontSize: "12px"
-            }
-          ],
-          chart: {
-            fontFamily: 'Trebuchet MS',
-            height: 'auto',
-            type: "bar",
-            events: {
-              click: function(chart, w, e) {
-                // console.log(chart, w, e)
-              }
-            }
-          },
-          colors: [
-            "#008FFB"
-          ],
-          plotOptions: {
-            bar: {
-              columnWidth: "35%",
-              distributed: false,
-              horizontal:true
-            }
-          },
-          dataLabels: {
-            enabled: true,
-            formatter: function(val) {
-              return NumberSuffix(val,2)
-          },
-          },
-          legend: {
-            show: false
-          },
-          grid: {
-            show: true
-          },
+          series: [{
+            name: "Values",
+            data: categoryValues
+          }],
+
           xaxis: {
             categories: categories,
             labels: {
@@ -276,17 +328,8 @@ export class VisualsComponent implements OnInit {
                 return NumberSuffix(val,2)}
             }            
           },
-          title: {
-            text: "Top 10 Highest PDE Plans By Value"
-          },
-          tooltip: {
-            y: {
-              formatter: function(val) {
-                return "UGX " + NumberSuffix(val,2) ;
-              }
-            }
-          }
-        };
+        })
+       
 
 
           this.numberOfPlannedContracts = addArrayValues(x)
@@ -309,10 +352,6 @@ export class VisualsComponent implements OnInit {
 
   getSummaryStatsWithPDE(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    // this.numberOfPlannedContracts = 0
-    // this.totalValueofPlannedContracts = 0
-    // this.yearOfPlannedContracts = 0
-    // this.numberOfRegisteredEntities = 0
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
@@ -320,110 +359,7 @@ export class VisualsComponent implements OnInit {
         let  x = []
         let  y = []
 
-        console.log(data)
-        // data.forEach(element => {
-        //   if (element.financial_year == financialYear)
-        //   {
-        //     x.push(element?.number_of_plans)
-        //     var e = element?.estimated_amount.split(',')
-        //     y.push(parseInt(e.join('')))
-        //   }
-        // });
-
-        //  this.topTenHighestContracts = data.sort(function(a, b) {
-        //   var nameA = a?.estimated_amount.split(',')
-        //   var nameB = b?.estimated_amount.split(',')
-        //   var valueA = parseInt(nameA.join(''))
-        //   var valueB = parseInt(nameB.join(''))
-
-        //   if (valueA >  valueB) {
-        //     return -1;
-        //   }
-        //   if (valueA < valueB) {
-        //     return 1;
-        //   }
-        //   return 0;
-        // })
-
-        // console.log(this.topTenHighestContracts)
-        // console.log(x)
-        // console.log(y)
-
-        // let categories=[]
-        // let categoryValues=[]
-
-
-        // this.topTenHighestContracts.slice(0,10).forEach(element => {
-
-        //   var valueC = element?.estimated_amount.split(',')
-        //   var valueD = parseInt(valueC.join(''))
-        //   categories.push(element.pde_name)
-        //   categoryValues.push(valueD)
-        // });
-
-
-        // this.chartOptionsEducationStatus = {
-        //   series: [
-        //     {
-        //       name: "Planned Contract Value",
-        //       data: categoryValues,
-        //       fontSize: "12px"
-        //     }
-        //   ],
-        //   chart: {
-        //     fontFamily: 'Trebuchet MS',
-        //     height: 'auto',
-        //     type: "bar",
-        //     events: {
-        //       click: function(chart, w, e) {
-        //         // console.log(chart, w, e)
-        //       }
-        //     }
-        //   },
-        //   colors: [
-        //     "#008FFB"
-        //   ],
-        //   plotOptions: {
-        //     bar: {
-        //       columnWidth: "35%",
-        //       distributed: false,
-        //       horizontal:true
-        //     }
-        //   },
-        //   dataLabels: {
-        //     enabled: true,
-        //     formatter: function(val) {
-        //       return NumberSuffix(val,2)
-        //   },
-        //   },
-        //   legend: {
-        //     show: false
-        //   },
-        //   grid: {
-        //     show: true
-        //   },
-        //   xaxis: {
-        //     categories: categories,
-        //     labels: {
-        //       style: {
-        //         colors: [
-        //           "#008FFB",
-        //           "#D10CE8",
-        //         ],
-        //         fontSize: "12px"
-        //       }
-        //     }
-        //   },
-        //   title: {
-        //     text: "Top 10 Highest Plans By Value"
-        //   },
-        // };
-
-
-        //   this.numberOfPlannedContracts = addArrayValues(x)
-        //   this.totalValueofPlannedContracts = addArrayValues(y)
-        //   this.yearOfPlannedContracts = financialYear
-        //   this.numberOfRegisteredEntities = data[0].number_of_registered_pdes
+        console.log("WITH PDE",data)
           this.isLoading = false
         },
       (error) => {
@@ -623,31 +559,6 @@ export class VisualsComponent implements OnInit {
         console.log(error)
       }
     )
-  }
-
-
-  
-
-
-
-
-  
-
-  public generateData(baseval, count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-      series.push([x, y, z]);
-      baseval += 86400000;
-      i++;
-    }
-    console.log("SERIES",series)
-    return series;
   }
 }
 

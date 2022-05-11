@@ -141,9 +141,6 @@
                   </div>
                 </div>
               </div>
-              
-
-
             </div>
         </div>
       </div>
@@ -153,21 +150,20 @@
       <div class="mt-4 mb-4">
         <div  class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
           <!-- <div class="hidden text-base font-medium text-gray-500">Intersex Persons Education Status</div> -->
-          <div *ngIf="chartOptionsEducationStatus || !isLoading" id="chartEducationStatus">
-            <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
+          <div  id="chartEducationStatus">
+            <apx-chart #chartEducationStatus [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
               [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
               [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis"
               [legend]="chartOptionsEducationStatus.legend" [colors]="chartOptionsEducationStatus.colors"
               [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"
-              [tooltip]="chartOptionsEducationStatus.tooltip"></apx-chart>
+              [tooltip]="chartOptionsEducationStatus.tooltip" [noData]="chartOptionsEducationStatus.noData"></apx-chart>
           </div>
           <!-- <div *ngIf="!chartOptionsEducationStatus">
                 <app-loading-pulse></app-loading-pulse>
               </div> -->
 
-              <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading || !chartOptionsEducationStatus">
-                <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-                    </span> -->
+              <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading || !chartOptionsEducationStatus">
+               
                 <div class="flex items-center justify-center h-80">
                   <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -176,7 +172,7 @@
                     </path>
                   </svg>
                 </div>
-              </div>
+              </div> -->
               
         </div>
       

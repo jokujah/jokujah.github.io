@@ -1,7 +1,7 @@
-import { AwardedContractReportService } from './../../../../services/ContractCategory/awarded-contract-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { DueDeligenceReportService } from 'src/app/services/EvaluationCategory/due-deligence-report.service';
 import { getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 import ROP from './../../../../../assets/ROP.json'
@@ -193,7 +193,7 @@ export class AwardedContractVisualsComponent implements OnInit {
             width: [0, 4]
           },
           title: {
-            text: "Awarded Contract by Type and Value"
+            text: "Awarded Contract Type By Number of Bids and Value"
           },
           dataLabels: {
             enabled: true,
