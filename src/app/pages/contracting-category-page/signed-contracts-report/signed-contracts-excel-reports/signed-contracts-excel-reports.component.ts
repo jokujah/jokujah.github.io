@@ -1,7 +1,10 @@
+import { saveAs } from 'file-saver';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import PDE from 'src/assets/PDE.json'
+import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
+import { getFinancialYears, getsortedPDEList, slowLoader } from 'src/app/utils/helpers';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signed-contracts-excel-reports',
@@ -10,13 +13,24 @@ import PDE from 'src/assets/PDE.json'
 })
 export class SignedContractsExcelReportsComponent implements OnInit {
 
+
+  isLoading:boolean = false 
+
   options: FormGroup;
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
-  pde = PDE
+  pde = getsortedPDEList()
+  financialYears = getFinancialYears()
+  searchedPDE
 
-  constructor(fb: FormBuilder,
-    private _planingCategoryService: PlaningAndForecastingReportService) { 
+
+  
+
+  constructor(
+    fb: FormBuilder,
+    private _planingCategoryService: PlaningAndForecastingReportService,
+    private toastr: ToastrService
+    ) { 
     this.options = fb.group({
       financialYear: this.financialYearControl,
       pde:this.pdeControl
@@ -30,21 +44,52 @@ export class SignedContractsExcelReportsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-  download(fileName,filePath){
-    this._planingCategoryService.downloadReport(filePath,'').subscribe(
+  download(fileName,filePath,pde){
+    this.isLoading = true
+    this._planingCategoryService.downloadReport2(filePath,this.pdeControl.value,pde).subscribe(
       (blob )=>{ 
+        this.isLoading = false
          console.log(blob)
          saveAs(blob, fileName)
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
+        this.isLoading = false
         console.log(error)
       }
     )
+  }
+
+  
+
+  async submit(form: FormGroup) {
+    let data: any = {
+      'selectedPDE': form.controls.pde.value,
+      'selectedFinancialYear': form.controls.financialYear.value,
+    }
+
+    this.isLoading = true
+    await slowLoader()
+
+    this.searchedPDE = this.pde.filter(function(element) {
+      return element.PDE.toLowerCase().indexOf(form.controls.pde.value.toLowerCase()) !== -1
+    });
+
+    this.isLoading = false
+    
+  }
+
+  async reset(){
+    this.isLoading = true
+    await slowLoader()
+    this.options.get('pde')?.setValue('');
+    this.options.get('financialYear')?.setValue(this.financialYears[0]);
+    this.searchedPDE = []
+    this.isLoading = false
   }
 
 }

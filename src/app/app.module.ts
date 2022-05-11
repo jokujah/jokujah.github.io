@@ -31,7 +31,7 @@ import {MatSelectModule} from '@angular/material/select';
 
 import { GoogleChartsModule } from 'angular-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
-
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -59,6 +59,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     ContractingManagementCategoryPageModule,
     GoogleChartsModule,
     NgApexchartsModule,
+    ToastrModule.forRoot(),
     // MatFormFieldModule,
     // FormsModule,
     // MatSelectModule,
