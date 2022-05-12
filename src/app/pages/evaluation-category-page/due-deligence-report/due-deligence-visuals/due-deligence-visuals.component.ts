@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { DueDeligenceReportService } from './../../../../services/EvaluationCategory/due-deligence-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -29,7 +30,7 @@ export type ChartOptions = {
   chart: ApexChart;
   dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
+  yaxis: ApexYAxis | ApexYAxis[];
   xaxis: ApexXAxis;
   fill: ApexFill;
   tooltip: ApexTooltip;
@@ -73,6 +74,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
  
   constructor(
     fb: FormBuilder,
+    private toastr:ToastrService,
     private _dueDeligenceReportService: DueDeligenceReportService) {
     this.options = fb.group({
       financialYear: this.financialYearControl,
@@ -217,12 +219,12 @@ export class DueDeligenceVisualsComponent implements OnInit {
         this.chart?.updateOptions({
           series: [
             {
-              name: "Estimated Amount",
+              name: "Estimated Value",
               type: "column",
               data: categorieValues
             },
             {
-              name: "Actual Amount",
+              name: "Bid Submited",
               type: "line",
               data: numOfBids
             }
@@ -243,11 +245,11 @@ export class DueDeligenceVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
         this.isLoading = false
         console.log(error)
       }
@@ -280,36 +282,56 @@ export class DueDeligenceVisualsComponent implements OnInit {
         }
       },
       dataLabels: {
-        enabled: false
+        enabled: true,
+        enabledOnSeries: [1]
       },
       stroke: {
         show: true,
         width: 2,
+        curve:'smooth'
         
       },
       xaxis: {
         categories: []
-      },
-      yaxis: {
+      },    
+
+      yaxis: [{
         title: {
-          text: "UGX "
+          text: '(UGX) Estimated Value',
+        },
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+            ],
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        } 
+      
+      }, {
+        opposite: true,
+        title: {
+          text: 'Number of Bids Submitted'
         }
-      },
+      }],
+
       fill: {
         opacity: 1
       },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
-          }
-        }
-      },
+      // tooltip: {
+      //   y: {
+      //     formatter: function(val) {
+      //       return "UGX " + NumberSuffix(val,2) ;
+      //     }
+      //   }
+      // },
       noData: {
-        text: 'Loading Data...'
+        text: 'No Data Available ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Evaluated Providers with highest bid values"
       },
     };
   }

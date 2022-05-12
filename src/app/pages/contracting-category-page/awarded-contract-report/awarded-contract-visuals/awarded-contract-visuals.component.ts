@@ -87,7 +87,8 @@ export class AwardedContractVisualsComponent implements OnInit {
         type: "line"
       },
       stroke: {
-        width: [0, 4]
+        width: [0, 4],
+        curve:'smooth'
       },
       title: {
         text: "Awarded Contract Type "
@@ -152,7 +153,8 @@ export class AwardedContractVisualsComponent implements OnInit {
         type: "line"
       },
       stroke: {
-        width: [0, 4]
+        width: [0, 4],
+        curve:'smooth'
       },
       title: {
         text: "Awarded Contract Method"
@@ -217,7 +219,8 @@ export class AwardedContractVisualsComponent implements OnInit {
         type: "line"
       },
       stroke: {
-        width: [0, 4]
+        width: [0, 4],
+        curve:'smooth'
       },
       title: {
         text: "Awarded Contract Procurement Type"
@@ -260,7 +263,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       noData: {
-        text: 'Loading Data...'
+        text: 'No Data Available'
       }
     };
 

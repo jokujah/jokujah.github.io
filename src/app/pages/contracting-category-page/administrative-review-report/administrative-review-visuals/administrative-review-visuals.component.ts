@@ -130,7 +130,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         }
       ],
       noData: {
-        text: 'Loading Data...'
+        text: 'No Data Available ...'
       }
     };
   }
