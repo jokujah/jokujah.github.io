@@ -7,6 +7,7 @@
         <mat-form-field class="min-w-full" appearance="outline">
           <mat-label>Procuring and Disposal Entity</mat-label>
           <mat-select [formControl]="pdeControl">
+            <mat-option value="">All Procuring and Disposal Entities</mat-option>
             <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -34,13 +35,19 @@
   <div>
     <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
       <div class="statsCard">
-        <span class="stats">{{numberOfContracts}}</span>
-        <span class="statsText">Awarded Contracts</span>
+        <span *ngIf="!isLoading" class="stats">{{numberOfContracts}}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
+        <span class="statsText">Signed Contracts</span>
 
       </div>
 
       <div class="statsCard">
-        <span class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+        <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
         <span class="statsText">Contract Value</span>
       </div>
 <!--   

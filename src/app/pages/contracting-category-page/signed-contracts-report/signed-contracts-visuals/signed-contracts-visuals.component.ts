@@ -276,7 +276,7 @@ export class SignedContractsVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'Loading Data...'
+        text: 'No Data Available ...'
       },
       title: {
         text: "Signed High Value Contracts"

@@ -181,7 +181,7 @@ export class VisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data...'
+        text: 'No Data Available ...'
       }
     };
 
@@ -204,7 +204,7 @@ export class VisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data ...'
+        text: 'No Data Available ...'
       }      
     };
 
@@ -272,7 +272,7 @@ export class VisualsComponent implements OnInit {
         },
       },
       noData: {
-        text: 'No Data...'
+        text: 'No Data Available ...'
       }
     };
 
