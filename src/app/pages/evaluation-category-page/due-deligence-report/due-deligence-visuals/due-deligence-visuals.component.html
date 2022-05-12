@@ -18,6 +18,7 @@
         <mat-form-field class="min-w-full" appearance="outline">
           <mat-label>Procuring and Disposal Entity</mat-label>
           <mat-select [formControl]="pdeControl">
+            <mat-option value="">All Procuring and Disposal Entities</mat-option>
             <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -35,55 +36,37 @@
 
       <div class="flex flex-row space-x-2">
         <button type="button" (click)="submit(options)"
-          class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+          class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Filter</button>
         <button type="button" (click)="reset()"
           class="flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-indigo-600 bg-white hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Reset</button>
       </div>
     </form>
   </div>
-  <!-- Stats -->
-  <!-- <div class="mt-4">
-    <form
-      class="example-container flex flex-col space-y-2 md:flex-row  md:space-x-2 md:space-y-0 min-w-full items-baseline"
-      [formGroup]="options" [style.fontSize.px]="getFontSize()">
-      <div class="flex-1">
-        <mat-form-field class="min-w-full" appearance="outline">
-          <mat-label>Procuring and Disposal Entity</mat-label>
-          <mat-select [formControl]="pdeControl" >
-            <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="flex-1">
-        <mat-form-field class="min-w-full" appearance="outline">
-          <mat-label>Financial Year</mat-label>
-          <mat-select [formControl]="financialYearControl">
-            <mat-option *ngFor="let item of financialYears" value="{{item}}">{{item}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div>
-        <button mat-flat-button color="primary">Search</button>
-      </div>
-    </form>
-  </div> -->
-
+  
   <div>
     <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
       <div class="statsCard">
-        <span class="stats">{{successfullEvaluatedBidders}}</span>
+        <span *ngIf="!isLoading" class="stats">{{successfullEvaluatedBidders}}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
         <span class="statsText">Successfull Evaluated Bidders</span>
 
       </div>
 
       <div class="statsCard">
-        <span class="stats">UGX {{valueOfBids | numberSuffix: 2}}</span>
+        <span *ngIf="!isLoading" class="stats">UGX {{valueOfBids | numberSuffix: 2}}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
         <span class="statsText">Bids Value</span>
       </div>
 
       <div class="statsCard">
-        <span class="stats"> {{allEvavluatedBidders }}</span>
+        <span *ngIf="!isLoading" class="stats"> {{allEvaluatedBidders }}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
         <span class="statsText">All Evaluated Bidders </span>
 
       </div>
@@ -126,11 +109,11 @@
               <app-loading-pulse></app-loading-pulse>
             </div>
           </div> -->
-          <div id="chart" class="w-full  p-5">
-            <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
-              [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
-              [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
-              [tooltip]="chartOptions.tooltip"></apx-chart>
+          <div id="chartDueDeligence" class="w-full  p-5">
+            <apx-chart #chartDueDeligence [series]="chartDueDeligenceOptions.series" [chart]="chartDueDeligenceOptions.chart" [yaxis]="chartDueDeligenceOptions.yaxis"
+              [xaxis]="chartDueDeligenceOptions.xaxis" [labels]="chartDueDeligenceOptions.labels" [stroke]="chartDueDeligenceOptions.stroke"
+              [title]="chartDueDeligenceOptions.title" [dataLabels]="chartDueDeligenceOptions.dataLabels" [fill]="chartDueDeligenceOptions.fill"
+              [tooltip]="chartDueDeligenceOptions.tooltip" [noData]="chartDueDeligenceOptions.noData"></apx-chart>
           </div>
 
         </div>

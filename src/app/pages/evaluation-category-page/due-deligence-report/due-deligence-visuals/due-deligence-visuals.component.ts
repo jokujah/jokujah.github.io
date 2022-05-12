@@ -3,7 +3,7 @@ import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { addArrayValues, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, ApexNoData } from 'ng-apexcharts';
 
 import {
   ApexNonAxisChartSeries,
@@ -35,6 +35,7 @@ export type ChartOptions = {
   dataLabels: any; // ApexDataLabels;
   fill: ApexFill;
   tooltip: ApexTooltip;
+  noData: ApexNoData
 };
 
 @Component({
@@ -48,8 +49,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
   chartEducationStatus!: ChartComponent;
   chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
 
-  @ViewChild("chart") chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  @ViewChild("chartDueDeligence") chartDueDeligence: ChartComponent;
+  public chartDueDeligenceOptions: Partial<ChartOptions>;
 
   
 
@@ -57,7 +58,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
   valueOfBids;
   successfullEvaluatedBidders;
   yearOfBids;
-  allEvavluatedBidders;
+  allEvaluatedBidders;
 
   topTenHighestContracts 
 
@@ -81,6 +82,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initCharts()
     this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
     //this.getSummaryStats('bids-summary',this.financialYears[0],'')
     this.getVisualisation('bids-by-provider',this.financialYears[0],'')
@@ -106,6 +108,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
     this.isLoading=true
     this.valueOfBids = 0
     this.successfullEvaluatedBidders = 0
+    this.allEvaluatedBidders = 0
     this.yearOfBids = financialYear
     
 
@@ -118,7 +121,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
         
         this.successfullEvaluatedBidders = data.successful_evaluated_bidders
         this.valueOfBids = sanitizeCurrencyToString(data.total_bid_estimate_value)
-        this.allEvavluatedBidders = data.total_evaluated_bidders
+        this.allEvaluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
         },
@@ -142,7 +145,24 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._dueDeligenceReportService.getEvaluationBidsByFinancialYear(reportName,financialYear,procuringEntity).subscribe(
+    this.chartDueDeligence?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            colors: [
+              "#008FFB"
+            ],
+            fontSize: "12px"
+          }
+        }            
+      },
+    })
+
+    this._dueDeligenceReportService.getEvaluationBidsByProvider(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let  x = []
@@ -185,17 +205,20 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
 
         this.topTenHighestContracts.forEach(element => {
-          if(element?.provider =='none') return             
+                       
 
           var valueC = element?.total_estimated_value.split(',')
           var valueD = parseInt(valueC.join(''))
+          //if(element?.provider =='none') {categories.push('N/A')}
           categories.push(element.provider)
           categorieValues.push(valueD)
           numOfBids.push(parseInt(element?.number_of_bids_submitted))
         });
 
+        console.log(categories)
+        console.log(categorieValues)
 
-        this.chartOptions = {
+        this.chartDueDeligence?.updateOptions({
           series: [
             {
               name: "Estimate Value",
@@ -208,60 +231,23 @@ export class DueDeligenceVisualsComponent implements OnInit {
               data: numOfBids
             }
           ],
-          chart: {
-            height: 350,
-            type: "line"
-          },
-          stroke: {
-            width: [0, 4]
-          },
-          title: {
-            text: "Bid Providers and Bid Value "
-          },
-          dataLabels: {
-            enabled: true,
-            enabledOnSeries: [1]
-          },
-          
           xaxis: {
             categories: categories,
             labels: {
-              style: {                
+              style: {
+                colors: [
+                  "#008FFB"
+                ],
                 fontSize: "12px"
               }
-            }            
-          },
-          yaxis: [
-            {
-              title: {
-                text: "Estimated Value"
-              },
-              labels: {
-                style: {
-                  colors: [
-                    "#008FFB",
-                  ],
-                  fontSize: "12px"
-                },
-                formatter: function(val) {
-                  return NumberSuffix(val,2)}
-              }               
-            },
-            {
-              opposite: true,
-              title: {
-                text: "Number of Bids"
-              }
             }
-          ],
-          // tooltip: {
-          //   y: {
-          //     formatter: function(val) {
-          //       return "UGX " + NumberSuffix(val,2) ;
-          //     }
-          //   }
-          // }
-        };  
+          },
+        })
+
+
+
+
+          
           this.isLoading = false
         },
       (error) => {
@@ -284,7 +270,69 @@ export class DueDeligenceVisualsComponent implements OnInit {
       'selectedFinancialYear': form.controls.financialYear.value,
     }
     this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('bids-by-provider',this.financialYears[0],data?.selectedPDE)
+    this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
+  }
+
+  initCharts(){
+    this.chartDueDeligenceOptions = {
+      series: [],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      stroke: {
+        width: [0, 4]
+      },
+      title: {
+        text: "Bid Providers and Bid Value "
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1]
+      },
+      
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {                
+            fontSize: "12px"
+          }
+        }            
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Estimated Value"
+          },
+          labels: {
+            style: {
+              colors: [
+                "#008FFB",
+              ],
+              fontSize: "12px"
+            },
+            formatter: function(val) {
+              return NumberSuffix(val,2)}
+          }               
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Bids"
+          }
+        }
+      ],
+      noData: {
+        text: 'No Data...'
+      }
+      // tooltip: {
+      //   y: {
+      //     formatter: function(val) {
+      //       return "UGX " + NumberSuffix(val,2) ;
+      //     }
+      //   }
+      // }
+    };
   }
 
 }
