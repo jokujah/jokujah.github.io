@@ -35,8 +35,7 @@ export function getPDEByValue(){
 
 
 export function getFinancialYears(){
-    return [ 
-      "2022-2023",
+    return [
       "2021-2022",
       "2020-2021",
       "2019-2020",
