@@ -27,15 +27,16 @@ export type ChartOptionsEducationStatus = {
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  yaxis: ApexYAxis;
   xaxis: ApexXAxis;
-  yaxis: ApexYAxis | ApexYAxis[];
-  title: ApexTitleSubtitle;
-  labels: string[];
-  stroke: any; // ApexStroke;
-  dataLabels: any; // ApexDataLabels;
   fill: ApexFill;
   tooltip: ApexTooltip;
-  noData: ApexNoData
+  stroke: ApexStroke;
+  legend: ApexLegend;
+  title: ApexTitleSubtitle,
+  noData:ApexNoData
 };
 
 @Component({
@@ -45,14 +46,12 @@ export type ChartOptions = {
 })
 export class DueDeligenceVisualsComponent implements OnInit {
   isLoading:boolean = false 
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+
   @ViewChild("chartEducationStatus")
   chartEducationStatus!: ChartComponent;
   chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
-
-  @ViewChild("chartDueDeligence") chartDueDeligence: ChartComponent;
-  public chartDueDeligenceOptions: Partial<ChartOptions>;
-
-  
 
 
   valueOfBids;
@@ -145,19 +144,16 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this.chartDueDeligence?.updateOptions({
-
+    this.chart?.updateOptions({
       series: [],
-
       xaxis: {
         categories:[],
         labels: {
           style: {
-            colors: [
-              "#008FFB"
-            ],
             fontSize: "12px"
-          }
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
         }            
       },
     })
@@ -205,11 +201,11 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
 
         this.topTenHighestContracts.forEach(element => {
-                       
+            //if(element?.provider =='none') {categories.push('N/A')}             
 
           var valueC = element?.total_estimated_value.split(',')
           var valueD = parseInt(valueC.join(''))
-          //if(element?.provider =='none') {categories.push('N/A')}
+        
           categories.push(element.provider)
           categorieValues.push(valueD)
           numOfBids.push(parseInt(element?.number_of_bids_submitted))
@@ -218,15 +214,15 @@ export class DueDeligenceVisualsComponent implements OnInit {
         console.log(categories)
         console.log(categorieValues)
 
-        this.chartDueDeligence?.updateOptions({
+        this.chart?.updateOptions({
           series: [
             {
-              name: "Estimate Value",
+              name: "Estimated Amount",
               type: "column",
               data: categorieValues
             },
             {
-              name: "Number of Bids",
+              name: "Actual Amount",
               type: "line",
               data: numOfBids
             }
@@ -235,19 +231,15 @@ export class DueDeligenceVisualsComponent implements OnInit {
             categories: categories,
             labels: {
               style: {
-                colors: [
-                  "#008FFB"
-                ],
                 fontSize: "12px"
+              },
+              formatter: function (val) {
+                return NumberSuffix(val, 2)
               }
             }
           },
         })
-
-
-
-
-          
+        
           this.isLoading = false
         },
       (error) => {
@@ -274,64 +266,51 @@ export class DueDeligenceVisualsComponent implements OnInit {
   }
 
   initCharts(){
-    this.chartDueDeligenceOptions = {
-      series: [],
+    this.chartOptions = {
+      series: [ ],
       chart: {
-        height: 350,
-        type: "line"
+        type: "line",
+        height: '500px'
       },
-      stroke: {
-        width: [0, 4]
-      },
-      title: {
-        text: "Bid Providers and Bid Value "
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 2
+        }
       },
       dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1]
+        enabled: false
       },
-      
+      stroke: {
+        show: true,
+        width: 2,
+        
+      },
       xaxis: {
-        categories: [],
-        labels: {
-          style: {                
-            fontSize: "12px"
-          }
-        }            
+        categories: []
       },
-      yaxis: [
-        {
-          title: {
-            text: "Estimated Value"
-          },
-          labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
-              fontSize: "12px"
-            },
-            formatter: function(val) {
-              return NumberSuffix(val,2)}
-          }               
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Number of Bids"
+      yaxis: {
+        title: {
+          text: "UGX "
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return "UGX " + NumberSuffix(val,2) ;
           }
         }
-      ],
+      },
       noData: {
-        text: 'No Data...'
-      }
-      // tooltip: {
-      //   y: {
-      //     formatter: function(val) {
-      //       return "UGX " + NumberSuffix(val,2) ;
-      //     }
-      //   }
-      // }
+        text: 'Loading Data...'
+      },
+      title: {
+        text: "Signed High Value Contracts"
+      },
     };
   }
 

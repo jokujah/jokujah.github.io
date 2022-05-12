@@ -92,7 +92,7 @@
     <!-- Row 2 -->
     <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex ">
-        <div *ngIf="!isLoading" class="flex w-full bg-white shadow rounded-lg overflow-hidden">
+        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
           <!-- <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
             [dataSource]="dataSourceLine">
           </fusioncharts> -->
@@ -109,17 +109,27 @@
               <app-loading-pulse></app-loading-pulse>
             </div>
           </div> -->
-          <div id="chartDueDeligence" class="w-full  p-5">
-            <apx-chart #chartDueDeligence [series]="chartDueDeligenceOptions.series" [chart]="chartDueDeligenceOptions.chart" [yaxis]="chartDueDeligenceOptions.yaxis"
-              [xaxis]="chartDueDeligenceOptions.xaxis" [labels]="chartDueDeligenceOptions.labels" [stroke]="chartDueDeligenceOptions.stroke"
-              [title]="chartDueDeligenceOptions.title" [dataLabels]="chartDueDeligenceOptions.dataLabels" [fill]="chartDueDeligenceOptions.fill"
-              [tooltip]="chartDueDeligenceOptions.tooltip" [noData]="chartDueDeligenceOptions.noData"></apx-chart>
+          <div id="chart">
+            <apx-chart #chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels"
+              [plotOptions]="chartOptions.plotOptions"
+              [yaxis]="chartOptions.yaxis"
+              [legend]="chartOptions.legend"
+              [fill]="chartOptions.fill"
+              [stroke]="chartOptions.stroke"
+              [tooltip]="chartOptions.tooltip"
+              [xaxis]="chartOptions.xaxis"
+              [title]="chartOptions.title"
+              [noData]="chartOptions.noData"
+            ></apx-chart>
           </div>
 
         </div>
-        <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
-          <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-          </span> -->
+        <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
+          <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
+          </span>
           <div class="flex items-center justify-center h-80">
             <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -128,7 +138,7 @@
               </path>
             </svg>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
