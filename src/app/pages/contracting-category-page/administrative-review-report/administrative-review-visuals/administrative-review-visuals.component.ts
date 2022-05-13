@@ -1,8 +1,9 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexMarkers, ApexNoData, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -17,8 +18,11 @@ export type ChartOptions = {
   fill: ApexFill;
   tooltip: ApexTooltip;
   noData:ApexNoData
-  plotOptions: ApexPlotOptions;
-  grid:ApexGrid
+  plotOptions: ApexPlotOptions;  
+  markers: ApexMarkers;  
+  grid: any; //ApexGrid;
+  colors: any;
+  toolbar: any;
 };
 
 
@@ -32,6 +36,10 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
+
+ 
+
+
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
@@ -49,11 +57,14 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   valueOfReviewedContracts: number;
 
   constructor(fb: FormBuilder,
+    private toastr:ToastrService,
     private _service: AwardedContractReportService) {
     this.options = fb.group({
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
+
+    
 
     // Visualisation
     this.chartOptions = {
@@ -70,8 +81,8 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         }
       ],
       chart: {
-        height: 350,
-        type: "line",
+        height: 500,
+        type: "bar",
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -84,17 +95,27 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
               enabled: true,
               speed: 450
           }
-      }
+      },
+      
         
       },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 2
+        }
+      },
       stroke: {
-        width: [0, 4]
+        show: true,
+        width: 2,
+        colors: ["transparent"]
       },
       title: {
         text: "Contracts Under Review by Contract Method"
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         enabledOnSeries: [1]
       },
       
@@ -189,11 +210,11 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         this.isLoading = false
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
         this.isLoading = false
         console.log(error)
       }
@@ -268,46 +289,49 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
           var valueC = element?.total_amount_under_review.split(',')
           var valueD = parseInt(valueC.join(''))
+          var valueE = element.procurement_method.split(' ')
           categories.push(element.procurement_method)
           categoryValues.push(valueD)
           numOfContracts.push(parseInt(element?.total_no_under_review))
         });
 
-        this.chart?.updateOptions({
+        console.log(categories)
 
-          series: [{
-            name: "Contract Value",
-            type: "column",
-            data: categoryValues
-          },
-          {
-            name: "Number of Contracts",
-            type: "line",
-            data: numOfContracts
-          }],
+        this.chart?.updateOptions({
+          series: [
+            {
+              name: "Contract Value",
+              type: "column",
+              data: categoryValues
+            },
+            {
+              name: "Number of Contracts",
+              type: "column",
+              data: numOfContracts
+            }
+          ],
 
           xaxis: {
             categories: categories,
             labels: {
-              style: {                
+              style: {
                 fontSize: "12px"
-              }
-            }            
+              },
+              //rotate: 0
+
+            }
           }
-
-          
         })
-
 
           
           this.isLoading = false
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
         this.isLoading = false
         console.log(error)
       }
@@ -317,5 +341,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   getFontSize() {
     return Math.max(10, 12);
   }
+
+ 
 
 }

@@ -15,7 +15,7 @@ export class AdministrativeReviewExcelReportsComponent implements OnInit {
   isLoading:boolean = false 
   searchedPDE
   options: FormGroup;
-  pdeControl = new FormControl('');
+  pdeControl = new FormControl();
   financialYearControl = new FormControl('2021-2022');
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
@@ -78,7 +78,7 @@ export class AdministrativeReviewExcelReportsComponent implements OnInit {
   async reset(){
     this.isLoading = true
     await slowLoader()
-    this.options.get('pde')?.setValue('');
+    this.options.get('pde')?.setValue(null);
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
     this.searchedPDE = []
     this.isLoading = false

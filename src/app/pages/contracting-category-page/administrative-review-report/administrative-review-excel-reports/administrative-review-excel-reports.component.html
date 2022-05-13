@@ -7,6 +7,7 @@
             <mat-form-field class="min-w-full" appearance="outline">
               <mat-label>Procuring and Disposal Entity</mat-label>
               <mat-select [formControl]="pdeControl">
+                <mat-option value="">All Procuring and Disposal Entities</mat-option>
                 <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -24,7 +25,7 @@
     
           <div class="flex flex-row space-x-2">
             <button type="button" (click)="submit(options)"
-              class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+              class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Filter</button>
             <button type="button" (click)="reset()"
               class="flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-indigo-600 bg-white hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Reset</button>
           </div>
@@ -61,7 +62,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
               </svg>
-              <h3 class="mt-1 text-2xl text-gray-500">Search for Entity Reports.</h3>
+              <h3 class="mt-1 text-2xl text-gray-500">Filter Entity Reports.</h3>
             </div>
           </div>
     
