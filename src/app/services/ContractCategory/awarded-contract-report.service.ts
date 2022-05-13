@@ -25,7 +25,25 @@ export class AwardedContractReportService {
   }
 
   getSummaryStatsWithPDE(reportName,financialYear,procuringEntity): Observable<any> {
-    return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&pde[]=${procuringEntity}`)    
+
+    if((financialYear === "") && (procuringEntity !== ""))
+    {
+      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?pde[]=${procuringEntity}`) 
+    }
+    else if((financialYear !== "") && (procuringEntity === ""))
+    {
+      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}`) 
+    }
+    else if((financialYear !== "") && (procuringEntity !== "")){
+      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&pde[]=${procuringEntity}`)
+    }
+    else
+    {
+      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}`)
+    }
+
+
+    //return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&pde[]=${procuringEntity}`)    
   }
 
   getSummaryStatsNeat(reportName): Observable<any> {
