@@ -15,13 +15,14 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
   totalValueofPlannedContracts;
   numberOfPlannedContracts;
   yearOfPlannedContracts;
-
-  options: FormGroup;
-  pdeControl = new FormControl();
-  financialYearControl = new FormControl('2021-2022');
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
   searchedPDE;
+  options: FormGroup;
+  pdeControl = new FormControl();
+  financialYearControl = new FormControl(this.financialYears[0]);
+  
+ 
 
   constructor(
     fb: FormBuilder,
@@ -59,7 +60,9 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
 
   download(fileName,filePath,pde){
     this.isLoading = true
-    this._planingCategoryService.downloadReport(filePath,pde).subscribe(
+    var financialYear = this.financialYearControl.value
+    console.log(financialYear)
+    this._planingCategoryService.downloadReport2(filePath,financialYear,pde).subscribe(
       (blob )=>{ 
         
          console.log(blob)
@@ -68,10 +71,10 @@ export class DueDeligenceExcelReportsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         console.log(error)
       }
     )
