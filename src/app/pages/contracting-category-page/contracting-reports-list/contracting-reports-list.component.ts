@@ -10,12 +10,16 @@ export class ContractingReportsListComponent implements OnInit {
 
   reportsList  = [
     {
-      "name":'Administrative Review Report',
-      "route":'administrative-review-report'
-    },
-    {
       "name":'Awarded Contract Report',
       "route":'awarded-contract-report'
+    },
+    {
+      "name":'Administrative Review Report',
+      "route":'administrative-review-report'
+    },    
+    {
+      "name":'Signed Contract Report',
+      "route":'signed-contracts-report'
     },
     {
       "name":'PDE Average Contract Value Report',
@@ -29,10 +33,7 @@ export class ContractingReportsListComponent implements OnInit {
       "name":'Procurement Report',
       "route":'procurement-report'
     },
-    {
-      "name":'Signed Contract Report',
-      "route":'signed-contracts-report'
-    }
+    
   ]
 
   constructor(
