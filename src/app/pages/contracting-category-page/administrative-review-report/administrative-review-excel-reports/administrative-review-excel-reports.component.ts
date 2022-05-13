@@ -15,11 +15,11 @@ export class AdministrativeReviewExcelReportsComponent implements OnInit {
   isLoading:boolean = false 
   searchedPDE
   options: FormGroup;
-  pdeControl = new FormControl();
-  financialYearControl = new FormControl('2021-2022');
+  
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
-
+  pdeControl = new FormControl();
+  financialYearControl = new FormControl(this.financialYears[0]);
   constructor(
     fb: FormBuilder,
     private toastr: ToastrService,
@@ -40,7 +40,7 @@ export class AdministrativeReviewExcelReportsComponent implements OnInit {
 
   download(fileName,filePath,pde){
     this.isLoading = true
-    this._planingCategoryService.downloadReport2(filePath,this.pdeControl.value,pde).subscribe(
+    this._planingCategoryService.downloadReport2(filePath,this.financialYearControl.value,pde).subscribe(
       (blob )=>{ 
         this.isLoading = false
          console.log(blob)
@@ -48,10 +48,10 @@ export class AdministrativeReviewExcelReportsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         console.log(error)
       }
