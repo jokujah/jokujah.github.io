@@ -87,7 +87,7 @@ export class SignedContractsVisualsComponent implements OnInit {
       'selectedFinancialYear': form.controls.financialYear.value,
     }
     this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getVisualisation('high-value-contracts',this.financialYears[0],data?.selectedPDE)
+    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(){
@@ -109,7 +109,7 @@ export class SignedContractsVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._service.getSummaryStatsNofilter(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
@@ -152,7 +152,7 @@ export class SignedContractsVisualsComponent implements OnInit {
       },
     })
 
-    this._service.getSummaryStatsNofilter(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let subjectOfProcurement = []
