@@ -18,11 +18,11 @@ export class SignedContractsExcelReportsComponent implements OnInit {
 
   options: FormGroup;
   pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
+  
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
   searchedPDE
-
+financialYearControl = new FormControl(this.financialYears[0]);
 
   
 
@@ -46,7 +46,7 @@ export class SignedContractsExcelReportsComponent implements OnInit {
 
   download(fileName,filePath,pde){
     this.isLoading = true
-    this._planingCategoryService.downloadReport2(filePath,this.pdeControl.value,pde).subscribe(
+    this._planingCategoryService.downloadReport2(filePath,this.financialYearControl.value,pde).subscribe(
       (blob )=>{ 
         this.isLoading = false
          console.log(blob)
