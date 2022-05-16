@@ -20,6 +20,11 @@ import {MatInputModule} from '@angular/material/input'
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './../../shared/shared.module';
+import { ProviderPerformanceReportComponent } from './provider-performance-report/provider-performance-report.component';
+import { ActualVsPlannedProcurementReportComponent } from './actual-vs-planned-procurement-report/actual-vs-planned-procurement-report.component';
+import { ContractsCompletedOnTimeReportComponent } from './contracts-completed-on-time-report/contracts-completed-on-time-report.component';
+import { ProcurementsAwardedToSuspendedProvidersComponent } from './procurements-awarded-to-suspended-providers/procurements-awarded-to-suspended-providers.component';
+import { ContractManagementReportComponent } from './contract-management-report/contract-management-report.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +38,11 @@ import { SharedModule } from './../../shared/shared.module';
     CompletedContractsVisualsComponent,
     FrameWorkVisualsComponent,
     TerminatedContractsVisualsComponent,
+    ProviderPerformanceReportComponent,
+    ActualVsPlannedProcurementReportComponent,
+    ContractsCompletedOnTimeReportComponent,
+    ProcurementsAwardedToSuspendedProvidersComponent,
+    ContractManagementReportComponent,
   ],
   imports: [
     CommonModule,

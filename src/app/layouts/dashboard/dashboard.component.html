@@ -71,12 +71,36 @@
                 Planning
               </a>
 
+              <a [routerLink]="['initiation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+                <!-- Heroicon name: outline/calendar -->
+                <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Initiation
+              </a>
+
+              <a [routerLink]="['solicitation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+                <!-- Heroicon name: outline/calendar -->
+                <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Solicitation
+              </a>
+
               <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
                 <!-- Heroicon name: outline/calendar -->
                 <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 Evaluation
+              </a>
+
+              <a [routerLink]="['supplier-portal']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+                <!-- Heroicon name: outline/calendar -->
+                <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Suppliers/Providers
               </a>
 
               <a [routerLink]="['contracting']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
@@ -93,6 +117,22 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Contract Management
+              </a>
+
+              <a [routerLink]="['revenue-sources']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group" aria-current="page">
+                <!-- Heroicon name: outline/search-circle -->
+                <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Revenue Sources
+              </a>
+              
+              <a [routerLink]="['disposal']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-base font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group" aria-current="page">
+                <!-- Heroicon name: outline/search-circle -->
+                <svg class="w-6 h-6 mr-4 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Disposal
               </a>
             </div>
           </nav>
@@ -141,12 +181,44 @@
                   Planning
                 </a>
 
+                <a [routerLink]="['initiation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+                  <!--
+                    Heroicon name: outline/home
+
+                    Current: "text-gray-500", Default: "text-gray-100 group-hover:text-gray-200"
+                  -->
+                  <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Initiation
+                </a>
+
+                <a [routerLink]="['solicitation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
+                  <!--
+                    Heroicon name: outline/home
+
+                    Current: "text-gray-500", Default: "text-gray-100 group-hover:text-gray-200"
+                  -->
+                  <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Solicitation
+                </a>
+
                 <a [routerLink]="['evaluation']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
                   <!-- Heroicon name: outline/calendar -->
                   <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Evaluation
+                </a>
+
+                <a [routerLink]="['supplier-portal']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group" >
+                  <!-- Heroicon name: outline/search-circle -->
+                  <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Suppliers/Providers
                 </a>
 
                 <a [routerLink]="['contracting']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group">
@@ -164,6 +236,23 @@
                   </svg>
                   Contract Management
                 </a>
+
+                <a [routerLink]="['revenue-sources']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group" >
+                  <!-- Heroicon name: outline/search-circle -->
+                  <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Revenue Sources
+                </a>                
+
+                <a [routerLink]="['disposal']" routerLinkActive="activeButton" class="flex items-center px-2 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-900 hover:text-gray-200 group" >
+                  <!-- Heroicon name: outline/search-circle -->
+                  <svg class="flex-shrink-0 w-6 h-6 mr-3 text-gray-100 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Disposal
+                </a>
+
               </div>
             </nav>
           </div>
