@@ -1,3 +1,4 @@
+import { FilterModule } from './../features/filter/filter.module';
 import { LoadingPulseModule } from './loading-pulse/loading-pulse.module';
 import { ErrorPageModule } from './error-page/error-page.module';
 import { LoadingIconModule } from './loading-icon/loading-icon.module';
@@ -25,7 +26,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   imports: [
     CommonModule,
     FusionChartsModule,
-    GoogleChartsModule
+    GoogleChartsModule,
+    FilterModule
   ],
   exports:[
     FusionChartsModule,
@@ -34,7 +36,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     NgApexchartsModule,
     LoadingIconModule,
     ErrorPageModule,
-    LoadingPulseModule
+    LoadingPulseModule,
+    FilterModule
   ]
 })
 export class SharedModule { }

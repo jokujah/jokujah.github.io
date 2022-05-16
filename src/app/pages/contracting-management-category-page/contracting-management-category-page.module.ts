@@ -9,15 +9,11 @@ import { CompletedContractsReportComponent } from './completed-contracts-report/
 import { CancelledTenderReportComponent } from './cancelled-tender-report/cancelled-tender-report.component';
 import { TerminatedContractsReportComponent } from './terminated-contracts-report/terminated-contracts-report.component';
 import { CancelledTenderVisualsComponent } from './cancelled-tender-report/cancelled-tender-visuals/cancelled-tender-visuals.component';
-import { CancelledTenderExcelReportsComponent } from './cancelled-tender-report/cancelled-tender-excel-reports/cancelled-tender-excel-reports.component';
 import { CompletedContractsVisualsComponent } from './completed-contracts-report/completed-contracts-visuals/completed-contracts-visuals.component';
-import { CompletedContractsExcelReportsComponent } from './completed-contracts-report/completed-contracts-excel-reports/completed-contracts-excel-reports.component';
 import { FrameWorkVisualsComponent } from './frame-work-report/frame-work-visuals/frame-work-visuals.component';
-import { FrameWorkExcelReportsComponent } from './frame-work-report/frame-work-excel-reports/frame-work-excel-reports.component';
 import { TerminatedContractsVisualsComponent } from './terminated-contracts-report/terminated-contracts-visuals/terminated-contracts-visuals.component';
-import { TerminatedContractsExcelReportsComponent } from './terminated-contracts-report/terminated-contracts-excel-reports/terminated-contracts-excel-reports.component';
 
-import {MatError, MatFormFieldModule} from '@angular/material/form-field';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input'
@@ -34,18 +30,12 @@ import { SharedModule } from './../../shared/shared.module';
     CancelledTenderReportComponent,
     TerminatedContractsReportComponent,
     CancelledTenderVisualsComponent,
-    CancelledTenderExcelReportsComponent,
     CompletedContractsVisualsComponent,
-    CompletedContractsExcelReportsComponent,
     FrameWorkVisualsComponent,
-    FrameWorkExcelReportsComponent,
     TerminatedContractsVisualsComponent,
-    TerminatedContractsExcelReportsComponent
   ],
   imports: [
     CommonModule,
-    //ContractingManagementCategoryPageRoutingModule
-
     RouterModule,
     SharedModule,
     MatFormFieldModule,

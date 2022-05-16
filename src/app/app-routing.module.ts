@@ -1,24 +1,17 @@
 import { HomePageComponent } from './pages/home-page/home-page.component';
-import { PdeAverageContractValueExcelReportsComponent } from './pages/contracting-category-page/pde-average-contract-value-report/pde-average-contract-value-excel-reports/pde-average-contract-value-excel-reports.component';
-import { DueDeligenceExcelReportsComponent } from './pages/evaluation-category-page/due-deligence-report/due-deligence-excel-reports/due-deligence-excel-reports.component';
-import { FrameWorkExcelReportsComponent } from './pages/contracting-management-category-page/frame-work-report/frame-work-excel-reports/frame-work-excel-reports.component';
 import { TerminatedContractsReportComponent } from './pages/contracting-management-category-page/terminated-contracts-report/terminated-contracts-report.component';
 import { FrameWorkReportComponent } from './pages/contracting-management-category-page/frame-work-report/frame-work-report.component';
 import { CompletedContractsReportComponent } from './pages/contracting-management-category-page/completed-contracts-report/completed-contracts-report.component';
-import { CancelledTenderExcelReportsComponent } from './pages/contracting-management-category-page/cancelled-tender-report/cancelled-tender-excel-reports/cancelled-tender-excel-reports.component';
 import { CancelledTenderReportComponent } from './pages/contracting-management-category-page/cancelled-tender-report/cancelled-tender-report.component';
 import { ContractManagementReportsListComponent } from './pages/contracting-management-category-page/contract-management-reports-list/contract-management-reports-list.component';
-import { ProcurementMethodAverageContractValueExcelReportsComponent } from './pages/contracting-category-page/procurement-method-average-contract-value-report/procurement-method-average-contract-value-excel-reports/procurement-method-average-contract-value-excel-reports.component';
 import { ProcurementMethodAverageContractValueVisualsComponent } from './pages/contracting-category-page/procurement-method-average-contract-value-report/procurement-method-average-contract-value-visuals/procurement-method-average-contract-value-visuals.component';
 import { ProcurementMethodAverageContractValueReportComponent } from './pages/contracting-category-page/procurement-method-average-contract-value-report/procurement-method-average-contract-value-report.component';
 import { PdeAverageContractValueVisualsComponent } from './pages/contracting-category-page/pde-average-contract-value-report/pde-average-contract-value-visuals/pde-average-contract-value-visuals.component';
 import { PdeAverageContractValueReportComponent } from './pages/contracting-category-page/pde-average-contract-value-report/pde-average-contract-value-report.component';
 import { SignedContractsVisualsComponent } from './pages/contracting-category-page/signed-contracts-report/signed-contracts-visuals/signed-contracts-visuals.component';
 import { SignedContractsReportComponent } from './pages/contracting-category-page/signed-contracts-report/signed-contracts-report.component';
-import { ProcurementReportExcelReportsComponent } from './pages/contracting-category-page/procurement-report/procurement-report-excel-reports/procurement-report-excel-reports.component';
 import { ProcurementReportVisualsComponent } from './pages/contracting-category-page/procurement-report/procurement-report-visuals/procurement-report-visuals.component';
 import { ProcurementReportComponent } from './pages/contracting-category-page/procurement-report/procurement-report.component';
-import { AwardedContractExcelReportsComponent } from './pages/contracting-category-page/awarded-contract-report/awarded-contract-excel-reports/awarded-contract-excel-reports.component';
 import { AwardedContractReportComponent } from './pages/contracting-category-page/awarded-contract-report/awarded-contract-report.component';
 import { AdministrativeReviewVisualsComponent } from './pages/contracting-category-page/administrative-review-report/administrative-review-visuals/administrative-review-visuals.component';
 import { ContractingReportsListComponent } from './pages/contracting-category-page/contracting-reports-list/contracting-reports-list.component';
@@ -34,18 +27,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { EvaluationCategoryPageComponent } from './pages/evaluation-category-page/evaluation-category-page.component';
 import { ContractingCategoryPageComponent } from './pages/contracting-category-page/contracting-category-page.component';
 import { PlaningAndForecastingReportComponent } from './pages/planning-category-page/planing-and-forecasting-report/planing-and-forecasting-report.component';
-import { ReportsComponent } from './pages/planning-category-page/planing-and-forecasting-report/reports/reports.component';
 import { VisualsComponent } from './pages/planning-category-page/planing-and-forecasting-report/visuals/visuals.component';
-import { AdministrativeReviewExcelReportsComponent } from './pages/contracting-category-page/administrative-review-report/administrative-review-excel-reports/administrative-review-excel-reports.component';
 import { AwardedContractVisualsComponent } from './pages/contracting-category-page/awarded-contract-report/awarded-contract-visuals/awarded-contract-visuals.component';
-import { SignedContractsExcelReportsComponent } from './pages/contracting-category-page/signed-contracts-report/signed-contracts-excel-reports/signed-contracts-excel-reports.component';
 import { TerminatedContractsVisualsComponent } from './pages/contracting-management-category-page/terminated-contracts-report/terminated-contracts-visuals/terminated-contracts-visuals.component';
-import { TerminatedContractsExcelReportsComponent } from './pages/contracting-management-category-page/terminated-contracts-report/terminated-contracts-excel-reports/terminated-contracts-excel-reports.component';
 import { FrameWorkVisualsComponent } from './pages/contracting-management-category-page/frame-work-report/frame-work-visuals/frame-work-visuals.component';
-import { CompletedContractsExcelReportsComponent } from './pages/contracting-management-category-page/completed-contracts-report/completed-contracts-excel-reports/completed-contracts-excel-reports.component';
 import { CompletedContractsVisualsComponent } from './pages/contracting-management-category-page/completed-contracts-report/completed-contracts-visuals/completed-contracts-visuals.component';
 import { CancelledTenderVisualsComponent } from './pages/contracting-management-category-page/cancelled-tender-report/cancelled-tender-visuals/cancelled-tender-visuals.component';
 import { AdministrativeReviewReportComponent } from './pages/contracting-category-page/administrative-review-report/administrative-review-report.component';
+import { ReportPageComponent } from './pages/report-page/report-page.component';
 
 const routes: Routes = [
   { 
@@ -80,7 +69,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:ReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -128,7 +117,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:DueDeligenceExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -168,7 +157,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:SignedContractsExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -188,7 +177,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:PdeAverageContractValueExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -208,7 +197,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:ProcurementMethodAverageContractValueExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -228,7 +217,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:AdministrativeReviewExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -248,7 +237,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:AwardedContractExcelReportsComponent,                
+                component:ReportPageComponent,                
               },
             ]
           },
@@ -267,7 +256,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:ProcurementReportExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -307,7 +296,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:CancelledTenderExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -327,7 +316,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:CompletedContractsExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -347,7 +336,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:FrameWorkExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]
@@ -367,7 +356,7 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:TerminatedContractsExcelReportsComponent,
+                component:ReportPageComponent,
                 
               },
             ]

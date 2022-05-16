@@ -20,6 +20,7 @@ export type ChartOptions = {
   fill: ApexFill;
   tooltip: ApexTooltip;
   noData:ApexNoData;
+  plotOptions: ApexPlotOptions;
 };
 
 @Component({
@@ -33,7 +34,11 @@ export class AwardedContractVisualsComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
 
   @ViewChild("chartProcurementMethod") chartProcurementMethod: ChartComponent;
-  public chartOptionsProcurementMethod: Partial<ChartOptions>;
+  public chartOptionsProcurementMethod: Partial<ChartOptions>; 
+
+
+  @ViewChild("chartProcurementMethodContracts") chartProcurementMethodContracts: ChartComponent;
+  public chartOptionsProcurementMethodContracts: Partial<ChartOptions>;
 
   @ViewChild("chartProcurementType") chartProcurementType: ChartComponent;
   public chartOptionsProcurementType: Partial<ChartOptions>;
@@ -131,7 +136,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       noData: {
-        text: 'Loading Data...'
+        text: 'No Data Available...'
       }
     };
 
@@ -141,23 +146,26 @@ export class AwardedContractVisualsComponent implements OnInit {
           name: "Contract Award Value",
           type: "column",
           data: []
-        },
-        {
-          name: "Number of Bids",
-          type: "line",
-          data: []
         }
       ],
       chart: {
         height: 350,
-        type: "line"
+        type: "bar"
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: "35%",
+          borderRadius: 2
+        }
       },
       stroke: {
-        width: [0, 4],
-        curve:'smooth'
+        show: true,
+        width: 2,
+        colors: ["transparent"]
       },
       title: {
-        text: "Awarded Contract Method"
+        text: "Awarded Contract Method with Value of bids"
       },
       dataLabels: {
         enabled: true,
@@ -175,29 +183,72 @@ export class AwardedContractVisualsComponent implements OnInit {
       yaxis: [
         {
           title: {
-            text: "Contract Value"
+            text: "Procurement Method"
           },
           labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
+            style: {             
               fontSize: "12px"
             },
             formatter: function (val) {
               return NumberSuffix(val, 2)
             }
           }
-        },
+        }
+      ],
+      noData: {
+        text: 'No Data Available...'
+      }
+    };
+
+    this.chartOptionsProcurementMethodContracts = {
+      series: [
         {
-          opposite: true,
+          name: "Number of Bids",
+          type: "column",
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "bar"
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: "35%",
+          borderRadius: 2
+        }
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      title: {
+        text: "Awarded Contract Method with Number of Bids"
+      },
+      dataLabels: {
+        enabled: false,
+        enabledOnSeries: [1]
+      },
+
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: "12px"
+          }
+        }
+      },
+      yaxis: [
+        {
           title: {
-            text: "Number of Contracts"
+            text: "Procurement Method"
           }
         }
       ],
       noData: {
-        text: 'Loading Data...'
+        text: 'No Data Available...'
       }
     };
 
@@ -216,17 +267,25 @@ export class AwardedContractVisualsComponent implements OnInit {
       ],
       chart: {
         height: 350,
-        type: "line"
+        type: "bar"
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 2
+        }
       },
       stroke: {
-        width: [0, 4],
-        curve:'smooth'
+        show: true,
+        width: 2,
+        colors: ["transparent"]
       },
       title: {
         text: "Awarded Contract Procurement Type"
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         enabledOnSeries: [1]
       },
 
@@ -262,6 +321,16 @@ export class AwardedContractVisualsComponent implements OnInit {
           }
         }
       ],
+      fill: {
+        opacity: 1
+      },
+      // tooltip: {
+      //   y: {
+      //     formatter: function(val) {
+      //       return "UGX " + NumberSuffix(val,2) ;
+      //     }
+      //   }
+      // },
       noData: {
         text: 'No Data Available'
       }
@@ -280,7 +349,10 @@ export class AwardedContractVisualsComponent implements OnInit {
       'selectedFinancialYear': form.controls.financialYear.value,
     }
     this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getVisualisation('contracts-by-contract-type',this.financialYears[0],data?.selectedPDE)
+    this.getVisualisation('contracts-by-contract-type',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-method', data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
+
   }
 
   reset(){
@@ -289,6 +361,8 @@ export class AwardedContractVisualsComponent implements OnInit {
 
     this.getSummaryStats('contracts-summary',this.financialYears[0],'')
     this.getVisualisation('contracts-by-contract-type',this.financialYears[0],'')
+    this.getVisualisation('contracts-by-procurement-method',this.financialYears[0],'')
+    this.getVisualisation('contracts-by-procurement-type',this.financialYears[0],'')
 
   }
 
@@ -302,7 +376,7 @@ export class AwardedContractVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._service.getSummaryStatsNofilter(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
@@ -367,6 +441,22 @@ export class AwardedContractVisualsComponent implements OnInit {
       },
     })
 
+    this.chartProcurementMethodContracts?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+    })
+
     this.chartProcurementType?.updateOptions({
 
       series: [],
@@ -385,7 +475,7 @@ export class AwardedContractVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._service.getSummaryStatsNofilter(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let categories = []
@@ -479,27 +569,27 @@ export class AwardedContractVisualsComponent implements OnInit {
                   name: "Contract Award Value",
                   type: "column",
                   data: categorieValues
-                },
-                {
-                  name: "Number of Contracts",
-                  type: "line",
-                  data: numOfBids
                 }
               ],
               xaxis: {
                 categories: categories,
                 labels: {
-                  style: {
-                    colors: [
-                      "#008FFB",
-                      "#D10CE8",
-                    ],
-                    fontSize: "12px"
-                  },
                   formatter: function (val) {
                     return NumberSuffix(val, 2)
                   }
                 }
+              },
+            })
+
+            this.chartProcurementMethodContracts?.updateOptions({
+              series: [
+                {
+                  name: "Number of Contracts",
+                  data: numOfBids
+                }
+              ],
+              xaxis: {
+                categories: categories,               
               },
             })
             break;
@@ -539,20 +629,13 @@ export class AwardedContractVisualsComponent implements OnInit {
                 },
                 {
                   name: "Number of Contracts",
-                  type: "line",
+                  type: "column",
                   data: numOfBids
                 }
               ],
               xaxis: {
                 categories: categories,
-                labels: {
-                  style: {
-                    colors: [
-                      "#008FFB",
-                      "#D10CE8",
-                    ],
-                    fontSize: "12px"
-                  },
+                labels: {                  
                   formatter: function (val) {
                     return NumberSuffix(val, 2)
                   }

@@ -262,7 +262,7 @@ export class SignedContractsVisualsComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: "UGX "
+          text: "Providers "
         }
       },
       fill: {

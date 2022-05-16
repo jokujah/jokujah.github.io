@@ -7,6 +7,7 @@
           <mat-form-field class="min-w-full" appearance="outline">
             <mat-label>Procuring and Disposal Entity</mat-label>
             <mat-select [formControl]="pdeControl">
+              <mat-option value="">All Procuring and Disposal Entities</mat-option>
               <mat-option *ngFor="let item of pde" value="{{item.PDE}}">{{item.PDE}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -24,7 +25,7 @@
   
         <div class="flex flex-row space-x-2">
           <button type="button" (click)="submit(options)"
-            class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+            class=" flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Filter</button>
           <button type="button" (click)="reset()"
             class="flex-1 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-indigo-600 bg-white hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Reset</button>
         </div>
@@ -36,13 +37,19 @@
     <div>
       <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <div class="statsCard">
-          <span class="stats">{{numberOfContracts}}</span>
+          <span *ngIf="!isLoading" class="stats">{{numberOfContracts}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
           <span class="statsText">Awarded Contracts</span>
   
         </div>
   
         <div class="statsCard">
-          <span class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+          <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
           <span class="statsText">Contract Value</span>
         </div>
 <!--   
@@ -79,18 +86,14 @@
             </div>
           </div> -->
         </div>
-        <div class="flex ">
+        <div class="flex ">         
           <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
-            
-            <div id="chart"  *ngIf="chartOptionsProcurementMethod"  class="w-full  p-5">
-
-              <apx-chart #chartProcurementMethod [series]="chartOptionsProcurementMethod.series" [chart]="chartOptionsProcurementMethod.chart" [yaxis]="chartOptionsProcurementMethod.yaxis"
-                [xaxis]="chartOptionsProcurementMethod.xaxis" [labels]="chartOptionsProcurementMethod.labels" [stroke]="chartOptionsProcurementMethod.stroke"
-                [title]="chartOptionsProcurementMethod.title" [dataLabels]="chartOptionsProcurementMethod.dataLabels" [fill]="chartOptionsProcurementMethod.fill"
-                [tooltip]="chartOptionsProcurementMethod.tooltip" [noData]="chartOptionsProcurementMethod.noData"></apx-chart>
-
-            </div>
-  
+            <div id="chartProcurementType" class="w-full  p-5">
+              <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
+                [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
+                [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
+                [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
+            </div>  
           </div>
           <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
             <div class="flex items-center justify-center h-80">
@@ -104,27 +107,55 @@
           </div> -->
         </div>
       </div>
-      <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
         <div class="flex ">
-          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
-            <div id="chartProcurementType" class="w-full  p-5">
-              <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
-                [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
-                [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
-                [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
+      
+          <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
+            <div id="chart" *ngIf="chartOptionsProcurementMethod" class="w-full  p-5">
+              <apx-chart #chartProcurementMethod [series]="chartOptionsProcurementMethod.series"
+                [chart]="chartOptionsProcurementMethod.chart" [yaxis]="chartOptionsProcurementMethod.yaxis"
+                [xaxis]="chartOptionsProcurementMethod.xaxis" [labels]="chartOptionsProcurementMethod.labels"
+                [stroke]="chartOptionsProcurementMethod.stroke" [title]="chartOptionsProcurementMethod.title"
+                [dataLabels]="chartOptionsProcurementMethod.dataLabels" [fill]="chartOptionsProcurementMethod.fill"
+                [plotOptions]="chartOptionsProcurementMethod.plotOptions" [tooltip]="chartOptionsProcurementMethod.tooltip" [noData]="chartOptionsProcurementMethod.noData"></apx-chart>
             </div>
-  
           </div>
+      
           <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
-            <div class="flex items-center justify-center h-80">
-              <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                </path>
-              </svg>
+                  <div class="flex items-center justify-center h-80">
+                    <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                      </path>
+                    </svg>
+                  </div>
+                </div> -->
+        </div>
+        <div class="flex ">
+      
+          <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
+            <div id="chartProcurementMethodContracts" *ngIf="chartOptionsProcurementMethodContracts" class="w-full  p-5">
+              <apx-chart #chartProcurementMethodContracts [series]="chartOptionsProcurementMethodContracts.series"
+                [chart]="chartOptionsProcurementMethodContracts.chart" [yaxis]="chartOptionsProcurementMethodContracts.yaxis"
+                [xaxis]="chartOptionsProcurementMethodContracts.xaxis" [labels]="chartOptionsProcurementMethodContracts.labels"
+                [stroke]="chartOptionsProcurementMethodContracts.stroke" [title]="chartOptionsProcurementMethodContracts.title"
+                [dataLabels]="chartOptionsProcurementMethodContracts.dataLabels" [fill]="chartOptionsProcurementMethodContracts.fill"
+                [tooltip]="chartOptionsProcurementMethodContracts.tooltip" [noData]="chartOptionsProcurementMethodContracts.noData"
+                [plotOptions]="chartOptionsProcurementMethodContracts.plotOptions"></apx-chart>
             </div>
-          </div> -->
+          </div>
+      
+          <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
+                  <div class="flex items-center justify-center h-80">
+                    <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                      </path>
+                    </svg>
+                  </div>
+                </div> -->
         </div>
       </div>
     </div>
