@@ -33,6 +33,10 @@ export class ContractingReportsListComponent implements OnInit {
       "name":'Procurement Report',
       "route":'procurement-report'
     },
+    {
+      "name":'Micro Procurement Report',
+      "route":'micro-procurement-report'
+    },
     
   ]
 

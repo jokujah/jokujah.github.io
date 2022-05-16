@@ -1,3 +1,21 @@
+import { SupplierPortalCategoryPageComponent } from './pages/supplier-portal-category-page/supplier-portal-category-page.component';
+import { RevenueSourcesCategoryPageComponent } from './pages/revenue-sources-category-page/revenue-sources-category-page.component';
+import { RevenueSourcesReportsListComponent } from './pages/revenue-sources-category-page/revenue-sources-reports-list/revenue-sources-reports-list.component';
+import { ContractManagementReportComponent } from './pages/contracting-management-category-page/contract-management-report/contract-management-report.component';
+import { PdeBidAverageReportComponent } from './pages/solicitation-category-page/pde-bid-average-report/pde-bid-average-report.component';
+import { SolicitationReportsListComponent } from './pages/solicitation-category-page/solicitation-reports-list/solicitation-reports-list.component';
+import { SolicitationCategoryPageComponent } from './pages/solicitation-category-page/solicitation-category-page.component';
+import { InitiationReportsListComponent } from './pages/initiation-category-page/initiation-reports-list/initiation-reports-list.component';
+import { SuspendedProvidersReportComponent } from './pages/supplier-portal-category-page/suspended-providers-report/suspended-providers-report.component';
+import { LateInitiationReportComponent } from './pages/initiation-category-page/late-initiation-report/late-initiation-report.component';
+import { InitiationCategoryPageComponent } from './pages/initiation-category-page/initiation-category-page.component';
+import { ProcurementsAwardedToSuspendedProvidersComponent } from './pages/contracting-management-category-page/procurements-awarded-to-suspended-providers/procurements-awarded-to-suspended-providers.component';
+import { ContractsCompletedOnTimeReportComponent } from './pages/contracting-management-category-page/contracts-completed-on-time-report/contracts-completed-on-time-report.component';
+import { ActualVsPlannedProcurementReportComponent } from './pages/contracting-management-category-page/actual-vs-planned-procurement-report/actual-vs-planned-procurement-report.component';
+import { ProviderPerformanceReportComponent } from './pages/contracting-management-category-page/provider-performance-report/provider-performance-report.component';
+import { MicroProcurementReportComponent } from './pages/contracting-category-page/micro-procurement-report/micro-procurement-report.component';
+import { DisposalReportsListComponent } from './pages/disposal-category-page/disposal-reports-list/disposal-reports-list.component';
+import { DisposalCategoryPageComponent } from './pages/disposal-category-page/disposal-category-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { TerminatedContractsReportComponent } from './pages/contracting-management-category-page/terminated-contracts-report/terminated-contracts-report.component';
 import { FrameWorkReportComponent } from './pages/contracting-management-category-page/frame-work-report/frame-work-report.component';
@@ -35,6 +53,7 @@ import { CompletedContractsVisualsComponent } from './pages/contracting-manageme
 import { CancelledTenderVisualsComponent } from './pages/contracting-management-category-page/cancelled-tender-report/cancelled-tender-visuals/cancelled-tender-visuals.component';
 import { AdministrativeReviewReportComponent } from './pages/contracting-category-page/administrative-review-report/administrative-review-report.component';
 import { ReportPageComponent } from './pages/report-page/report-page.component';
+import { SupplierPortalReportsListComponent } from './pages/supplier-portal-category-page/supplier-portal-reports-list/supplier-portal-reports-list.component';
 
 const routes: Routes = [
   { 
@@ -74,8 +93,7 @@ const routes: Routes = [
               },
             ]
           },
-        ]
-       
+        ]       
       },
 
       {
@@ -87,6 +105,78 @@ const routes: Routes = [
         path: '',
         redirectTo: 'planning',
         pathMatch: 'full',
+      },
+
+      {
+        path: 'initiation',
+        component:InitiationCategoryPageComponent,
+        children: [
+          {
+            path: 'initiation-reports-list',
+            component:InitiationReportsListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'initiation-reports-list',
+            pathMatch: 'full',
+          },
+          {
+            path: 'late-initiation-report',
+            component:LateInitiationReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:VisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+        ]       
+      },
+
+      {
+        path: 'solicitation',
+        component:SolicitationCategoryPageComponent,
+        children: [
+          {
+            path: 'solicitation-reports-list',
+            component:SolicitationReportsListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'solicitation-reports-list',
+            pathMatch: 'full',
+          },
+          {
+            path: 'pde-bid-average-report',
+            component:PdeBidAverageReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:VisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+        ]       
       },
 
       {
@@ -127,6 +217,41 @@ const routes: Routes = [
        
       },
 
+      {
+        path: 'supplier-portal',
+        component:SupplierPortalCategoryPageComponent,
+        children: [
+          {
+            path: 'supplier-portal-reports-list',
+            component:SupplierPortalReportsListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'supplier-portal-reports-list',
+            pathMatch: 'full',
+          },
+          {
+            path: 'suspended-providers-report',
+            component:SuspendedProvidersReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:VisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+        ]       
+      },
 
       {
         path: 'contracting',
@@ -261,11 +386,30 @@ const routes: Routes = [
               },
             ]
           },
+          {
+            path: 'micro-procurement-report',
+            component:MicroProcurementReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:SignedContractsVisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
 
         ]
         
       },
-
 
       {
         path: 'contract-management',
@@ -361,8 +505,185 @@ const routes: Routes = [
               },
             ]
           }
+
+          ,
+          {
+            path: 'provider-performance-report',
+            component:ProviderPerformanceReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:TerminatedContractsVisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+
+          {
+            path: 'contract-management-report',
+            component:ContractManagementReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:TerminatedContractsVisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+          {
+            path: 'actual-vs-planned-procurement-report',
+            component:ActualVsPlannedProcurementReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:TerminatedContractsVisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+          {
+            path: 'contracts-completed-on-time-report',
+            component:ContractsCompletedOnTimeReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:TerminatedContractsVisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+          {
+            path: 'procurements-awarded-to-suspended-providers-report',
+            component:ProcurementsAwardedToSuspendedProvidersComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:TerminatedContractsVisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
         ]      
-      },  
+      }, 
+
+      {
+        path: 'revenue-sources',
+        component:RevenueSourcesCategoryPageComponent,
+        children: [
+          {
+            path: 'revenue-sources-report-list',
+            component:RevenueSourcesReportsListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'revenue-sources-report-list',
+            pathMatch: 'full',
+          },
+          {
+            path: 'revenue-report',
+            component:PlaningAndForecastingReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:VisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+        ]       
+      },
+     
+      {
+        path: 'disposal',
+        component:DisposalCategoryPageComponent,
+        children: [
+          {
+            path: 'disposal-reports-list',
+            component:DisposalReportsListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'disposal-reports-list',
+            pathMatch: 'full',
+          },
+          {
+            path: 'disposal-report',
+            component:PlaningAndForecastingReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:VisualsComponent,
+              },
+              {
+                path: '',
+                redirectTo: 'visuals',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                
+              },
+            ]
+          },
+        ]       
+      },
+      
+      
 
     ]
   },

@@ -22,8 +22,24 @@ export class ContractManagementReportsListComponent implements OnInit {
       "route":'frame-work-report'
     },
     {
-      "name":'Terminated Contracts Report',
-      "route":'terminated-contracts-report'
+      "name":'Provider Perfomance Report',
+      "route":'provider-performance-report'
+    },
+    {
+      "name":'Actual Vs Planned Procurement Report',
+      "route":'actual-vs-planned-procurement-report'
+    },
+    {
+      "name":'Completed Contracts On Time Report',
+      "route":'contracts-completed-on-time-report'
+    },
+    {
+      "name":'Procurements Awarded To Suspended Providers Report',
+      "route":'procurements-awarded-to-suspended-providers-report'
+    },
+    {
+      "name":'Contract Management Report',
+      "route":'contract-management-report'
     }
   ]
 
