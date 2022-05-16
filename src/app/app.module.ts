@@ -28,10 +28,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpServiceInterceptor } from './interceptors/HttpInterceptor/http-service.interceptor';
 
 
-
 @NgModule({
   declarations: [
-    AppComponent,  
+    AppComponent  
   ],
   imports: [
     BrowserModule,
