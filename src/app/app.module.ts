@@ -1,12 +1,8 @@
+import { ReportPageModule } from './pages/report-page/report-page.module';
 import { ContractingManagementCategoryPageModule } from './pages/contracting-management-category-page/contracting-management-category-page.module';
 import { ContractingCategoryPageModule } from './pages/contracting-category-page/contracting-category-page.module';
 import { EvaluationCategoryPageModule } from './pages/evaluation-category-page/evaluation-category-page.module';
-import { ContractingManagementCategoryPageComponent } from './pages/contracting-management-category-page/contracting-management-category-page.component';
-import { ContractingCategoryPageComponent } from './pages/contracting-category-page/contracting-category-page.component';
-import { EvaluationCategoryPageComponent } from './pages/evaluation-category-page/evaluation-category-page.component';
-import { PlanningCategoryPageComponent } from './pages/planning-category-page/planning-category-page.component';
 import { DashboardModule } from './layouts/dashboard/dashboard.module';
-import { DashboardComponent } from './layouts/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,24 +21,17 @@ import * as excel from "fusioncharts/fusioncharts.excelexport";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import { PlanningCategoryPageModule } from './pages/planning-category-page/planning-category-page.module';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
-import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
 
 import { GoogleChartsModule } from 'angular-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpServiceInterceptor } from './interceptors/HttpInterceptor/http-service.interceptor';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    // DashboardComponent,
-    // PlanningCategoryPageComponent,
-    // EvaluationCategoryPageComponent,
-    // ContractingCategoryPageComponent,
-    // ContractingManagementCategoryPageComponent   
+    AppComponent,  
   ],
   imports: [
     BrowserModule,
@@ -60,13 +49,16 @@ import { ToastrModule } from 'ngx-toastr';
     GoogleChartsModule,
     NgApexchartsModule,
     ToastrModule.forRoot(),
-    // MatFormFieldModule,
-    // FormsModule,
-    // MatSelectModule,
-    // ReactiveFormsModule
+    ReportPageModule
     
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpServiceInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
