@@ -24,7 +24,7 @@ export class RevenueSourcesReportsListComponent implements OnInit {
   }
 
   onClickReport(reportName:string){
-    this.router.navigate([`../dashboard/revenue-report/${reportName}`])
+    this.router.navigate([`../dashboard/revenue-sources/${reportName}`])
   }
 
 }

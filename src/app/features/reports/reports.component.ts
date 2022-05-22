@@ -1,10 +1,14 @@
+import { Download } from './../../utils/download';
 import { saveAs } from 'file-saver';
 import  PDE  from 'src/assets/PDE.json';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { getFinancialYears, slowLoader, } from 'src/app/utils/helpers';
+import { DOCUMENT } from '@angular/common';
+import { DownloadService } from 'src/app/services/Download/download.service';
+import { Observable } from 'rxjs/internal/Observable';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -40,10 +44,16 @@ export class ReportsComponent implements OnInit {
 
   searchedPDE;
 
+  download$: Observable<Download>
+
+  selectedFinancialYear;
+  selectedPDE
   
   
 
   constructor(
+    private downloadService: DownloadService,
+    @Inject(DOCUMENT) private document: Document,
     fb: FormBuilder,
     private toastr : ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) { 
@@ -60,31 +70,8 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
- 
-
-  // async filterPDEs(data) {   
-
-  //   this.isLoading = true
-  //   await slowLoader()
-
-  //   this.searchedPDE = this.pde.filter(function(element) {
-  //     return element.PDE.toLowerCase().indexOf(data?.selectedPDE.toLowerCase()) !== -1
-  //   });
-
-  //   this.isLoading = false
-    
-  // }
-  // async resetFilter(data){
-  //     this.isLoading = true
-  //     await slowLoader()
-  //     this.options.get('pde')?.setValue('');
-  //     this.options.get('financialYear')?.setValue(this.financialYears[0]);
-  //     this.searchedPDE = []
-  //     this.isLoading = false
-  // }
-
   download(fileName,filePath,pde){
+
     this.isLoading = true;
     this._planingCategoryService.downloadReport(filePath,pde).subscribe(
       (blob )=>{ 
@@ -103,19 +90,24 @@ export class ReportsComponent implements OnInit {
     )
   }
 
+  // download(fileName,filePath,pde) {
+  //   this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
+  // }
+
 
 
   async submit(data) {
       this.isLoading = true
       await slowLoader()
 
+      this.selectedFinancialYear = data?.selectedFinancialYear
+
       this.searchedPDE = this.pde.filter(function(element) {
         return element.PDE.toLowerCase().indexOf(data?.selectedPDE.toLowerCase()) !== -1
       });
-
-      this.isLoading = false
-      
+      this.isLoading = false      
   }
+  
   async reset(data){
     this.isLoading = true
     await slowLoader()

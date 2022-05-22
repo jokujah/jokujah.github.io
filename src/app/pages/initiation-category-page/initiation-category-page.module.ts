@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { InitiationCategoryPageComponent } from './initiation-category-page.component';
 import { InitiationReportsListComponent } from './initiation-reports-list/initiation-reports-list.component';
 import { LateInitiationReportComponent } from './late-initiation-report/late-initiation-report.component';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { LateInitiationVisualsComponent } from './late-initiation-report/late-initiation-visuals/late-initiation-visuals.component';
 
 
 
@@ -10,10 +13,13 @@ import { LateInitiationReportComponent } from './late-initiation-report/late-ini
   declarations: [
     InitiationCategoryPageComponent,
     InitiationReportsListComponent,
-    LateInitiationReportComponent
+    LateInitiationReportComponent,
+    LateInitiationVisualsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule,
+    SharedModule,
   ]
 })
 export class InitiationCategoryPageModule { }

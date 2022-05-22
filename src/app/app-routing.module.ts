@@ -1,3 +1,7 @@
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { ProcurementsAwardedToSuspendedProvidersReportComponent } from './pages/contracting-management-category-page/procurements-awarded-to-suspended-providers-report/procurements-awarded-to-suspended-providers-report.component';
+import { DisposalReportComponent } from './pages/disposal-category-page/disposal-report/disposal-report.component';
+import { RevenueReportComponent } from './pages/revenue-sources-category-page/revenue-report/revenue-report.component';
 import { SupplierPortalCategoryPageComponent } from './pages/supplier-portal-category-page/supplier-portal-category-page.component';
 import { RevenueSourcesCategoryPageComponent } from './pages/revenue-sources-category-page/revenue-sources-category-page.component';
 import { RevenueSourcesReportsListComponent } from './pages/revenue-sources-category-page/revenue-sources-reports-list/revenue-sources-reports-list.component';
@@ -9,7 +13,6 @@ import { InitiationReportsListComponent } from './pages/initiation-category-page
 import { SuspendedProvidersReportComponent } from './pages/supplier-portal-category-page/suspended-providers-report/suspended-providers-report.component';
 import { LateInitiationReportComponent } from './pages/initiation-category-page/late-initiation-report/late-initiation-report.component';
 import { InitiationCategoryPageComponent } from './pages/initiation-category-page/initiation-category-page.component';
-import { ProcurementsAwardedToSuspendedProvidersComponent } from './pages/contracting-management-category-page/procurements-awarded-to-suspended-providers/procurements-awarded-to-suspended-providers.component';
 import { ContractsCompletedOnTimeReportComponent } from './pages/contracting-management-category-page/contracts-completed-on-time-report/contracts-completed-on-time-report.component';
 import { ActualVsPlannedProcurementReportComponent } from './pages/contracting-management-category-page/actual-vs-planned-procurement-report/actual-vs-planned-procurement-report.component';
 import { ProviderPerformanceReportComponent } from './pages/contracting-management-category-page/provider-performance-report/provider-performance-report.component';
@@ -213,8 +216,7 @@ const routes: Routes = [
             ]
           },
 
-        ]
-       
+        ]       
       },
 
       {
@@ -407,8 +409,7 @@ const routes: Routes = [
             ]
           },
 
-        ]
-        
+        ]        
       },
 
       {
@@ -590,7 +591,7 @@ const routes: Routes = [
           },
           {
             path: 'procurements-awarded-to-suspended-providers-report',
-            component:ProcurementsAwardedToSuspendedProvidersComponent,
+            component:ProcurementsAwardedToSuspendedProvidersReportComponent,
             children: [
               {
                 path: 'visuals',
@@ -626,7 +627,7 @@ const routes: Routes = [
           },
           {
             path: 'revenue-report',
-            component:PlaningAndForecastingReportComponent,
+            component:RevenueReportComponent,
             children: [
               {
                 path: 'visuals',
@@ -662,7 +663,7 @@ const routes: Routes = [
           },
           {
             path: 'disposal-report',
-            component:PlaningAndForecastingReportComponent,
+            component:DisposalReportComponent,
             children: [
               {
                 path: 'visuals',
@@ -681,10 +682,7 @@ const routes: Routes = [
             ]
           },
         ]       
-      },
-      
-      
-
+      }, 
     ]
   },
 
@@ -692,6 +690,11 @@ const routes: Routes = [
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
+  },
+
+   {
+    path: 'login',
+    component: LoginPageComponent, 
   },
   // {
   //   path: 'error',
