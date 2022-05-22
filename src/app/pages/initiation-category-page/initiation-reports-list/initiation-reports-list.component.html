@@ -1,17 +1,19 @@
 <div class="border-t border-gray-200 mt-2">
-    <div class="mt-2 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-          <div class="bg-white shadow overflow-hidden sm:rounded-md">
-              <ul role="list" class="divide-y divide-gray-200">
-                <li *ngFor="let report of reportsList" >
-                  <a (click)="onClickReport(report?.route)" >
-                    <div class="px-4 py-4 sm:px-6">
-                      <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-600 cursor-pointer truncate transform transition hover:scale-95 hover:text-gray-700 duration-300 ease-in-out">{{report?.name}}</p>
-                        <!-- <div class="ml-2 flex-shrink-0 flex">
+  <div class="mt-2 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul role="list" class="divide-y divide-gray-200">
+        <li *ngFor="let report of reportsList">
+          <a (click)="onClickReport(report?.route)">
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-sm font-medium text-gray-600 cursor-pointer truncate transform transition hover:scale-95 hover:text-gray-700 duration-300 ease-in-out">
+                  {{report?.name}}</p>
+                <!-- <div class="ml-2 flex-shrink-0 flex">
                           <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Full-time</p>
                         </div> -->
-                      </div>
-                      <!-- <div class="mt-2 sm:flex sm:justify-between">
+              </div>
+              <!-- <div class="mt-2 sm:flex sm:justify-between">
                         <div class="sm:flex">
                           <p class="flex items-center text-sm text-gray-500">
                             <!- Heroicon name: solid/users ->
@@ -39,11 +41,11 @@
                           </p>
                         </div>
                       </div> -->
-                    </div>
-                  </a>
-                </li> 
-                
-              </ul>
             </div>
-      </div>
-      </div>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>

@@ -18,7 +18,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
 import { GoogleChartsModule } from 'angular-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     NumberSuffixPipe,
@@ -37,7 +38,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     LoadingIconModule,
     ErrorPageModule,
     LoadingPulseModule,
-    FilterModule
+    FilterModule,
+    MatProgressBarModule,
+    FormsModule,ReactiveFormsModule
   ]
 })
 export class SharedModule { }

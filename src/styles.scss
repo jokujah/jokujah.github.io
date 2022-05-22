@@ -30,16 +30,9 @@ html {
     @apply text-pink-500  hover:text-pink-700
 }
 
-g.raphael-group-ELXaYZwV {
-    display: none;
-}
 
-svg > g[class^="raphael-group-"] > text{
-    display: none;
-}
-
-g[class^='raphael-group-'][class$='-creditgroup'] {
-    display:none !important;
+.dashboardButton{
+  @apply flex items-center px-2 py-2 text-sm font-medium text-white rounded-md transform transition hover:scale-95 duration-300 ease-in-out hover:bg-primary-900 hover:text-gray-200 
 }
 
 
@@ -84,4 +77,8 @@ g[class^='raphael-group-'][class$='-creditgroup'] {
   .textButton{
 
     @apply cursor-pointer border border-transparent text-sm rounded-md font-medium text-indigo-600 hover:text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+  }
+
+  .hoverSmall{
+    @apply transform transition hover:scale-95 duration-300 ease-in-out hover:bg-primary-900 hover:text-gray-200
   }

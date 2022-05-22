@@ -23,8 +23,13 @@ import { SharedModule } from './../../shared/shared.module';
 import { ProviderPerformanceReportComponent } from './provider-performance-report/provider-performance-report.component';
 import { ActualVsPlannedProcurementReportComponent } from './actual-vs-planned-procurement-report/actual-vs-planned-procurement-report.component';
 import { ContractsCompletedOnTimeReportComponent } from './contracts-completed-on-time-report/contracts-completed-on-time-report.component';
-import { ProcurementsAwardedToSuspendedProvidersComponent } from './procurements-awarded-to-suspended-providers/procurements-awarded-to-suspended-providers.component';
 import { ContractManagementReportComponent } from './contract-management-report/contract-management-report.component';
+import { ActualVsPlannedProcurementVisualsComponent } from './actual-vs-planned-procurement-report/actual-vs-planned-procurement-visuals/actual-vs-planned-procurement-visuals.component';
+import { ContractManagementVisualsComponent } from './contract-management-report/contract-management-visuals/contract-management-visuals.component';
+import { ContractsCompletedOnTimeVisualsComponent } from './contracts-completed-on-time-report/contracts-completed-on-time-visuals/contracts-completed-on-time-visuals.component';
+import { ProcurementsAwardedToSuspendedProvidersVisualsComponent } from './procurements-awarded-to-suspended-providers-report/procurements-awarded-to-suspended-providers-visuals/procurements-awarded-to-suspended-providers-visuals.component';
+import { ProcurementsAwardedToSuspendedProvidersReportComponent } from './procurements-awarded-to-suspended-providers-report/procurements-awarded-to-suspended-providers-report.component';
+import { ProviderPerformanceVisualsComponent } from './provider-performance-report/provider-performance-visuals/provider-performance-visuals.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +46,13 @@ import { ContractManagementReportComponent } from './contract-management-report/
     ProviderPerformanceReportComponent,
     ActualVsPlannedProcurementReportComponent,
     ContractsCompletedOnTimeReportComponent,
-    ProcurementsAwardedToSuspendedProvidersComponent,
     ContractManagementReportComponent,
+    ActualVsPlannedProcurementVisualsComponent,
+    ContractManagementVisualsComponent,
+    ContractsCompletedOnTimeVisualsComponent,
+    ProcurementsAwardedToSuspendedProvidersVisualsComponent,
+    ProcurementsAwardedToSuspendedProvidersReportComponent,
+    ProviderPerformanceVisualsComponent,
   ],
   imports: [
     CommonModule,
