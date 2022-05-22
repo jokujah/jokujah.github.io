@@ -1,3 +1,8 @@
+import { DisposalCategoryPageModule } from './pages/disposal-category-page/disposal-category-page.module';
+import { RevenueSourcesCategoryPageModule } from './pages/revenue-sources-category-page/revenue-sources-category-page.module';
+import { SupplierPortalCategoryPageModule } from './pages/supplier-portal-category-page/supplier-portal-category-page.module';
+import { SolicitationCategoryPageModule } from './pages/solicitation-category-page/solicitation-category-page.module';
+import { InitiationCategoryPageModule } from './pages/initiation-category-page/initiation-category-page.module';
 import { ReportPageModule } from './pages/report-page/report-page.module';
 import { ContractingManagementCategoryPageModule } from './pages/contracting-management-category-page/contracting-management-category-page.module';
 import { ContractingCategoryPageModule } from './pages/contracting-category-page/contracting-category-page.module';
@@ -26,11 +31,12 @@ import { GoogleChartsModule } from 'angular-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpServiceInterceptor } from './interceptors/HttpInterceptor/http-service.interceptor';
-
+import { SAVER, getSaver } from './utils/saver.provider';
+import { LoginPageModule } from './pages/login-page/login-page.module';
 
 @NgModule({
   declarations: [
-    AppComponent  
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,13 +48,19 @@ import { HttpServiceInterceptor } from './interceptors/HttpInterceptor/http-serv
     FusionChartsModule,
     DashboardModule,
     PlanningCategoryPageModule,
+    InitiationCategoryPageModule,
+    SolicitationCategoryPageModule,
     EvaluationCategoryPageModule,
+    SupplierPortalCategoryPageModule,    
     ContractingCategoryPageModule,
     ContractingManagementCategoryPageModule,
+    RevenueSourcesCategoryPageModule,
+    DisposalCategoryPageModule,
     GoogleChartsModule,
     NgApexchartsModule,
     ToastrModule.forRoot(),
-    ReportPageModule
+    ReportPageModule,
+    LoginPageModule
     
   ],
   providers: [
@@ -57,6 +69,7 @@ import { HttpServiceInterceptor } from './interceptors/HttpInterceptor/http-serv
       useClass: HttpServiceInterceptor,
       multi: true
     },
+    {provide: SAVER, useFactory: getSaver}
   ],
   bootstrap: [AppComponent]
 })

@@ -25,6 +25,7 @@ import { PdeAverageContractValueVisualsComponent } from './pde-average-contract-
 import { PdeAverageContractValueReportComponent } from './pde-average-contract-value-report/pde-average-contract-value-report.component';
 import { ProcurementReportVisualsComponent } from './procurement-report/procurement-report-visuals/procurement-report-visuals.component';
 import { MicroProcurementReportComponent } from './micro-procurement-report/micro-procurement-report.component';
+import { MicroProcurementVisualsComponent } from './micro-procurement-report/micro-procurement-visuals/micro-procurement-visuals.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MicroProcurementReportComponent } from './micro-procurement-report/micr
     ProcurementMethodAverageContractValueVisualsComponent,
     ContractingCategoryPageComponent,
     MicroProcurementReportComponent,
+    MicroProcurementVisualsComponent,
   ],
   imports: [
     CommonModule,

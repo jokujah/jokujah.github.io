@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -23,6 +23,17 @@ export class PlaningAndForecastingReportService {
 
   downloadReport2(reportName,financialYear,pde): Observable<Blob> {
     return this.http.get( `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=${financialYear}&pde[]=${pde}` , {responseType: 'blob'})    
+  }
+
+  downloadReport3(reportName,financialYear,pde): Observable<HttpEvent<Blob>> {
+    return this.http.get( 
+      `${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=${financialYear}&pde[]=${pde}` , 
+      {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'blob'
+      }
+    )    
   }
 
   getSummaryStats(reportName,financialYear,procuringEntity): Observable<any> {

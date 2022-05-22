@@ -12,8 +12,7 @@ export class SolicitationReportsListComponent implements OnInit {
     {
       "name":'PDE Bid Average Report',
       "route":'pde-bid-average-report'
-    }
-    
+    }    
   ]
 
   constructor(
