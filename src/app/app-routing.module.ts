@@ -1,3 +1,5 @@
+import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { ErrorPageComponent } from './shared/error-page/error-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ProcurementsAwardedToSuspendedProvidersReportComponent } from './pages/contracting-management-category-page/procurements-awarded-to-suspended-providers-report/procurements-awarded-to-suspended-providers-report.component';
 import { DisposalReportComponent } from './pages/disposal-category-page/disposal-report/disposal-report.component';
@@ -57,6 +59,7 @@ import { CancelledTenderVisualsComponent } from './pages/contracting-management-
 import { AdministrativeReviewReportComponent } from './pages/contracting-category-page/administrative-review-report/administrative-review-report.component';
 import { ReportPageComponent } from './pages/report-page/report-page.component';
 import { SupplierPortalReportsListComponent } from './pages/supplier-portal-category-page/supplier-portal-reports-list/supplier-portal-reports-list.component';
+import { AuthenticationGuard } from './guards/authentication/authentication.guard';
 
 const routes: Routes = [
   { 
@@ -683,12 +686,13 @@ const routes: Routes = [
           },
         ]       
       }, 
-    ]
+    ],
+    canActivate: [AuthenticationGuard]
   },
 
   {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'login',
       pathMatch: 'full',
   },
 
@@ -696,14 +700,14 @@ const routes: Routes = [
     path: 'login',
     component: LoginPageComponent, 
   },
-  // {
-  //   path: 'error',
-  //   loadChildren: () => import('./pages/error-page/error-page.module').then((m) => m.ErrorPageModule),
-  // },
-  // {
-  //   path: 'not-found',
-  //   loadChildren: () => import('./pages/not-found-page/not-found-page.module').then((m) => m.NotFoundPageModule),
-  // },
+  {
+    path: 'error',
+    component: ErrorPageComponent,
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
+  },
 ];
 
 @NgModule({
