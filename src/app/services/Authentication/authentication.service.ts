@@ -20,9 +20,11 @@ export class AuthenticationService {
         console.log(response['data'])
         
         const token: string = response['data']['token'];
-        const email: string = response['data']['email'];
-        const role: string = response['data']['role'];
-        const user: any = response['user'];
+        const user: any = response['data']['user'];
+
+        const email: string = user?.email;
+        const role: [] = user?.roles;
+       
         if (token && token !== null && token !== undefined) {
           this.setToken(token);
           this.setUserEmail(email)
@@ -49,7 +51,7 @@ export class AuthenticationService {
   setToken(token: string): void {
     return localStorage.setItem('token', token);
   }
-  setRole(role: string): void {
+  setRole(role: any): void {
     return localStorage.setItem('role', role);
   }
 

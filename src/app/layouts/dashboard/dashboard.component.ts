@@ -10,6 +10,7 @@ import {
 } from '@angular/animations';
 import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AuthenticationService } from 'src/app/services/Authentication/authentication.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -126,17 +127,14 @@ export class DashboardComponent implements OnInit {
   pageHeadingDisplay:string='';
   reportNameDisplay:string=''
 
-
-
-
-
-  dataSource: Object;
   
-
+  email!: string | null;
+  role!: string | null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private _authService: AuthenticationService,
     fb: FormBuilder
   ) {
 
@@ -173,6 +171,9 @@ export class DashboardComponent implements OnInit {
       pde:this.pdeControl
     });
 
+    this.email = localStorage.getItem('email');
+    this.role = localStorage.getItem('role');
+
    }
 
   ngOnInit(): void {
@@ -191,6 +192,7 @@ export class DashboardComponent implements OnInit {
   changePageHeading(activeURL:string){
     var words = activeURL.split('/');
     console.log(words)
+    if(words[1]=='login') return
 
     this.pageHeading = `${words[2]}`
 
@@ -231,6 +233,11 @@ export class DashboardComponent implements OnInit {
 
   capitalizeFirstLetter(string) {
     return string[0].toUpperCase() + string.slice(1);
+}
+
+logOut() {
+  this._authService.logout();
+  this.router.navigate(['/login']);
 }
 
 }
