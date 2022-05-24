@@ -24,6 +24,9 @@ export class FilterComponent implements OnInit {
     return 0;
   })
 
+  // selectedPDE
+  // selectedFinancialYear
+
   @Output() filterEvent = new EventEmitter<any>();
   @Output() resetEvent = new EventEmitter<string>();
 
