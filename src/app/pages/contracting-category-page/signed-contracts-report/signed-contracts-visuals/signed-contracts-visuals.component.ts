@@ -74,8 +74,8 @@ export class SignedContractsVisualsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts()
-    this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    this.getVisualisation('high-value-contracts', this.financialYears[0], '')
+    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
+    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
     
   }
 

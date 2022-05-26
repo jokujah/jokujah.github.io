@@ -85,7 +85,7 @@ export class AutoLogoutService {
 
     const diff = timeLeft - now;
 
-    console.log("Diff",diff)
+    // console.log("Diff",diff)
     const isTimeout = diff < 0;
     //this.isLoggedIn.subscribe(event => this.isLogin = event);
     this.ngZone.run(() => {
