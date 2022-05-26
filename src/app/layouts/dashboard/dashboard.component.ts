@@ -1,3 +1,4 @@
+import { AutoLogoutService } from './../../services/AutoLogOut/auto-logout.service';
 import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
@@ -11,6 +12,7 @@ import {
 import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/Authentication/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -119,15 +121,15 @@ export class DashboardComponent implements OnInit {
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
 
-  isLoading:Boolean=false
-  currentRoute: string='';
-  pageHeading:string='';
-  reportName:string=''
+  isLoading: Boolean = false
+  currentRoute: string = '';
+  pageHeading: string = '';
+  reportName: string = ''
 
-  pageHeadingDisplay:string='';
-  reportNameDisplay:string=''
+  pageHeadingDisplay: string = '';
+  reportNameDisplay: string = ''
 
-  
+
   email!: string | null;
   role!: string | null;
 
@@ -135,6 +137,8 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private _authService: AuthenticationService,
+    private _autoLogOutService : AutoLogoutService,
+    private toastr: ToastrService,
     fb: FormBuilder
   ) {
 
@@ -151,7 +155,7 @@ export class DashboardComponent implements OnInit {
         this.currentRoute = event.urlAfterRedirects;
         console.log(event);
         console.log(this.currentRoute);
-        
+
         this.changePageHeading(this.currentRoute)
         //console.log(this.activeLinkStates)
         this.showImage = false
@@ -168,19 +172,20 @@ export class DashboardComponent implements OnInit {
 
     this.options = fb.group({
       financialYear: this.financialYearControl,
-      pde:this.pdeControl
+      pde: this.pdeControl
     });
 
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
-
-   }
+    this._autoLogOutService.check()
+  }
 
   ngOnInit(): void {
+    
   }
 
 
-  onClick(){
+  onClick() {
     this.router.navigate([`../dashboard/${this.pageHeading}`])
   }
 
@@ -189,38 +194,38 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  changePageHeading(activeURL:string){
+  changePageHeading(activeURL: string) {
     var words = activeURL.split('/');
     console.log(words)
-    if(words[1]=='login') return
+    if (words[1] == 'login') return
 
     this.pageHeading = `${words[2]}`
 
     var splitPageHeading = this.pageHeading.split('-')
-    if(splitPageHeading.length > 0){
-      let holdCapitalizedHeadings=[]
+    if (splitPageHeading.length > 0) {
+      let holdCapitalizedHeadings = []
       console.log(splitPageHeading)
-      splitPageHeading.forEach(element=>{
+      splitPageHeading.forEach(element => {
         holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
       })
       this.pageHeadingDisplay = holdCapitalizedHeadings.join(' ')
-    }else{
+    } else {
       this.pageHeadingDisplay = this.capitalizeFirstLetter(this.capitalizeFirstLetter)
     }
 
 
-    this.reportName = `${words[3]?words[3]:''}`
+    this.reportName = `${words[3] ? words[3] : ''}`
 
-    if(this.reportName == 'reports-list'){
+    if (this.reportName == 'reports-list') {
       this.reportName = 'All Reports'
-    }else if((this.reportName != '') || (this.reportName != undefined)){
+    } else if ((this.reportName != '') || (this.reportName != undefined)) {
       let splitName = [] = this.reportName.split('-')
 
-      if(splitName.length>0){
-        let holdCapitalizedHeadings=[]
-        splitName.forEach(element=>{
+      if (splitName.length > 0) {
+        let holdCapitalizedHeadings = []
+        splitName.forEach(element => {
           holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
-        })       
+        })
         this.reportName = splitName.join(' ')
         this.reportNameDisplay = holdCapitalizedHeadings.join(' ')
       }
@@ -233,11 +238,27 @@ export class DashboardComponent implements OnInit {
 
   capitalizeFirstLetter(string) {
     return string[0].toUpperCase() + string.slice(1);
-}
+  }
 
-logOut() {
-  this._authService.logout();
-  this.router.navigate(['/login']);
-}
+  logOut() {
+    this._authService.logout().subscribe(
+      (response) => {
+        console.log(response)
+        localStorage.clear()
+        this.toastr.success("Logged Out User Successfully", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
+        this.router.navigate(['/login']);
+      },
+      (error) => {
+        console.log(error)
+        this.toastr.error("Something Went Wrong, Failed to log out user", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
+      }
+    );
+  }
 
 }

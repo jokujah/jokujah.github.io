@@ -277,23 +277,20 @@ export class VisualsComponent implements OnInit {
     };
 
     //for changing stats at the top and the highest procurement budgets down
-    this.getSummaryStats('plan-summary',this.financialYears[0],'')
+    //this.getSummaryStats('plan-summary',this.financialYears[0],'')
 
     //for budget graph
-    this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
+    //this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
 
     //procurement graph
-    this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
+    //this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
     
     //this.getSummaryStats('plan-by-funding-source',this.financialYears[0],'Ministry of Finance')
     //this.getSummaryStats('plan-budget-status',this.financialYears[0],'Ministry of Finance')
   }
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
+    console.log(data)
     this.getSummaryStats('plan-summary',data?.selectedFinancialYear,'')
     this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
@@ -303,9 +300,6 @@ export class VisualsComponent implements OnInit {
   }
   
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
      //for changing stats at the top and the highest procurement budgets down
      this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
 

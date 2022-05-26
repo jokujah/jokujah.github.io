@@ -42,16 +42,21 @@ export class PlaningAndForecastingReportService {
 
   getSummaryStatsWithPDE(reportName,financialYear,procuringEntity): Observable<any> {
 
+    // var roles = localStorage.getItem('roles')
+    var roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
+
+    var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+
     if((financialYear === "") && (procuringEntity !== ""))
     {
-      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?pde[]=${procuringEntity}`) 
+      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?${checkIfPdeOrDept}[]=${procuringEntity}`) 
     }
     else if((financialYear !== "") && (procuringEntity === ""))
     {
       return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}`) 
     }
     else if((financialYear !== "") && (procuringEntity !== "")){
-      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&pde[]=${procuringEntity}`)
+      return this.http.get( `${this.apiUrl}/api/summary-stats/${reportName}?fy[]=${financialYear}&${checkIfPdeOrDept}[]=${procuringEntity}`)
     }
     else
     {
