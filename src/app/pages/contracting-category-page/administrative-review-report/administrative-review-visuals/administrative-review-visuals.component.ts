@@ -168,21 +168,21 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
 
 
-  submit(form: FormGroup) {
-    let data: any = {
-      'selectedPDE': form.controls.pde.value,
-      'selectedFinancialYear': form.controls.financialYear.value,
-    }
+  submit(data) {
+    // let data: any = {
+    //   'selectedPDE': form.controls.pde.value,
+    //   'selectedFinancialYear': form.controls.financialYear.value,
+    // }
     this.getSummaryStats('awards-under-admin-review',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('admin-reviews-by-method',this.financialYears[0],data?.selectedPDE)
+    this.getVisualisation('admin-reviews-by-method',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
-  reset(){
-    this.options.get('pde')?.setValue('');
-    this.options.get('financialYear')?.setValue(this.financialYears[0]);
+  reset(data){
+    // this.options.get('pde')?.setValue('');
+    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
 
-    this.getSummaryStats('awards-under-admin-review',this.financialYears[0],'')
-    this.getVisualisation('admin-reviews-by-method',this.financialYears[0],'')
+    this.getSummaryStats('awards-under-admin-review',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('admin-reviews-by-method',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -197,15 +197,15 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._service.getSummaryStatsNofilter(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts =  data.total_no_of_awards
-        this.valueOfContracts = sanitizeCurrencyToString(data.total_estimated_value_of_awards)
-        this.numberOfReviewedContracts =  data.total_no_under_review
-        this.valueOfReviewedContracts =sanitizeCurrencyToString(data.total_amount_under_review)
+        this.numberOfContracts =  data.totalNoOfAwards
+        this.valueOfContracts = sanitizeCurrencyToString(data.totalEstimatedValueOfAwards)
+        this.numberOfReviewedContracts =  data.totalNoUnderReview
+        this.valueOfReviewedContracts =sanitizeCurrencyToString(data.totalAmountUnderReview)
 
         this.isLoading = false
         },
@@ -243,7 +243,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
       },
     })
 
-    this._service.getSummaryStatsNofilter(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let  x = []
@@ -264,8 +264,8 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         // });
 
          this.topTenHighestContracts = data.sort(function(a, b) {
-          var nameA = a?.total_amount_under_review.split(',') 
-          var nameB = b?.total_amount_under_review.split(',') 
+          var nameA = a?.totalAmountUnderReview.split(',') 
+          var nameB = b?.totalAmountUnderReview.split(',') 
           var valueA = parseInt(nameA.join(''))
           var valueB = parseInt(nameB.join(''))
           
@@ -287,12 +287,12 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
         this.topTenHighestContracts.forEach(element => {   
 
-          var valueC = element?.total_amount_under_review.split(',')
+          var valueC = element?.totalAmountUnderReview.split(',')
           var valueD = parseInt(valueC.join(''))
-          var valueE = element.procurement_method.split(' ')
-          categories.push(element.procurement_method)
+          var valueE = element.procurementMethod.split(' ')
+          categories.push(element.procurementMethod)
           categoryValues.push(valueD)
-          numOfContracts.push(parseInt(element?.total_no_under_review))
+          numOfContracts.push(parseInt(element?.totalNoUnderReview))
         });
 
         console.log(categories)

@@ -1,9 +1,4 @@
-<div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
-  <!-- <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <img class="w-auto h-12" src="../../../assets/egp_logo_light.png" alt="EGP">
-    <h3 class="my-6 text-left text-2xl font-semibold text-gray-700">EGP Reports</h3>
-  </div> -->
-  
+<!-- <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="bg-primary-500 white flex flex-col py-8 px-4 shadow sm:rounded-lg sm:px-10">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -34,7 +29,97 @@
             </button>
           </div>
         </form>
+        <div class="flex justify-between items-center mt-4">
+          <div class="form-group form-check">
+            <input type="checkbox"
+              class="form-check-input appearance-none  h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+              id="exampleCheck3" checked />
+            <label class="form-check-label inline-block text-sm text-white" for="exampleCheck2">Remember Me</label>
+          </div>
+          <a
+            href="https://pde.staging.egpuganda.go.ug/password/reset"
+            class="text-white text-sm hover:text-gray-200 focus:text-gray-200 active:text-gray-400 duration-200 transition ease-in-out"
+            >Forgot password?</a
+          >
+        </div>
       </div>
     </div>
-  </div>
+  </div> -->
+ 
   
+  <section class="h-full gradient-form bg-gray-200 md:h-screen">
+    <div class="py-12 px-6 h-full">
+      <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+        <div class="xl:w-10/12">
+          <div class="block bg-white shadow-lg rounded-lg">
+            <div class="lg:flex lg:flex-wrap g-0">
+              <div class="lg:w-6/12 px-4 md:px-0">
+                <div class="p-6 md:p-12 md:mx-6">
+                  <div class="text-center">
+                    <img
+                      class="mx-auto w-48"
+                      src="../../../assets/egp_logo.png"
+                      alt="logo"
+                    />
+                    <h3 class="text-xl text-gray-700 font-semibold mt-4 mb-8 pb-1">EGP Reports</h3>
+                  </div>
+                  <form [formGroup]="loginForm">
+                    <p class="mb-4">Sign in to your account</p>
+                    <div class="mb-4">
+                      <input
+                        formControlName = "email" name="email" type="email" autocomplete="email" required
+                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        id="email"
+                        placeholder="Email"
+                      />
+                    </div>
+                    <div class="mb-4">
+                      <input
+                        id="password" formControlName = "password" name="password" type="password" autocomplete="current-password" required 
+                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        placeholder="Password"
+                      />
+                    </div>
+                    <div class="text-center pt-1 mb-12 pb-1">
+                      <button
+                        (click)="login(loginForm)" [disabled]="isLoading"
+                        class="flex  justify-center px-6 py-2.5 bg-primary-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
+                        type="submit"
+                        data-mdb-ripple="true"
+                        data-mdb-ripple-color="light"
+                      >
+                      <span *ngIf="!isLoading">Sign in</span>
+                      <div *ngIf="isLoading" class="w-5 h-5 border-b-2 border-white  rounded-full animate-spin"></div>
+                      </button>
+                      <a class="text-gray-500" href="https://pde.staging.egpuganda.go.ug/password/reset">Forgot password?</a>
+                    </div>
+                    <!-- <div class="flex items-center justify-between pb-6">
+                      <p class="mb-0 mr-2">Don't have an account?</p>
+                      <button
+                        type="button"
+                        class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+                        data-mdb-ripple="true"
+                        data-mdb-ripple-color="light"
+                      >
+                        Danger
+                      </button>
+                    </div> -->
+                  </form>
+                </div>
+              </div>
+              <div
+                class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none bg-primary-700">
+                <div class="text-white px-4 py-6 md:p-12 md:mx-6">
+                  <h4 class="text-xl font-semibold mb-6">Our Mission</h4>
+                  <p class="text-base">
+                    Attain transparency, accountability, efficiency and competition 
+                    in public procurement by leveraging Information and Communications Technologies.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>  

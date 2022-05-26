@@ -96,12 +96,12 @@ export class DueDeligenceVisualsComponent implements OnInit {
   }
 
 
-  reset(){
+  reset(data){
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue(this.financialYears[0]);
-    this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
+    this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getSummaryStats('bids-summary',this.financialYears[0],'')
-    this.getVisualisation('bids-by-provider',this.financialYears[0],'')
+    this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -120,18 +120,18 @@ export class DueDeligenceVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.successfullEvaluatedBidders = data.successful_evaluated_bidders
-        this.valueOfBids = sanitizeCurrencyToString(data.total_bid_estimate_value)
-        this.allEvaluatedBidders = data.total_evaluated_bidders
+        this.successfullEvaluatedBidders = data.successfulEvaluatedBidders
+        this.valueOfBids = sanitizeCurrencyToString(data.totalBidEstimateValue)
+        this.allEvaluatedBidders = data.totalEvaluatedBidders
 
         this.isLoading = false
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
         this.isLoading = false
         console.log(error)
       }
@@ -181,8 +181,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
         // });
 
          this.topTenHighestContracts = data.sort(function(a, b) {
-          var nameA = a?.total_estimated_value.split(',') 
-          var nameB = b?.total_estimated_value.split(',') 
+          var nameA = a?.totalEstimatedValue.split(',') 
+          var nameB = b?.totalEstimatedValue.split(',') 
           var valueA = parseInt(nameA.join(''))
           var valueB = parseInt(nameB.join(''))
           
@@ -205,12 +205,12 @@ export class DueDeligenceVisualsComponent implements OnInit {
         this.topTenHighestContracts.forEach(element => {
             //if(element?.provider =='none') {categories.push('N/A')}             
 
-          var valueC = element?.total_estimated_value.split(',')
+          var valueC = element?.totalEstimatedValue.split(',')
           var valueD = parseInt(valueC.join(''))
         
           categories.push(element.provider)
           categorieValues.push(valueD)
-          numOfBids.push(parseInt(element?.number_of_bids_submitted))
+          numOfBids.push(parseInt(element?.numberOfBidsSubmitted))
         });
 
         console.log(categories)
@@ -258,11 +258,11 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
   
 
-  submit(form: FormGroup) {
-    let data: any = {
-      'selectedPDE': form.controls.pde.value,
-      'selectedFinancialYear': form.controls.financialYear.value,
-    }
+  submit(data) {
+    // let data: any = {
+    //   'selectedPDE': form.controls.pde.value,
+    //   'selectedFinancialYear': form.controls.financialYear.value,
+    // }
     this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
   }

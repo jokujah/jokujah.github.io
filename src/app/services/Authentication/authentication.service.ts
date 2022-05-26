@@ -39,13 +39,23 @@ export class AuthenticationService {
   }
 
   logout(user?: any) {
-    localStorage.clear();
-    return this.http.post(`${this.apiUrl}/auth/logout`, '').pipe(
-      tap(() => {
+    //localStorage.clear();
+
+    return this.http.post(`${this.apiUrl}/api/logout`, '')
+
+    return this.http.post(`${this.apiUrl}/api/logout`, '').pipe(
+      tap((respone) => {
+        console.log(respone)
         localStorage.clear();
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/login']);
       })
     );
+    
+  }
+
+
+  refreshToken(){
+    return this.http.post(`${this.apiUrl}/api/refresh`, '')
   }
 
   setToken(token: string): void {

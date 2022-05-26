@@ -82,3 +82,8 @@ html {
   .hoverSmall{
     @apply transform transition hover:scale-95 duration-300 ease-in-out hover:bg-primary-900 hover:text-gray-200
   }
+
+  .homePageGradient{
+    background: rgb(88,92,163);
+    background: linear-gradient(90deg, rgba(88,92,163,1) 30%, rgba(22,29,128,1) 73%, rgba(16,15,69,1) 100%);
+  }

@@ -137,8 +137,15 @@
             </div>
           </nav>
         </div>
+        <div class="flex flex-shrink-0 p-2 border-t border-gray-200">
+          <span class="flex-shrink-0 block w-full group">
+            <div>
+              <span class="dashboardButton cursor-pointer" (click)="logOut()">Log Out</span>
+            </div>
+          </span>
+        </div>
         <div class="flex flex-shrink-0 p-4 border-t border-gray-200">
-          <span class="flex-shrink-0 block group">
+          <span class="flex-shrink-0 block w-full group">
             <div class="flex items-center">
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block rounded-full h-9 w-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -146,8 +153,8 @@
                 </svg>
               </div>
               <div class="ml-3">
-                <p class="text-base font-medium text-white group-hover:text-gray-200">Tom Cook</p>
-                <p class="text-sm font-medium text-white group-hover:text-gray-200">View profile</p>
+                <p class="text-xs font-medium text-white group-hover:text-gray-200">Logged In As</p>
+                <p class="text-sm font-medium text-white group-hover:text-gray-200">{{email}}</p>
               </div>
             </div>
           </span>
