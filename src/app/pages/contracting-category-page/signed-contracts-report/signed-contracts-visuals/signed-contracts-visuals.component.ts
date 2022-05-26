@@ -74,28 +74,28 @@ export class SignedContractsVisualsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts()
-    this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    this.getVisualisation('high-value-contracts', this.financialYears[0], '')
+    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
+    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
     
   }
 
 
 
-  submit(form: FormGroup) {
-    let data: any = {
-      'selectedPDE': form.controls.pde.value,
-      'selectedFinancialYear': form.controls.financialYear.value,
-    }
+  submit(data) {
+    // let data: any = {
+    //   'selectedPDE': form.controls.pde.value,
+    //   'selectedFinancialYear': form.controls.financialYear.value,
+    // }
     this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
-  reset(){
-    this.options.get('pde')?.setValue('');
-    this.options.get('financialYear')?.setValue(this.financialYears[0]);
+  reset(data){
+    // this.options.get('pde')?.setValue('');
+    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
 
-    this.getSummaryStats('signed-contracts-summary',this.financialYears[0],'')
-    this.getVisualisation('high-value-contracts',this.financialYears[0],'')
+    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -114,8 +114,8 @@ export class SignedContractsVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts = data.number_of_signed_contracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.total_value_of_signed_contracts)
+        this.numberOfContracts = data.numberOfSignedContracts
+        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
         //this.allEvavluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
@@ -165,8 +165,8 @@ export class SignedContractsVisualsComponent implements OnInit {
             console.log("AWARDED", data)
 
             sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimated_amount.split(',')
-              var nameB = b?.estimated_amount.split(',')
+              var nameA = a?.estimatedAmount.split(',')
+              var nameB = b?.estimatedAmount.split(',')
               var valueA = parseInt(nameA.join(''))
               var valueB = parseInt(nameB.join(''))
 
@@ -180,11 +180,11 @@ export class SignedContractsVisualsComponent implements OnInit {
             })
             
             sortedData.forEach(element => {
-              var valueC = element?.estimated_amount.split(',')
+              var valueC = element?.estimatedAmount.split(',')
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actual_cost.split(',')
+              var valueE = element?.actualCost.split(',')
               var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.subject_of_procurement))
+              subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
               estimatedAmount.push(valueD)
               actualAmount.push(valueF)
             });

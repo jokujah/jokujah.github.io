@@ -277,23 +277,20 @@ export class VisualsComponent implements OnInit {
     };
 
     //for changing stats at the top and the highest procurement budgets down
-    this.getSummaryStats('plan-summary',this.financialYears[0],'')
+    //this.getSummaryStats('plan-summary',this.financialYears[0],'')
 
     //for budget graph
-    this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
+    //this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
 
     //procurement graph
-    this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
+    //this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
     
     //this.getSummaryStats('plan-by-funding-source',this.financialYears[0],'Ministry of Finance')
     //this.getSummaryStats('plan-budget-status',this.financialYears[0],'Ministry of Finance')
   }
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
+    console.log(data)
     this.getSummaryStats('plan-summary',data?.selectedFinancialYear,'')
     this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
@@ -301,18 +298,8 @@ export class VisualsComponent implements OnInit {
     //this.getSummaryStatsWithPDE('plan-by-funding-source',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
   }
-
-
-
-
-  getFontSize() {
-    return Math.max(10, 12);
-  }
-
+  
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
      //for changing stats at the top and the highest procurement budgets down
      this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
 
@@ -365,17 +352,17 @@ export class VisualsComponent implements OnInit {
         console.log('getSummaryStats' ,e)
         if (data.length > 0) {
           data.forEach(element => {
-            if (element.financial_year == financialYear) {
-              x.push(element?.number_of_plans)
-              var e = element?.estimated_amount.split(',')
+            if (element.financialYear == financialYear) {
+              x.push(element?.numberOfPlans)
+              var e = element?.estimatedAmount.split(',')
               y.push(parseInt(e.join('')))
-              providersInSelectedYear.push(element?.pde_name)
+              providersInSelectedYear.push(element?.pdeName)
             }
           });
 
           this.topTenHighestContracts = data.sort(function (a, b) {
-            var nameA = a?.estimated_amount.split(',')
-            var nameB = b?.estimated_amount.split(',')
+            var nameA = a?.estimatedAmount.split(',')
+            var nameB = b?.estimatedAmount.split(',')
             var valueA = parseInt(nameA.join(''))
             var valueB = parseInt(nameB.join(''))
 
@@ -394,9 +381,9 @@ export class VisualsComponent implements OnInit {
 
           this.topTenHighestContracts.slice(0, 10).forEach(element => {
 
-            var valueC = element?.estimated_amount.split(',')
+            var valueC = element?.estimatedAmount.split(',')
             var valueD = parseInt(valueC.join(''))
-            categories.push(element.pde_name)
+            categories.push(element.pdeName)
             categoryValues.push(valueD)
           });
 
@@ -429,7 +416,7 @@ export class VisualsComponent implements OnInit {
           this.numberOfPlannedContracts = addArrayValues(x)
           this.totalValueofPlannedContracts = addArrayValues(y)
           this.yearOfPlannedContracts = financialYear
-          this.numberOfRegisteredEntities = data[0].number_of_registered_pdes
+          this.numberOfRegisteredEntities = data[0].numberOfRegisteredPdes
           this.isLoading = false
         }
         else{
@@ -497,13 +484,13 @@ export class VisualsComponent implements OnInit {
         
         data.forEach(element => {
           
-            x.push(element?.number_of_plans)
+            x.push(element?.numberOfPlans)
 
-            var planned = element?.budget_planned_amount.split(',')
+            var planned = element?.budgetPlannedAmount.split(',')
 
-            var totalplanned = element?.total_budget_planned_amount.split(',')
+            var totalplanned = element?.totalBudgetPlannedAmount.split(',')
 
-            var spent = element?.spent_amount.split(',')
+            var spent = element?.spentAmount.split(',')
 
             var percentage = parseInt(spent.join(''))/parseInt(planned.join('')) *100
 
@@ -512,7 +499,7 @@ export class VisualsComponent implements OnInit {
             var oneSerieData = [(parseInt(spent.join(''))/1000000000000),(parseInt(planned.join(''))/1000000000000),percentage]
 
             var oneSerieObject = {
-              x:element?.pde_name,
+              x:element?.pdeName,
               // "budgetSpent":spent,
               // "planned":planned,
               y:Math.round(percentage),
@@ -574,8 +561,8 @@ export class VisualsComponent implements OnInit {
         console.log("Procurment Types",data)
 
         sortedTypes = data.sort(function(a, b) {
-          var nameA = a?.market_price.split(',')
-          var nameB = b?.market_price.split(',')
+          var nameA = a?.marketPrice.split(',')
+          var nameB = b?.marketPrice.split(',')
           var valueA = parseInt(nameA.join(''))
           var valueB = parseInt(nameB.join(''))
 
@@ -595,9 +582,9 @@ export class VisualsComponent implements OnInit {
 
         sortedTypes.forEach(element => {
 
-          var valueC = element?.market_price.split(',')
+          var valueC = element?.marketPrice.split(',')
           var valueD = parseInt(valueC.join(''))
-          categories.push(element.procurement_type)
+          categories.push(element.procurementType)
           categoryValues.push(valueD)
         });
 
@@ -635,6 +622,10 @@ export class VisualsComponent implements OnInit {
         console.log(error)
       }
     )
+  }
+
+   getFontSize() {
+    return Math.max(10, 12);
   }
 }
 

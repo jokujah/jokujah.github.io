@@ -1,3 +1,8 @@
+import { RevenueVisualsComponent } from './pages/revenue-sources-category-page/revenue-report/revenue-visuals/revenue-visuals.component';
+import { PdeBidAverageVisualsComponent } from './pages/solicitation-category-page/pde-bid-average-report/pde-bid-average-visuals/pde-bid-average-visuals.component';
+import { MicroProcurementVisualsComponent } from './pages/contracting-category-page/micro-procurement-report/micro-procurement-visuals/micro-procurement-visuals.component';
+import { SuspendedProvidersVisualsComponent } from './pages/supplier-portal-category-page/suspended-providers-report/suspended-providers-visuals/suspended-providers-visuals.component';
+import { LateInitiationVisualsComponent } from './pages/initiation-category-page/late-initiation-report/late-initiation-visuals/late-initiation-visuals.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ErrorPageComponent } from './shared/error-page/error-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
@@ -60,6 +65,7 @@ import { AdministrativeReviewReportComponent } from './pages/contracting-categor
 import { ReportPageComponent } from './pages/report-page/report-page.component';
 import { SupplierPortalReportsListComponent } from './pages/supplier-portal-category-page/supplier-portal-reports-list/supplier-portal-reports-list.component';
 import { AuthenticationGuard } from './guards/authentication/authentication.guard';
+import { DisposalVisualsComponent } from './pages/disposal-category-page/disposal-report/disposal-visuals/disposal-visuals.component';
 
 const routes: Routes = [
   { 
@@ -132,7 +138,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:VisualsComponent,
+                component:LateInitiationVisualsComponent,
               },
               {
                 path: '',
@@ -168,7 +174,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:VisualsComponent,
+                component:PdeBidAverageVisualsComponent,
               },
               {
                 path: '',
@@ -241,7 +247,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:VisualsComponent,
+                component:SuspendedProvidersVisualsComponent,
               },
               {
                 path: '',
@@ -397,7 +403,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:SignedContractsVisualsComponent,
+                component:MicroProcurementVisualsComponent,
               },
               {
                 path: '',
@@ -634,7 +640,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:VisualsComponent,
+                component:RevenueVisualsComponent,
               },
               {
                 path: '',
@@ -670,7 +676,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:VisualsComponent,
+                component:DisposalVisualsComponent,
               },
               {
                 path: '',
