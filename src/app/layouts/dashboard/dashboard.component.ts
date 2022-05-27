@@ -1,6 +1,6 @@
 import { AutoLogoutService } from './../../services/AutoLogOut/auto-logout.service';
 import { element } from 'protractor';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import {
   trigger,
@@ -13,6 +13,8 @@ import { getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/Authentication/authentication.service';
 import { ToastrService } from 'ngx-toastr';
+import { DOCUMENT } from '@angular/common';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-dashboard',
@@ -106,9 +108,12 @@ import { ToastrService } from 'ngx-toastr';
     )
   ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {  
 
+  elem: any; 
+  isFullScreen: boolean;
   showImage = false;
+  entityName: string;
   onCloseOpen() {
     console.log(this.showImage)
     this.showImage = !this.showImage;
@@ -133,7 +138,9 @@ export class DashboardComponent implements OnInit {
   email!: string | null;
   role!: string | null;
 
+  
   constructor(
+    @Inject(DOCUMENT) private document: any,
     private route: ActivatedRoute,
     private router: Router,
     private _authService: AuthenticationService,
@@ -177,11 +184,14 @@ export class DashboardComponent implements OnInit {
 
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
+    this.entityName = localStorage.getItem('email') == 'admin@mail.com'?'All PDEs':this.getEntity(localStorage.getItem('user'))
     this._autoLogOutService.check()
   }
 
   ngOnInit(): void {
-    
+    this.chkScreenMode();
+    this.elem = document.documentElement;
+    this.elem.addEventListener('fullscreenchange',()=>this.chkScreenMode())
   }
 
 
@@ -241,24 +251,84 @@ export class DashboardComponent implements OnInit {
   }
 
   logOut() {
-    this._authService.logout().subscribe(
-      (response) => {
-        console.log(response)
-        localStorage.clear()
-        this.toastr.success("Logged Out User Successfully", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-        this.router.navigate(['/login']);
-      },
-      (error) => {
-        console.log(error)
-        this.toastr.error("Something Went Wrong, Failed to log out user", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-      }
-    );
+    localStorage.clear()
+    this.toastr.success("Logged Out User Successfully", '', {
+      progressBar: true,
+      positionClass: 'toast-top-right'
+    });
+    this.router.navigate(['/login']);
+    // this._authService.logout().subscribe(
+    //   (response) => {
+    //     console.log(response)
+    //     localStorage.clear()
+    //     this.toastr.success("Logged Out User Successfully", '', {
+    //       progressBar: true,
+    //       positionClass: 'toast-top-right'
+    //     });
+    //     this.router.navigate(['/login']);
+    //   },
+    //   (error) => {
+    //     console.log(error)
+    //     this.toastr.error("Something Went Wrong, Failed to log out user", '', {
+    //       progressBar: true,
+    //       positionClass: 'toast-top-right'
+    //     });
+    //   }
+    // );
+  }
+
+  fullscreenmodes(event){
+    this.chkScreenMode();
+  }
+  chkScreenMode(){
+    if(document.fullscreenElement){
+      //fullscreen
+      this.isFullScreen = true;
+    }else{
+      //not in full screen
+      this.isFullScreen = false;
+    }
+  }
+
+
+  openFullscreen() {
+    this.isFullScreen = true;
+    if (this.elem.requestFullscreen) {
+      this.elem.requestFullscreen();
+    } else if (this.elem.mozRequestFullScreen) {
+      /* Firefox */
+      this.elem.mozRequestFullScreen();
+    } else if (this.elem.webkitRequestFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.elem.webkitRequestFullscreen();
+    } else if (this.elem.msRequestFullscreen) {
+      /* IE/Edge */
+      this.elem.msRequestFullscreen();
+    }
+    //this.chkScreenMode()
+  }
+/* Close fullscreen */
+  closeFullscreen() {
+    this.isFullScreen = false;
+    if (this.document.exitFullscreen) {
+      this.document.exitFullscreen();
+    } else if (this.document.mozCancelFullScreen) {
+      /* Firefox */
+      this.document.mozCancelFullScreen();
+    } else if (this.document.webkitExitFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.document.webkitExitFullscreen();
+    } else if (this.document.msExitFullscreen) {
+      /* IE/Edge */
+      this.document.msExitFullscreen();
+    }
+    //this.chkScreenMode()
+  }
+
+  getEntity(data){
+    var user = JSON.parse(data)
+    return user?.entities[0]
   }
 
 }
+

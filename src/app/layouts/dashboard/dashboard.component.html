@@ -310,28 +310,39 @@
       <div class="relative z-0 flex flex-1 overflow-hidden">
         <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
           <!-- Breadcrumb -->
-          <div class="px-4 pt-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
-
-            <nav class="flex" aria-label="Breadcrumb">
-              <ol role="list" class="flex items-center space-x-4">
-                <li>
-                  <div>
-                    <a (click)="onClick()" class="text-xs font-medium text-gray-500 cursor-pointer hover:text-gray-700 hover:underline">{{pageHeadingDisplay}}</a>
-                  </div>
-                </li>
-                <li *ngIf="reportName">
-                  <div class="flex items-center">
-                    <svg class="flex-shrink-0 w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                      fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                    <span class="ml-4 text-xs font-medium activeText2 first-letter:uppercase">{{reportNameDisplay}}</span>
-                  </div>
-                </li>
-              </ol>
-            </nav>
+          <div class="px-4 pt-2 grid grid-cols-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex col-span-2">
+              <nav class="flex" aria-label="Breadcrumb">
+                <ol role="list" class="flex items-center space-x-4">
+                  <li>
+                    <div>
+                      <a (click)="onClick()"
+                        class="text-xs font-medium text-gray-500 cursor-pointer hover:text-gray-700 hover:underline">{{pageHeadingDisplay}}</a>
+                    </div>
+                  </li>
+                  <li *ngIf="reportName">
+                    <div class="flex items-center">
+                      <svg class="flex-shrink-0 w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd" />
+                      </svg>
+                      <span class="ml-4 text-xs font-medium activeText2 first-letter:uppercase">{{reportNameDisplay}}</span>
+                    </div>
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="flex flex-row col-span-1 justify-end space-x-4">
+              <!-- <div class="flex text-xs space-x-2 items-center">
+                PDE: <span class="text-gray-700">{{entityName}}</span>
+              </div> -->
+              <div class="flex " >
+                <mat-icon class="screen cursor-pointer text-gray-700" matTooltip="Enter Full Screen Mode" *ngIf="!isFullScreen" (click)="openFullscreen()">fullscreen</mat-icon>
+                <mat-icon class="screen cursor-pointer text-gray-700" *ngIf="isFullScreen" matTooltip="Exit Full Screen Mode" (click)="closeFullscreen()">fullscreen_exit</mat-icon>
+              </div>
+            </div>
           </div>
 
           <article>
