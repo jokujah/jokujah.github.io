@@ -89,7 +89,9 @@
                         data-mdb-ripple-color="light"
                       >
                       <span *ngIf="!isLoading">Sign in</span>
-                      <div *ngIf="isLoading" class="w-5 h-5 border-b-2 border-white  rounded-full animate-spin"></div>
+                      <div *ngIf="isLoading">
+                        <app-loading-icon></app-loading-icon>
+                      </div>
                       </button>
                       <a class="text-gray-500" href="https://pde.staging.egpuganda.go.ug/password/reset">Forgot password?</a>
                     </div>
