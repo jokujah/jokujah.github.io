@@ -22,6 +22,10 @@ export class ContractManagementReportsListComponent implements OnInit {
       "route":'frame-work-report'
     },
     {
+      "name":'Terminated Contracts Report',
+      "route":'terminated-contracts-report'
+    },
+    {
       "name":'Provider Perfomance Report',
       "route":'provider-performance-report'
     },

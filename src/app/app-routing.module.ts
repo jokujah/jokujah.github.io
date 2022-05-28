@@ -1,3 +1,7 @@
+import { ProcurementsAwardedToSuspendedProvidersVisualsComponent } from './pages/contracting-management-category-page/procurements-awarded-to-suspended-providers-report/procurements-awarded-to-suspended-providers-visuals/procurements-awarded-to-suspended-providers-visuals.component';
+import { ActualVsPlannedProcurementVisualsComponent } from './pages/contracting-management-category-page/actual-vs-planned-procurement-report/actual-vs-planned-procurement-visuals/actual-vs-planned-procurement-visuals.component';
+import { ContractManagementVisualsComponent } from './pages/contracting-management-category-page/contract-management-report/contract-management-visuals/contract-management-visuals.component';
+import { ProviderPerformanceVisualsComponent } from './pages/contracting-management-category-page/provider-performance-report/provider-performance-visuals/provider-performance-visuals.component';
 import { RevenueVisualsComponent } from './pages/revenue-sources-category-page/revenue-report/revenue-visuals/revenue-visuals.component';
 import { PdeBidAverageVisualsComponent } from './pages/solicitation-category-page/pde-bid-average-report/pde-bid-average-visuals/pde-bid-average-visuals.component';
 import { MicroProcurementVisualsComponent } from './pages/contracting-category-page/micro-procurement-report/micro-procurement-visuals/micro-procurement-visuals.component';
@@ -66,6 +70,7 @@ import { ReportPageComponent } from './pages/report-page/report-page.component';
 import { SupplierPortalReportsListComponent } from './pages/supplier-portal-category-page/supplier-portal-reports-list/supplier-portal-reports-list.component';
 import { AuthenticationGuard } from './guards/authentication/authentication.guard';
 import { DisposalVisualsComponent } from './pages/disposal-category-page/disposal-report/disposal-visuals/disposal-visuals.component';
+import { ContractsCompletedOnTimeVisualsComponent } from './pages/contracting-management-category-page/contracts-completed-on-time-report/contracts-completed-on-time-visuals/contracts-completed-on-time-visuals.component';
 
 const routes: Routes = [
   { 
@@ -523,7 +528,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:TerminatedContractsVisualsComponent,
+                component:ProviderPerformanceVisualsComponent,
               },
               {
                 path: '',
@@ -544,7 +549,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:TerminatedContractsVisualsComponent,
+                component:ContractManagementVisualsComponent,
               },
               {
                 path: '',
@@ -564,7 +569,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:TerminatedContractsVisualsComponent,
+                component:ActualVsPlannedProcurementVisualsComponent,
               },
               {
                 path: '',
@@ -584,7 +589,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:TerminatedContractsVisualsComponent,
+                component:ContractsCompletedOnTimeVisualsComponent,
               },
               {
                 path: '',
@@ -604,7 +609,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'visuals',
-                component:TerminatedContractsVisualsComponent,
+                component:ProcurementsAwardedToSuspendedProvidersVisualsComponent,
               },
               {
                 path: '',
