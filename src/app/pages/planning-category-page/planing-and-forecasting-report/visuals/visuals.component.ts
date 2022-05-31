@@ -340,20 +340,20 @@ export class VisualsComponent implements OnInit {
 
     console.log(`getSummaryStats ${reportName} + ${financialYear} + ${procuringEntity}`,)
 
-    this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
+    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
         let  x = []
         let  y = []
         let  providersInSelectedYear = []
 
-        console.log('getSummaryStats' ,data ,)
+        console.log('getSummaryStats' ,data )
         var e =( data.length > 0)
         console.log('getSummaryStats' ,e)
         if (data.length > 0) {
           data.forEach(element => {
             if (element.financialYear == financialYear) {
-              x.push(element?.numberOfPlans)
+              x.push(parseInt(element?.noOfPlanItems))
               var e = element?.estimatedAmount.split(',')
               y.push(parseInt(e.join('')))
               providersInSelectedYear.push(element?.pdeName)
@@ -416,7 +416,7 @@ export class VisualsComponent implements OnInit {
           this.numberOfPlannedContracts = addArrayValues(x)
           this.totalValueofPlannedContracts = addArrayValues(y)
           this.yearOfPlannedContracts = financialYear
-          this.numberOfRegisteredEntities = data[0].numberOfRegisteredPdes
+          this.numberOfRegisteredEntities = data[0].noOfRegisteredPdes
           this.isLoading = false
         }
         else{
@@ -484,7 +484,7 @@ export class VisualsComponent implements OnInit {
         
         data.forEach(element => {
           
-            x.push(element?.numberOfPlans)
+            x.push(element?.noOfPlanItems)
 
             var planned = element?.budgetPlannedAmount.split(',')
 
