@@ -95,8 +95,8 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     var roles = localStorage.getItem('roles')
     roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
-
     var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+
     if(checkIfPdeOrDept == 'pde'){
       this.filterControlName = "Procuring and Disposal Entities"
       this.pdeControl.valueChanges.pipe(
@@ -121,7 +121,7 @@ export class FilterComponent implements OnInit {
         this.pde = response.data;
 
        
-      });;
+      });
        //this.getUtiities('pde-departments')
     }
     this.getUtiities('financial-years','')
