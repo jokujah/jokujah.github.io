@@ -2,8 +2,12 @@ import { UtilsService } from './../../services/Utils/utils.service';
 import  PDE  from 'src/assets/PDE.json';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { consoleLogger, getFinancialYears } from 'src/app/utils/helpers';
+import { getFinancialYears } from 'src/app/utils/helpers';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs/internal/Observable';
+import { startWith } from 'rxjs/internal/operators/startWith';
+import { map } from 'rxjs/internal/operators/map';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
 
 
 @Component({
@@ -12,6 +16,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
+
+  options2: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
 
   financialYears:any[]=[]
   pde:any[]=[]
@@ -39,6 +46,7 @@ export class FilterComponent implements OnInit {
   allFinancialYears: any;
 
   filterControlName:any;
+  isSearching: boolean;
 
   submit(form: FormGroup) {
     console.log("Filter",form)
@@ -55,10 +63,15 @@ export class FilterComponent implements OnInit {
   reset() {
     let data: any = {
       'selectedPDE': '',
-      'selectedFinancialYear': this.financialYears[0].financial_year,
+      'selectedFinancialYear': '',
     }
+    // let data: any = {
+    //   'selectedPDE': '',
+    //   'selectedFinancialYear': this.financialYears[0].financial_year,
+    // }
     this.options.get('pde')?.setValue('');
-    this.options.get('financialYear')?.setValue(this.financialYears[0].financial_year);
+    //this.options.get('financialYear')?.setValue(this.financialYears[0].financial_year);
+    this.options.get('financialYear')?.setValue('');
     this.resetEvent.emit(data);   
   }
 
@@ -82,16 +95,38 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     var roles = localStorage.getItem('roles')
     roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
-
     var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+
     if(checkIfPdeOrDept == 'pde'){
       this.filterControlName = "Procuring and Disposal Entities"
-      this.getUtiities('pde-entities')
+      this.pdeControl.valueChanges.pipe(
+        startWith(''),
+        switchMap(value => this._utilsService.getUtil('pde-entities',value)),
+      ).subscribe((response) => {       
+        this.isSearching = true
+        this.pde = response.data;
+        this.isSearching = false;
+      });
+      //this.getUtiities('pde-entities')
     }else {
       this.filterControlName = "Departments"
-      this.getUtiities('pde-departments')
+      this.pdeControl.valueChanges.pipe(
+        startWith(''),
+        switchMap(value => this._utilsService.getUtil('pde-departments',value)),
+      ).subscribe((response) => {
+       
+        // this.isSearching = true
+        // this.loading = false;
+        //this.total = persons.data?.count ? persons.data?.count : persons.data?.length
+        this.pde = response.data;
+
+       
+      });
+       //this.getUtiities('pde-departments')
     }
-    this.getUtiities('financial-years')
+    this.getUtiities('financial-years','')
+
+    
 
     this.submit(this.options)
   }
@@ -100,9 +135,9 @@ export class FilterComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-  getUtiities(utilityName){
+  getUtiities(utilityName,q){
     this.isLoading = true;
-    this._utilsService.getUtil(utilityName).subscribe(
+    this._utilsService.getUtil(utilityName,q).subscribe(
       (response )=>{
         console.log(response)
         switch(utilityName){
@@ -127,5 +162,15 @@ export class FilterComponent implements OnInit {
         });
       }
     )
+  }
+
+  private _filter(value: string,utility) {
+    // const filterValue = value.toLowerCase();
+    const filterValue = value;
+
+    this.getUtiities(utility,value)
+
+    // return this.options2.filter(option => option.toLowerCase().includes(filterValue));
+    return this.getUtiities(utility,value)
   }
 }

@@ -42,7 +42,7 @@ export class ReportsComponent implements OnInit {
     return 0;
   })
 
-  searchedPDE;
+  searchedPDE = [];
 
   download$: Observable<Download>
 
@@ -63,7 +63,9 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  }
 
   getFontSize() {
     return Math.max(10, 12);
@@ -100,11 +102,23 @@ export class ReportsComponent implements OnInit {
       this.isLoading = true
       await slowLoader()
 
-      this.selectedFinancialYear = data?.selectedFinancialYear
+      console.log("Data in report",data)
 
-      this.searchedPDE = this.pde.filter(function(element) {
-        return element.PDE.toLowerCase().indexOf(data?.selectedPDE.toLowerCase()) !== -1
-      });
+      this.selectedFinancialYear = data?.selectedFinancialYear
+      this.selectedPDE = data?.selectedPDE
+
+      if(this.selectedPDE !=''){
+        this.searchedPDE.push(this.selectedPDE)
+      }else{
+        this.searchedPDE = []
+      }
+      
+
+      // this.searchedPDE = this.pde.filter(function(element) {
+      //   return element.PDE.toLowerCase().indexOf(data?.selectedPDE.toLowerCase()) !== -1
+      // });
+
+
       this.isLoading = false      
   }
   

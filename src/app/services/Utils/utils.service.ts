@@ -12,7 +12,12 @@ export class UtilsService {
 
   constructor(private http: HttpClient) {}
 
-  getUtil(utilityName): Observable<any> {
-    return this.http.get( `${this.apiUrl}/api/utilities/${utilityName}`)    
+  getUtil(utilityName,q): Observable<any> {
+    if(q !== "")
+    {
+      return this.http.get( `${this.apiUrl}/api/utilities/${utilityName}?q=${q}`)
+    }
+      return this.http.get( `${this.apiUrl}/api/utilities/${utilityName}`)  
+
   }
 }

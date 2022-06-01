@@ -8,6 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { MatAutocompleteModule} from '@angular/material/autocomplete'
+
+
 
 
 @NgModule({
@@ -23,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
+    MatAutocompleteModule
   ],
   exports:[
     FilterComponent
