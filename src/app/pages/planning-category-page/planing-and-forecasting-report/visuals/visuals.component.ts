@@ -275,33 +275,19 @@ export class VisualsComponent implements OnInit {
         text: 'No Data Available ...'
       }
     };
-
-    //for changing stats at the top and the highest procurement budgets down
-    //this.getSummaryStats('plan-summary',this.financialYears[0],'')
-
-    //for budget graph
-    //this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
-
-    //procurement graph
-    //this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
-    
-    //this.getSummaryStats('plan-by-funding-source',this.financialYears[0],'Ministry of Finance')
-    //this.getSummaryStats('plan-budget-status',this.financialYears[0],'Ministry of Finance')
   }
 
   submit(data) {
-    console.log(data)
-    this.getSummaryStats('plan-summary',data?.selectedFinancialYear,'')
     this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getSummaryStatsProcurementType('plan-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE) 
+    this.getSummaryStatsProcurementType('plan-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getSummaryStatsWithPDE('plan-by-funding-source',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)    
   }
   
   reset(data){
-     //for changing stats at the top and the highest procurement budgets down
-     this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
+     //for changing stats at the top and the highest procurement budgets graph
+     this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
 
      //for budget graph
      this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
@@ -311,7 +297,7 @@ export class VisualsComponent implements OnInit {
   }
 
 
-  getSummaryStats(reportName,financialYear,procuringEntity){
+  getSummaryStatsWithPDE(reportName,financialYear,procuringEntity){
     this.isLoading=true
     this.numberOfPlannedContracts = 0
     this.totalValueofPlannedContracts = 0
@@ -338,26 +324,26 @@ export class VisualsComponent implements OnInit {
       },
     })
 
-    console.log(`getSummaryStats ${reportName} + ${financialYear} + ${procuringEntity}`,)
+    console.log(`getSummaryStatsWithPDE ${reportName} + ${financialYear} + ${procuringEntity}`,)
 
-    this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
+    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
         let  x = []
         let  y = []
         let  providersInSelectedYear = []
 
-        console.log('getSummaryStats' ,data ,)
+        console.log('getSummaryStatsWithPDE' ,data )
         var e =( data.length > 0)
-        console.log('getSummaryStats' ,e)
+        console.log('getSummaryStatsWithPDE' ,e)
         if (data.length > 0) {
           data.forEach(element => {
-            if (element.financialYear == financialYear) {
-              x.push(element?.numberOfPlans)
+            //if (element.financialYear == financialYear) {
+              x.push(parseInt(element?.noOfPlanItems))
               var e = element?.estimatedAmount.split(',')
               y.push(parseInt(e.join('')))
               providersInSelectedYear.push(element?.pdeName)
-            }
+            // }
           });
 
           this.topTenHighestContracts = data.sort(function (a, b) {
@@ -416,7 +402,8 @@ export class VisualsComponent implements OnInit {
           this.numberOfPlannedContracts = addArrayValues(x)
           this.totalValueofPlannedContracts = addArrayValues(y)
           this.yearOfPlannedContracts = financialYear
-          this.numberOfRegisteredEntities = data[0].numberOfRegisteredPdes
+          //this.numberOfRegisteredEntities = data[0].noOfRegisteredPdes
+          this.numberOfRegisteredEntities = procuringEntity?1:data[0].noOfRegisteredPdes
           this.isLoading = false
         }
         else{
@@ -440,29 +427,29 @@ export class VisualsComponent implements OnInit {
 
   }
 
-  getSummaryStatsWithPDE(reportName,financialYear,procuringEntity){
-    this.isLoading=true
+  // getSummaryStatsWithPDE(reportName,financialYear,procuringEntity){
+  //   this.isLoading=true
 
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
+  //   this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+  //     (response )=>{
+  //       let data = response.data
+  //       let  x = []
+  //       let  y = []
 
-        console.log(data)
+  //       console.log(data)
 
-          this.isLoading = false
-        },
-      (error) => {
-        this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-        this.isLoading = false
-      }
-    )
-  }
+  //         this.isLoading = false
+  //       },
+  //     (error) => {
+  //       this.isLoading = false;
+  //       this.toastr.error("Something Went Wrong", '', {
+  //         progressBar: true,
+  //         positionClass: 'toast-top-right'
+  //       });
+  //       this.isLoading = false
+  //     }
+  //   )
+  // }
 
   getSummaryStatsBudget(reportName,financialYear,procuringEntity){
     this.isLoading=true
@@ -484,7 +471,7 @@ export class VisualsComponent implements OnInit {
         
         data.forEach(element => {
           
-            x.push(element?.numberOfPlans)
+            x.push(element?.noOfPlanItems)
 
             var planned = element?.budgetPlannedAmount.split(',')
 
