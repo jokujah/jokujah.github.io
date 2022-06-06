@@ -141,7 +141,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
       },
     })
 
-    this._service.getEvaluationBidsByProvider(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let  x = []

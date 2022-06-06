@@ -74,6 +74,327 @@ export class AwardedContractVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initCharts()
+  }
+
+  submit(data) {
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-contract-type',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-method', data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
+
+  }
+
+  reset(data){
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-contract-type',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-method',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE)
+
+  }
+
+
+  getSummaryStats(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfContracts = 0
+    this.numberOfContracts = 0
+    this.yearOfBids = financialYear
+    
+
+    console.log(reportName)
+
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        console.log(response)
+        let data = response.data[0]
+        
+        this.numberOfContracts = data.numberOfContracts
+        this.valueOfContracts = sanitizeCurrencyToString(data.valueOfContracts)
+        //this.allEvavluatedBidders = data.total_evaluated_bidders
+
+        this.isLoading = false
+        },
+      (error) => {
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
+        this.isLoading = false
+        console.log(error)
+      }
+    )
+  }
+
+  getVisualisation(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfContracts = 0
+    this.numberOfContracts = 0
+    this.yearOfBids = 0
+
+    this.chart?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+              "#D10CE8",
+            ],
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+    })
+
+    this.chartProcurementMethod?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+    })
+
+    this.chartProcurementMethodContracts?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+    })
+
+    this.chartProcurementType?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+    })
+
+    console.log(reportName)
+
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        let data = response.data
+        let categories = []
+        let categorieValues = []
+        let numOfBids = []
+        let sortedData = []
+
+        switch (reportName) {
+          case 'contracts-by-contract-type':           
+            console.log("contracts-by-contract-type", data)
+
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            sortedData.forEach(element => {
+              var valueC = element?.contractValue.split(',')
+              var valueD = parseInt(valueC.join(''))
+              categories.push(capitalizeFirstLetter(element.contractType))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts))
+            });
+            this.chart?.updateOptions({
+              series: [
+                {
+                  name: "Contract Award Value",
+                  type: "column",
+                  data: categorieValues
+                },
+                {
+                  name: "Number of Bids",
+                  type: "line",
+                  data: numOfBids
+                }
+              ],
+              xaxis: {
+                categories: categories,
+                labels: {
+                  style: {
+                    fontSize: "12px"
+                  },
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2)
+                  }
+                }
+              },
+            })
+
+            break;
+          case 'contracts-by-procurement-method':           
+           
+            console.log("contracts-by-procurement-method", data)
+
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            sortedData.forEach(element => {
+              var valueC = element?.contractValue.split(',')
+              var valueD = parseInt(valueC.join(''))
+              categories.push(capitalizeFirstLetter(element.procurementMethod))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts))
+            });
+
+            this.chartProcurementMethod?.updateOptions({
+              series: [
+                {
+                  name: "Contract Award Value",
+                  type: "column",
+                  data: categorieValues
+                }
+              ],
+              xaxis: {
+                categories: categories,
+                labels: {
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2)
+                  }
+                }
+              },
+            })
+
+            this.chartProcurementMethodContracts?.updateOptions({
+              series: [
+                {
+                  name: "Number of Contracts",
+                  data: numOfBids
+                }
+              ],
+              xaxis: {
+                categories: categories,               
+              },
+            })
+            break;
+          case 'contracts-by-procurement-type':           
+           
+            console.log("contracts-by-procurement-type", data)
+
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            sortedData.forEach(element => {
+              var valueC = element?.contractValue.split(',')
+              var valueD = parseInt(valueC.join(''))
+              categories.push(capitalizeFirstLetter(element.procurementType))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts))
+            });
+
+            this.chartProcurementType?.updateOptions({
+              series: [
+                {
+                  name: "Contract Award Value",
+                  type: "column",
+                  data: categorieValues
+                },
+                {
+                  name: "Number of Contracts",
+                  type: "column",
+                  data: numOfBids
+                }
+              ],
+              xaxis: {
+                categories: categories,
+                labels: {                  
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2)
+                  }
+                }
+              },
+            })
+            break;
+
+          }
+         
+          this.isLoading = false
+        },
+      (error) => {
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
+        this.isLoading = false
+        console.log(error)
+      }
+    )
+  }
+
+
+ 
+
+  getFontSize() {
+    return Math.max(10, 12);
+  }
+
+  initCharts(){
     this.chartOptions = {
       series: [
         {
@@ -335,336 +656,6 @@ export class AwardedContractVisualsComponent implements OnInit {
         text: 'No Data Available'
       }
     };
-
-    this.getSummaryStats('contracts-summary', this.financialYears[0], '')
-    this.getVisualisation('contracts-by-contract-type', this.financialYears[0], '')
-    this.getVisualisation('contracts-by-procurement-method', this.financialYears[0], '')
-    this.getVisualisation('contracts-by-procurement-type', this.financialYears[0], '')
-
-  }
-
-  submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('contracts-by-contract-type',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('contracts-by-procurement-method', data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
-
-  }
-
-  reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('contracts-by-contract-type',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('contracts-by-procurement-method',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('contracts-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE)
-
-  }
-
-
-  getSummaryStats(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = financialYear
-    
-
-    console.log(reportName)
-
-    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{ 
-        console.log(response)
-        let data = response.data[0]
-        
-        this.numberOfContracts = data.numberOfContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.valueOfContracts)
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
-        this.isLoading = false
-        },
-      (error) => {
-        this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-        this.isLoading = false
-        console.log(error)
-      }
-    )
-  }
-
-  getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
-
-    this.chart?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
-
-    this.chartProcurementMethod?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
-
-    this.chartProcurementMethodContracts?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
-
-    this.chartProcurementType?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
-
-    console.log(reportName)
-
-    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{ 
-        let data = response.data
-        let categories = []
-        let categorieValues = []
-        let numOfBids = []
-        let sortedData = []
-
-        switch (reportName) {
-          case 'contracts-by-contract-type':           
-            console.log("AWARDED", data)
-
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.contractValue.split(',')
-              var nameB = b?.contractValue.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
-
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
-            
-            sortedData.forEach(element => {
-              var valueC = element?.contractValue.split(',')
-              var valueD = parseInt(valueC.join(''))
-              categories.push(capitalizeFirstLetter(element.contractType))
-              categorieValues.push(valueD)
-              numOfBids.push(parseInt(element?.numberOfContracts))
-            });
-            this.chart?.updateOptions({
-              series: [
-                {
-                  name: "Contract Award Value",
-                  type: "column",
-                  data: categorieValues
-                },
-                {
-                  name: "Number of Bids",
-                  type: "line",
-                  data: numOfBids
-                }
-              ],
-              xaxis: {
-                categories: categories,
-                labels: {
-                  style: {
-                    fontSize: "12px"
-                  },
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
-                  }
-                }
-              },
-            })
-
-            break;
-          case 'contracts-by-procurement-method':           
-           
-            console.log("Procurement Method", data)
-
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.valueOfContracts.split(',')
-              var nameB = b?.valueOfContracts.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
-
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
-            
-            sortedData.forEach(element => {
-              var valueC = element?.valueOfContracts.split(',')
-              var valueD = parseInt(valueC.join(''))
-              categories.push(capitalizeFirstLetter(element.procurementMethod))
-              categorieValues.push(valueD)
-              numOfBids.push(parseInt(element?.numberOfContracts))
-            });
-
-            this.chartProcurementMethod?.updateOptions({
-              series: [
-                {
-                  name: "Contract Award Value",
-                  type: "column",
-                  data: categorieValues
-                }
-              ],
-              xaxis: {
-                categories: categories,
-                labels: {
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
-                  }
-                }
-              },
-            })
-
-            this.chartProcurementMethodContracts?.updateOptions({
-              series: [
-                {
-                  name: "Number of Contracts",
-                  data: numOfBids
-                }
-              ],
-              xaxis: {
-                categories: categories,               
-              },
-            })
-            break;
-          case 'contracts-by-procurement-type':           
-           
-            console.log("Procurement Type", data)
-
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.contractValue.split(',')
-              var nameB = b?.contractValue.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
-
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
-            
-            sortedData.forEach(element => {
-              var valueC = element?.contractValue.split(',')
-              var valueD = parseInt(valueC.join(''))
-              categories.push(capitalizeFirstLetter(element.procurementType))
-              categorieValues.push(valueD)
-              numOfBids.push(parseInt(element?.numberOfContracts))
-            });
-
-            this.chartProcurementType?.updateOptions({
-              series: [
-                {
-                  name: "Contract Award Value",
-                  type: "column",
-                  data: categorieValues
-                },
-                {
-                  name: "Number of Contracts",
-                  type: "column",
-                  data: numOfBids
-                }
-              ],
-              xaxis: {
-                categories: categories,
-                labels: {                  
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
-                  }
-                }
-              },
-            })
-            break;
-
-          }
-         
-          this.isLoading = false
-        },
-      (error) => {
-        this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-        this.isLoading = false
-        console.log(error)
-      }
-    )
-  }
-
-
- 
-
-  getFontSize() {
-    return Math.max(10, 12);
   }
 
 }
