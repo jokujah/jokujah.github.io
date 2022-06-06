@@ -9,6 +9,7 @@ import { getFinancialYears, slowLoader, } from 'src/app/utils/helpers';
 import { DOCUMENT } from '@angular/common';
 import { DownloadService } from 'src/app/services/Download/download.service';
 import { Observable } from 'rxjs/internal/Observable';
+import { Subscription } from 'rxjs/internal/Subscription';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -20,7 +21,10 @@ export class ReportsComponent implements OnInit {
   @Input() 
   reportName:string = ''
 
-  fullReportName = this.getFullReportName(this.reportName)
+  fullReportName 
+
+  downloadData:any
+  
 
   isLoading:boolean = false 
   totalValueofPlannedContracts;
@@ -48,6 +52,8 @@ export class ReportsComponent implements OnInit {
 
   selectedFinancialYear;
   selectedPDE
+
+  subscription: Subscription
   
   
 
@@ -64,7 +70,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.fullReportName = this.createfullReportName(this.reportName)
   }
 
   getFontSize() {
@@ -72,38 +78,42 @@ export class ReportsComponent implements OnInit {
   }
 
 
-  download(fileName,filePath,pde){
+  // download(fileName,filePath,pde){
 
-    this.isLoading = true;
-    this._planingCategoryService.downloadReport(filePath,pde).subscribe(
-      (blob )=>{ 
-         console.log(blob)
-         saveAs(blob, fileName)
-         this.isLoading = false;
-        },
-      (error) => {
-         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-        console.log(error)
+  //   this.isLoading = true;
+  //   this._planingCategoryService.downloadReport(filePath,pde).subscribe(
+  //     (blob )=>{ 
+  //        console.log(blob)
+  //        saveAs(blob, fileName)
+  //        this.isLoading = false;
+  //       },
+  //     (error) => {
+  //        this.isLoading = false;
+  //       this.toastr.error("Something Went Wrong", '', {
+  //         progressBar: true,
+  //         positionClass: 'toast-top-right'
+  //       });
+  //       console.log(error)
+  //     }
+  //   )
+  // }
+
+  download(fileName,filePath,pde) {
+    this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
+    this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear).subscribe(
+      (response)=>{
+        this.downloadData = response
       }
     )
   }
-
-  // download(fileName,filePath,pde) {
-  //   this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
-  // }
 
 
 
   async submit(data) {
       this.isLoading = true
+      this.downloadData = null
+      this.searchedPDE = []
       await slowLoader()
-
-      console.log("Data in report",data)
-
       this.selectedFinancialYear = data?.selectedFinancialYear
       this.selectedPDE = data?.selectedPDE
 
@@ -112,28 +122,23 @@ export class ReportsComponent implements OnInit {
       }else{
         this.searchedPDE = []
       }
-      
-
-      // this.searchedPDE = this.pde.filter(function(element) {
-      //   return element.PDE.toLowerCase().indexOf(data?.selectedPDE.toLowerCase()) !== -1
-      // });
-
-
       this.isLoading = false      
   }
   
   async reset(data){
     this.isLoading = true
+    this.downloadData = null
     await slowLoader()
     this.options.get('pde')?.setValue(data?.selectedPDE);
     this.options.get('financialYear')?.setValue(data?.selectedFinancialYear);
-    this.searchedPDE = []
+    this.searchedPDE = [] 
     this.isLoading = false
   }  
 
-  getFullReportName(reportName){
+  createfullReportName(reportURLName){
     var value
-    switch(reportName){
+    console.log(reportURLName)
+    switch(reportURLName){
       case 'forecast' :
         value = 'Plan and Forecasting Report'
       break;
@@ -152,16 +157,17 @@ export class ReportsComponent implements OnInit {
       case 'number-value-by-procurement-method' :
         value = 'Procurement Method Average Contract Value Report'
       break;
-      case 'procurement' :
+      case 'procurements' :
         value = 'Procurement Report'
       break;
       case 'signed-contracts' :
         value = 'Signed Contracts Report'
       break;
-      case 'cancelled' :
+
+      case 'cancelled-tenders' :
         value = 'Cancelled Tender Report'
       break;
-      case 'completed' :
+      case 'completed-contracts' :
         value = 'Completed Contracts Report'
       break;
       case 'framework-contracts' :
@@ -170,43 +176,52 @@ export class ReportsComponent implements OnInit {
       case 'terminated-contracts' :
         value = 'Terminated Contracts'
       break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
-      // case 'forecasting' :
-      //   value = 'Plan and Forecasting Report'
-      // break;
+
+      // Error here
+      case 'awarded-contracts-list-by-method' :
+        value = 'Plan and Forecasting Report'
+      break;
+
+      case 'microProcurements' :
+        value = 'Micro Procurements Report'
+      break;
+      case 'completed-contracts' :
+        value = 'Completed Contracts Report'
+      break;
+      case 'cancelled-tenders' :
+        value = 'Cancelled Tenders Report'
+      break;
+      case 'completed-contracts-on-time' :
+        value = 'Completed Contracts On Time Report'
+      break;
+      case 'awarded-to-suspended-providers' :
+        value = 'Procurements Awarded to Suspended Providers Report'
+      break;
+      case 'provider-performance' :
+        value = 'Provider Performance Report'
+      break;
+      case 'contract-management' :
+        value = 'Contract Management Report'
+      break;
+      case 'actual-vs-planned-procurements' :
+        value = 'Actual Vs Planned Procurement Report'
+      break;
+      case 'disposals' :
+        value = 'Disposals Report'
+      break;
+      case 'late-initiations' :
+        value = 'Late Initiations Report'
+      break;
+      case 'suspended-providers' :
+        value = 'Suspended Providers Report'
+      break;
+      case 'average-bids-by-entity-method' :
+        value = 'PDE Bid Average Report'
+      break;
       default:
           value=''
-
-    }
+    }   
+    
     return value
   }
 

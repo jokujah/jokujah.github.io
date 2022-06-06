@@ -4,26 +4,7 @@ import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { addArrayValues, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, ApexNoData } from 'ng-apexcharts';
-
-import {
-  ApexNonAxisChartSeries,
-  ApexResponsive,
-  ApexChart
-} from "ng-apexcharts";
-
-export type ChartOptionsEducationStatus = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  xaxis: ApexXAxis;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-  tooltip: ApexTooltip;
-  fill: ApexFill;
-  legend: ApexLegend;
-};
+import {ApexChart, ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, ApexNoData } from 'ng-apexcharts';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -38,6 +19,7 @@ export type ChartOptions = {
   legend: ApexLegend;
   title: ApexTitleSubtitle,
   noData:ApexNoData
+  labels: string[];
 };
 
 @Component({
@@ -50,9 +32,9 @@ export class DueDeligenceVisualsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  @ViewChild("chartEducationStatus")
-  chartEducationStatus!: ChartComponent;
-  chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
+  @ViewChild("chartBidsByFinancialYear")
+  chartBidsByFinancialYear!: ChartComponent;
+  chartOptionsBidsByFinancialYear: Partial<ChartOptions> | any;
 
 
   valueOfBids;
@@ -67,7 +49,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
   options: FormGroup;
   pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
+  financialYearControl = new FormControl('');
 
 
   
@@ -84,24 +66,22 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts()
-    this.getSummaryStats('evaluation-summary',this.financialYears[0],'')
-    //this.getSummaryStats('bids-summary',this.financialYears[0],'')
-    this.getVisualisation('bids-by-provider',this.financialYears[0],'')
-    
-
   }
 
-  getFontSize() {
-    return Math.max(10, 12);
+ 
+
+  submit(data) {
+    this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getBidsByFinancialYear('bids-by-financial-year',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
 
   reset(data){
-    this.options.get('pde')?.setValue('');
-    this.options.get('financialYear')?.setValue(this.financialYears[0]);
     this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getSummaryStats('bids-summary',this.financialYears[0],'')
+    //this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getBidsByFinancialYear('bids-by-financial-year',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -115,9 +95,9 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._dueDeligenceReportService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
+    this._dueDeligenceReportService.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
-        console.log(response)
+        console.log("Due Deligence Reports",response)
         let data = response.data[0]
         
         this.successfullEvaluatedBidders = data.successfulEvaluatedBidders
@@ -160,7 +140,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
       },
     })
 
-    this._dueDeligenceReportService.getEvaluationBidsByProvider(reportName,financialYear,procuringEntity).subscribe(
+    this._dueDeligenceReportService.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let  x = []
@@ -171,14 +151,6 @@ export class DueDeligenceVisualsComponent implements OnInit {
         let numOfBids=[]
 
         console.log("BIDS",data)
-        // data.forEach(element => {
-        //   if (element.financial_year == financialYear)
-        //   {
-        //     x.push(element?.number_of_plans)
-        //     var e = element?.estimated_amount.split(',')
-        //     y.push(parseInt(e.join('')))
-        //   }
-        // });
 
          this.topTenHighestContracts = data.sort(function(a, b) {
           var nameA = a?.totalEstimatedValue.split(',') 
@@ -256,16 +228,28 @@ export class DueDeligenceVisualsComponent implements OnInit {
     )
   }
 
+  // getBidsByFinancialYear(reportName,financialYear,procuringEntity){
+  //   this.isLoading=true
+  //   this._dueDeligenceReportService.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
+  //     (response )=>{ 
+  //       console.log(`${reportName}`,response)
+  //       this.isLoading = false
+  //       },
+  //     (error) => {
+  //       this.isLoading = false;
+  //       this.toastr.error("Something Went Wrong", '', {
+  //         progressBar: true,
+  //         positionClass: 'toast-top-right'
+  //       });
+  //       this.isLoading = false
+  //       console.log(error)
+  //     }
+  //   )
+  // }
+
   
 
-  submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
-  }
+  
 
   initCharts(){
     this.chartOptions = {
@@ -334,6 +318,94 @@ export class DueDeligenceVisualsComponent implements OnInit {
         text: "Evaluated Providers with highest bid values"
       },
     };
+
+    // this.chartOptionsBidsByFinancialYear ={
+    //   series: [
+    //     {
+    //       name: "Bid Value",
+    //       type: "column",
+    //       data: []
+    //     },
+    //     {
+    //       name: "Number of Bids",
+    //       type: "line",
+    //       data: []
+    //     }
+    //   ],
+    //   chart: {
+    //     height: 350,
+    //     type: "bar"
+    //   },
+    //   plotOptions: {
+    //     bar: {
+    //       horizontal: false,
+    //       columnWidth: "55%",
+    //       borderRadius: 2
+    //     }
+    //   },
+    //   stroke: {
+    //     show: true,
+    //     width: 2,
+    //     colors: ["transparent"]
+    //   },
+    //   title: {
+    //     text: "Awarded Contract Procurement Type"
+    //   },
+    //   dataLabels: {
+    //     enabled: false,
+    //     enabledOnSeries: [1]
+    //   },
+
+    //   xaxis: {
+    //     categories: [],
+    //     labels: {
+    //       style: {
+    //         fontSize: "12px"
+    //       }
+    //     }
+    //   },
+    //   yaxis: [
+    //     {
+    //       title: {
+    //         text: "Bid Value"
+    //       },
+    //       labels: {
+    //         style: {
+    //           colors: [
+    //             "#008FFB",
+    //           ],
+    //           fontSize: "12px"
+    //         },
+    //         formatter: function (val) {
+    //           return NumberSuffix(val, 2)
+    //         }
+    //       }
+    //     },
+    //     {
+    //       opposite: true,
+    //       title: {
+    //         text: "Number of Bids"
+    //       }
+    //     }
+    //   ],
+    //   fill: {
+    //     opacity: 1
+    //   },
+    //   // tooltip: {
+    //   //   y: {
+    //   //     formatter: function(val) {
+    //   //       return "UGX " + NumberSuffix(val,2) ;
+    //   //     }
+    //   //   }
+    //   // },
+    //   noData: {
+    //     text: 'No Data Available'
+    //   }
+    // };
+  }
+
+  getFontSize() {
+    return Math.max(10, 12);
   }
 
 }

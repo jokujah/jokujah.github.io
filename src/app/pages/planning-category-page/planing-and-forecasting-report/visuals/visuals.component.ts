@@ -2,7 +2,8 @@ import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, 
 import {
   ApexChart,
   ApexNonAxisChartSeries,
-  ApexResponsive
+  ApexResponsive,
+
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +29,7 @@ export type ChartOptionsEducationStatus = {
 };
 
 export type ChartOptionsBudgetStatus = {
-  series: ApexAxisChartSeries;
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart: ApexChart;
   dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
@@ -39,7 +40,11 @@ export type ChartOptionsBudgetStatus = {
   legend: ApexLegend;
   tooltip: ApexTooltip;
   noData:ApexNoData;
+  labels: string[];
+  stroke:ApexStroke
+  
 };
+
 
 export type ChartOptionsProcurementTypes = {
   series: ApexAxisChartSeries;
@@ -79,7 +84,7 @@ export class VisualsComponent implements OnInit {
   financialYears = getFinancialYears()
   options: FormGroup;
   pdeControl = new FormControl('');
-  financialYearControl = new FormControl(this.financialYears[0]);
+  financialYearControl = new FormControl('');
   downloading = false
   isLoading:boolean = false
   registeredProviders
@@ -187,14 +192,35 @@ export class VisualsComponent implements OnInit {
 
     this.chartOptionsBudgetStatus  = {
       series: [],
-
       chart: {
         height: 350,
         fontFamily: 'Trebuchet MS',
-        type: "treemap"
+        type: "radialBar"
       },
       title: {
         text: "PDE Percentage of Budget Spent "
+      },
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 15,
+            size: "70%"
+          },         
+          dataLabels: {
+            show: true,
+            name: {
+              offsetY: -10,
+              show: true,
+              color: "#888",
+              fontSize: "13px"
+            },
+            value: {
+              color: "#111",
+              fontSize: "30px",
+              show: true
+            }
+          }
+        }
       },
       tooltip: {
         y: {
@@ -203,10 +229,38 @@ export class VisualsComponent implements OnInit {
           }
         }
       },
+      stroke: {
+        lineCap: "round",
+      },
       noData: {
         text: 'No Data Available ...'
-      }      
+      } ,
+      labels: []
     };
+
+    // this.chartOptionsBudgetStatus  = {
+    //   series: [],
+
+    //   chart: {
+    //     height: 350,
+    //     fontFamily: 'Trebuchet MS',
+    //     type: "treemap"
+    //   },
+    //   title: {
+    //     text: "PDE Percentage of Budget Spent "
+    //   },
+    //   tooltip: {
+    //     y: {
+    //       formatter: function(value) {
+    //         return `${value}%`
+    //       }
+    //     }
+    //   },
+    //   noData: {
+    //     text: 'No Data Available ...'
+    //   }      
+    // };
+
 
     this.chartOptionsProcurementTypes = {
       series: [],
@@ -457,6 +511,7 @@ export class VisualsComponent implements OnInit {
 
     this.chartBudgetStatus?.updateOptions({
       series: [],
+      labels: []
     })
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -466,11 +521,22 @@ export class VisualsComponent implements OnInit {
         let  y = []
         let  seriesData = []
         let  seriesObject = []
+        let budgetSpentPercentage = []
+        let labelName = []
 
         console.log("BUDGET",data)
-        
-        data.forEach(element => {
-          
+
+        labelName.push(procuringEntity == ""?"All":procuringEntity)
+
+        if (procuringEntity == "") {
+          var totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
+          var totalSpent = data[0]?.totalSpentAmount.split(',')
+
+          var percentage = parseInt(totalSpent.join('')) / parseInt(totalplanned.join('')) * 100
+          budgetSpentPercentage.push(Math.round(percentage))
+        } else {
+          data.forEach(element => {
+
             x.push(element?.noOfPlanItems)
 
             var planned = element?.budgetPlannedAmount.split(',')
@@ -479,37 +545,47 @@ export class VisualsComponent implements OnInit {
 
             var spent = element?.spentAmount.split(',')
 
-            var percentage = parseInt(spent.join(''))/parseInt(planned.join('')) *100
+            var percentage = parseInt(spent.join('')) / parseInt(planned.join('')) * 100
 
-            var percentagePlanned = parseInt(planned.join(''))/parseInt(totalplanned.join('')) *100
+            var percentagePlanned = parseInt(planned.join('')) / parseInt(totalplanned.join('')) * 100
 
-            var oneSerieData = [(parseInt(spent.join(''))/1000000000000),(parseInt(planned.join(''))/1000000000000),percentage]
+            var oneSerieData = [(parseInt(spent.join('')) / 1000000000000), (parseInt(planned.join('')) / 1000000000000), percentage]
 
             var oneSerieObject = {
-              x:element?.pdeName,
+              x: element?.pdeName,
               // "budgetSpent":spent,
               // "planned":planned,
-              y:Math.round(percentage),
-              
+              y: Math.round(percentage),
+
             }
+            budgetSpentPercentage.push(Math.round(percentage))
             seriesData.push(oneSerieData)
             seriesObject.push(oneSerieObject)
-          
-        });
+
+          });
+        }
+
+        console.log(` ${labelName  }  ${budgetSpentPercentage}`)
+
+        this.chartBudgetStatus?.updateOptions({
+            series: budgetSpentPercentage,
+            labels: labelName
+
+        })
         
-        this.chartBudgetStatus?.updateSeries([{
-          data:seriesObject
-        }]  
-        )
+        // this.chartBudgetStatus?.updateSeries([{
+        //   data: seriesObject
+        // }]
+        // )
         
           this.isLoading = false
         },
       (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
         this.isLoading = false
       }
     )

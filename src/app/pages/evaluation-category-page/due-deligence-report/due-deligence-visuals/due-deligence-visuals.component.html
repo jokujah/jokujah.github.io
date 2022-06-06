@@ -1,18 +1,5 @@
 <div class="max-w-7xl mx-auto">
-  <!-- <div class="mt-6">
-    <div class="flex flex-row space-x-2">
-      <span>Filters :</span>
-      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-        {{pdeControl.value === ''? 'All Entities ':pdeControl.value}} </span>
-      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-        {{financialYearControl.value}} </span>
-
-    </div>
-
-  </div> -->
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
-
-  
   <div>
     <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
       <div class="statsCard">
@@ -21,7 +8,6 @@
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="statsText">Successfull Evaluated Bidders</span>
-
       </div>
 
       <div class="statsCard">
@@ -38,47 +24,15 @@
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="statsText">All Evaluated Bidders </span>
-
       </div>
-
     </div>
   </div>
 
   <!-- Graphs -->
-  <div>
-    <!-- Row 1 -->
-    <!-- <div class="mt-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex min-w-full bg-white rounded-md">
-        <fusioncharts  width="93%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
-        </fusioncharts>
-      </div>
-
-      <div class="flex w-1/2 bg-white">
-        <fusioncharts width="47%" height="400" type="mscolumn2d" [dataSource]="dataSource5">
-        </fusioncharts>
-      </div>
-
-    </div> -->
-    <!-- Row 2 -->
+  <div>    
     <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex ">
         <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <!-- <fusioncharts width="93%" [height]="heightLine" [type]="typeLine" [dataFormat]="dataFormatLine"
-            [dataSource]="dataSourceLine">
-          </fusioncharts> -->
-
-          <!-- <div class="flex flex-col bg-white overflow-hidden shadow rounded-lg   w-full  p-5">
-            <div class="text-base font-medium text-gray-500 hidden">Intersex Persons Education Status</div>
-            <div *ngIf="chartOptionsEducationStatus" id="chartEducationStatus" >
-              <apx-chart [series]="chartOptionsEducationStatus.series" [chart]="chartOptionsEducationStatus.chart"
-                [dataLabels]="chartOptionsEducationStatus.dataLabels" [plotOptions]="chartOptionsEducationStatus.plotOptions"
-                [yaxis]="chartOptionsEducationStatus.yaxis" [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
-                [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid" [title]="chartOptionsEducationStatus.title"></apx-chart>
-            </div>
-            <div *ngIf="!chartOptionsEducationStatus">
-              <app-loading-pulse></app-loading-pulse>
-            </div>
-          </div> -->
           <div id="chart">
             <apx-chart #chart
               [series]="chartOptions.series"
@@ -95,20 +49,7 @@
               [noData]="chartOptions.noData"
             ></apx-chart>
           </div>
-
         </div>
-        <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
-          <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-          </span>
-          <div class="flex items-center justify-center h-80">
-            <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-              </path>
-            </svg>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
