@@ -75,10 +75,10 @@ export class AutoLogoutService {
   check() {
     const now = Date.now();
     //Adding  5 mins
-    //const timeLeft = parseInt(this.getLastAction()) + (5) * 60 * 1000;
+    //const timeLeft = parseInt(this.getLastAction()) + (3.5) * 60 * 1000;
 
     //Adding  3.5 mins
-    const timeLeft = parseInt(this.getLastAction()) + (3.5) * 60 * 1000;
+    const timeLeft = parseInt(this.getLastAction()) + (30) * 60 * 1000;
 
     // console.log("Now",Date.now())
     // console.log("Time Left",timeLeft)

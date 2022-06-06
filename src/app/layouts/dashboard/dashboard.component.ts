@@ -186,15 +186,15 @@ export class DashboardComponent implements OnInit {
     this.role = localStorage.getItem('role');
     this.entityName = localStorage.getItem('email') == 'admin@mail.com'?'All PDEs':this.getEntity(localStorage.getItem('user'))
 
-    //this._autoLogOutService.check()
+    this._autoLogOutService.check()
   }
 
   ngOnInit(): void {
 
-    //-----> Auto Logout --->  Commented out for development purposes
-    // this.chkScreenMode();
-    // this.elem = document.documentElement;
-    // this.elem.addEventListener('fullscreenchange',()=>this.chkScreenMode())
+    //-----> Auto Logout 
+    this.chkScreenMode();
+    this.elem = document.documentElement;
+    this.elem.addEventListener('fullscreenchange',()=>this.chkScreenMode())
 
   }
 

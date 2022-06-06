@@ -107,7 +107,12 @@ export function NumberSuffix(input,args)  {
 
 
 export function capitalizeFirstLetter(string) {
-  return string[0].toUpperCase() + string.slice(1);
+  if(string !== null){
+     return string[0].toUpperCase() + string.slice(1);
+  }else{
+    return "Unknown"
+  }
+ 
 }
 
 

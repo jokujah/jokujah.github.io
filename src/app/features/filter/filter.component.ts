@@ -16,27 +16,12 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-
-  options2: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
-
+  
   financialYears:any[]=[]
   pde:any[]=[]
-  // financialYears = getFinancialYears()
-  // pde = PDE.sort(function(a, b) {
-  //   const nameA = a?.PDE.toUpperCase(); // ignore upper and lowercase
-  //   const nameB = b?.PDE.toUpperCase(); // ignore upper and lowercase
-  //   if (nameA < nameB) {
-  //     return -1;
-  //   }
-  //   if (nameA > nameB) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // })
 
-  // selectedPDE
-  // selectedFinancialYear
+  
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   @Output() filterEvent = new EventEmitter<any>();
   @Output() resetEvent = new EventEmitter<string>();
@@ -65,12 +50,7 @@ export class FilterComponent implements OnInit {
       'selectedPDE': '',
       'selectedFinancialYear': '',
     }
-    // let data: any = {
-    //   'selectedPDE': '',
-    //   'selectedFinancialYear': this.financialYears[0].financial_year,
-    // }
     this.options.get('pde')?.setValue('');
-    //this.options.get('financialYear')?.setValue(this.financialYears[0].financial_year);
     this.options.get('financialYear')?.setValue('');
     this.resetEvent.emit(data);   
   }
@@ -80,6 +60,7 @@ export class FilterComponent implements OnInit {
   options: FormGroup;
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('');
+  toppingsControl = new FormControl();
 
   constructor(
     fb: FormBuilder,
@@ -88,7 +69,8 @@ export class FilterComponent implements OnInit {
   ) {
     this.options = fb.group({
       financialYear: this.financialYearControl,
-      pde:this.pdeControl
+      pde:this.pdeControl,
+      toppings:this.toppingsControl
     });
    }
 
@@ -107,27 +89,18 @@ export class FilterComponent implements OnInit {
         this.pde = response.data;
         this.isSearching = false;
       });
-      //this.getUtiities('pde-entities')
     }else {
       this.filterControlName = "Departments"
       this.pdeControl.valueChanges.pipe(
         startWith(''),
         switchMap(value => this._utilsService.getUtil('pde-departments',value)),
-      ).subscribe((response) => {
-       
-        // this.isSearching = true
-        // this.loading = false;
-        //this.total = persons.data?.count ? persons.data?.count : persons.data?.length
+      ).subscribe((response) => {       
+        this.isSearching = true
         this.pde = response.data;
-
-       
+        this.isSearching = false       
       });
-       //this.getUtiities('pde-departments')
     }
     this.getUtiities('financial-years','')
-
-    
-
     this.submit(this.options)
   }
 
@@ -162,15 +135,5 @@ export class FilterComponent implements OnInit {
         });
       }
     )
-  }
-
-  private _filter(value: string,utility) {
-    // const filterValue = value.toLowerCase();
-    const filterValue = value;
-
-    this.getUtiities(utility,value)
-
-    // return this.options2.filter(option => option.toLowerCase().includes(filterValue));
-    return this.getUtiities(utility,value)
-  }
+  }  
 }

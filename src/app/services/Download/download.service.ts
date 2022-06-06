@@ -13,8 +13,7 @@ export class DownloadService {
   constructor(
     private http: HttpClient,
     @Inject(SAVER) private save: Saver
-  ) {
-  }
+  ) {}
 
   download(filename,reportName,pde,financialYear): Observable<Download> {
     return this.http.get(`${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=${financialYear}&pde[]=${pde}`, {
@@ -22,6 +21,7 @@ export class DownloadService {
       observe: 'events',
       responseType: 'blob'
     }).pipe(download(blob => this.save(blob, filename)))
+  
   }
 
 
