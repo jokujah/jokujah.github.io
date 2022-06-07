@@ -18,7 +18,11 @@
                   d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
                   clip-rule="evenodd" />
               </svg>
-              <span class="ml-2 flex-1 w-0 truncate"> {{item}} </span>
+              <div class="grid grid-cols-3 ml-2 flex-1">
+                <!-- <span class=" truncate"> {{(item == '') ? 'All' : item}} </span> -->
+                <div class="grid col-span-2"><span class=" truncate">{{item}}</span></div>
+                <div class="grid col-span-1"><span class=" truncate text-xs text-gray-600"> {{selectedFinancialYear}} </span></div>
+              </div>              
             </div>
             <div class="ml-4 flex-shrink-0">
               <button type="button" (click)="download(fullReportName,reportName,item)" class="textButton">
@@ -42,8 +46,6 @@
 
     </div>
     <div class="relative top-0 left-0 z-50 block w-full h-full  opacity-75" *ngIf="isLoading">
-      <!-- <span class="relative block w-0 h-0 mx-auto my-0 opacity-75 text-sky-500 top-1/2" style="top: 50%">
-                </span> -->
       <div class="flex items-center justify-center h-80">
         <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
