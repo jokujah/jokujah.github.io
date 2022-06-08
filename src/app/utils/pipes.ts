@@ -4,12 +4,17 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'numberSuffix'
 })
 export class NumberSuffixPipe implements PipeTransform {
+  
   transform(input: any, args?: any): any {
     let exp;
     const suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
     const isNagtiveValues = input < 0;
+    
     if (Number.isNaN(input) || (input < 1000 && input >= 0) || !this.isNumeric(input) || (input < 0 && input > -1000)) {
       if (!!args && this.isNumeric(input) && !(input < 0) && input != 0) {
+        if((input<1000) ){
+          return input;
+        }
         return input.toFixed(args);
       } else {
         return input;

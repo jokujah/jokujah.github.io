@@ -30,6 +30,10 @@ export class FilterComponent implements OnInit {
   allPDEDepartments: any;
   allFinancialYears: any;
 
+  selectedPDE: any;
+  selectedFinancialYear: any;
+  
+
   filterControlName:any;
   isSearching: boolean;
 
@@ -39,6 +43,9 @@ export class FilterComponent implements OnInit {
       'selectedPDE': form.controls.pde.value,
       'selectedFinancialYear': form.controls.financialYear.value,
     }
+
+    this.selectedPDE = form.controls.pde.value
+    this.selectedFinancialYear = form.controls.financialYear.value
 
     console.log("Filter Data",data)
 
@@ -51,7 +58,10 @@ export class FilterComponent implements OnInit {
       'selectedFinancialYear': '',
     }
     this.options.get('pde')?.setValue('');
+    // this.options.get('financialYear')?.setValue(this.financialYears[0]?.financial_year);
     this.options.get('financialYear')?.setValue('');
+    this.selectedPDE = ''
+    this.selectedFinancialYear = ''
     this.resetEvent.emit(data);   
   }
 
@@ -63,16 +73,10 @@ export class FilterComponent implements OnInit {
   toppingsControl = new FormControl();
 
   constructor(
-    fb: FormBuilder,
+    private fb: FormBuilder,
     private _utilsService: UtilsService,
     private toastr : ToastrService,
-  ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl,
-      toppings:this.toppingsControl
-    });
-   }
+  ) {}
 
   ngOnInit(): void {
     var roles = localStorage.getItem('roles')
@@ -83,7 +87,14 @@ export class FilterComponent implements OnInit {
       this.filterControlName = "Procuring and Disposal Entities"
       this.pdeControl.valueChanges.pipe(
         startWith(''),
-        switchMap(value => this._utilsService.getUtil('pde-entities',value)),
+        switchMap((value) => {
+          // if (value === '') {
+          //   return this._utilsService.getUtil('pde-entities', value)
+          // }
+          console.log(value)
+          return this._utilsService.getUtil('pde-entities', value)
+        }
+        ),
       ).subscribe((response) => {       
         this.isSearching = true
         this.pde = response.data;
@@ -101,6 +112,12 @@ export class FilterComponent implements OnInit {
       });
     }
     this.getUtiities('financial-years','')
+
+    this.options = this.fb.group({
+      financialYear: this.financialYearControl,
+      pde:this.pdeControl,
+      toppings:this.toppingsControl
+    });
     this.submit(this.options)
   }
 
@@ -122,6 +139,7 @@ export class FilterComponent implements OnInit {
           break
           case  'financial-years':
             this.financialYears = response.data
+            //this.financialYearControl.setValue(this.financialYears[0]?.financial_year)
           break
         }
          

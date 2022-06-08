@@ -233,7 +233,7 @@ export class VisualsComponent implements OnInit {
         lineCap: "round",
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       } ,
       labels: []
     };
@@ -511,7 +511,10 @@ export class VisualsComponent implements OnInit {
 
     this.chartBudgetStatus?.updateOptions({
       series: [],
-      labels: []
+      labels: [],
+      noData: {
+        text: 'Loading Data ...'
+      } 
     })
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -527,57 +530,55 @@ export class VisualsComponent implements OnInit {
         console.log("BUDGET",data)
 
         labelName.push(procuringEntity == ""?"All":procuringEntity)
+        if (data.length > 0) {
+          if (procuringEntity == "") {
+            var totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
+            var totalSpent = data[0]?.totalSpentAmount.split(',')
 
-        if (procuringEntity == "") {
-          var totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
-          var totalSpent = data[0]?.totalSpentAmount.split(',')
-
-          var percentage = parseInt(totalSpent.join('')) / parseInt(totalplanned.join('')) * 100
-          budgetSpentPercentage.push(Math.round(percentage))
-        } else {
-          data.forEach(element => {
-
-            x.push(element?.noOfPlanItems)
-
-            var planned = element?.budgetPlannedAmount.split(',')
-
-            var totalplanned = element?.totalBudgetPlannedAmount.split(',')
-
-            var spent = element?.spentAmount.split(',')
-
-            var percentage = parseInt(spent.join('')) / parseInt(planned.join('')) * 100
-
-            var percentagePlanned = parseInt(planned.join('')) / parseInt(totalplanned.join('')) * 100
-
-            var oneSerieData = [(parseInt(spent.join('')) / 1000000000000), (parseInt(planned.join('')) / 1000000000000), percentage]
-
-            var oneSerieObject = {
-              x: element?.pdeName,
-              // "budgetSpent":spent,
-              // "planned":planned,
-              y: Math.round(percentage),
-
-            }
+            var percentage = parseInt(totalSpent.join('')) / parseInt(totalplanned.join('')) * 100
             budgetSpentPercentage.push(Math.round(percentage))
-            seriesData.push(oneSerieData)
-            seriesObject.push(oneSerieObject)
+          } else {
+            data.forEach(element => {
 
-          });
+              x.push(element?.noOfPlanItems)
+
+              var planned = element?.budgetPlannedAmount.split(',')
+
+              var totalplanned = element?.totalBudgetPlannedAmount.split(',')
+
+              var spent = element?.spentAmount.split(',')
+
+              var percentage = parseInt(spent.join('')) / parseInt(planned.join('')) * 100
+
+              var percentagePlanned = parseInt(planned.join('')) / parseInt(totalplanned.join('')) * 100
+
+              var oneSerieData = [(parseInt(spent.join('')) / 1000000000000), (parseInt(planned.join('')) / 1000000000000), percentage]
+
+              var oneSerieObject = {
+                x: element?.pdeName,
+                // "budgetSpent":spent,
+                // "planned":planned,
+                y: Math.round(percentage),
+
+              }
+              budgetSpentPercentage.push(Math.round(percentage))
+              seriesData.push(oneSerieData)
+              seriesObject.push(oneSerieObject)
+
+            });
+          }
         }
 
         console.log(` ${labelName  }  ${budgetSpentPercentage}`)
 
         this.chartBudgetStatus?.updateOptions({
             series: budgetSpentPercentage,
-            labels: labelName
+            labels: labelName,
+            noData: {
+              text: 'No Data Available ...'
+            } 
 
-        })
-        
-        // this.chartBudgetStatus?.updateSeries([{
-        //   data: seriesObject
-        // }]
-        // )
-        
+        })        
           this.isLoading = false
         },
       (error) => {

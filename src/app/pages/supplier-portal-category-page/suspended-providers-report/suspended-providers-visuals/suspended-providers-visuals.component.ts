@@ -1,4 +1,4 @@
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
   ApexNonAxisChartSeries,
@@ -13,48 +13,22 @@ import html2canvas from 'html2canvas';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { ToastrService } from 'ngx-toastr';
 
-export type ChartOptionsEducationStatus = {
+export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
   xaxis: ApexXAxis;
-  stroke: ApexStroke;
+  yaxis: ApexYAxis | ApexYAxis[];
   title: ApexTitleSubtitle;
-  tooltip: ApexTooltip;
+  labels: string[];
+  stroke: any; // ApexStroke;
+  dataLabels: any; // ApexDataLabels;
   fill: ApexFill;
-  legend: ApexLegend;
-  noData:ApexNoData
-};
-
-export type ChartOptionsBudgetStatus = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  title: ApexTitleSubtitle;
-  legend: ApexLegend;
   tooltip: ApexTooltip;
   noData:ApexNoData;
-};
-
-export type ChartOptionsProcurementTypes = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  title: ApexTitleSubtitle;
-  theme:ApexTheme;
-  noData:ApexNoData;
+  legend:ApexLegend;
+  annotations: any; //ApexAnnotations;
+  grid: ApexGrid;
 };
 
 @Component({
@@ -64,260 +38,71 @@ export type ChartOptionsProcurementTypes = {
 })
 export class SuspendedProvidersVisualsComponent implements OnInit {
 
-  @ViewChild("chartEducationStatus")
-  chartEducationStatus!: ChartComponent;
-  chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
+  @ViewChild("chartSuspendedProviders") chartSuspendedProviders: ChartComponent;
+  public chartOptionsSuspendedProviders: Partial<ChartOptions>;
 
-  @ViewChild("chartBudgetStatus") chartBudgetStatus: ChartComponent;
-  public chartOptionsBudgetStatus: Partial<ChartOptionsBudgetStatus>;
-
-  @ViewChild("chartProcurementTypes") chartProcurementTypes: ChartComponent;
-  public chartOptionsProcurementTypes: Partial<ChartOptionsProcurementTypes>;
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl(this.financialYears[0]);
   downloading = false
   isLoading:boolean = false
-  registeredProviders
 
-  totalValueofPlannedContracts ;
-  numberOfPlannedContracts;
-  yearOfPlannedContracts ;
-  numberOfRegisteredEntities  ;
-  topTenHighestContracts
+
+  cardValue1 ;
+  cardValue2 ;
+  cardValue3 ;
 
   constructor(
     fb: FormBuilder,
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
 
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
   }
 
   ngOnInit(): void {
-    this.chartOptionsEducationStatus = {
-      series: [
-        {
-          name: "Planned Contract Value",
-          data: [],
-          fontSize: "12px"
-        }
-      ],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 'auto',
-        type: "bar",
-        events: {
-          click: function(chart, w, e) {
-            // console.log(chart, w, e)
-          }
-        },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 2000,
-          animateGradually: {
-              enabled: true,
-              delay: 150
-          },
-          dynamicAnimation: {
-              enabled: true,
-              speed: 450
-          }
-      }
-
-      },
-      colors: [
-        "#008FFB"
-      ],
-      plotOptions: {
-        bar: {
-          columnWidth: "35%",
-          distributed: false,
-          horizontal:true
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return NumberSuffix(val,2)
-      },
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        show: true
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      title: {
-        text: "Top 10 Highest PDE Plans By Value"
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
-          }
-        }
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
-
-    this.chartOptionsBudgetStatus  = {
-      series: [],
-
-      chart: {
-        height: 350,
-        fontFamily: 'Trebuchet MS',
-        type: "treemap"
-      },
-      title: {
-        text: "PDE Percentage of Budget Spent "
-      },
-      tooltip: {
-        y: {
-          formatter: function(value) {
-            return `${value}%`
-          }
-        }
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }      
-    };
-
-    this.chartOptionsProcurementTypes = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: 350,
-        fontFamily: 'Trebuchet MS',
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          columnWidth: "55%"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function (val) {
-            return NumberSuffix(val, 2)
-          }
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Value"
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "UGX " + NumberSuffix(val, 2);
-          }
-        }
-      },
-      title: {
-        text: "Budget Value by Procurement Types"
-      },
-      theme: {
-        mode: 'light',
-        palette: 'palette1',
-        monochrome: {
-          enabled: false,
-          color: '#255aee',
-          shadeTo: 'light',
-          shadeIntensity: 0.65
-        },
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
-
-    //for changing stats at the top and the highest procurement budgets down
-    //this.getSummaryStats('plan-summary',this.financialYears[0],'')
-
-    //for budget graph
-    //this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
-
-    //procurement graph
-    //this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
-    
-    //this.getSummaryStats('plan-by-funding-source',this.financialYears[0],'Ministry of Finance')
-    //this.getSummaryStats('plan-budget-status',this.financialYears[0],'Ministry of Finance')
+    this.initCharts()
   }
 
   submit(data) {
-    console.log(data)
-    this.getSummaryStats('plan-summary',data?.selectedFinancialYear,'')
-    this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getSummaryStatsProcurementType('plan-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE) 
-    //this.getSummaryStatsWithPDE('plan-by-funding-source',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('suspended-providers-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('suspended-suppliers-list-summary',data?.selectedFinancialYear,data?.selectedPDE)    
   }
   
   reset(data){
-     //for changing stats at the top and the highest procurement budgets down
-     this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
-
-     //for budget graph
-     this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
- 
-     //procurement graph
-     this.getSummaryStatsProcurementType('plan-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE) 
+    this.getSummaryStats('suspended-providers-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('suspended-suppliers-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
+  getSummaryStats(reportName, financialYear, procuringEntity) {
+    this.isLoading = true
+    this.cardValue1 = 0
+    this.cardValue2 = 0
+    this.cardValue3 = 0
 
-  getSummaryStats(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    this.numberOfPlannedContracts = 0
-    this.totalValueofPlannedContracts = 0
-    this.yearOfPlannedContracts = 0
-    this.numberOfRegisteredEntities = 0
+    this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
+      (response) => {
+        let data = response.data[0]
+        console.log(data)
 
-    this.chartEducationStatus?.updateOptions({
+        if (response.data.length > 0) {
+          this.cardValue1 = data.numberOfProvidersNotSuspended?parseInt(data.numberOfProvidersNotSuspended):0
+          this.cardValue2 = data.numberOfSuspendedProviders?parseInt(data.numberOfSuspendedProviders):0  
+          this.cardValue3 = 97        
+        }
+        this.isLoading = false;
+      },
+      (error) => {
+        console.log(error)
+        this.isLoading = false;
+        this.toastr.error("Something Went Wrong", '', {
+          progressBar: true,
+          positionClass: 'toast-top-right'
+        });
+      }
+    )
+  }
+
+  getVisualisation(reportName,financialYear,procuringEntity){
+    this.isLoading=true    
+
+    this.chartSuspendedProviders?.updateOptions({
 
       series: [],
 
@@ -325,106 +110,54 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         categories:[],
         labels: {
           style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
             fontSize: "12px"
           },
           formatter: function(val) {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data ...'
+      } 
     })
 
-    console.log(`getSummaryStats ${reportName} + ${financialYear} + ${procuringEntity}`,)
+    console.log(`Visualistion ${reportName} + ${financialYear} + ${procuringEntity}`,)
 
-    this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
+    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
-        let  x = []
-        let  y = []
-        let  providersInSelectedYear = []
+          switch (reportName) {
+            case'suspended-suppliers-list-summary':
+              console.log(`Report Name ${reportName}`)
+              console.log('Report Data',data)
+              let providers = []
+              let suspensionDaysLeft = []
+              data.forEach(element => {
+                providers.push(element?.providerName)
+                //calculate days here
+                //suspensionDaysLeft.push(suspensionEndDate - suspensionStartDate)
+                
+              });
+              this.chartSuspendedProviders?.updateOptions({
 
-        console.log('getSummaryStats' ,data ,)
-        var e =( data.length > 0)
-        console.log('getSummaryStats' ,e)
-        if (data.length > 0) {
-          data.forEach(element => {
-            if (element.financialYear == financialYear) {
-              x.push(element?.numberOfPlans)
-              var e = element?.estimatedAmount.split(',')
-              y.push(parseInt(e.join('')))
-              providersInSelectedYear.push(element?.pdeName)
-            }
-          });
-
-          this.topTenHighestContracts = data.sort(function (a, b) {
-            var nameA = a?.estimatedAmount.split(',')
-            var nameB = b?.estimatedAmount.split(',')
-            var valueA = parseInt(nameA.join(''))
-            var valueB = parseInt(nameB.join(''))
-
-            if (valueA > valueB) {
-              return -1;
-            }
-            if (valueA < valueB) {
-              return 1;
-            }
-            return 0;
-          })
-
-          let categories = []
-          let categoryValues = []
-
-
-          this.topTenHighestContracts.slice(0, 10).forEach(element => {
-
-            var valueC = element?.estimatedAmount.split(',')
-            var valueD = parseInt(valueC.join(''))
-            categories.push(element.pdeName)
-            categoryValues.push(valueD)
-          });
-
-
-
-          this.chartEducationStatus?.updateOptions({
-
-            series: [{
-              name: "PDEs",
-              data: categoryValues
-            }],
-
-            xaxis: {
-              categories: categories,
-              labels: {
-                style: {
-                  colors: [
-                    "#008FFB",
-                    "#D10CE8",
-                  ],
-                  fontSize: "12px"
-                },
-                formatter: function (val) {
-                  return NumberSuffix(val, 2)
-                }
-              }
-            },
-          })
+                series: [
+                  {
+                    name: "Days Left",
+                    data: [100, 350]
+                  }
+                ],
           
-          this.numberOfPlannedContracts = addArrayValues(x)
-          this.totalValueofPlannedContracts = addArrayValues(y)
-          this.yearOfPlannedContracts = financialYear
-          this.numberOfRegisteredEntities = data[0].numberOfRegisteredPdes
-          this.isLoading = false
-        }
-        else{
-          this.numberOfPlannedContracts = 0
-          this.totalValueofPlannedContracts = 0
-          this.yearOfPlannedContracts = 0
-          this.numberOfRegisteredEntities = 0
-          this.isLoading = false
-        }
+                xaxis: {
+                  categories:providers,                            
+                },
+                noData: {
+                  text: 'No Data Available...'
+                } 
+              })
+            break;
+          }
+
+        this.isLoading = false
         },
       (error) => {
         console.log(error)
@@ -433,197 +166,171 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
-        this.isLoading = false
-      }
-    )
-
-  }
-
-  getSummaryStatsWithPDE(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
-
-        console.log(data)
-
-          this.isLoading = false
-        },
-      (error) => {
-        this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
-        this.isLoading = false
-      }
-    )
-  }
-
-  getSummaryStatsBudget(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-
-
-    this.chartBudgetStatus?.updateOptions({
-      series: [],
-    })
-
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
-        let  seriesData = []
-        let  seriesObject = []
-
-        console.log("BUDGET",data)
         
-        data.forEach(element => {
-          
-            x.push(element?.numberOfPlans)
-
-            var planned = element?.budgetPlannedAmount.split(',')
-
-            var totalplanned = element?.totalBudgetPlannedAmount.split(',')
-
-            var spent = element?.spentAmount.split(',')
-
-            var percentage = parseInt(spent.join(''))/parseInt(planned.join('')) *100
-
-            var percentagePlanned = parseInt(planned.join(''))/parseInt(totalplanned.join('')) *100
-
-            var oneSerieData = [(parseInt(spent.join(''))/1000000000000),(parseInt(planned.join(''))/1000000000000),percentage]
-
-            var oneSerieObject = {
-              x:element?.pdeName,
-              // "budgetSpent":spent,
-              // "planned":planned,
-              y:Math.round(percentage),
-              
-            }
-            seriesData.push(oneSerieData)
-            seriesObject.push(oneSerieObject)
-          
-        });
-        
-        this.chartBudgetStatus?.updateSeries([{
-          data:seriesObject
-        }]  
-        )
-        
-          this.isLoading = false
-        },
-      (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        this.isLoading = false
-      }
-    )
-  }
-
-  getSummaryStatsProcurementType(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-
-    this.chartProcurementTypes?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB"
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
-
+        this.chartSuspendedProviders?.updateOptions({
     
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
-        var sortedTypes
-
-        console.log("Procurment Types",data)
-
-        sortedTypes = data.sort(function(a, b) {
-          var nameA = a?.marketPrice.split(',')
-          var nameB = b?.marketPrice.split(',')
-          var valueA = parseInt(nameA.join(''))
-          var valueB = parseInt(nameB.join(''))
-
-          if (valueA >  valueB) {
-            return -1;
-          }
-          if (valueA < valueB) {
-            return 1;
-          }
-          return 0;
-        })
-
-
-        let categories=[]
-        let categoryValues=[]
-
-
-        sortedTypes.forEach(element => {
-
-          var valueC = element?.marketPrice.split(',')
-          var valueD = parseInt(valueC.join(''))
-          categories.push(element.procurementType)
-          categoryValues.push(valueD)
-        });
-
-        this.chartProcurementTypes?.updateOptions({
-
-          series: [{
-            name: "Values",
-            data: categoryValues
-          }],
+          series: [],
     
           xaxis: {
-            categories:categories,
+            categories:[],
             labels: {
               style: {
-                colors: [
-                  "#008FFB"
-                ],
                 fontSize: "12px"
               },
               formatter: function(val) {
                 return NumberSuffix(val,2)}
             }            
           },
+          noData: {
+            text: 'Error Loading Data ...'
+          } 
         })
-       
-          this.isLoading = false
-        },
-      (error) => {
-        this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
         this.isLoading = false
-        console.log(error)
       }
     )
-  }
+
+  } 
 
    getFontSize() {
     return Math.max(10, 12);
+  }
+
+  initCharts(){
+    // this.chartOptionsSuspendedProviders = {
+    //   series: [
+    //     {
+    //       name: "Contract Award Value",
+    //       type: "column",
+    //       data: []
+    //     }
+    //   ],
+    //   chart: {
+    //     fontFamily: 'Trebuchet MS',
+    //     height: 350,
+    //     type: "bar"
+    //   },
+    //   plotOptions: {
+    //     bar: {
+    //       horizontal: true,
+    //       columnWidth: "35%",
+    //       borderRadius: 2
+    //     }
+    //   },
+    //   stroke: {
+    //     show: true,
+    //     width: 2,
+    //     colors: ["transparent"]
+    //   },
+    //   title: {
+    //     text: "Suspended Suppliers by Period of Suspension",
+    //     style: {
+    //       fontSize:  '14px',
+    //       fontWeight:  'bold',
+    //       color:  '#263238'
+    //     },
+    //   },
+    //   dataLabels: {
+    //     enabled: true,
+    //     enabledOnSeries: [1]
+    //   },
+
+    //   xaxis: {
+    //     categories: [],
+    //     labels: {
+    //       style: {
+    //         fontSize: "12px"
+    //       }
+    //     }
+    //   },
+    //   yaxis: [
+    //     {
+    //       title: {
+    //         text: "Procurement Method"
+    //       },
+    //       labels: {
+    //         style: {             
+    //           fontSize: "12px"
+    //         },
+    //         formatter: function (val) {
+    //           return NumberSuffix(val, 2)
+    //         }
+    //       }
+    //     }
+    //   ],
+    //   noData: {
+    //     text: 'Loading Data...'
+    //   }
+    // };
+
+    this.chartOptionsSuspendedProviders = {
+      series: [],
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        type: "bar",
+        height: 350,
+        
+      },
+      title: {
+            text: "Suspended Suppliers by Period of Suspension",
+            style: {
+              fontSize:  '14px',
+              fontWeight:  'bold',
+              color:  '#263238'
+            },
+      },
+      annotations: {
+        xaxis: [
+          {
+            x: 500,
+            borderColor: "#00E396",
+            label: {
+              borderColor: "#00E396",
+              style: {
+                color: "#fff",
+                background: "#00E396"
+              },
+              text: "X annotation"
+            }
+          }
+        ],
+        yaxis: [
+          {
+            y: "July",
+            y2: "September",
+            label: {
+              text: "Y annotation"
+            }
+          }
+        ]
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          borderRadius: 2
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: []
+      },
+      grid: {
+        xaxis: {
+          lines: {
+            show: true
+          }
+        }
+      },
+      yaxis: {
+        reversed: true,
+        axisTicks: {
+          show: true
+        }
+      },
+      noData: {
+        text: 'Loading Data ...'
+      } 
+    };
   }
 }
