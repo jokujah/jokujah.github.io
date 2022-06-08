@@ -44,10 +44,9 @@ export class DisposalVisualsComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
 
   isLoading:boolean = false 
-  valueOfContracts;
-  numberOfContracts;
-  yearOfBids;
-  allEvavluatedBidders;
+  cardValue2;
+  cardValue1;
+  cardValue3;
 
   topTenHighestContracts 
   
@@ -72,39 +71,28 @@ export class DisposalVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
+    this.initCharts()    
   }
 
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('disposal-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-disposal-contract-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('disposal-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-disposal-contract-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = financialYear
-    
+    this.cardValue2 = 0
+    this.cardValue1 = 0
+    this.cardValue3 = 0
 
     console.log(reportName)
 
@@ -112,11 +100,11 @@ export class DisposalVisualsComponent implements OnInit {
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
-        
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
+        if (response.data.length > 0) {
+          this.cardValue1 = data.numberOfDisposals ? data.numberOfDisposals : 0
+          this.cardValue2 = data.totalReservePrice ? sanitizeCurrencyToString(data.totalReservePrice) : 0
+          this.cardValue3 = data.totalContractAmount ? data.totalContractAmount : 0
+        }
         this.isLoading = false
         },
       (error) => {
@@ -133,9 +121,9 @@ export class DisposalVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
+    // this.cardValue2 = 0
+    // this.cardValue1 = 0
+    // this.cardValue3 = 0
 
     this.chart?.updateOptions({
       series: [],
@@ -155,49 +143,59 @@ export class DisposalVisualsComponent implements OnInit {
       (response )=>{ 
         let data = response.data
         let subjectOfProcurement = []
-        let estimatedAmount = []
-        let actualAmount = []
+        let reservePrice = []
+        let contractAmount = []
         let sortedData = []
 
         switch (reportName) {
-          case 'high-value-contracts':           
-            console.log("AWARDED", data)
+          case 'top-disposal-contract-list-summary':           
+            console.log("top-disposal-contract-list-summary", data)
 
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
+            // sortedData = data.sort(function (a, b) {
+            //   var nameA = a?.reservePrice.split(',')
+            //   var nameB = b?.reservePrice.split(',')
+            //   var valueA = parseInt(nameA.join(''))
+            //   var valueB = parseInt(nameB.join(''))
 
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
-            
-            sortedData.forEach(element => {
-              var valueC = element?.estimatedAmount.split(',')
+            //   if (valueA > valueB) {
+            //     return -1;
+            //   }
+            //   if (valueA < valueB) {
+            //     return 1;
+            //   }
+            //   return 0;
+            // })
+
+            for (let i = 0; i < 9; i++) {              
+              var valueC = data[i]?.reservePrice.split(',')
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actualCost.split(',')
+              var valueE = data[i]?.contractAmount.split(',')
               var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
-              estimatedAmount.push(valueD)
-              actualAmount.push(valueF)
-            });
+              subjectOfProcurement.push(capitalizeFirstLetter(data[i].subjectOfProcurement))
+              reservePrice.push(valueD)
+              contractAmount.push(valueF)
+            }
+            
+            // data.forEach(element => {
+            //   var valueC = element?.reservePrice.split(',')
+            //   var valueD = parseInt(valueC.join(''))
+            //   var valueE = element?.contractAmount.split(',')
+            //   var valueF = parseInt(valueE.join(''))
+            //   subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
+            //   reservePrice.push(valueD)
+            //   contractAmount.push(valueF)
+            // });
             this.chart?.updateOptions({
               series: [
                 {
-                  name: "Estimated Amount",
-                  data: estimatedAmount
+                  name: "Reserve Price",
+                  data: reservePrice
                 },
-                {
-                  name: "Actual Amount",
-                  type: "line",
-                  data: actualAmount
-                }
+                // {
+                //   name: "Contract Amount",
+                //   type: "line",
+                //   data: contractAmount
+                // }
               ],
               xaxis: {
                 categories: subjectOfProcurement,
@@ -238,6 +236,7 @@ export class DisposalVisualsComponent implements OnInit {
     this.chartOptions = {
       series: [ ],
       chart: {
+        fontFamily:'Trebuchet Ms',
         type: "bar",
         height: '500px'
       },
@@ -278,7 +277,12 @@ export class DisposalVisualsComponent implements OnInit {
         text: 'No Data Available ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Top 10 Disposal Contracts",
+        style: {
+          fontSize:  '14px',
+          fontWeight:  'bold',
+          color:  '#263238'
+        },
       },
     };
   }

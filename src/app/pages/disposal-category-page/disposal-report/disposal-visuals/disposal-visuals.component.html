@@ -3,7 +3,7 @@
     <div>
       <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{numberOfContracts}}</span>
+          <span *ngIf="!isLoading" class="stats">{{cardValue1}}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
@@ -12,14 +12,14 @@
         </div>
   
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+          <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
           <span class="statsText">Reserve Price</span>
         </div> 
         <div class="statsCard">
-            <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+            <span *ngIf="!isLoading" class="stats">UGX {{cardValue3 | numberSuffix: 2}}</span>
             <span *ngIf="isLoading">
               <app-loading-pulse></app-loading-pulse>
             </span>

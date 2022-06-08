@@ -24,6 +24,7 @@ export class ReportsComponent implements OnInit {
   fullReportName 
 
   downloadData:any
+  role
   
 
   isLoading:boolean = false 
@@ -54,6 +55,7 @@ export class ReportsComponent implements OnInit {
   selectedPDE
 
   subscription: Subscription
+  filterControlName: string;
   
   
 
@@ -67,6 +69,20 @@ export class ReportsComponent implements OnInit {
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
+
+    var roles = localStorage.getItem('roles')
+    roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
+    
+    //this.role = (roles == 'super-admin') ? 'Procuring and Disposal Entities' : 'Departments'
+
+    var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+
+    if(checkIfPdeOrDept == 'pde'){
+      this.filterControlName = "Procuring and Disposal Entities"
+      
+    }else{
+      this.filterControlName = "Departments"
+    }
   }
 
   ngOnInit(): void {
@@ -98,8 +114,8 @@ export class ReportsComponent implements OnInit {
   //   )
   // }
 
-  download(fileName,filePath,pde) {
-    this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
+  download(fileName,filePath,pde) {   
+    //this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
     this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear).subscribe(
       (response)=>{
         this.downloadData = response
@@ -110,6 +126,7 @@ export class ReportsComponent implements OnInit {
 
 
   async submit(data) {
+    console.log("Report Page", data)
       this.isLoading = true
       this.downloadData = null
       this.searchedPDE = []
@@ -122,6 +139,10 @@ export class ReportsComponent implements OnInit {
       }else{
         this.searchedPDE = []
       }
+
+      // if(this.selectedPDE ==''){
+      //   this.searchedPDE.push(this.selectedPDE)
+      // }
       this.isLoading = false      
   }
   
