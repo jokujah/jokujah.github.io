@@ -74,28 +74,18 @@ export class SignedContractsVisualsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
   }
 
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
     this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('high-value-signed-contracts',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
     this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('high-value-signed-contracts',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -150,6 +140,9 @@ export class SignedContractsVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      },
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -161,8 +154,8 @@ export class SignedContractsVisualsComponent implements OnInit {
         let sortedData = []
 
         switch (reportName) {
-          case 'high-value-contracts':           
-            console.log("AWARDED", data)
+          case 'high-value-signed-contracts':           
+            console.log("high-value-signed-contracts", data)
 
             sortedData = data.sort(function (a, b) {
               var nameA = a?.estimatedAmount.split(',')
@@ -211,6 +204,9 @@ export class SignedContractsVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'No Data Available...'
+              },
             })
 
             break;
@@ -226,6 +222,22 @@ export class SignedContractsVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+          series: [],
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          },
+        })
         console.log(error)
       }
     )
@@ -276,7 +288,7 @@ export class SignedContractsVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       },
       title: {
         text: "Signed High Value Contracts"

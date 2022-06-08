@@ -104,16 +104,17 @@ export class LateInitiationVisualsComponent implements OnInit {
     this.numberOfRequisitions = 0
     this.requisitionEstimatedAmount = 0
 
-    this._planingCategoryService.getSummaryStats(reportName, financialYear, procuringEntity).subscribe(
+    this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
         let data = response.data[0]
         console.log(data)
 
-        if (data.length > 0) {
+        if (response.data.length > 0) {
           this.marketPrice = data.marketPrice?data.marketPrice:0
           this.numberOfRequisitions = data.numberOfRequisitions?data.numberOfRequisitions:0
           this.requisitionEstimatedAmount = data.requisitionEstimatedAmount?data.requisitionEstimatedAmount:0
         }
+        this.isLoading = false;
       },
       (error) => {
         console.log(error)
@@ -122,7 +123,6 @@ export class LateInitiationVisualsComponent implements OnInit {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
-        this.isLoading = false
       }
     )
   }
@@ -189,7 +189,7 @@ export class LateInitiationVisualsComponent implements OnInit {
 
     console.log(`Visualistion ${reportName} + ${financialYear} + ${procuringEntity}`,)
 
-    this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
+    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
           switch (reportName) {
