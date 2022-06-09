@@ -116,7 +116,9 @@ export class ReportsComponent implements OnInit {
 
   download(fileName,filePath,pde) {   
     //this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
-    this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear).subscribe(
+    pde = (pde === (`All ${this.filterControlName}`))?'':pde
+    var financialYear = (this.selectedFinancialYear == 'All Financial Years')?'':this.selectedFinancialYear
+    this.downloadService.download(fileName,filePath,pde,financialYear).subscribe(
       (response)=>{
         this.downloadData = response
       }
@@ -131,18 +133,18 @@ export class ReportsComponent implements OnInit {
       this.downloadData = null
       this.searchedPDE = []
       await slowLoader()
-      this.selectedFinancialYear = data?.selectedFinancialYear
+      this.selectedFinancialYear = (data?.selectedFinancialYear=='')?('All Financial Years'):data?.selectedFinancialYear
       this.selectedPDE = data?.selectedPDE
 
       if(this.selectedPDE !=''){
         this.searchedPDE.push(this.selectedPDE)
-      }else{
-        this.searchedPDE = []
       }
-
-      // if(this.selectedPDE ==''){
-      //   this.searchedPDE.push(this.selectedPDE)
+      // else{
+      //   this.searchedPDE = []
       // }
+      if(this.selectedPDE ==''){
+        this.searchedPDE.push(`All ${this.filterControlName}`)
+      }
       this.isLoading = false      
   }
   
@@ -203,11 +205,11 @@ export class ReportsComponent implements OnInit {
         value = 'Plan and Forecasting Report'
       break;
 
-      case 'microProcurements' :
+      case 'micro-procurements' :
         value = 'Micro Procurements Report'
       break;
-      case 'completed-contracts' :
-        value = 'Completed Contracts Report'
+      // case 'completed-contracts' :
+      //   value = 'Completed Contracts Report'
       break;
       case 'cancelled-tenders' :
         value = 'Cancelled Tenders Report'

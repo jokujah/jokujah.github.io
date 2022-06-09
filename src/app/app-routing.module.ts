@@ -106,7 +106,8 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                //forecast
+                data: { reportUrl: 'forecast' }
               },
             ]
           },
@@ -153,7 +154,8 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                //late-initiations
+                data: { reportUrl: 'late-initiations' }
               },
             ]
           },
@@ -183,12 +185,13 @@ const routes: Routes = [
               },
               {
                 path: '',
-                 redirectTo: 'reports',
+                redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data: { reportUrl: 'average-bids-by-entity-method' }
                 
               },
             ]
@@ -225,6 +228,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data: { reportUrl: 'post-qualification' }
                 
               },
             ]
@@ -262,7 +266,8 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                //suspended-providers
+                data: { reportUrl: 'suspended-providers' }
               },
             ]
           },
@@ -299,6 +304,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data:{reportUrl:'signed-contracts'}
                 
               },
             ]
@@ -319,6 +325,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data:{reportUrl:'number-value-by-entity'}
                 
               },
             ]
@@ -339,7 +346,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'number-value-by-procurement-method'}
               },
             ]
           },
@@ -359,6 +366,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data:{reportUrl:'admin-review'}
                 
               },
             ]
@@ -378,7 +386,8 @@ const routes: Routes = [
               },
               {
                 path: 'reports',
-                component:ReportPageComponent,                
+                component:ReportPageComponent, 
+                data:{reportUrl:'awarded-contracts'}               
               },
             ]
           },
@@ -398,7 +407,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'procurements'}
               },
             ]
           },
@@ -418,7 +427,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'micro-procurements'}
               },
             ]
           },
@@ -456,6 +465,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data:{reportUrl:'cancelled-tenders'}
                 
               },
             ]
@@ -476,6 +486,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data:{reportUrl:'completed-contracts'}
                 
               },
             ]
@@ -496,7 +507,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'framework-contracts'}
               },
             ]
           },
@@ -516,7 +527,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'terminated-contracts'}
               },
             ]
           }
@@ -538,7 +549,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'provider-performance'}
               },
             ]
           },
@@ -559,6 +570,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
+                data:{reportUrl:'contract-management'}
                 
               },
             ]
@@ -579,7 +591,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'actual-vs-planned-procurements'}
               },
             ]
           },
@@ -599,7 +611,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'completed-contracts-on-time'}
               },
             ]
           },
@@ -619,7 +631,7 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                data:{reportUrl:'awarded-to-suspended-providers'}
               },
             ]
           },
@@ -691,7 +703,8 @@ const routes: Routes = [
               {
                 path: 'reports',
                 component:ReportPageComponent,
-                
+                // disposals
+                data: { reportUrl: 'disposals' }
               },
             ]
           },
