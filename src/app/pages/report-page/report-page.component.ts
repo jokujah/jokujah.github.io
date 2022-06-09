@@ -9,12 +9,22 @@ import { Component, OnInit } from '@angular/core';
 export class ReportPageComponent implements OnInit {
 
   reportName
+  reportName2
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
   ) {
     this.reportName = this.route.snapshot.paramMap.get('reportURL');
+
+    this.route.data.subscribe(data => {
+      this.reportName2 = data['reportUrl'];
+    })
+
+    this.reportName = this.route.snapshot.paramMap.get('reportURL')?this.route.snapshot.paramMap.get('reportURL'):this.reportName2;
+
+    console.log(this.route.snapshot.paramMap.get('reportURL'))
+    console.log(this.reportName2)
   }
 
   ngOnInit(): void {}

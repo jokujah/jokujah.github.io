@@ -16,11 +16,46 @@ export class DownloadService {
   ) {}
 
   download(filename,reportName,pde,financialYear): Observable<Download> {
-    return this.http.get(`${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=${financialYear}&pde[]=${pde}`, {
-      reportProgress: true,
-      observe: 'events',
-      responseType: 'blob'
-    }).pipe(download(blob => this.save(blob, filename)))
+    
+    var roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
+
+    var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+
+
+
+    if((financialYear === "") && (pde !== ""))
+    {
+      return this.http.get(`${this.apiUrl}/api/detailed-reports/${reportName}/download?${checkIfPdeOrDept}[]=${pde}`, {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'blob'
+      }).pipe(download(blob => this.save(blob, filename)))
+    }
+    else if((financialYear !== "") && (pde === ""))
+    {
+      return this.http.get(`${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=${financialYear}`, {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'blob'
+      }).pipe(download(blob => this.save(blob, filename))) 
+    }
+    else if((financialYear !== "") && (pde !== "")){
+      return this.http.get(`${this.apiUrl}/api/detailed-reports/${reportName}/download?fy[]=${financialYear}&${checkIfPdeOrDept}[]=${pde}`, {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'blob'
+      }).pipe(download(blob => this.save(blob, filename)))
+    }
+    else
+    {
+      
+      return this.http.get(`${this.apiUrl}/api/detailed-reports/${reportName}/download`, {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'blob'
+      }).pipe(download(blob => this.save(blob, filename)))
+
+    }
   
   }
 
