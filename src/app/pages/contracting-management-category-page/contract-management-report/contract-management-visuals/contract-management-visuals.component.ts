@@ -24,14 +24,15 @@ export type ChartOptions = {
   chart: ApexChart;
   dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
+  yaxis: ApexYAxis | ApexYAxis[];
   xaxis: ApexXAxis;
   fill: ApexFill;
   tooltip: ApexTooltip;
   stroke: ApexStroke;
   legend: ApexLegend;
   title: ApexTitleSubtitle,
-  noData:ApexNoData
+  noData:ApexNoData,
+  labels: string[];
 };
 
 
@@ -44,67 +45,46 @@ export class ContractManagementVisualsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
+  @ViewChild("chartProcurementMethod") chartProcurementMethod: ChartComponent;
+  public chartOptionsProcurementMethod: Partial<ChartOptions>;
+
   isLoading:boolean = false 
-  valueOfContracts;
-  numberOfContracts;
-  yearOfBids;
-  allEvavluatedBidders;
+  cardValue1;
+  cardValue2
+  
 
   topTenHighestContracts 
   
 
 
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-
   constructor(
-    fb: FormBuilder,
     private toastr: ToastrService,
     private _service: AwardedContractReportService
-    ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-  }
+    ) {  }
 
   ngOnInit(): void {
     this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
   }
 
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('contract-management-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contract-management-by-procurement-method',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-contracts-at-management-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
-
+    this.getSummaryStats('contract-management-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contract-management-by-procurement-method',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-contracts-at-management-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = financialYear
+    this.cardValue1 = 0
+    this.cardValue2 = 0
     
 
     console.log(reportName)
@@ -114,8 +94,8 @@ export class ContractManagementVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
+        this.cardValue1 = data.numberOfContracts?data.numberOfContracts:0
+        this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
         //this.allEvavluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
@@ -134,9 +114,6 @@ export class ContractManagementVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
 
     this.chart?.updateOptions({
       series: [],
@@ -150,6 +127,28 @@ export class ContractManagementVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      }
+    })
+
+    this.chartProcurementMethod?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+      noData: {
+        text: 'Loading Data...'
+      }
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -159,34 +158,37 @@ export class ContractManagementVisualsComponent implements OnInit {
         let estimatedAmount = []
         let actualAmount = []
         let sortedData = []
+        let categories = []
+        let categorieValues = []
+        let numOfBids = []
 
         switch (reportName) {
-          case 'high-value-contracts':           
-            console.log("AWARDED", data)
+          case 'top-contracts-at-management-list-summary':
+            console.log("top-contracts-at-management-list-summary", data)
 
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
+            // sortedData = data.sort(function (a, b) {
+            //   var nameA = a?.estimatedAmount.split(',')
+            //   var nameB = b?.estimatedAmount.split(',')
+            //   var valueA = parseInt(nameA.join(''))
+            //   var valueB = parseInt(nameB.join(''))
 
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
-            
-            sortedData.forEach(element => {
-              var valueC = element?.estimatedAmount.split(',')
+            //   if (valueA > valueB) {
+            //     return -1;
+            //   }
+            //   if (valueA < valueB) {
+            //     return 1;
+            //   }
+            //   return 0;
+            // })
+
+            data.forEach(element => {
+              var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actualCost.split(',')
-              var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
+              // var valueE = element?.actualCost.split(',')
+              // var valueF = parseInt(valueE.join(''))
+              subjectOfProcurement.push(capitalizeFirstLetter(element.contractManager))
               estimatedAmount.push(valueD)
-              actualAmount.push(valueF)
+              // actualAmount.push(valueF)
             });
             this.chart?.updateOptions({
               series: [
@@ -194,11 +196,11 @@ export class ContractManagementVisualsComponent implements OnInit {
                   name: "Estimated Amount",
                   data: estimatedAmount
                 },
-                {
-                  name: "Actual Amount",
-                  type: "line",
-                  data: actualAmount
-                }
+                // {
+                //   name: "Actual Amount",
+                //   type: "line",
+                //   data: actualAmount
+                // }
               ],
               xaxis: {
                 categories: subjectOfProcurement,
@@ -212,11 +214,62 @@ export class ContractManagementVisualsComponent implements OnInit {
                 }
               },
             })
-
             break;
-          
-          }
-         
+          case 'contract-management-by-procurement-method':
+            console.log("contract-management-by-procurement-method", data)
+
+            // sortedData = data.sort(function (a, b) {
+            //   var nameA = a?.estimatedAmount.split(',')
+            //   var nameB = b?.estimatedAmount.split(',')
+            //   var valueA = parseInt(nameA.join(''))
+            //   var valueB = parseInt(nameB.join(''))
+
+            //   if (valueA > valueB) {
+            //     return -1;
+            //   }
+            //   if (valueA < valueB) {
+            //     return 1;
+            //   }
+            //   return 0;
+            // })
+
+            data.forEach(element => {
+              var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']              
+              var valueD = parseInt(valueC.join(''))
+              var valueE = element?.numberOfContracts
+              // var valueF = parseInt(valueE.join(''))
+
+              subjectOfProcurement.push(capitalizeFirstLetter(element.procurementMethod))
+              estimatedAmount.push(valueD)
+              actualAmount.push(parseInt(valueE))
+            });
+            this.chartProcurementMethod?.updateOptions({
+              series: [
+                {
+                  name: "Contract Value",
+                  type: "column",
+                  data: estimatedAmount
+                },
+                {
+                  name: "Number Of Contracts",
+                  type: "line",
+                  data: actualAmount
+                }
+              ],
+              xaxis: {
+                categories: subjectOfProcurement,
+                labels: {
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2)
+                  }
+                }
+              },
+              noData: {
+                text: 'No Data Available...'
+              }
+            })
+            break;
+          }         
           this.isLoading = false
         },
       (error) => {
@@ -226,6 +279,41 @@ export class ContractManagementVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+          series: [],
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
+    
+        this.chartProcurementMethod?.updateOptions({
+    
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
         console.log(error)
       }
     )
@@ -237,7 +325,7 @@ export class ContractManagementVisualsComponent implements OnInit {
 
   initCharts(){
     this.chartOptions = {
-      series: [ ],
+      series: [],
       chart: {
         type: "bar",
         height: '500px'
@@ -262,7 +350,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: "Providers "
+          text: "Contract Manager "
         }
       },
       fill: {
@@ -279,9 +367,90 @@ export class ContractManagementVisualsComponent implements OnInit {
         text: 'No Data Available ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Contract Managers with Highest Contract Values"
       },
     };
+
+    this.chartOptionsProcurementMethod = {
+      series: [
+        {
+          name: "Contract Award Value",
+          type: "column",
+          data: []
+        },
+        {
+          name: "Number of Contracts",
+          type: "line",
+          data: []
+        }
+      ],
+      chart: {
+        fontFamily:'Trebuchet Ms',
+        height: 500,
+        type: "line"
+      },
+      // plotOptions: {
+      //   bar: {
+      //     horizontal: false,
+      //     columnWidth: "35%",
+      //     borderRadius: 2
+      //   }
+      // },
+
+
+      // stroke: {
+      //   show: true,
+      //   width: 2,
+      // },
+      stroke: {
+        width: [0, 4],
+        curve:'smooth'
+      },
+      title: {
+        text: "Contract Management by Procurement Methods",
+        style:{
+          fontSize:"14px"
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1]
+      },
+
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: "12px"
+          }
+        }
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Procurement Method"
+          },
+          labels: {
+            style: {             
+              fontSize: "12px"
+            },
+            formatter: function (val) {
+              return NumberSuffix(val, 2)
+            }
+          }
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Contracts"
+          }
+        }
+      ],
+      noData: {
+        text: 'Loading Data ...'
+      }
+    };
   }
+
 
 }

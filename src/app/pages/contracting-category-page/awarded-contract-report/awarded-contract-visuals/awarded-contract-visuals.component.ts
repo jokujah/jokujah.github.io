@@ -48,13 +48,10 @@ export class AwardedContractVisualsComponent implements OnInit {
   numberOfContracts;
   yearOfBids;
   allEvavluatedBidders;
-
   topTenHighestContracts 
 
 
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
+  
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
@@ -63,15 +60,7 @@ export class AwardedContractVisualsComponent implements OnInit {
     fb: FormBuilder,
     private toastr: ToastrService,
     private _service: AwardedContractReportService
-    ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    }); 
-    
-    
-    
-  }
+    ) {}
 
   ngOnInit(): void {
     this.initCharts()
@@ -108,8 +97,8 @@ export class AwardedContractVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts = data.numberOfContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.valueOfContracts)
+        this.numberOfContracts = data.numberOfContracts?data.numberOfContracts:0
+        this.valueOfContracts = data.valueOfContracts?sanitizeCurrencyToString(data.valueOfContracts):0
         //this.allEvavluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
@@ -150,6 +139,9 @@ export class AwardedContractVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      }
     })
 
     this.chartProcurementMethod?.updateOptions({
@@ -166,6 +158,9 @@ export class AwardedContractVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      }
     })
 
     this.chartProcurementMethodContracts?.updateOptions({
@@ -182,6 +177,9 @@ export class AwardedContractVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      }
     })
 
     this.chartProcurementType?.updateOptions({
@@ -198,6 +196,9 @@ export class AwardedContractVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      }
     })
 
     console.log(reportName)
@@ -260,6 +261,9 @@ export class AwardedContractVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'No Data Available...'
+              }
             })
 
             break;
@@ -306,6 +310,9 @@ export class AwardedContractVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'No Data Available...'
+              }
             })
 
             this.chartProcurementMethodContracts?.updateOptions({
@@ -318,6 +325,9 @@ export class AwardedContractVisualsComponent implements OnInit {
               xaxis: {
                 categories: categories,               
               },
+              noData: {
+                text: 'No Data Available...'
+              }
             })
             break;
           case 'contracts-by-procurement-type':           
@@ -368,10 +378,13 @@ export class AwardedContractVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'No Data Available...'
+              }
             })
             break;
 
-          }
+        }
          
           this.isLoading = false
         },
@@ -382,6 +395,85 @@ export class AwardedContractVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                colors: [
+                  "#008FFB",
+                  "#D10CE8",
+                ],
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
+    
+        this.chartProcurementMethod?.updateOptions({
+    
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
+    
+        this.chartProcurementMethodContracts?.updateOptions({
+    
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
+    
+        this.chartProcurementType?.updateOptions({
+    
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
         console.log(error)
       }
     )
@@ -409,6 +501,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       chart: {
+        fontFamily:'Trebuchet Ms',
         height: 350,
         type: "line"
       },
@@ -457,7 +550,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       noData: {
-        text: 'No Data Available...'
+        text: 'Loading Data ...'
       }
     };
 
@@ -517,7 +610,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       noData: {
-        text: 'No Data Available...'
+        text: 'Loading Data ...'
       }
     };
 
@@ -587,6 +680,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       chart: {
+        fontFamily:'Trebuchet Ms',
         height: 350,
         type: "bar"
       },
@@ -603,7 +697,10 @@ export class AwardedContractVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       title: {
-        text: "Awarded Contract Procurement Type"
+        text: "Awarded Contract Procurement Type",
+        style:{
+          fontSize:"14px"
+        }
       },
       dataLabels: {
         enabled: false,
@@ -653,7 +750,7 @@ export class AwardedContractVisualsComponent implements OnInit {
       //   }
       // },
       noData: {
-        text: 'No Data Available'
+        text: 'Loading Data ...'
       }
     };
   }

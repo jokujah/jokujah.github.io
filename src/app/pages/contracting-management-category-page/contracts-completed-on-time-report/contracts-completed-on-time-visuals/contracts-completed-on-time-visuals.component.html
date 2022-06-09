@@ -1,22 +1,38 @@
 <div class="max-w-7xl">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+      <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{numberOfContracts}}</span>
+          <span *ngIf="!isLoading" class="stats">{{cardValue1}}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Contracts Completed On Time</span>
+          <span class="statsText">Contracts </span>
   
         </div>
   
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+          <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
           <span class="statsText">Contract Value</span>
+        </div>
+        <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats">{{cardValue3}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Completed On Time</span>
+  
+        </div>
+  
+        <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats">UGX {{cardValue4 | numberSuffix: 2}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Contract Value Completed On Time</span>
         </div>
   <!--   
         <div class="statsCard">

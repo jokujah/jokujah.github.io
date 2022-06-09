@@ -100,7 +100,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -147,7 +147,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -183,7 +183,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -219,7 +219,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -256,7 +256,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -293,7 +293,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -313,7 +313,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -333,7 +333,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -353,7 +353,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -373,7 +373,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -392,7 +392,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -412,7 +412,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -450,7 +450,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -470,7 +470,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -490,7 +490,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -510,7 +510,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -532,7 +532,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -553,7 +553,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -573,7 +573,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -593,7 +593,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -613,7 +613,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -649,7 +649,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
@@ -685,7 +685,7 @@ const routes: Routes = [
               },
               {
                 path: '',
-                redirectTo: 'visuals',
+                 redirectTo: 'reports',
                 pathMatch: 'full',
               },
               {
