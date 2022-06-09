@@ -32,23 +32,10 @@ export type ChartOptions = {
   styleUrls: ['./administrative-review-visuals.component.scss']
 })
 export class AdministrativeReviewVisualsComponent implements OnInit {
-
-
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
- 
-
-
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-
   isLoading:boolean = false 
-
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
   topTenHighestContracts: any;
   valueOfContracts: number;
   numberOfContracts: number;
@@ -56,134 +43,22 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   numberOfReviewedContracts: number;
   valueOfReviewedContracts: number;
 
-  constructor(fb: FormBuilder,
+  constructor(
     private toastr:ToastrService,
-    private _service: AwardedContractReportService) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-
-    
-
-    // Visualisation
-    this.chartOptions = {
-      series: [
-        {
-          name: "Contract Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Contracts",
-          type: "line",
-          data: []
-        }
-      ],
-      chart: {
-        height: 500,
-        type: "bar",
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 2000,
-          animateGradually: {
-              enabled: true,
-              delay: 150
-          },
-          dynamicAnimation: {
-              enabled: true,
-              speed: 450
-          }
-      },
-      
-        
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          borderRadius: 2
-        }
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      title: {
-        text: "Contracts Under Review by Contract Method"
-      },
-      dataLabels: {
-        enabled: false,
-        enabledOnSeries: [1]
-      },
-      
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {                
-            fontSize: "12px"
-          }
-        }            
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Contract Value"
-          },
-          labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
-              fontSize: "12px"
-            },
-            formatter: function(val) {
-              return NumberSuffix(val,2)}
-          }               
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Number of Contracts"
-          }
-        }
-      ],
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
-  }
+    private _service: AwardedContractReportService) {}
 
   ngOnInit(): void {
-
-    this.getSummaryStats('awards-under-admin-review',this.financialYears[0],'')
-    this.getVisualisation('admin-reviews-by-method',this.financialYears[0],'')
-    
-
-    
+    this.initCharts()
   }
 
-
-
-
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
     this.getSummaryStats('awards-under-admin-review',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('admin-reviews-by-method',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
     this.getSummaryStats('awards-under-admin-review',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('admin-reviews-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-
   }
 
   getSummaryStats(reportName,financialYear,procuringEntity){
@@ -317,8 +192,6 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
               style: {
                 fontSize: "12px"
               },
-              //rotate: 0
-
             }
           }
         })
@@ -342,6 +215,93 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
- 
-
+  initCharts(){
+     this.chartOptions = {
+      series: [
+        {
+          name: "Contract Value",
+          type: "column",
+          data: []
+        },
+        {
+          name: "Number of Contracts",
+          type: "line",
+          data: []
+        }
+      ],
+      chart: {
+        height: 500,
+        type: "bar",
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 2000,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 450
+          }
+      },
+      
+        
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 2
+        }
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      title: {
+        text: "Contracts Under Administrative Review by Contract Method"
+      },
+      dataLabels: {
+        enabled: false,
+        enabledOnSeries: [1]
+      },
+      
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {                
+            fontSize: "12px"
+          }
+        }            
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Contract Value"
+          },
+          labels: {
+            style: {
+              colors: [
+                "#008FFB",
+              ],
+              fontSize: "12px"
+            },
+            formatter: function(val) {
+              return NumberSuffix(val,2)}
+          }               
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Number of Contracts"
+          }
+        }
+      ],
+      noData: {
+        text: 'Loading Data ...'
+      }
+    };
+  }
 }

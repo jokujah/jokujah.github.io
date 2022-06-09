@@ -3,55 +3,64 @@
   <div>
     <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
       <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">{{numberOfContracts}}</span>
+        <span *ngIf="!isLoading" class="stats">{{cardValue1}}</span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
-        <span class="statsText">Frame Work Contracts</span>
+        <span class="statsText">Contracts </span>
 
       </div>
 
       <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts | numberSuffix: 2}}</span>
+        <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="statsText">Contract Value</span>
       </div>
-<!--   
-      <div class="statsCard">
-        <span class="stats"> {{allEvavluatedBidders }}</span>
-        <span class="statsText">All Evaluated Bidders </span>
-      </div> -->
+      <!--   
+        <div class="statsCard">
+          <span class="stats"> {{allEvavluatedBidders }}</span>
+          <span class="statsText">All Evaluated Bidders </span>
+        </div> -->
 
     </div>
   </div>
-  
-    <!-- Graphs -->
-    <div>
-      <!-- Row 1 -->
-      <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chart">
-            <apx-chart #chart
-              [series]="chartOptions.series"
-              [chart]="chartOptions.chart"
-              [dataLabels]="chartOptions.dataLabels"
-              [plotOptions]="chartOptions.plotOptions"
-              [yaxis]="chartOptions.yaxis"
-              [legend]="chartOptions.legend"
-              [fill]="chartOptions.fill"
-              [stroke]="chartOptions.stroke"
-              [tooltip]="chartOptions.tooltip"
-              [xaxis]="chartOptions.xaxis"
-              [title]="chartOptions.title"
-              [noData]="chartOptions.noData"
-            ></apx-chart>
-          </div>
+
+  <!-- Graphs -->
+  <div>
+    <!-- Row 1 -->
+    <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+        <div id="chart">
+          <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+            [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
+            [legend]="chartOptions.legend" [fill]="chartOptions.fill" [stroke]="chartOptions.stroke"
+            [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title"
+            [noData]="chartOptions.noData"></apx-chart>
         </div>
-        <!-- <div class="flex bg-white">
-        </div> -->
       </div>
-      
+      <!-- <div class="flex bg-white">
+          </div> -->
     </div>
+    <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
+        <div id="chartFundingSource" *ngIf="chartOptionsFundingSource" class="w-full  p-5">
+          <apx-chart #chartFundingSource [series]="chartOptionsFundingSource.series"
+            [chart]="chartOptionsFundingSource.chart"
+            [yaxis]="chartOptionsFundingSource.yaxis"
+            [xaxis]="chartOptionsFundingSource.xaxis"
+            [labels]="chartOptionsFundingSource.labels"
+            [stroke]="chartOptionsFundingSource.stroke"
+            [title]="chartOptionsFundingSource.title"
+            [dataLabels]="chartOptionsFundingSource.dataLabels"
+            [fill]="chartOptionsFundingSource.fill"
+            [tooltip]="chartOptionsFundingSource.tooltip"
+            [noData]="chartOptionsFundingSource.noData"
+            [plotOptions]="chartOptionsFundingSource.plotOptions"></apx-chart>
+        </div>
+      </div>
+    </div>
+
   </div>
+</div>

@@ -2,12 +2,12 @@
   <div class="border-b border-gray-200">
     <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <nav class="flex -mb-px space-x-8" aria-label="Tabs">
-        <a [routerLink]="['visuals']" routerLinkActive="activeButton2"
-          class="px-1 py-2 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300 whitespace-nowrap"
-          aria-current="page">Visualizations</a>
+        
         <a [routerLink]="['reports',{ reportURL:'forecast'}]" routerLinkActive="activeButton2"
           class="px-1 py-2 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">Excel Reports</a>
-      </nav>
+      <a [routerLink]="['visuals']" routerLinkActive="activeButton2"
+          class="px-1 py-2 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300 whitespace-nowrap"
+          aria-current="page">Visualizations</a></nav>
     </div>
   </div>
 </div>

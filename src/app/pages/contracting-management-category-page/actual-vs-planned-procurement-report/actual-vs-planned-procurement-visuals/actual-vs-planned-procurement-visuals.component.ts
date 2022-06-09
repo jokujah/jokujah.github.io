@@ -54,47 +54,24 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
   
 
 
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-
   constructor(
-    fb: FormBuilder,
     private toastr: ToastrService,
     private _service: AwardedContractReportService
-    ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-  }
+    ) {}
 
   ngOnInit(): void {
     this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
   }
 
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('plan-vs-actual-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('plan-vs-actual-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
 
   }

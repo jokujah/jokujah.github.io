@@ -72,29 +72,19 @@ export class MicroProcurementVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
+    this.initCharts() 
   }
 
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('micro-procurements-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-micro-procurements-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('micro-procurements-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-micro-procurements-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -112,11 +102,11 @@ export class MicroProcurementVisualsComponent implements OnInit {
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
-        
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
+        if (response.data.length > 0) {
+          this.numberOfContracts = data.numberOfProcurements ? data.numberOfProcurements : 0
+          this.valueOfContracts = data.contractValue ? sanitizeCurrencyToString(data.contractValue) : 0
+          //this.allEvavluatedBidders = data.total_evaluated_bidders
+        }
         this.isLoading = false
         },
       (error) => {
@@ -133,10 +123,6 @@ export class MicroProcurementVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
-
     this.chart?.updateOptions({
       series: [],
       xaxis: {
@@ -149,6 +135,9 @@ export class MicroProcurementVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      },
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -160,8 +149,8 @@ export class MicroProcurementVisualsComponent implements OnInit {
         let sortedData = []
 
         switch (reportName) {
-          case 'high-value-contracts':           
-            console.log("AWARDED", data)
+          case 'top-micro-procurements-list-summary':           
+            console.log("top-micro-procurements-list-summary", data)
 
             sortedData = data.sort(function (a, b) {
               var nameA = a?.estimatedAmount.split(',')
@@ -210,6 +199,9 @@ export class MicroProcurementVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'Loading Data...'
+              },
             })
 
             break;
@@ -225,6 +217,22 @@ export class MicroProcurementVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+          series: [],
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data ...'
+          },
+        })
         console.log(error)
       }
     )
@@ -238,6 +246,7 @@ export class MicroProcurementVisualsComponent implements OnInit {
     this.chartOptions = {
       series: [ ],
       chart: {
+        fontFamily:'Trebuchet Ms',
         type: "bar",
         height: '500px'
       },
@@ -261,7 +270,7 @@ export class MicroProcurementVisualsComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: "Providers "
+          text: "Providers"
         }
       },
       fill: {
@@ -275,10 +284,13 @@ export class MicroProcurementVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Micro Procurements with highest value",
+        style:{
+          fontSize:'14px'
+        }
       },
     };
   }

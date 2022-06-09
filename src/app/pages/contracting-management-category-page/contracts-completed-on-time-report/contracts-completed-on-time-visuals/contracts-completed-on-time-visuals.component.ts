@@ -1,39 +1,44 @@
+import { PlaningAndForecastingReportService } from './../../../../services/PlaningCategory/planing-and-forecasting-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import {
   ApexAxisChartSeries,
-  ApexChart,
-  ChartComponent,
+  ApexTitleSubtitle,
   ApexDataLabels,
-  ApexPlotOptions,
-  ApexYAxis,
-  ApexLegend,
-  ApexStroke,
-  ApexXAxis,
   ApexFill,
+  ApexMarkers,
+  ApexYAxis,
+  ApexXAxis,
   ApexTooltip,
+  ApexStroke,
+  ApexPlotOptions,
+  ApexLegend,
   ApexNoData,
-  ApexTitleSubtitle
+  ApexChart,
+  ApexGrid,
+  ChartComponent
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
-import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
+  markers: ApexMarkers;
+  title: ApexTitleSubtitle;
+  fill: ApexFill;
   yaxis: ApexYAxis;
   xaxis: ApexXAxis;
-  fill: ApexFill;
   tooltip: ApexTooltip;
   stroke: ApexStroke;
+  grid: ApexGrid;
+  colors: any;
+  toolbar: any;  
+  plotOptions: ApexPlotOptions;  
   legend: ApexLegend;
-  title: ApexTitleSubtitle,
   noData:ApexNoData
 };
-
 
 @Component({
   selector: 'app-contracts-completed-on-time-visuals',
@@ -41,70 +46,45 @@ export type ChartOptions = {
   styleUrls: ['./contracts-completed-on-time-visuals.component.scss']
 })
 export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
+ 
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
   isLoading:boolean = false 
-  valueOfContracts;
-  numberOfContracts;
-  yearOfBids;
-  allEvavluatedBidders;
-
-  topTenHighestContracts 
-  
-
-
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
+  cardValue2;
+  cardValue1;
+  cardValue3: any;
+  cardValue4: number;
 
   constructor(
-    fb: FormBuilder,
     private toastr: ToastrService,
-    private _service: AwardedContractReportService
-    ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-  }
+    private _service: PlaningAndForecastingReportService
+  ) {}
+   
 
   ngOnInit(): void {
-    this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
+    this.initCharts();
   }
 
+  getFontSize() {
+    return Math.max(10, 12);
+  }
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('completed-contracts-on-time-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-completed-contracts-on-time-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
-
+    this.getSummaryStats('completed-contracts-on-time-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-completed-contracts-on-time-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
-
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = financialYear
+    this.cardValue2 = 0
+    this.cardValue1 = 0
     
 
     console.log(reportName)
@@ -113,11 +93,12 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
-        
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
+        if (response.data.length > 0) {
+          this.cardValue1 = data.numberOfContracts?data.numberOfContracts:0
+          this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
+          this.cardValue3 = data.numberOfContractsCompletedOnTime?data.numberOfContractsCompletedOnTime:0
+          this.cardValue4 = data.valueOfContractsCompletedOnTime?sanitizeCurrencyToString(data.valueOfContractsCompletedOnTime):0
+        }
         this.isLoading = false
         },
       (error) => {
@@ -133,10 +114,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
+    this.isLoading=true   
 
     this.chart?.updateOptions({
       series: [],
@@ -150,55 +128,59 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      },
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let subjectOfProcurement = []
-        let estimatedAmount = []
-        let actualAmount = []
-        let sortedData = []
+        let contractValue = []
+        // let actualAmount = []
+        // let sortedData = []
 
         switch (reportName) {
-          case 'high-value-contracts':           
-            console.log("AWARDED", data)
+          case 'top-completed-contracts-on-time-summary':           
+            console.log("top-completed-contracts-on-time-summary", data)
 
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
+            // sortedData = data.sort(function (a, b) {
+            //   var nameA = a?.estimatedAmount.split(',')
+            //   var nameB = b?.estimatedAmount.split(',')
+            //   var valueA = parseInt(nameA.join(''))
+            //   var valueB = parseInt(nameB.join(''))
 
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
+            //   if (valueA > valueB) {
+            //     return -1;
+            //   }
+            //   if (valueA < valueB) {
+            //     return 1;
+            //   }
+            //   return 0;
+            // })
             
-            sortedData.forEach(element => {
-              var valueC = element?.estimatedAmount.split(',')
+            data.forEach(element => {
+              console.log(element)
+              var valueC = (element?.contractValue)?(element?.contractValue.split(',')):['0'];
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actualCost.split(',')
-              var valueF = parseInt(valueE.join(''))
+              // var valueE = element?.actualCost.split(',')
+              // var valueF = parseInt(valueE.join(''))
               subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
-              estimatedAmount.push(valueD)
-              actualAmount.push(valueF)
+              contractValue.push(valueD)
+              // actualAmount.push(valueF)
             });
             this.chart?.updateOptions({
               series: [
                 {
-                  name: "Estimated Amount",
-                  data: estimatedAmount
+                  name: "Contract Value",
+                  data: contractValue
                 },
-                {
-                  name: "Actual Amount",
-                  type: "line",
-                  data: actualAmount
-                }
+                // {
+                //   name: "Actual Amount",
+                //   type: "line",
+                //   data: actualAmount
+                // }
               ],
               xaxis: {
                 categories: subjectOfProcurement,
@@ -210,6 +192,9 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
                     return NumberSuffix(val, 2)
                   }
                 }
+              },
+              noData: {
+                text: 'No Data Available...'
               },
             })
 
@@ -226,19 +211,33 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+          series: [],
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          },
+        })
         console.log(error)
       }
     )
   }
 
-  getFontSize() {
-    return Math.max(10, 12);
-  }
 
   initCharts(){
     this.chartOptions = {
       series: [ ],
       chart: {
+        fontFamily:'Trebuchet Ms',
         type: "bar",
         height: '500px'
       },
@@ -276,10 +275,13 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Completed Contracts on Time with Highest Contract Values",
+        style:{
+          fontSize:'14px'
+        }
       },
     };
   }
