@@ -54,23 +54,10 @@ export class SignedContractsVisualsComponent implements OnInit {
   
 
 
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-
   constructor(
-    fb: FormBuilder,
     private toastr: ToastrService,
     private _service: AwardedContractReportService
-    ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-  }
+    ) {}
 
   ngOnInit(): void {
     this.initCharts()
@@ -123,10 +110,7 @@ export class SignedContractsVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
+    this.isLoading=true   
 
     this.chart?.updateOptions({
       series: [],
@@ -251,6 +235,7 @@ export class SignedContractsVisualsComponent implements OnInit {
     this.chartOptions = {
       series: [ ],
       chart: {
+        fontFamily:'Trebuchet Ms',
         type: "bar",
         height: '500px'
       },
@@ -291,7 +276,10 @@ export class SignedContractsVisualsComponent implements OnInit {
         text: 'Loading Data ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Signed High Value Contracts",
+        style:{
+          fontSize:'14px'
+        }
       },
     };
   }

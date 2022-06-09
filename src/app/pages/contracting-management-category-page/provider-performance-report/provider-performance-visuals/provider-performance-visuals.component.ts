@@ -44,67 +44,53 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
+  @ViewChild("chartProcurementMethod") chartProcurementMethod: ChartComponent;
+  public chartOptionsProcurementMethod: Partial<ChartOptions>; 
+
+  @ViewChild("chartProcurementType") chartProcurementType: ChartComponent;
+  public chartOptionsProcurementType: Partial<ChartOptions>;
+
+
   isLoading:boolean = false 
-  valueOfContracts;
-  numberOfContracts;
-  yearOfBids;
-  allEvavluatedBidders;
+  cardValue1;
+  cardValue2
+  
+  
 
   topTenHighestContracts 
   
 
 
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl('2021-2022');
-
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-
   constructor(
-    fb: FormBuilder,
     private toastr: ToastrService,
     private _service: AwardedContractReportService
-    ) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-  }
+    ) {  }
 
   ngOnInit(): void {
     this.initCharts()
-    //this.getSummaryStats('signed-contracts-summary', this.financialYears[0], '')
-    //this.getVisualisation('high-value-contracts', this.financialYears[0], '')
-    
   }
 
 
 
   submit(data) {
-    // let data: any = {
-    //   'selectedPDE': form.controls.pde.value,
-    //   'selectedFinancialYear': form.controls.financialYear.value,
-    // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('provider-performance-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('provider-performance-contracts-by-type-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('provider-performance-contracts-by-method-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    // this.options.get('pde')?.setValue('');
-    // this.options.get('financialYear')?.setValue(this.financialYears[0]);
-
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
-
+    this.getSummaryStats('provider-performance-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('provider-performance-contracts-by-type-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('provider-performance-contracts-by-method-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = financialYear
+    this.cardValue2 = 0
+    this.cardValue1 = 0
     
 
     console.log(reportName)
@@ -114,8 +100,8 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
+        this.cardValue1 = data.numberOfContracts?data.numberOfContracts:0
+        this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
         //this.allEvavluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
@@ -134,12 +120,34 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
-    this.yearOfBids = 0
 
     this.chart?.updateOptions({
+
       series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+              "#D10CE8",
+            ],
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+      noData: {
+        text: 'Loading Data...'
+      }
+    })
+
+    this.chartProcurementMethod?.updateOptions({
+
+      series: [],
+
       xaxis: {
         categories:[],
         labels: {
@@ -150,6 +158,27 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData: {
+        text: 'Loading Data...'
+      }
+    })
+    this.chartProcurementType?.updateOptions({
+
+      series: [],
+
+      xaxis: {
+        categories:[],
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+      noData: {
+        text: 'Loading Data...'
+      }
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -159,14 +188,15 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         let estimatedAmount = []
         let actualAmount = []
         let sortedData = []
+        var categories,categorieValues,numOfBids
 
         switch (reportName) {
-          case 'high-value-contracts':           
-            console.log("AWARDED", data)
+          case 'provider-performance-contracts-list-summary':           
+            console.log("provider-performance-contracts-list-summary", data)
 
             sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
               var valueA = parseInt(nameA.join(''))
               var valueB = parseInt(nameB.join(''))
 
@@ -180,28 +210,27 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
             })
             
             sortedData.forEach(element => {
-              var valueC = element?.estimatedAmount.split(',')
+              var valueC = element?.contractValue.split(',')
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actualCost.split(',')
-              var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
-              estimatedAmount.push(valueD)
-              actualAmount.push(valueF)
+              categories.push(capitalizeFirstLetter(element.contractType))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts))
             });
             this.chart?.updateOptions({
               series: [
                 {
-                  name: "Estimated Amount",
-                  data: estimatedAmount
+                  name: "Contract Award Value",
+                  type: "column",
+                  data: categorieValues
                 },
                 {
-                  name: "Actual Amount",
+                  name: "Number of Bids",
                   type: "line",
-                  data: actualAmount
+                  data: numOfBids
                 }
               ],
               xaxis: {
-                categories: subjectOfProcurement,
+                categories: categories,
                 labels: {
                   style: {
                     fontSize: "12px"
@@ -211,12 +240,115 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'No Data Available...'
+              }
             })
 
             break;
-          
-          }
-         
+          case 'provider-performance-contracts-by-type-summary':           
+           
+            console.log("provider-performance-contracts-by-type-summary", data)
+
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            sortedData.forEach(element => {
+              var valueC = element?.contractValue.split(',')
+              var valueD = parseInt(valueC.join(''))
+              categories.push(capitalizeFirstLetter(element.procurementMethod))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts))
+            });
+
+            this.chartProcurementMethod?.updateOptions({
+              series: [
+                {
+                  name: "Contract Award Value",
+                  type: "column",
+                  data: categorieValues
+                }
+              ],
+              xaxis: {
+                categories: categories,
+                labels: {
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2)
+                  }
+                }
+              },
+              noData: {
+                text: 'No Data Available...'
+              }
+            })
+
+            break;
+          case 'provider-performance-contracts-by-method-summary':           
+           
+            console.log("provider-performance-contracts-by-method-summary", data)
+
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            sortedData.forEach(element => {
+              var valueC = element?.contractValue.split(',')
+              var valueD = parseInt(valueC.join(''))
+              categories.push(capitalizeFirstLetter(element.procurementType))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts))
+            });
+
+            this.chartProcurementType?.updateOptions({
+              series: [
+                {
+                  name: "Contract Award Value",
+                  type: "column",
+                  data: categorieValues
+                },
+                {
+                  name: "Number of Contracts",
+                  type: "column",
+                  data: numOfBids
+                }
+              ],
+              xaxis: {
+                categories: categories,
+                labels: {                  
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2)
+                  }
+                }
+              },
+              noData: {
+                text: 'No Data Available...'
+              }
+            })
+            break;
+        }
           this.isLoading = false
         },
       (error) => {
@@ -226,6 +358,66 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                colors: [
+                  "#008FFB",
+                  "#D10CE8",
+                ],
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
+    
+        this.chartProcurementMethod?.updateOptions({
+    
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
+
+        this.chartProcurementType?.updateOptions({
+    
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          }
+        })
         console.log(error)
       }
     )
