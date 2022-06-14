@@ -129,10 +129,10 @@ export class AwardedContractVisualsComponent implements OnInit {
         categories:[],
         labels: {
           style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
+            // colors: [
+            //   "#008FFB",
+            //   "#D10CE8",
+            // ],
             fontSize: "12px"
           },
           formatter: function(val) {
@@ -246,7 +246,7 @@ export class AwardedContractVisualsComponent implements OnInit {
                 },
                 {
                   name: "Number of Bids",
-                  type: "line",
+                  type: "column",
                   data: numOfBids
                 }
               ],
@@ -402,11 +402,7 @@ export class AwardedContractVisualsComponent implements OnInit {
           xaxis: {
             categories:[],
             labels: {
-              style: {
-                colors: [
-                  "#008FFB",
-                  "#D10CE8",
-                ],
+              style: {                
                 fontSize: "12px"
               },
               formatter: function(val) {
@@ -496,24 +492,24 @@ export class AwardedContractVisualsComponent implements OnInit {
         },
         {
           name: "Number of Bids",
-          type: "line",
+          type: "column",
           data: []
         }
       ],
       chart: {
         fontFamily:'Trebuchet Ms',
         height: 350,
-        type: "line"
+        type: "bar"
       },
       stroke: {
-        width: [0, 4],
+        //width: [0, 4],       
         curve:'smooth'
       },
       title: {
-        text: "Awarded Contract Type "
+        text: "Awarded Contract by Contract Type "
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         enabledOnSeries: [1]
       },
 
@@ -532,9 +528,9 @@ export class AwardedContractVisualsComponent implements OnInit {
           },
           labels: {
             style: {
-              colors: [
-                "#008FFB",
-              ],
+              // colors: [
+              //   "#008FFB",
+              // ],
               fontSize: "12px"
             },
             formatter: function (val) {
@@ -563,7 +559,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       chart: {
-        height: 350,
+        height: 'auto',
         type: "bar"
       },
       plotOptions: {
@@ -579,7 +575,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       title: {
-        text: "Awarded Contract Method with Value of bids"
+        text: "Awarded Contract Method by Value of bids"
       },
       dataLabels: {
         enabled: true,
@@ -588,6 +584,9 @@ export class AwardedContractVisualsComponent implements OnInit {
 
       xaxis: {
         categories: [],
+        title:{
+          text:'Value of Bids'
+        },
         labels: {
           style: {
             fontSize: "12px"
@@ -623,7 +622,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         }
       ],
       chart: {
-        height: 350,
+        height: 'auto',
         type: "bar"
       },
       plotOptions: {
@@ -639,7 +638,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       title: {
-        text: "Awarded Contract Method with Number of Bids"
+        text: "Awarded Contract by Contract Method and Number of Bids"
       },
       dataLabels: {
         enabled: false,
@@ -648,6 +647,9 @@ export class AwardedContractVisualsComponent implements OnInit {
 
       xaxis: {
         categories: [],
+        title:{
+          text:'Number of Bids'
+        },
         labels: {
           style: {
             fontSize: "12px"
@@ -681,7 +683,7 @@ export class AwardedContractVisualsComponent implements OnInit {
       ],
       chart: {
         fontFamily:'Trebuchet Ms',
-        height: 350,
+        height: 'auto',
         type: "bar"
       },
       plotOptions: {
@@ -697,7 +699,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       title: {
-        text: "Awarded Contract Procurement Type",
+        text: "Awarded Contract by Procurement Type",
         style:{
           fontSize:"14px"
         }
@@ -709,6 +711,9 @@ export class AwardedContractVisualsComponent implements OnInit {
 
       xaxis: {
         categories: [],
+        title:{
+          text:''
+        },
         labels: {
           style: {
             fontSize: "12px"
