@@ -377,9 +377,6 @@ export class VisualsComponent implements OnInit {
               pdePercentage.push(element.y)
             })
 
-
-
-
             this.chartBudgetStatus?.updateOptions(
               {
                 series: [
@@ -413,9 +410,6 @@ export class VisualsComponent implements OnInit {
                 }
           
                 },
-                colors: [
-                  "#008FFB"
-                ],
                 plotOptions: {
                   bar: {
                     columnWidth: "35%",
@@ -424,7 +418,7 @@ export class VisualsComponent implements OnInit {
                   }
                 },
                 dataLabels: {
-                  enabled: true,
+                  enabled: false,
                   formatter: function(val) {
                     return NumberSuffix(val,2)
                 },
@@ -437,21 +431,23 @@ export class VisualsComponent implements OnInit {
                 },
                 xaxis: {
                   categories: labelName,
-                  // title: {
-                  //   text: "PDE Percentage"
-                  // },
+                  title: {
+                    text: "Percentage of Budget Spent"
+                  },
                   labels: {
                     style: {
                       fontSize: "12px"
                     },
                     formatter: function(val) {
-                      return NumberSuffix(val,2)}
+                      return val}
                   }            
                 },
                 tooltip: {
+                  enabled: true,
+                  fillSeriesColor: false,
                   y: {
                     formatter: function(val) {
-                      return "UGX " + NumberSuffix(val,2) ;
+                      return  val+'%' ;
                     }
                   }
                 },
@@ -497,7 +493,7 @@ export class VisualsComponent implements OnInit {
               seriesObject.push(oneSerieObject)
 
             });
-
+            labelName.push(procuringEntity)
             console.log(` ${labelName  }  ${budgetSpentPercentage}`)
 
             this.chartBudgetStatus?.updateOptions({
@@ -533,17 +529,18 @@ export class VisualsComponent implements OnInit {
                 }
               },
               tooltip: {
-                y: {
-                  formatter: function(value) {
-                    return `${value}%`
-                  }
-                }
+                enabled: true,
+                // y: {
+                //   formatter: function(value) {
+                //     return `${value}%`
+                //   }
+                // }
               },
               stroke: {
                 lineCap: "round",
               },
               noData: {
-                text: 'Loading Data ...'
+                text: 'No Data Available...'
               } ,
               labels: labelName
             })   
@@ -596,9 +593,7 @@ export class VisualsComponent implements OnInit {
             } ,
             labels: []
           })
-        }
-
-            
+        } 
           this.isLoading = false
         },
       (error) => {
@@ -607,6 +602,53 @@ export class VisualsComponent implements OnInit {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
+        this.chartBudgetStatus?.updateOptions({
+          series: [],
+          chart: {
+            height: 350,
+            fontFamily: 'Trebuchet MS',
+            type: "radialBar"
+          },
+          title: {
+            text: "PDEs by Percentage of Budget Spent "
+          },
+          plotOptions: {
+            radialBar: {
+              hollow: {
+                margin: 15,
+                size: "70%"
+              },         
+              dataLabels: {
+                show: true,
+                name: {
+                  offsetY: -10,
+                  show: true,
+                  color: "#888",
+                  fontSize: "13px"
+                },
+                value: {
+                  color: "#111",
+                  fontSize: "30px",
+                  show: true
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(value) {
+                return `${value}%`
+              }
+            }
+          },
+          stroke: {
+            lineCap: "round",
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          } ,
+          labels: []
+        })
         this.isLoading = false
       }
     )
@@ -629,6 +671,9 @@ export class VisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData:{
+        text:'Loading Data'
+      }
     })
 
     
@@ -680,15 +725,15 @@ export class VisualsComponent implements OnInit {
             categories:categories,
             labels: {
               style: {
-                colors: [
-                  "#008FFB"
-                ],
                 fontSize: "12px"
               },
               formatter: function(val) {
                 return NumberSuffix(val,2)}
             }            
           },
+          noData:{
+            text:'No Data Available'
+          }
         })
        
           this.isLoading = false
@@ -699,6 +744,24 @@ export class VisualsComponent implements OnInit {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
+        this.chartProcurementTypes?.updateOptions({
+
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData:{
+            text:"Error Loading Data"
+          }
+        })
         this.isLoading = false
         console.log(error)
       }
@@ -742,9 +805,6 @@ export class VisualsComponent implements OnInit {
       }
 
       },
-      colors: [
-        "#008FFB"
-      ],
       plotOptions: {
         bar: {
           columnWidth: "35%",
@@ -753,10 +813,11 @@ export class VisualsComponent implements OnInit {
         }
       },
       dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return NumberSuffix(val,2)
-      },
+        enabled: false,
+        formatter: function (val) {
+          return val+'%'
+        },
+        textAnchor:'end'
       },
       legend: {
         show: false
@@ -802,7 +863,13 @@ export class VisualsComponent implements OnInit {
       chart: {
         height: 350,
         fontFamily: 'Trebuchet MS',
-        type: "radialBar"
+        type: "radialBar",
+        toolbar: {
+          show: true,
+          tools: {
+            download: true
+          }
+        }        
       },
       title: {
         text: "PDEs by Percentage of Budget Spent "
@@ -830,6 +897,7 @@ export class VisualsComponent implements OnInit {
         }
       },
       tooltip: {
+        enabled:true,
         y: {
           formatter: function(value) {
             return `${value}%`
@@ -897,9 +965,6 @@ export class VisualsComponent implements OnInit {
         },
         labels: {
           style: {
-            colors: [
-              "#008FFB",
-            ],
             fontSize: "12px"
           },
           formatter: function (val) {
@@ -936,7 +1001,7 @@ export class VisualsComponent implements OnInit {
         },
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       }
     };
   }
