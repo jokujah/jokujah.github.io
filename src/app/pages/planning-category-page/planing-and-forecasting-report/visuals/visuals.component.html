@@ -3,25 +3,6 @@
 
   <div>
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
-      <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hiddsen">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfPlannedContracts |
-          numberSuffix:1}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="py-1 text-sm font-medium text-gray-500 truncate">Plan Items</span>
-      </div>
-
-      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">UGX {{totalValueofPlannedContracts |
-          numberSuffix:
-          2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="py-1 text-sm font-medium text-gray-500 truncate">Estimated Amount</span>
-      </div>
-
       <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
         <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfRegisteredEntities}}</span>
         <span *ngIf="isLoading">
@@ -30,6 +11,25 @@
         <span class="py-1 text-sm font-medium text-gray-500 truncate ">Registered Entities</span>
       </div>
 
+      <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hidden">
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfPlannedContracts |
+          numberSuffix:0}}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
+        <span class="py-1 text-sm font-medium text-gray-500 truncate">Plan Items</span>
+      </div>
+
+      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">UGX {{totalValueofPlannedContracts }}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
+        <span class="py-1 text-sm font-medium text-gray-500 truncate">Estimated Amount</span>
+      </div>
+
+      
+
     </div>
   </div>
 
@@ -37,11 +37,9 @@
   <div>
     <!-- Row 1 -->
     <div class="mt-4 ">
-      <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
+      <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4 ">
         <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
           <div class="flex flex-col px-2 py-2">
-
-
             <div id="chartBudgetStatus">
               <apx-chart #chartBudgetStatus [series]="chartOptionsBudgetStatus.series"
                 [chart]="chartOptionsBudgetStatus.chart" [dataLabels]="chartOptionsBudgetStatus.dataLabels"
@@ -49,40 +47,24 @@
                 [legend]="chartOptionsBudgetStatus.legend" [tooltip]="chartOptionsBudgetStatus.tooltip"
                 [noData]="chartOptionsBudgetStatus.noData" [stroke]="chartOptionsBudgetStatus.stroke" [labels]="chartOptionsBudgetStatus.labels"></apx-chart>
             </div>
-
-            <!-- <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [plotOptions]="chartOptions.plotOptions"
-    [labels]="chartOptions.labels"
-  ></apx-chart> -->
-          </div>
-
-
-
-        </div>
-
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
-            <div>
-              <div id="chartProcurementTypes" *ngIf="chartOptionsProcurementTypes">
-                <apx-chart #chartProcurementTypes [series]="chartOptionsProcurementTypes.series"
-                  [chart]="chartOptionsProcurementTypes.chart" [dataLabels]="chartOptionsProcurementTypes.dataLabels"
-                  [plotOptions]="chartOptionsProcurementTypes.plotOptions" [yaxis]="chartOptionsProcurementTypes.yaxis"
-                  [legend]="chartOptionsProcurementTypes.legend" [fill]="chartOptionsProcurementTypes.fill"
-                  [stroke]="chartOptionsProcurementTypes.stroke" [tooltip]="chartOptionsProcurementTypes.tooltip"
-                  [xaxis]="chartOptionsProcurementTypes.xaxis" [title]="chartOptionsProcurementTypes.title"
-                  [theme]="chartOptionsProcurementTypes.theme" [noData]="chartOptionsProcurementTypes.noData">
-                </apx-chart>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-
-
-
       <div class="mt-4 mb-4">
+        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+          <div id="chartProcurementTypes" *ngIf="chartOptionsProcurementTypes">
+            <apx-chart #chartProcurementTypes [series]="chartOptionsProcurementTypes.series"
+              [chart]="chartOptionsProcurementTypes.chart" [dataLabels]="chartOptionsProcurementTypes.dataLabels"
+              [plotOptions]="chartOptionsProcurementTypes.plotOptions" [yaxis]="chartOptionsProcurementTypes.yaxis"
+              [legend]="chartOptionsProcurementTypes.legend" [fill]="chartOptionsProcurementTypes.fill"
+              [stroke]="chartOptionsProcurementTypes.stroke" [tooltip]="chartOptionsProcurementTypes.tooltip"
+              [xaxis]="chartOptionsProcurementTypes.xaxis" [title]="chartOptionsProcurementTypes.title"
+              [theme]="chartOptionsProcurementTypes.theme" [noData]="chartOptionsProcurementTypes.noData">
+            </apx-chart>
+          </div>
+        </div>
+      </div>
+      <div class="mb-4">
         <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
           <div id="chartEducationStatus">
             <apx-chart #chartEducationStatus [series]="chartOptionsEducationStatus.series"

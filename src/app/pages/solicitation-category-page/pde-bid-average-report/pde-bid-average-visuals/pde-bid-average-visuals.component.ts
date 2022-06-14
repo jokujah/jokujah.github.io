@@ -6,7 +6,7 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
 import html2canvas from 'html2canvas';
@@ -99,8 +99,8 @@ export class PdeBidAverageVisualsComponent implements OnInit {
         let data = response.data[0]
         console.log(data)
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfBids?data.numberOfBids:0
-          this.cardValue2 = data.numberOfBidsRespondedTo?data.numberOfBidsRespondedTo:0
+          this.cardValue1 = data.numberOfBids?sanitizeCurrencyToString(data.numberOfBids):0
+          this.cardValue2 = data.numberOfBidsRespondedTo?sanitizeCurrencyToString(data.numberOfBidsRespondedTo):0
           this.cardValue3 = data.numberOfProvidersThatResponded?parseInt(data.numberOfProvidersThatResponded):0
           // this.cardValue3 = '2,000,000,000'
         }
@@ -146,7 +146,7 @@ export class PdeBidAverageVisualsComponent implements OnInit {
         let data = response.data
           switch (reportName) {
             case'solicitations-by-method':
-              console.log(`Report Name ${reportName} , Data ${data}`)
+              console.log(`Report Name ${reportName}`,data)
 
               this.chartSolicitationsType?.updateOptions({
                 series: [],
@@ -292,4 +292,6 @@ export class PdeBidAverageVisualsComponent implements OnInit {
     };
   }
 }
+
+
 

@@ -69,6 +69,7 @@ export class FilterComponent implements OnInit {
 
   options: FormGroup;
   pdeControl = new FormControl('');
+  public bankMultiFilterCtrl= new FormControl();
   financialYearControl = new FormControl('');
   toppingsControl = new FormControl();
 
