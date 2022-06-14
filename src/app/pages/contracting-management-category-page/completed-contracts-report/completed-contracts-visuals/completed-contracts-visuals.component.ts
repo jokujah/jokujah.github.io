@@ -320,19 +320,19 @@ export class CompletedContractsVisualsComponent implements OnInit {
             // })
 
             data.forEach(element => {
-              var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']              
+              var valueC = (element?.total_value_of_completed_contracts)?element?.total_value_of_completed_contracts.split(','):['0']              
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.numberOfContracts
+              var valueE = element?.number_of_contracts
               // var valueF = parseInt(valueE.join(''))
 
-              subjectOfProcurement.push(capitalizeFirstLetter(element.procurementMethod))
+              subjectOfProcurement.push(capitalizeFirstLetter(element.contract_type))
               estimatedAmount.push(valueD)
               actualAmount.push(parseInt(valueE))
             });
             this.chartProcurementType?.updateOptions({
               series: [
                 {
-                  name: "Contract Value",
+                  name: "Contracts",
                   type: "column",
                   data: estimatedAmount
                 },
@@ -612,9 +612,9 @@ export class CompletedContractsVisualsComponent implements OnInit {
           },
           labels: {
             style: {
-              colors: [
-                "#008FFB",
-              ],
+              // colors: [
+              //   "#008FFB",
+              // ],
               fontSize: "12px"
             },
             formatter: function (val) {
