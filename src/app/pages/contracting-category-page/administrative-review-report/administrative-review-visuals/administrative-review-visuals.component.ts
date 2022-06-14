@@ -161,10 +161,12 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
 
         this.topTenHighestContracts.forEach(element => {   
-
+          if(element.procurementMethod == null) return
+          if(element.totalAmountUnderReview == null) return
+          if(element.totalNoUnderReview == null) return
           var valueC = element?.totalAmountUnderReview.split(',')
           var valueD = parseInt(valueC.join(''))
-          var valueE = element.procurementMethod.split(' ')
+          //var valueE = element.procurementMethod.split(' ')
           categories.push(element.procurementMethod)
           categoryValues.push(valueD)
           numOfContracts.push(parseInt(element?.totalNoUnderReview))

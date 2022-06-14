@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterComponent } from './filter.component';
@@ -9,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatAutocompleteModule} from '@angular/material/autocomplete'
+import { MatSelectSearchModule } from 'src/app/shared/mat-select-search/mat-select-search.module';
 
 
 
@@ -26,7 +28,8 @@ import { MatAutocompleteModule} from '@angular/material/autocomplete'
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectSearchModule
   ],
   exports:[
     FilterComponent

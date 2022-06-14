@@ -49,9 +49,47 @@
               ></apx-chart>
             </div>
           </div>
-          <!-- <div class="flex bg-white">
-          </div> -->
         </div>
-        
+        <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+          <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+            <div id="chartProcurementMethod">
+              <apx-chart #chartProcurementMethod
+                [series]="chartOptionsProcurementMethod.series"
+                [chart]="chartOptionsProcurementMethod.chart"
+                [dataLabels]="chartOptionsProcurementMethod.dataLabels"
+                [plotOptions]="chartOptionsProcurementMethod.plotOptions" 
+                [xaxis]="chartOptionsProcurementMethod.xaxis"
+                [yaxis]="chartOptionsProcurementMethod.yaxis"
+                [legend]="chartOptionsProcurementMethod.legend"
+                [fill]="chartOptionsProcurementMethod.fill"
+                [stroke]="chartOptionsProcurementMethod.stroke"
+                [title]="chartOptionsProcurementMethod.title"
+                [noData]="chartOptionsProcurementMethod.noData"               
+              ></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+          
+          <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+            <div id="chartProcurementMethodContractValue">
+              <apx-chart #chartProcurementMethodContractValue
+                [series]="chartOptionsProcurementMethodContractValue.series"
+                [chart]="chartOptionsProcurementMethodContractValue.chart"
+                [dataLabels]="chartOptionsProcurementMethodContractValue.dataLabels"
+                [plotOptions]="chartOptionsProcurementMethodContractValue.plotOptions" 
+                [xaxis]="chartOptionsProcurementMethodContractValue.xaxis"
+                [yaxis]="chartOptionsProcurementMethodContractValue.yaxis"
+                [legend]="chartOptionsProcurementMethodContractValue.legend"
+                [fill]="chartOptionsProcurementMethodContractValue.fill"
+                [stroke]="chartOptionsProcurementMethodContractValue.stroke"
+                [title]="chartOptionsProcurementMethodContractValue.title"
+                [noData]="chartOptionsProcurementMethodContractValue.noData"               
+              ></apx-chart>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    

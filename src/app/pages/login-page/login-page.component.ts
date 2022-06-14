@@ -54,7 +54,9 @@ export class LoginPageComponent implements OnInit {
 
         this.toastr.error("Please check your credentials are valid or check your Internet Connection", 'Something Went Wrong', {
           progressBar: true,
-          positionClass: 'toast-top-center'
+          positionClass: 'toast-top-center',
+          tapToDismiss:true,
+          timeOut:10000
         });
         this.router.navigate(['/login']);
       }

@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
@@ -107,228 +108,8 @@ export class VisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chartOptionsEducationStatus = {
-      series: [
-        {
-          name: "Planned Contract Value",
-          data: [],
-          fontSize: "12px"
-        }
-      ],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 'auto',
-        type: "bar",
-        events: {
-          click: function(chart, w, e) {
-            // console.log(chart, w, e)
-          }
-        },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 2000,
-          animateGradually: {
-              enabled: true,
-              delay: 150
-          },
-          dynamicAnimation: {
-              enabled: true,
-              speed: 450
-          }
-      }
-
-      },
-      colors: [
-        "#008FFB"
-      ],
-      plotOptions: {
-        bar: {
-          columnWidth: "35%",
-          distributed: false,
-          horizontal:true
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return NumberSuffix(val,2)
-      },
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        show: true
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      title: {
-        text: "Top 10 Highest PDE Plans By Value"
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
-          }
-        }
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
-
-    this.chartOptionsBudgetStatus  = {
-      series: [],
-      chart: {
-        height: 350,
-        fontFamily: 'Trebuchet MS',
-        type: "radialBar"
-      },
-      title: {
-        text: "PDE Percentage of Budget Spent "
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 15,
-            size: "70%"
-          },         
-          dataLabels: {
-            show: true,
-            name: {
-              offsetY: -10,
-              show: true,
-              color: "#888",
-              fontSize: "13px"
-            },
-            value: {
-              color: "#111",
-              fontSize: "30px",
-              show: true
-            }
-          }
-        }
-      },
-      tooltip: {
-        y: {
-          formatter: function(value) {
-            return `${value}%`
-          }
-        }
-      },
-      stroke: {
-        lineCap: "round",
-      },
-      noData: {
-        text: 'Loading Data ...'
-      } ,
-      labels: []
-    };
-
-    // this.chartOptionsBudgetStatus  = {
-    //   series: [],
-
-    //   chart: {
-    //     height: 350,
-    //     fontFamily: 'Trebuchet MS',
-    //     type: "treemap"
-    //   },
-    //   title: {
-    //     text: "PDE Percentage of Budget Spent "
-    //   },
-    //   tooltip: {
-    //     y: {
-    //       formatter: function(value) {
-    //         return `${value}%`
-    //       }
-    //     }
-    //   },
-    //   noData: {
-    //     text: 'No Data Available ...'
-    //   }      
-    // };
-
-
-    this.chartOptionsProcurementTypes = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: 350,
-        fontFamily: 'Trebuchet MS',
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          columnWidth: "55%"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function (val) {
-            return NumberSuffix(val, 2)
-          }
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Value"
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "UGX " + NumberSuffix(val, 2);
-          }
-        }
-      },
-      title: {
-        text: "Budget Value by Procurement Types"
-      },
-      theme: {
-        mode: 'light',
-        palette: 'palette1',
-        monochrome: {
-          enabled: false,
-          color: '#255aee',
-          shadeTo: 'light',
-          shadeIntensity: 0.65
-        },
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
+    this.initCharts()
+    
   }
 
   submit(data) {
@@ -365,11 +146,7 @@ export class VisualsComponent implements OnInit {
       xaxis: {
         categories:[],
         labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
+          style: {           
             fontSize: "12px"
           },
           formatter: function(val) {
@@ -440,10 +217,6 @@ export class VisualsComponent implements OnInit {
               categories: categories,
               labels: {
                 style: {
-                  colors: [
-                    "#008FFB",
-                    "#D10CE8",
-                  ],
                   fontSize: "12px"
                 },
                 formatter: function (val) {
@@ -454,7 +227,7 @@ export class VisualsComponent implements OnInit {
           })
           
           this.numberOfPlannedContracts = addArrayValues(x)
-          this.totalValueofPlannedContracts = addArrayValues(y)
+          this.totalValueofPlannedContracts = NumberSuffix(addArrayValues(y),2)
           this.yearOfPlannedContracts = financialYear
           //this.numberOfRegisteredEntities = data[0].noOfRegisteredPdes
           this.numberOfRegisteredEntities = procuringEntity?1:data[0].noOfRegisteredPdes
@@ -527,16 +300,174 @@ export class VisualsComponent implements OnInit {
         let budgetSpentPercentage = []
         let labelName = []
 
+        let  pdePercentage = []
+        
+
+        var sortedData=[]
+
         console.log("BUDGET",data)
 
-        labelName.push(procuringEntity == ""?"All":procuringEntity)
+        //labelName.push(procuringEntity == ""?"All":procuringEntity)
+        console.log("BUDGET LENGTH",data.length)
         if (data.length > 0) {
           if (procuringEntity == "") {
-            var totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
-            var totalSpent = data[0]?.totalSpentAmount.split(',')
+            // var totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
+            // var totalSpent = data[0]?.totalSpentAmount.split(',')
 
-            var percentage = parseInt(totalSpent.join('')) / parseInt(totalplanned.join('')) * 100
-            budgetSpentPercentage.push(Math.round(percentage))
+            // var percentage = parseInt(totalSpent.join('')) / parseInt(totalplanned.join('')) * 100
+            // budgetSpentPercentage.push(Math.round(percentage))
+
+            this.chartBudgetStatus?.updateOptions({
+              series: [],
+              labels: [],
+              noData: {
+                text: 'Loading Data ...'
+              } 
+            })
+
+            data.forEach(element => {
+              
+
+              x.push(element?.noOfPlanItems)
+
+              var planned = element?.budgetPlannedAmount.split(',')
+
+              var totalplanned = element?.totalBudgetPlannedAmount.split(',')
+
+              var spent = element?.spentAmount.split(',')
+
+              var percentage = parseInt(spent.join('')) / parseInt(planned.join('')) * 100
+
+              var percentagePlanned = parseInt(planned.join('')) / parseInt(totalplanned.join('')) * 100
+
+              var oneSerieData = [(parseInt(spent.join('')) / 1000000000000), (parseInt(planned.join('')) / 1000000000000), percentage]
+
+              var oneSerieObject = {
+                x: element?.pdeName,
+                // "budgetSpent":spent,
+                // "planned":planned,
+                y: Math.round(percentage),
+
+              }
+
+              budgetSpentPercentage.push(Math.round(percentage))
+              seriesData.push(oneSerieData)
+              seriesObject.push(oneSerieObject)
+              //labelName.push(element?.pdeName)
+
+            });
+
+            sortedData = seriesObject.sort(function (a, b) {
+              // var nameA = a?.estimatedAmount.split(',')
+              // var nameB = b?.estimatedAmount.split(',')
+              // var valueA = parseInt(nameA.join(''))
+              // var valueB = parseInt(nameB.join(''))
+  
+              if (a.y > b.y) {
+                return -1;
+              }
+              if (a.y < b.y) {
+                return 1;
+              }
+              return 0;
+            })
+
+            sortedData.forEach(element => {
+              labelName.push(element.x)
+              pdePercentage.push(element.y)
+            })
+
+
+
+
+            this.chartBudgetStatus?.updateOptions(
+              {
+                series: [
+                  {
+                    name: "Percentage of Budget Spent",
+                    data: pdePercentage,
+                    fontSize: "12px"
+                  }
+                ],
+                chart: {
+                  fontFamily: 'Trebuchet MS',
+                  height: 'auto',
+                  type: "bar",
+                  events: {
+                    click: function(chart, w, e) {
+                      // console.log(chart, w, e)
+                    }
+                  },
+                  animations: {
+                    enabled: true,
+                    easing: 'easeinout',
+                    speed: 2000,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 150
+                    },
+                    dynamicAnimation: {
+                        enabled: true,
+                        speed: 450
+                    }
+                }
+          
+                },
+                colors: [
+                  "#008FFB"
+                ],
+                plotOptions: {
+                  bar: {
+                    columnWidth: "35%",
+                    distributed: false,
+                    horizontal:true
+                  }
+                },
+                dataLabels: {
+                  enabled: true,
+                  formatter: function(val) {
+                    return NumberSuffix(val,2)
+                },
+                },
+                legend: {
+                  show: false
+                },
+                grid: {
+                  show: true
+                },
+                xaxis: {
+                  categories: labelName,
+                  // title: {
+                  //   text: "PDE Percentage"
+                  // },
+                  labels: {
+                    style: {
+                      fontSize: "12px"
+                    },
+                    formatter: function(val) {
+                      return NumberSuffix(val,2)}
+                  }            
+                },
+                tooltip: {
+                  y: {
+                    formatter: function(val) {
+                      return "UGX " + NumberSuffix(val,2) ;
+                    }
+                  }
+                },
+                yaxis: {
+                  title: {
+                    text: "Procuring and Disposal Entities"
+                  }
+                },
+                noData: {
+                  text: 'No Data Available ...'
+                },
+                title: {
+                  text: "PDEs by Percentage of Budget Spent "
+                },
+              })
+
           } else {
             data.forEach(element => {
 
@@ -566,19 +497,108 @@ export class VisualsComponent implements OnInit {
               seriesObject.push(oneSerieObject)
 
             });
+
+            console.log(` ${labelName  }  ${budgetSpentPercentage}`)
+
+            this.chartBudgetStatus?.updateOptions({
+              series: budgetSpentPercentage,
+              chart: {
+                height: 350,
+                fontFamily: 'Trebuchet MS',
+                type: "radialBar"
+              },
+              title: {
+                text: "PDEs by Percentage of Budget Spent "
+              },
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    margin: 15,
+                    size: "70%"
+                  },         
+                  dataLabels: {
+                    show: true,
+                    name: {
+                      offsetY: -10,
+                      show: true,
+                      color: "#888",
+                      fontSize: "13px"
+                    },
+                    value: {
+                      color: "#111",
+                      fontSize: "30px",
+                      show: true
+                    }
+                  }
+                }
+              },
+              tooltip: {
+                y: {
+                  formatter: function(value) {
+                    return `${value}%`
+                  }
+                }
+              },
+              stroke: {
+                lineCap: "round",
+              },
+              noData: {
+                text: 'Loading Data ...'
+              } ,
+              labels: labelName
+            })   
           }
+        }else{
+          this.chartBudgetStatus?.updateOptions({
+            series: [],
+            chart: {
+              height: 350,
+              fontFamily: 'Trebuchet MS',
+              type: "radialBar"
+            },
+            title: {
+              text: "PDEs by Percentage of Budget Spent "
+            },
+            plotOptions: {
+              radialBar: {
+                hollow: {
+                  margin: 15,
+                  size: "70%"
+                },         
+                dataLabels: {
+                  show: true,
+                  name: {
+                    offsetY: -10,
+                    show: true,
+                    color: "#888",
+                    fontSize: "13px"
+                  },
+                  value: {
+                    color: "#111",
+                    fontSize: "30px",
+                    show: true
+                  }
+                }
+              }
+            },
+            tooltip: {
+              y: {
+                formatter: function(value) {
+                  return `${value}%`
+                }
+              }
+            },
+            stroke: {
+              lineCap: "round",
+            },
+            noData: {
+              text: 'No Data Available...'
+            } ,
+            labels: []
+          })
         }
 
-        console.log(` ${labelName  }  ${budgetSpentPercentage}`)
-
-        this.chartBudgetStatus?.updateOptions({
-            series: budgetSpentPercentage,
-            labels: labelName,
-            noData: {
-              text: 'No Data Available ...'
-            } 
-
-        })        
+            
           this.isLoading = false
         },
       (error) => {
@@ -603,9 +623,6 @@ export class VisualsComponent implements OnInit {
         categories:[],
         labels: {
           style: {
-            colors: [
-              "#008FFB"
-            ],
             fontSize: "12px"
           },
           formatter: function(val) {
@@ -690,6 +707,238 @@ export class VisualsComponent implements OnInit {
 
    getFontSize() {
     return Math.max(10, 12);
+  }
+
+  initCharts(){
+    this.chartOptionsEducationStatus = {
+      series: [
+        {
+          name: "Planned Contract Value",
+          data: [],
+          fontSize: "12px"
+        }
+      ],
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        height: 'auto',
+        type: "bar",
+        events: {
+          click: function(chart, w, e) {
+            // console.log(chart, w, e)
+          }
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 2000,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 450
+          }
+      }
+
+      },
+      colors: [
+        "#008FFB"
+      ],
+      plotOptions: {
+        bar: {
+          columnWidth: "35%",
+          distributed: false,
+          horizontal:true
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return NumberSuffix(val,2)
+      },
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        show: true
+      },
+      xaxis: {
+        categories: [],
+        title: {
+          text: "Value of Plans"
+        },
+        labels: {
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function(val) {
+            return NumberSuffix(val,2)}
+        }            
+      },
+      title: {
+        text: "Top 10 Highest PDE Plans By Value"
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return "UGX " + NumberSuffix(val,2) ;
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Procuring and Disposal Entities"
+        }
+      },
+      noData: {
+        text: 'No Data Available ...'
+      }
+    };
+
+    this.chartOptionsBudgetStatus  = {
+      series: [],
+      chart: {
+        height: 350,
+        fontFamily: 'Trebuchet MS',
+        type: "radialBar"
+      },
+      title: {
+        text: "PDEs by Percentage of Budget Spent "
+      },
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 15,
+            size: "70%"
+          },         
+          dataLabels: {
+            show: true,
+            name: {
+              offsetY: -10,
+              show: true,
+              color: "#888",
+              fontSize: "13px"
+            },
+            value: {
+              color: "#111",
+              fontSize: "30px",
+              show: true
+            }
+          }
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function(value) {
+            return `${value}%`
+          }
+        }
+      },
+      stroke: {
+        lineCap: "round",
+      },
+      noData: {
+        text: 'Loading Data ...'
+      } ,
+      labels: []
+    };
+
+    // this.chartOptionsBudgetStatus  = {
+    //   series: [],
+
+    //   chart: {
+    //     height: 350,
+    //     fontFamily: 'Trebuchet MS',
+    //     type: "treemap"
+    //   },
+    //   title: {
+    //     text: "PDEs by Percentage of Budget Spent "
+    //   },
+    //   tooltip: {
+    //     y: {
+    //       formatter: function(value) {
+    //         return `${value}%`
+    //       }
+    //     }
+    //   },
+    //   noData: {
+    //     text: 'No Data Available ...'
+    //   }      
+    // };
+
+
+    this.chartOptionsProcurementTypes = {
+      series: [],
+      chart: {
+        type: "bar",
+        height: 350,
+        fontFamily: 'Trebuchet MS',
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: "55%"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories: [],
+        title: {
+          text: "Contract Value "
+        },
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+            ],
+            fontSize: "12px"
+          },
+          formatter: function (val) {
+            return NumberSuffix(val, 2)
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Procurement Types"
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "UGX " + NumberSuffix(val, 2);
+          }
+        }
+      },
+      title: {
+        text: "Budget Value by Procurement Types"
+      },
+      theme: {
+        mode: 'light',
+        palette: 'palette1',
+        monochrome: {
+          enabled: false,
+          color: '#255aee',
+          shadeTo: 'light',
+          shadeIntensity: 0.65
+        },
+      },
+      noData: {
+        text: 'No Data Available ...'
+      }
+    };
   }
 }
 

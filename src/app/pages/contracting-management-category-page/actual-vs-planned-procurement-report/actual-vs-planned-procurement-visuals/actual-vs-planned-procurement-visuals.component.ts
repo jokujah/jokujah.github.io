@@ -188,6 +188,9 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
                   }
                 }
               },
+              noData: {
+                text: 'No Data Available...'
+              },
             })
 
             break;
@@ -203,6 +206,22 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.chart?.updateOptions({
+          series: [],
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData: {
+            text: 'Error Loading Data...'
+          },
+        })
         console.log(error)
       }
     )
@@ -239,7 +258,7 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: "Providers "
+          text: "Providers"
         }
       },
       fill: {
@@ -253,10 +272,13 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       },
       title: {
-        text: "Signed High Value Contracts"
+        text: "Actual Vs Planned Procurements",
+        style:{
+          fontSize:'14px'
+        }
       },
     };
   }
