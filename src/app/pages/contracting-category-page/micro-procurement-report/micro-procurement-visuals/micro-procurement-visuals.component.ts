@@ -153,8 +153,8 @@ export class MicroProcurementVisualsComponent implements OnInit {
             console.log("top-micro-procurements-list-summary", data)
 
             sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
+              var nameA = a?.estimatedAmount?a?.estimatedAmount.split(','):['0']
+              var nameB = b?.estimatedAmount?b?.estimatedAmount.split(','):['0']
               var valueA = parseInt(nameA.join(''))
               var valueB = parseInt(nameB.join(''))
 
@@ -168,14 +168,25 @@ export class MicroProcurementVisualsComponent implements OnInit {
             })
             
             sortedData.forEach(element => {
+              console.log(element)
+              if(element?.estimatedAmount == null) return;
+              if(element?.contractAmount == null) return;
+              if(element?.subjectOfProcurement == null) return;
+
               var valueC = element?.estimatedAmount.split(',')
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actualCost.split(',')
+              var valueE = element?.contractAmount.split(',')
               var valueF = parseInt(valueE.join(''))
               subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
               estimatedAmount.push(valueD)
               actualAmount.push(valueF)
             });
+
+            console.log(subjectOfProcurement)
+            console.log(estimatedAmount)
+            console.log(actualAmount)
+
+
             this.chart?.updateOptions({
               series: [
                 {

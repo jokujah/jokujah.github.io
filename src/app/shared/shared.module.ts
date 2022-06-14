@@ -20,6 +20,10 @@ import { GoogleChartsModule } from 'angular-google-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectSearchModule } from './mat-select-search/mat-select-search.module';
+
+
+
 @NgModule({
   declarations: [
     NumberSuffixPipe,
@@ -28,7 +32,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     FusionChartsModule,
     GoogleChartsModule,
-    FilterModule
+    FilterModule,
+    MatSelectSearchModule,
   ],
   exports:[
     FusionChartsModule,
@@ -40,7 +45,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LoadingPulseModule,
     FilterModule,
     MatProgressBarModule,
-    FormsModule,ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectSearchModule,
   ]
 })
 export class SharedModule { }

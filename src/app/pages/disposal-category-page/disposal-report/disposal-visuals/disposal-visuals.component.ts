@@ -101,7 +101,7 @@ export class DisposalVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfDisposals ? data.numberOfDisposals : 0
+          this.cardValue1 = data.numberOfDisposals ? sanitizeCurrencyToString(data.numberOfDisposals) : 0
           this.cardValue2 = data.totalReservePrice ? sanitizeCurrencyToString(data.totalReservePrice) : 0
           this.cardValue3 = data.totalContractAmount ? data.totalContractAmount : 0
         }

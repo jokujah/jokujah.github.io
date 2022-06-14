@@ -55,7 +55,34 @@ export function addArrayValues(data) {
   return sumWithInitial
 }
 
-export function NumberSuffix(input,args)  {
+// export function NumberSuffix(input,args)  {
+  
+//     let exp;
+//     const suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
+//     const isNagtiveValues = input < 0;
+//     if (Number.isNaN(input) || (input < 1000 && input >= 0) || !isNumeric(input) || (input < 0 && input > -1000)) {
+//       if (!!args && isNumeric(input) && !(input < 0) && input != 0) {
+//         return input.toFixed(args);
+//       } else {
+//         return input;
+//       }
+//     }
+
+//     if (!isNagtiveValues) {
+//       exp = Math.floor(Math.log(input) / Math.log(1000));
+
+//       return (input / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
+//     } else {
+//       input = input * -1;
+
+//       exp = Math.floor(Math.log(input) / Math.log(1000));
+
+//       return (input * -1 / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
+//     }
+//   }
+
+
+  export function NumberSuffix(input,args)  {
   
     let exp;
     const suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
@@ -69,9 +96,16 @@ export function NumberSuffix(input,args)  {
     }
 
     if (!isNagtiveValues) {
+      if (input > 1000000000000) {
+        exp = Math.floor(Math.log(input) / Math.log(1000000000000));
+
+        return (input / Math.pow(1000000000000, exp)).toFixed(args) + "T";
+      }
+      else if (input < 1000000000000) {
       exp = Math.floor(Math.log(input) / Math.log(1000));
 
       return (input / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
+    }
     } else {
       input = input * -1;
 
