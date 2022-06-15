@@ -1,4 +1,4 @@
-<div class="max-w-7xl">
+<div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div>
@@ -47,7 +47,7 @@
               [plotOptions]="chartOptionsSuspendedProviders.plotOptions" [title]="chartOptionsSuspendedProviders.title"
               [legend]="chartOptionsSuspendedProviders.legend" [tooltip]="chartOptionsSuspendedProviders.tooltip"
               [noData]="chartOptionsSuspendedProviders.noData"
-              [grid]="chartOptionsSuspendedProviders.grid"></apx-chart>
+              [grid]="chartOptionsSuspendedProviders.grid" [yaxis]="chartOptionsSuspendedProviders.yaxis"></apx-chart>
           </div>
         </div>
       </div>

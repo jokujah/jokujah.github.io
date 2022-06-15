@@ -142,7 +142,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
 
                 series: [
                   {
-                    name: "Days Left",
+                    name: "Days of Suspension Left",
                     data: [100, 350]
                   }
                 ],
@@ -268,15 +268,14 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         fontFamily: 'Trebuchet MS',
         type: "bar",
         height: 350,
-        
       },
       title: {
-            text: "Suspended Suppliers by Period of Suspension",
-            style: {
-              fontSize:  '14px',
-              fontWeight:  'bold',
-              color:  '#263238'
-            },
+        text: "Suspended Suppliers by Period of Suspension",
+        style: {
+          fontSize: '14px',
+          fontWeight: 'bold',
+          color: '#263238'
+        },
       },
       annotations: {
         xaxis: [
@@ -313,6 +312,9 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         enabled: false
       },
       xaxis: {
+        title:{
+          text:'Days of Suspension Left'
+        },
         categories: []
       },
       grid: {
@@ -326,11 +328,14 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         reversed: true,
         axisTicks: {
           show: true
+        },
+        title:{
+          text:'Suppliers'
         }
       },
       noData: {
         text: 'Loading Data ...'
-      } 
+      }
     };
   }
 }
