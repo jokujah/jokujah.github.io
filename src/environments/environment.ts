@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl:'https://egp.cengkuru.com'
+  // apiUrl:'https://egp.cengkuru.com'
+  apiUrl:'http://localhost:8000'
 
 };
 
