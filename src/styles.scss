@@ -88,6 +88,10 @@ html {
     background: linear-gradient(90deg, rgba(88,92,163,1) 30%, rgba(22,29,128,1) 73%, rgba(16,15,69,1) 100%);
   }
 
+  .fullWidth{
+    @apply max-w-full mx-auto
+  }
+
 
 
   
