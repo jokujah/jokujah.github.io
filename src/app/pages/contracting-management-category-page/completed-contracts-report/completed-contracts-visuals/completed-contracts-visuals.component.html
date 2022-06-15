@@ -1,4 +1,4 @@
-<div class="max-w-7xl">
+<div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
     <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
@@ -42,22 +42,9 @@
   <!-- Graphs -->
   <div>
     <!-- Row 1 -->
-    <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-        <div id="chart">
-          <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
-            [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
-            [legend]="chartOptions.legend" [fill]="chartOptions.fill" [stroke]="chartOptions.stroke"
-            [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title"
-            [noData]="chartOptions.noData"></apx-chart>
-        </div>
-      </div>
-      <!-- <div class="flex bg-white">
-          </div> -->
-    </div>
-    <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+    <div class="mt-4 mb-4  md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
-        <div id="chartFundingSource" *ngIf="chartOptionsFundingSource" class="w-full  p-5">
+        <!-- <div id="chartFundingSource" *ngIf="chartOptionsFundingSource" class="w-full  p-5">
           <apx-chart #chartFundingSource [series]="chartOptionsFundingSource.series"
             [chart]="chartOptionsFundingSource.chart"
             [yaxis]="chartOptionsFundingSource.yaxis"
@@ -70,10 +57,20 @@
             [tooltip]="chartOptionsFundingSource.tooltip"
             [noData]="chartOptionsFundingSource.noData"
             [plotOptions]="chartOptionsFundingSource.plotOptions"></apx-chart>
+        </div> -->
+
+
+        <div id="chartFundingSource"  *ngIf="chartOptionsFundingSource" class="w-full  p-5">
+          <apx-chart #chartFundingSource
+            [series]="chartOptionsFundingSource.series"
+            [title]="chartOptionsFundingSource.title"
+            [chart]="chartOptionsFundingSource.chart"
+            [plotOptions]="chartOptionsFundingSource.plotOptions"
+            [labels]="chartOptionsFundingSource.labels"
+            [fill]="chartOptionsFundingSource.fill"
+          ></apx-chart>
         </div>
       </div>
-    </div>
-    <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
         <div id="chartProcurementType" *ngIf="chartOptionsProcurementType" class="w-full  p-5">
           <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series"
@@ -91,6 +88,38 @@
         </div>
       </div>
     </div>
+    <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+        <div id="chart">
+          <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+            [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
+            [legend]="chartOptions.legend" [fill]="chartOptions.fill" [stroke]="chartOptions.stroke"
+            [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title"
+            [noData]="chartOptions.noData"></apx-chart>
+        </div>
+      </div>
+      <!-- <div class="flex bg-white">
+          </div> -->
+    </div>
+   
+    <!-- <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
+        <div id="chartProcurementType" *ngIf="chartOptionsProcurementType" class="w-full  p-5">
+          <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series"
+            [chart]="chartOptionsProcurementType.chart"
+            [yaxis]="chartOptionsProcurementType.yaxis"
+            [xaxis]="chartOptionsProcurementType.xaxis"
+            [labels]="chartOptionsProcurementType.labels"
+            [stroke]="chartOptionsProcurementType.stroke"
+            [title]="chartOptionsProcurementType.title"
+            [dataLabels]="chartOptionsProcurementType.dataLabels"
+            [fill]="chartOptionsProcurementType.fill"
+            [tooltip]="chartOptionsProcurementType.tooltip"
+            [noData]="chartOptionsProcurementType.noData"
+            [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
+        </div>
+      </div>
+    </div> -->
 
   </div>
 </div>

@@ -1,3 +1,4 @@
+import { EmptyPageModule } from './empty-page/empty-page.module';
 import { FilterModule } from './../features/filter/filter.module';
 import { LoadingPulseModule } from './loading-pulse/loading-pulse.module';
 import { ErrorPageModule } from './error-page/error-page.module';
@@ -48,6 +49,7 @@ import { MatSelectSearchModule } from './mat-select-search/mat-select-search.mod
     FormsModule,
     ReactiveFormsModule,
     MatSelectSearchModule,
+    EmptyPageModule
   ]
 })
 export class SharedModule { }
