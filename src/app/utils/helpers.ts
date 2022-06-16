@@ -1,6 +1,5 @@
 import  PDE  from 'src/assets/PDE.json';
 
-
 export function getsortedPDEList(){
 return PDE.sort(function(a, b) {
     const nameA = a?.PDE.toUpperCase(); // ignore upper and lowercase
@@ -11,7 +10,7 @@ return PDE.sort(function(a, b) {
     if (nameA > nameB) {
       return 1;
     }
-  
+
     // names must be equal
     return 0;
   })
@@ -27,7 +26,7 @@ export function getPDEByValue(){
       if (nameA > nameB) {
         return 1;
       }
-    
+
       // names must be equal
       return 0;
     })
@@ -35,7 +34,7 @@ export function getPDEByValue(){
 
 
 export function getFinancialYears(){
-    return [ 
+    return [
       "2021-2022",
       "2020-2021",
       "2019-2020",
@@ -56,7 +55,7 @@ export function addArrayValues(data) {
 }
 
 // export function NumberSuffix(input,args)  {
-  
+
 //     let exp;
 //     const suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
 //     const isNagtiveValues = input < 0;
@@ -83,7 +82,7 @@ export function addArrayValues(data) {
 
 
   export function NumberSuffix(input,args)  {
-  
+
     let exp;
     const suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
     const isNagtiveValues = input < 0;
@@ -128,8 +127,8 @@ export function addArrayValues(data) {
       return (input * -1 / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
     }
   }
-    
-  
+
+
   export function isNumeric(value): boolean {
     if (value < 0) value = value * -1;
     if (/^-{0,1}\d+$/.test(value)) {
@@ -150,7 +149,7 @@ export function addArrayValues(data) {
   }
 
   export async function slowLoader(){
-    await new Promise(resolve => setTimeout(resolve, 1000));    
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
 
@@ -160,7 +159,11 @@ export function capitalizeFirstLetter(string) {
   }else{
     return "Unknown"
   }
- 
+
+}
+
+export function convertNumbersWithCommas(number: number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 

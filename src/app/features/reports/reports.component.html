@@ -9,33 +9,34 @@
     </mat-progress-bar> -->
     <div *ngIf="!isLoading">
       <div *ngIf="searchedPDE && (searchedPDE?.length > 0)">
-        <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
-          <li *ngFor="let item of searchedPDE" class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-            <div class="w-0 flex-1 flex items-center">
-              <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+        <ul role="list" class="border border-gray-200 divide-y divide-gray-200 rounded-md">
+          <li *ngFor="let item of searchedPDE" class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
+            <div class="flex items-center flex-1 w-0">
+              <svg class="flex-shrink-0 w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                 fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd"
                   d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
                   clip-rule="evenodd" />
               </svg>
-              <div class="grid grid-cols-3 ml-2 flex-1">
-                <!-- <span class=" truncate"> {{(item == '') ? 'All' : item}} </span> -->
-                <div class="grid col-span-2"><span class=" truncate">{{item}}</span></div>
-                <div class="grid col-span-1"><span class=" truncate text-xs text-gray-600"> {{selectedFinancialYear}} </span></div>
-              </div>              
+              <div class="grid flex-1 grid-cols-3 ml-2">
+                <!-- <span class="truncate "> {{(item == '') ? 'All' : item}} </span> -->
+                <div class="grid col-span-2"><span class="truncate ">{{item}}</span></div>
+                <div class="grid col-span-1"><span class="text-xs text-gray-600 truncate "> {{selectedFinancialYear}} </span></div>
+              </div>
             </div>
-            <div class="ml-4 flex-shrink-0">
-              <button type="button" (click)="download(fullReportName,reportName,item)" class="textButton">
+            <div class="flex-shrink-0 ml-4">
+              <button type="button" (click)="download(fullReportName,reportName,item)" class="px-2 py-2 textButton">
+                <svg class="inline-flex w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path></svg>
                 Download </button>
             </div>
           </li>
         </ul>
       </div>
 
-      <div class="h-screen w-full items-center"
+      <div class="items-center w-full h-screen"
         *ngIf="!searchedPDE || (searchedPDE?.length <= 0) ">
         <div class="text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none"
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto text-gray-400" fill="none"
             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
@@ -45,7 +46,7 @@
       </div>
 
     </div>
-    <div class="relative top-0 left-0 z-50 block w-full h-full  opacity-75" *ngIf="isLoading">
+    <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
       <div class="flex items-center justify-center h-80">
         <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

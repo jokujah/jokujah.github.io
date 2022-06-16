@@ -4,16 +4,24 @@
   <div>
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfRegisteredEntities}}</span>
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
+          <animated-digit [digit]="numberOfRegisteredEntities" [duration]="1000">
+            {{numberOfRegisteredEntities}}
+          </animated-digit>
+        </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="py-1 text-sm font-medium text-gray-500 truncate ">Registered Entities</span>
       </div>
 
-      <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hidden">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfPlannedContracts |
-          numberSuffix:0}}</span>
+      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
+          <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
+            {{numberOfPlannedContracts |
+              numberSuffix:0}}
+            </animated-digit>
+          </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
@@ -21,67 +29,109 @@
       </div>
 
       <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">UGX {{totalValueofPlannedContracts }}</span>
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
+          <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
+            UGX {{ totalValueofPlannedContracts }}
+            </animated-digit></span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="py-1 text-sm font-medium text-gray-500 truncate">Estimated Amount</span>
       </div>
 
-      
+
 
     </div>
   </div>
 
   <!-- Graphs -->
   <div>
-    <!-- Row 1 -->
-    <div class="mt-4 ">
+    <!-- Percentage Plan and Budget Status -->
+    <div class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
+      <!-- Semi Circle -->
+      <div class="px-4 py-5 sm:p-6 min-w-1/2">
+          <apx-chart
+            *ngIf="chartOptionsFinancialYearBudget?.series && !isLoading"
+            [series]="chartOptionsFinancialYearBudget.series"
+            [chart]="chartOptionsFinancialYearBudget.chart"
+            [plotOptions]="chartOptionsFinancialYearBudget.plotOptions"
+            [labels]="chartOptionsFinancialYearBudget.labels"
+            [fill]="chartOptionsFinancialYearBudget.fill"
+            [title]="chartOptionsFinancialYearBudget.title"
+            [noData]="chartOptionsFinancialYearBudget.noData"
+          ></apx-chart>
+          <div *ngIf="isLoading">Loading...</div>
+      </div>
+
+      <!-- Bar -->
+      <div class="px-4 py-5 sm:p-6">
+        <div *ngIf="chartOptionsPlannedVsSpent?.series && !isLoading">
+            <apx-chart
+              [series]="chartOptionsPlannedVsSpent.series"
+              [chart]="chartOptionsPlannedVsSpent.chart"
+              [dataLabels]="chartOptionsPlannedVsSpent.dataLabels"
+              [plotOptions]="chartOptionsPlannedVsSpent.plotOptions"
+              [responsive]="chartOptionsPlannedVsSpent.responsive"
+              [xaxis]="chartOptionsPlannedVsSpent.xaxis"
+              [yaxis]="chartOptionsPlannedVsSpent.yaxis"
+              [legend]="chartOptionsPlannedVsSpent.legend"
+              [fill]="chartOptionsPlannedVsSpent.fill"
+              [tooltip]="chartOptionsPlannedVsSpent.tooltip"
+              [title]="chartOptionsPlannedVsSpent.title"
+              [labels]="chartOptionsPlannedVsSpent.labels"
+              [noData]="chartOptionsPlannedVsSpent.noData"
+            ></apx-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
+      <!-- Plans by Type -->
+      <div class="px-4 py-5 sm:p-6 min-w-1/2">
+        <apx-chart
+          *ngIf="chartOptionsType?.series && !isLoading"
+          [series]="chartOptionsType.series"
+          [chart]="chartOptionsType.chart"
+          [labels]="chartOptionsType.labels"
+          [responsive]="chartOptionsType.responsive"
+          [title]="chartOptionsType.title"
+          [plotOptions]="chartOptionsType.plotOptions"
+          [tooltip]="chartOptionsType.tooltip"
+          [legend]="chartOptionsType.legend"
+          [noData]="chartOptionsType.noData"
+        ></apx-chart>
+        <div *ngIf="isLoading">Loading...</div>
+      </div>
+      <div class="px-4 py-5 sm:p-6 min-w-1/2">
+        <apx-chart
+          *ngIf="chartOptionsMethod?.series && !isLoading"
+          [series]="chartOptionsMethod.series"
+          [chart]="chartOptionsMethod.chart"
+          [xaxis]="chartOptionsMethod.xaxis"
+          [title]="chartOptionsMethod.title"
+          [responsive]="chartOptionsMethod.responsive"
+          [tooltip]="chartOptionsMethod.tooltip"
+          [noData]="chartOptionsMethod.noData"
+        ></apx-chart>
+        <div *ngIf="isLoading">Loading...</div>
+      </div>
+    </div>
+
+     <!-- Row 1 -->
+     <div class="mt-4 ">
       <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4 ">
         <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
           <div class="flex flex-col px-2 py-2">
-            <div id="chartBudgetStatus">
+            <div id="chartBudgetStatus" *ngIf="chartOptionsBudgetStatus.series && !isLoading">
               <apx-chart #chartBudgetStatus [series]="chartOptionsBudgetStatus.series"
                 [chart]="chartOptionsBudgetStatus.chart" [dataLabels]="chartOptionsBudgetStatus.dataLabels"
                 [plotOptions]="chartOptionsBudgetStatus.plotOptions" [title]="chartOptionsBudgetStatus.title"
                 [legend]="chartOptionsBudgetStatus.legend" [tooltip]="chartOptionsBudgetStatus.tooltip"
                 [noData]="chartOptionsBudgetStatus.noData" [stroke]="chartOptionsBudgetStatus.stroke" [labels]="chartOptionsBudgetStatus.labels"></apx-chart>
             </div>
+            <div class="px-4 py-5 sm:p-6 min-w-1/2" *ngIf="isLoading">Loading...</div>
           </div>
         </div>
-      </div>
-      <div class="mt-4 mb-4">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chartProcurementTypes" *ngIf="chartOptionsProcurementTypes">
-            <apx-chart #chartProcurementTypes [series]="chartOptionsProcurementTypes.series"
-              [chart]="chartOptionsProcurementTypes.chart" [dataLabels]="chartOptionsProcurementTypes.dataLabels"
-              [plotOptions]="chartOptionsProcurementTypes.plotOptions" [yaxis]="chartOptionsProcurementTypes.yaxis"
-              [legend]="chartOptionsProcurementTypes.legend" [fill]="chartOptionsProcurementTypes.fill"
-              [stroke]="chartOptionsProcurementTypes.stroke" [tooltip]="chartOptionsProcurementTypes.tooltip"
-              [xaxis]="chartOptionsProcurementTypes.xaxis" [title]="chartOptionsProcurementTypes.title"
-              [theme]="chartOptionsProcurementTypes.theme" [noData]="chartOptionsProcurementTypes.noData">
-            </apx-chart>
-          </div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chartEducationStatus">
-            <apx-chart #chartEducationStatus [series]="chartOptionsEducationStatus.series"
-              [chart]="chartOptionsEducationStatus.chart" [dataLabels]="chartOptionsEducationStatus.dataLabels"
-              [plotOptions]="chartOptionsEducationStatus.plotOptions" [yaxis]="chartOptionsEducationStatus.yaxis"
-              [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
-              [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid"
-              [title]="chartOptionsEducationStatus.title" [tooltip]="chartOptionsEducationStatus.tooltip"
-              [noData]="chartOptionsEducationStatus.noData"></apx-chart>
-          </div>
-          <!-- <div *ngIf="!chartOptionsEducationStatus">
-                <app-loading-pulse></app-loading-pulse>
-              </div> -->
-        </div>
-
-
       </div>
     </div>
-  </div>
 </div>

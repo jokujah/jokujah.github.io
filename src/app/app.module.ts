@@ -33,6 +33,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpServiceInterceptor } from './interceptors/HttpInterceptor/http-service.interceptor';
 import { SAVER, getSaver } from './utils/saver.provider';
 import { LoginPageModule } from './pages/login-page/login-page.module';
+import { EmptyStateComponent } from './shared/empty-state/empty-state.component';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,7 @@ import { LoginPageModule } from './pages/login-page/login-page.module';
     InitiationCategoryPageModule,
     SolicitationCategoryPageModule,
     EvaluationCategoryPageModule,
-    SupplierPortalCategoryPageModule,    
+    SupplierPortalCategoryPageModule,
     ContractingCategoryPageModule,
     ContractingManagementCategoryPageModule,
     RevenueSourcesCategoryPageModule,
@@ -61,7 +64,7 @@ import { LoginPageModule } from './pages/login-page/login-page.module';
     ToastrModule.forRoot(),
     ReportPageModule,
     LoginPageModule
-    
+
   ],
   providers: [
     {
