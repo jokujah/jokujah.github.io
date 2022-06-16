@@ -15,6 +15,7 @@ import { AuthenticationService } from 'src/app/services/Authentication/authentic
 import { ToastrService } from 'ngx-toastr';
 import { DOCUMENT } from '@angular/common';
 import { Console } from 'console';
+import { UtilsService } from 'src/app/services/Utils/utils.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -121,7 +122,7 @@ export class DashboardComponent implements OnInit {
   }
 
   pde = getsortedPDEList()
-  financialYears = getFinancialYears()
+  financialYears ;
   options: FormGroup;
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('2021-2022');
@@ -146,6 +147,7 @@ export class DashboardComponent implements OnInit {
     private _authService: AuthenticationService,
     private _autoLogOutService : AutoLogoutService,
     private toastr: ToastrService,
+    private _utilsService: UtilsService,
     fb: FormBuilder
   ) {
 
@@ -184,8 +186,8 @@ export class DashboardComponent implements OnInit {
 
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
-    this.entityName = localStorage.getItem('email') == 'admin@mail.com'?'All PDEs':this.getEntity(localStorage.getItem('user'))
 
+    
     this._autoLogOutService.check()
   }
 
@@ -333,6 +335,31 @@ export class DashboardComponent implements OnInit {
     var user = JSON.parse(data)
     return user?.entities[0]
   }
+
+
+  // getUtiities(utilityName,q){
+  //   this.isLoading = true;
+  //   this._utilsService.getUtil(utilityName,q).subscribe(
+  //     (response )=>{
+  //       console.log(response)
+  //       switch(utilityName){         
+  //         case  'financial-years':
+  //           this.financialYears = response.data
+  //           //this.financialYearControl.setValue(this.financialYears[0]?.financial_year)
+  //         break
+  //       }
+         
+  //        this.isLoading = false;
+  //       },
+  //     (error) => {
+  //        this.isLoading = false;
+  //       this.toastr.error("Something Went Wrong", '', {
+  //         progressBar: true,
+  //         positionClass: 'toast-top-right'
+  //       });
+  //     }
+  //   )
+  // } 
 
 }
 

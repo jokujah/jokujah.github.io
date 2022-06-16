@@ -50,6 +50,10 @@ export class MicroProcurementVisualsComponent implements OnInit {
   allEvavluatedBidders;
 
   topTenHighestContracts 
+
+  highestContractValue = 0;
+  highestProcurement = 'N/A';
+  entityWithHighestProcurement = 'N/A';
   
 
 
@@ -144,6 +148,7 @@ export class MicroProcurementVisualsComponent implements OnInit {
       (response )=>{ 
         let data = response.data
         let subjectOfProcurement = []
+        let pdeName = []
         let estimatedAmount = []
         let actualAmount = []
         let sortedData = []
@@ -180,7 +185,12 @@ export class MicroProcurementVisualsComponent implements OnInit {
               subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
               estimatedAmount.push(valueD)
               actualAmount.push(valueF)
+              pdeName.push(element?.pdeName)
             });
+
+            this.entityWithHighestProcurement = pdeName[0]?pdeName[0]:'Not Available'
+            this.highestProcurement = subjectOfProcurement[0]?subjectOfProcurement[0]:'Not Available'
+            this.highestContractValue = actualAmount[0]? actualAmount[0]:0
 
             console.log(subjectOfProcurement)
             console.log(estimatedAmount)
@@ -259,7 +269,14 @@ export class MicroProcurementVisualsComponent implements OnInit {
       chart: {
         fontFamily:'Trebuchet Ms',
         type: "bar",
-        height: '500px'
+        height: '500px',
+        events: {
+          click: function (chart, w, e) {
+            console.log(chart, w, e)
+            console.log(w)
+            console.log(e)
+          },
+        },
       },
       plotOptions: {
         bar: {

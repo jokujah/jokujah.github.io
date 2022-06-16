@@ -116,6 +116,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   public chartOptionsFinancialYearBudget: Partial<ChartOptions> | any;
   public chartOptionsPlannedVsSpent: Partial<ChartOptions> | any;
 
+
   pde = getsortedPDEList();
   financialYears = getFinancialYears();
   options: FormGroup;
@@ -595,6 +596,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                     fontFamily: 'Trebuchet MS',
                   },
                 },
+               
               });
             } else {
               data.forEach((element) => {
@@ -1140,28 +1142,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       labels: [],
     };
 
-    // this.chartOptionsBudgetStatus  = {
-    //   series: [],
-
-    //   chart: {
-    //     height: 350,
-    //     fontFamily: 'Trebuchet MS',
-    //     type: "treemap"
-    //   },
-    //   title: {
-    //     text: "PDEs by Percentage of Budget Spent "
-    //   },
-    //   tooltip: {
-    //     y: {
-    //       formatter: function(value) {
-    //         return `${value}%`
-    //       }
-    //     }
-    //   },
-    //   noData: {
-    //     text: 'No Data Available ...'
-    //   }
-    // };
+    
 
     this.chartOptionsProcurementTypes = {
       series: [],
@@ -1881,4 +1862,71 @@ export class VisualsComponent implements OnInit, OnDestroy {
       // }
     };
   }
+
+
+  public progressGraphOptions(
+    series?:any,
+    title?: any,
+    subtitle?: any,
+    xaxis?:any
+  ){
+    var optionsProgress3 = {
+      chart: {
+        height: 70,
+        type: 'bar',
+        stacked: true,
+        sparkline: {
+          enabled: true
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: '20%',
+          colors: {
+            backgroundBarColors: ['#40475D']
+          }
+        },
+      },
+      colors: ['#f02fc2'],
+      stroke: {
+        width: 0,
+      },
+      series: [{
+        name: 'Process 3',
+        data: [74]
+      }],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          gradientToColors: ['#6094ea']
+        }
+      },
+      title: {
+        floating: true,
+        offsetX: -10,
+        offsetY: 5,
+        text: 'Process 3'
+      },
+      subtitle: {
+        floating: true,
+        align: 'right',
+        offsetY: 0,
+        text: '74%',
+        style: {
+          fontSize: '20px'
+        }
+      },
+      tooltip: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['Process 3'],
+      },
+      yaxis: {
+        max: 100
+      },
+    }
+  }
+
 }

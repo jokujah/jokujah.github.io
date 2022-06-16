@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -23,6 +24,7 @@ export class AuthenticationService {
         const user: any = response['data']['user'];
 
         const email: string = user?.email;
+        console.log(user?.roles)
         const role: [] = user?.roles;
        
         if (token && token !== null && token !== undefined) {
@@ -62,7 +64,9 @@ export class AuthenticationService {
     return localStorage.setItem('token', token);
   }
   setRole(role: any): void {
-    return localStorage.setItem('role', role);
+    this.checkIfSuperAdmin(role)
+
+    return localStorage.setItem('role', JSON.stringify(role));
   }
 
   setUserEmail(email: string): void {
@@ -72,6 +76,16 @@ export class AuthenticationService {
   setUser(user: any): void {
     console.log(user)
     return localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  checkIfSuperAdmin(role){
+    let superAdminRole = role.filter(element =>(element?.name) === 'super-admin')
+
+    if(superAdminRole.length > 0){
+      return localStorage.setItem('isSuperAdmin', 'true');
+    }else{
+      return localStorage.setItem('isSuperAdmin', 'false');
+    }    
   }
 
   getToken(): string {

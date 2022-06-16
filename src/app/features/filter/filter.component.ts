@@ -80,9 +80,15 @@ export class FilterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    var roles = localStorage.getItem('roles')
-    roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
-    var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+    let checkIfSuperAdmin = localStorage.getItem('isSuperAdmin')
+
+    console.log(JSON.parse(checkIfSuperAdmin))
+
+    let roles = (checkIfSuperAdmin == 'true')?'super-admin':'pde-admin'
+
+    let checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+
+
 
     if(checkIfPdeOrDept == 'pde'){
       this.filterControlName = "Procuring and Disposal Entities"
@@ -112,6 +118,8 @@ export class FilterComponent implements OnInit {
         this.isSearching = false       
       });
     }
+
+    //make it local storage
     this.getUtiities('financial-years','')
 
     this.options = this.fb.group({

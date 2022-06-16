@@ -17,9 +17,9 @@ export class DownloadService {
 
   download(filename,reportName,pde,financialYear): Observable<Download> {
     
-    var roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
+    let roles = localStorage.getItem('isSuperAdmin') == 'true'?'super-admin':'pde-admin'
 
-    var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
+    let checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
 
 
 
