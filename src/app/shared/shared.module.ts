@@ -1,29 +1,30 @@
-import { FilterModule } from './../features/filter/filter.module';
-import { LoadingPulseModule } from './loading-pulse/loading-pulse.module';
-import { ErrorPageModule } from './error-page/error-page.module';
-import { LoadingIconModule } from './loading-icon/loading-icon.module';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-
-
-import { FusionChartsModule } from "angular-fusioncharts";
 // Import FusionCharts library and chart modules
 import * as FusionCharts from "fusioncharts";
-import * as charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import * as charts from "fusioncharts/fusioncharts.charts";
 import * as excel from "fusioncharts/fusioncharts.excelexport";
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AnimatedDigitComponent } from './animated-digit/animated-digit.component';
+import { CommonModule } from '@angular/common';
+import { EmptyPageModule } from './empty-page/empty-page.module';
+import { EmptyStateComponent } from './empty-state/empty-state.component';
+import { ErrorPageModule } from './error-page/error-page.module';
+import { FilterModule } from './../features/filter/filter.module';
+import { FusionChartsModule } from "angular-fusioncharts";
+import { GoogleChartsModule } from 'angular-google-charts';
+import { LoaderComponent } from './loader/loader.component';
+import { LoadingIconModule } from './loading-icon/loading-icon.module';
+import { LoadingPulseModule } from './loading-pulse/loading-pulse.module';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatSelectSearchModule } from './mat-select-search/mat-select-search.module';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
+
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
-import { GoogleChartsModule } from 'angular-google-charts';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectSearchModule } from './mat-select-search/mat-select-search.module';
-import { EmptyStateComponent } from './empty-state/empty-state.component';
-import { AnimatedDigitComponent } from './animated-digit/animated-digit.component';
-import { LoaderComponent } from './loader/loader.component';
 
 
 
@@ -56,7 +57,8 @@ import { LoaderComponent } from './loader/loader.component';
     MatSelectSearchModule,
     EmptyStateComponent,
     LoaderComponent,
-    AnimatedDigitComponent
+    AnimatedDigitComponent,
+    EmptyPageModule
   ]
 })
 export class SharedModule { }
