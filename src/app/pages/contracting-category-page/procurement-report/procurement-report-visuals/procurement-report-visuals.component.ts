@@ -88,6 +88,7 @@ export class ProcurementReportVisualsComponent implements OnInit {
   yearOfPlannedContracts ;
   numberOfRegisteredEntities  ;
   topTenHighestContracts
+  isEmpty: boolean;
 
   constructor(
     fb: FormBuilder,
@@ -98,6 +99,8 @@ export class ProcurementReportVisualsComponent implements OnInit {
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
+
+    this.isEmpty= true
   }
 
   ngOnInit(): void {

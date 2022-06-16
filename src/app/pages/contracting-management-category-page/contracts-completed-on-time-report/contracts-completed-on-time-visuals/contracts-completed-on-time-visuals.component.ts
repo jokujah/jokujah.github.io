@@ -56,6 +56,8 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
   cardValue3: any;
   cardValue4: number;
 
+  isEmpty = true
+
   constructor(
     private toastr: ToastrService,
     private _service: PlaningAndForecastingReportService

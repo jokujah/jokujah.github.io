@@ -71,15 +71,18 @@ export class LateInitiationVisualsComponent implements OnInit {
   marketPrice ;
   numberOfRequisitions ;
   requisitionEstimatedAmount ;
+  isError: boolean;
+  isEmpty: boolean;
 
   constructor(
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
-
+    this.isEmpty= true
   }
 
   ngOnInit(): void {
     this.initCharts()
+    
   }
 
   submit(data) {
@@ -119,7 +122,7 @@ export class LateInitiationVisualsComponent implements OnInit {
       (error) => {
         console.log(error)
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
+        this.toastr.info("Something Went Wrong", '', {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
@@ -234,7 +237,7 @@ export class LateInitiationVisualsComponent implements OnInit {
               })
             break;
             case'top-late-initiations':
-              console.log(`Report Name ${reportName} , Data ${data}`)
+              console.log(`Report Name ${reportName} `,data)
               this.chartLateInitiationsMethod?.updateOptions({
                 series: [],          
                 xaxis: {
@@ -258,8 +261,8 @@ export class LateInitiationVisualsComponent implements OnInit {
         },
       (error) => {
         console.log(error)
-        this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
+        this.isLoading = false;        
+        this.toastr.info("Error retrieving data", '', {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
@@ -319,6 +322,7 @@ export class LateInitiationVisualsComponent implements OnInit {
             text: 'Error Loading Data ...'
           } 
         })
+        this.isError = true
         this.isLoading = false
       }
     )

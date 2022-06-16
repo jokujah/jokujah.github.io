@@ -28,7 +28,7 @@
   </div>
 
   <!-- Graphs -->
-  <div>
+  <div *ngIf="!isEmpty">
     <!-- Row 1 -->
     <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
@@ -62,5 +62,10 @@
       </div>
     </div>
 
+  </div>
+
+   <!-- Empty State -->
+   <div *ngIf="isEmpty">
+    <app-empty-state></app-empty-state>
   </div>
 </div>

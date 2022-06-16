@@ -60,6 +60,7 @@ export class PdeBidAverageVisualsComponent implements OnInit {
   cardValue3;
   cardValue4;
   cardValue5;
+  isEmpty: boolean;
 
   constructor(
     fb: FormBuilder,
@@ -70,6 +71,7 @@ export class PdeBidAverageVisualsComponent implements OnInit {
       financialYear: this.financialYearControl,
       pde:this.pdeControl
     });
+    this.isEmpty= true
   }
 
   ngOnInit(): void {

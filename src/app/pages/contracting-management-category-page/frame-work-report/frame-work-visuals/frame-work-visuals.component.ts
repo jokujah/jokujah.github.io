@@ -59,6 +59,7 @@ export class FrameWorkVisualsComponent implements OnInit {
   topTenHighestContracts 
   
 
+  isEmpty = true
 
   constructor(
     private toastr: ToastrService,
