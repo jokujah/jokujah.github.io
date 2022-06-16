@@ -231,7 +231,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
     );
 
     this.getPlanBudgetStatusByFinancialYear(
-      'plan-by-funding-source',
+      'plan-budget-status-by-financial-year',
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
@@ -260,10 +260,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
       },
     });
 
-    console.log(
-      `getSummaryStatsWithPDE ${reportName} + ${financialYear} + ${procuringEntity}`
-    );
-
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
@@ -273,9 +269,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let y = [];
           let providersInSelectedYear = [];
 
-          console.log('getSummaryStatsWithPDE', data);
           var e = data.length > 0;
-          console.log('getSummaryStatsWithPDE', e);
           if (data.length > 0) {
             data.forEach((element) => {
               //if (element.financialYear == financialYear) {
@@ -352,7 +346,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          console.log(error);
           this.isLoading = false;
           this.toastr.error('Something Went Wrong', '', {
             progressBar: true,
@@ -414,10 +407,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
           var sortedData = [];
 
-          console.log('BUDGET', data);
-
           //labelName.push(procuringEntity == ""?"All":procuringEntity)
-          console.log('BUDGET LENGTH', data.length);
           if (data.length > 0) {
             if (procuringEntity == '') {
               // var totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
@@ -610,7 +600,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 seriesObject.push(oneSerieObject);
               });
               labelName.push(procuringEntity);
-              console.log(` ${labelName}  ${budgetSpentPercentage}`);
 
               this.chartBudgetStatus?.updateOptions({
                 series: budgetSpentPercentage,
@@ -871,7 +860,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
-          console.log('Procurements by Method => ', res);
         },
         (error) => {}
       );
@@ -882,6 +870,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
+          this.isLoading = false;
           let plansByFundingSource = res.data;
 
           const fundingSourceData = [];
@@ -894,14 +883,11 @@ export class VisualsComponent implements OnInit, OnDestroy {
             fundingSources.push(item?.fundingSource);
           });
 
-          console.log('fundingSourceData', fundingSourceData);
-          console.log('fundingSources', fundingSources);
 
-          this.initBarAreaChartFundingSource();
-
-          this.isLoading = false;
         },
-        (error) => {}
+        (error) => {
+          this.isLoading = false;
+        }
       );
   }
 
@@ -915,14 +901,15 @@ export class VisualsComponent implements OnInit, OnDestroy {
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
-          console.log('Plan Budget ', res.data);
+          this.isLoading = false;
           let planBudgetStatus = res.data;
 
           const financialYears = [];
           const plannedAmounts = [];
           const spentAmounts = [];
 
-          let percentage: number;
+          let percentage: Array<number> = [];
+          let calculatedPercentage: any;
 
           planBudgetStatus.forEach((budget: any) => {
             financialYears.push(budget?.financialYear);
@@ -934,19 +921,23 @@ export class VisualsComponent implements OnInit, OnDestroy {
             );
           });
 
-          percentage =
-            (spentAmounts.reduce((a, b) => a + b, 0) /
-              plannedAmounts.reduce((a, b) => a + b, 0)) *
-            100;
+          calculatedPercentage = (spentAmounts.reduce((a, b) => a + b, 0) /
+          plannedAmounts.reduce((a, b) => a + b, 0)) * 100;
 
-          this.initSemiCircleGaugeChartBudgetStatus(+percentage.toFixed(2));
-          this.initStackedBarGraphBudgetPlannedVsSpent(
-            plannedAmounts,
-            spentAmounts,
-            financialYears
-          );
+          percentage.push(parseFloat(calculatedPercentage.toFixed(2)));
+
+          if (plannedAmounts && spentAmounts) {
+            this.initSemiCircleGaugeChartBudgetStatus(percentage);
+            this.initStackedBarGraphBudgetPlannedVsSpent(
+              plannedAmounts,
+              spentAmounts,
+              financialYears
+            );
+          }
         },
-        (error) => {}
+        (error) => {
+          this.isLoading = false;
+        }
       );
   }
 
@@ -1189,9 +1180,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
     // Initialize Chart
     this.initDonutChart();
     // this.initRadarChartMethod();
-    this.initBarAreaChartFundingSource();
     this.initSemiCircleGaugeChartBudgetStatus();
-    this.initStackedBarGraphBudgetPlannedVsSpent();
+    // this.initStackedBarGraphBudgetPlannedVsSpent();
   }
 
   public initDonutChart(marketPrice?: Array<any>, types?: Array<any>): void {
@@ -1362,103 +1352,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public initRadarChartMethod() {}
-
-  public initBarAreaChartFundingSource(
-    fundingSourceData?: Array<object>,
-    fundingSources?: Array<string>
-  ) {
-    this.chartOptionsFundingSource = {
-      series: [
-        {
-          // name: "Funding Sources",
-          data: fundingSourceData,
-        },
-      ],
-      // tooltip: {
-      //   style: {
-      //     fontSize: '12px',
-      //     fontFamily: 'Trebuchet MS',
-      //   },
-      //   y: {
-      //     formatter: function (val: any) {
-      //       return 'UGX ' + convertNumbersWithCommas(val);
-      //     },
-      //   },
-      // },
-      chart: {
-        type: 'bar',
-        width: '100%',
-        height: 380,
-      },
-      plotOptions: {
-        bar: {
-          barHeight: '100%',
-          distributed: true,
-          horizontal: true,
-          dataLabels: {
-            position: 'bottom',
-          },
-        },
-      },
-      colors: [
-        '#33b2df',
-        '#546E7A',
-        '#d4526e',
-        '#13d8aa',
-        '#A5978B',
-        '#2b908f',
-        '#f9a3a4',
-        '#90ee7e',
-        '#f48024',
-        '#69d2e7',
-      ],
-      dataLabels: {
-        enabled: true,
-        textAnchor: 'start',
-        style: {
-          colors: ['#fff'],
-        },
-        offsetX: 0,
-        dropShadow: {
-          enabled: false,
-        },
-      },
-      stroke: {
-        width: 2,
-        colors: ['#fff'],
-      },
-      // yaxis: {
-      //   labels: {
-      //     formatter: (val: any) => val
-      //     // (val: any) => `UGx ${convertNumbersWithCommas(val)}`
-      //   }
-      // },
-      xaxis: {
-        categories: fundingSources,
-      },
-      yaxis: {
-        labels: {
-          show: false,
-        },
-      },
-      tooltip: {
-        theme: 'dark',
-        x: {
-          show: false,
-        },
-        y: {
-          title: {
-            formatter: (val: any) => `UGx ${convertNumbersWithCommas(val)}`,
-          },
-        },
-      },
-    };
+  public initRadarChartMethod() {
   }
 
-  public initSemiCircleGaugeChartBudgetStatus(percentage?: number) {
+  public initSemiCircleGaugeChartBudgetStatus(percentage?: Array<number>) {
     this.chartOptionsFinancialYearBudget = {
-      series: [percentage],
+      series: percentage,
       chart: {
         fontFamily: 'Trebuchet MS',
         type: 'radialBar',

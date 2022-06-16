@@ -4,7 +4,11 @@
   <div>
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfRegisteredEntities}}</span>
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
+          <animated-digit [digit]="numberOfRegisteredEntities" [duration]="1000">
+            {{numberOfRegisteredEntities}}
+          </animated-digit>
+        </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
@@ -12,8 +16,12 @@
       </div>
 
       <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hidden">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfPlannedContracts |
-          numberSuffix:0}}</span>
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
+          <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
+            {{numberOfPlannedContracts |
+              numberSuffix:0}}
+            </animated-digit>
+          </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
@@ -21,7 +29,10 @@
       </div>
 
       <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">UGX {{totalValueofPlannedContracts }}</span>
+        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
+          <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
+            UGX {{ totalValueofPlannedContracts }}
+            </animated-digit></span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
@@ -38,8 +49,9 @@
     <!-- Percentage Plan and Budget Status -->
     <div class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
       <!-- Semi Circle -->
-      <div class="px-4 py-5 sm:p-6 min-w-1/2" *ngIf="chartOptionsFinancialYearBudget?.series && chartOptionsFinancialYearBudget?.series[0] != 'undefined' && !isLoading">
-        <apx-chart
+      <div class="px-4 py-5 sm:p-6 min-w-1/2">
+          <apx-chart
+            *ngIf="chartOptionsFinancialYearBudget?.series && !isLoading"
             [series]="chartOptionsFinancialYearBudget.series"
             [chart]="chartOptionsFinancialYearBudget.chart"
             [plotOptions]="chartOptionsFinancialYearBudget.plotOptions"
@@ -47,14 +59,9 @@
             [fill]="chartOptionsFinancialYearBudget.fill"
             [title]="chartOptionsFinancialYearBudget.title"
           ></apx-chart>
-          <!-- <apx-chart
-            [series]="chartOptionsFinancialYearBudget.series"
-            [chart]="chartOptionsFinancialYearBudget.chart"
-            [plotOptions]="chartOptionsFinancialYearBudget.plotOptions"
-            [labels]="chartOptionsFinancialYearBudget.labels"
-            [fill]="chartOptionsFinancialYearBudget.fill"
-          ></apx-chart> -->
+          <div *ngIf="!chartOptionsFinancialYearBudget?.series && isLoading">Loading...</div>
       </div>
+
       <!-- Bar -->
       <div class="px-4 py-5 sm:p-6">
         <div *ngIf="chartOptionsPlannedVsSpent?.series && !isLoading">
@@ -78,8 +85,9 @@
 
     <div class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
       <!-- Plans by Type -->
-      <div class="px-4 py-5 sm:p-6 min-w-1/2" *ngIf="chartOptionsType?.series && !isLoading">
+      <div class="px-4 py-5 sm:p-6 min-w-1/2">
         <apx-chart
+          *ngIf="chartOptionsType?.series && !isLoading"
           [series]="chartOptionsType.series"
           [chart]="chartOptionsType.chart"
           [labels]="chartOptionsType.labels"
@@ -89,6 +97,7 @@
           [tooltip]="chartOptionsType.tooltip"
           [legend]="chartOptionsType.legend"
         ></apx-chart>
+        <div *ngIf="!chartOptionsType?.series && isLoading">Loading...</div>
       </div>
     </div>
 
@@ -106,50 +115,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="mt-4 mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 p-5 overflow-hidden bg-white rounded-lg shadow">
-
-          <div *ngIf="chartOptionsFundingSource?.series && !isLoading">
-            <!-- <apx-chart
-              [series]="chartOptionsFundingSource.series"
-              [chart]="chartOptionsFundingSource.chart"
-              [dataLabels]="chartOptionsFundingSource.dataLabels"
-              [plotOptions]="chartOptionsFundingSource.plotOptions"
-              [xaxis]="chartOptionsFundingSource.xaxis"
-              [yaxis]="chartOptionsFundingSource.yaxis"
-              [responsive]="chartOptionsFundingSource.responsive"
-            ></apx-chart> -->
-          </div>
-          <!-- <div id="chartProcurementTypes" *ngIf="chartOptionsProcurementTypes">
-            <apx-chart #chartProcurementTypes [series]="chartOptionsProcurementTypes.series"
-              [chart]="chartOptionsProcurementTypes.chart" [dataLabels]="chartOptionsProcurementTypes.dataLabels"
-              [plotOptions]="chartOptionsProcurementTypes.plotOptions" [yaxis]="chartOptionsProcurementTypes.yaxis"
-              [legend]="chartOptionsProcurementTypes.legend" [fill]="chartOptionsProcurementTypes.fill"
-              [stroke]="chartOptionsProcurementTypes.stroke" [tooltip]="chartOptionsProcurementTypes.tooltip"
-              [xaxis]="chartOptionsProcurementTypes.xaxis" [title]="chartOptionsProcurementTypes.title"
-              [theme]="chartOptionsProcurementTypes.theme" [noData]="chartOptionsProcurementTypes.noData">
-            </apx-chart>
-          </div> -->
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chartEducationStatus">
-            <!-- <apx-chart #chartEducationStatus [series]="chartOptionsEducationStatus.series"
-              [chart]="chartOptionsEducationStatus.chart" [dataLabels]="chartOptionsEducationStatus.dataLabels"
-              [plotOptions]="chartOptionsEducationStatus.plotOptions" [yaxis]="chartOptionsEducationStatus.yaxis"
-              [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
-              [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid"
-              [title]="chartOptionsEducationStatus.title" [tooltip]="chartOptionsEducationStatus.tooltip"
-              [noData]="chartOptionsEducationStatus.noData"></apx-chart> -->
-          </div>
-          <!-- <div *ngIf="!chartOptionsEducationStatus">
-                <app-loading-pulse></app-loading-pulse>
-              </div> -->
-        </div>
-
-
       </div>
     </div>
 </div>

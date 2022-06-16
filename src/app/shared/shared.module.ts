@@ -21,15 +21,21 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectSearchModule } from './mat-select-search/mat-select-search.module';
+import { EmptyStateComponent } from './empty-state/empty-state.component';
+import { AnimatedDigitComponent } from './animated-digit/animated-digit.component';
+import { LoaderComponent } from './loader/loader.component';
 
 
 
 @NgModule({
   declarations: [
     NumberSuffixPipe,
+    EmptyStateComponent,
+    LoaderComponent,
+    AnimatedDigitComponent
   ],
   imports: [
-    CommonModule,
+  CommonModule,
     FusionChartsModule,
     GoogleChartsModule,
     FilterModule,
@@ -48,6 +54,9 @@ import { MatSelectSearchModule } from './mat-select-search/mat-select-search.mod
     FormsModule,
     ReactiveFormsModule,
     MatSelectSearchModule,
+    EmptyStateComponent,
+    LoaderComponent,
+    AnimatedDigitComponent
   ]
 })
 export class SharedModule { }
