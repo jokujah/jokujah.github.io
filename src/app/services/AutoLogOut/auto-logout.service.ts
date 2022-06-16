@@ -77,8 +77,10 @@ export class AutoLogoutService {
     //Adding  5 mins
     //const timeLeft = parseInt(this.getLastAction()) + (3.5) * 60 * 1000;
 
-    //Adding  3.5 mins
+    //Adding  30 mins  or 216000 
     const timeLeft = parseInt(this.getLastAction()) + (30) * 60 * 1000;
+
+    //const timeLeft = parseInt(this.getLastAction()) + 216000;
 
     // console.log("Now",Date.now())
     // console.log("Time Left",timeLeft)
@@ -95,9 +97,6 @@ export class AutoLogoutService {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
-        setTimeout(()=>{
-          console.log("Your Session Expired due to longer Inactivity, Login Again To Continue");
-        },10000);
         this.router.navigate(['/login']);
       }
     });

@@ -43,7 +43,7 @@ export class PlaningAndForecastingReportService {
   getSummaryStatsWithPDE(reportName,financialYear,procuringEntity): Observable<any> {
 
     // var roles = localStorage.getItem('roles')
-    var roles = localStorage.getItem('email') == 'admin@mail.com'?'super-admin':'pde-admin'
+    var roles = localStorage.getItem('isSuperAdmin') == 'true'?'super-admin':'pde-admin'
 
     var checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
 
