@@ -58,6 +58,7 @@
             [labels]="chartOptionsFinancialYearBudget.labels"
             [fill]="chartOptionsFinancialYearBudget.fill"
             [title]="chartOptionsFinancialYearBudget.title"
+            [noData]="chartOptionsFinancialYearBudget.noData"
           ></apx-chart>
           <div *ngIf="isLoading">Loading...</div>
       </div>
@@ -78,6 +79,7 @@
               [tooltip]="chartOptionsPlannedVsSpent.tooltip"
               [title]="chartOptionsPlannedVsSpent.title"
               [labels]="chartOptionsPlannedVsSpent.labels"
+              [noData]="chartOptionsPlannedVsSpent.noData"
             ></apx-chart>
         </div>
       </div>
@@ -96,6 +98,7 @@
           [plotOptions]="chartOptionsType.plotOptions"
           [tooltip]="chartOptionsType.tooltip"
           [legend]="chartOptionsType.legend"
+          [noData]="chartOptionsType.noData"
         ></apx-chart>
         <div *ngIf="isLoading">Loading...</div>
       </div>

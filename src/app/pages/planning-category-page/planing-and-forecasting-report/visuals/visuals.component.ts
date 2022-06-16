@@ -1381,6 +1381,17 @@ export class VisualsComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      noData: {
+        text: 'No Data Available',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS'
+        }
+      }
     };
   }
 
@@ -1651,6 +1662,17 @@ export class VisualsComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      noData: {
+        text: 'No Data Available',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS'
+        }
+      }
     };
   }
 
@@ -1822,6 +1844,17 @@ export class VisualsComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      noData: {
+        text: 'No Data Available',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS'
+        }
+      }
       // fill: {
       //   opacity: 1
       // }
