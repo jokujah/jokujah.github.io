@@ -35,7 +35,8 @@ import { SAVER, getSaver } from './utils/saver.provider';
 import { LoginPageModule } from './pages/login-page/login-page.module';
 import { EmptyStateComponent } from './shared/empty-state/empty-state.component';
 import { LoaderComponent } from './shared/loader/loader.component';
-import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.component';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+//import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,10 @@ import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.c
       provide: HTTP_INTERCEPTORS,
       useClass: HttpServiceInterceptor,
       multi: true
+    },
+    {
+      provide: LocationStrategy,
+      useClass: PathLocationStrategy,      
     },
     {provide: SAVER, useFactory: getSaver}
   ],

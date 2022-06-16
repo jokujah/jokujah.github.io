@@ -6,7 +6,6 @@ import * as excel from "fusioncharts/fusioncharts.excelexport";
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AnimatedDigitComponent } from './animated-digit/animated-digit.component';
 import { CommonModule } from '@angular/common';
 import { EmptyPageModule } from './empty-page/empty-page.module';
 import { EmptyStateComponent } from './empty-state/empty-state.component';
@@ -22,6 +21,7 @@ import { MatSelectSearchModule } from './mat-select-search/mat-select-search.mod
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
+import { AnimatedDigitComponent } from "./animated-digit/animated-digit.component";
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
