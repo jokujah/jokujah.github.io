@@ -562,7 +562,17 @@ export class VisualsComponent implements OnInit, OnDestroy {
                   text: 'No Data Available ...',
                 },
                 title: {
-                  text: 'PDEs by Percentage of Budget Spent ',
+                  text: 'PDEs by Percentage of Budget Spent',
+                  align: 'center',
+                  margin: 2,
+                  offsetX: 0,
+                  offsetY: 0,
+                  floating: false,
+                  style: {
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    fontFamily: 'Trebuchet MS',
+                  },
                 },
               });
             } else {
