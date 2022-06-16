@@ -16,6 +16,13 @@ html {
   font-family: 'Trebuchet MS' !important;
 }
 
+[type='text']:focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {
+  outline: none !important;
+  border-color: #ffffff !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
 
 
 .activeButton{
@@ -32,7 +39,7 @@ html {
 
 
 .dashboardButton{
-  @apply flex items-center px-2 py-2 text-sm font-medium text-white rounded-md transform transition hover:scale-95 duration-300 ease-in-out hover:bg-primary-900 hover:text-gray-200 
+  @apply flex items-center px-2 py-2 text-sm font-medium text-white rounded-md transform transition hover:scale-95 duration-300 ease-in-out hover:bg-primary-900 hover:text-gray-200
 }
 
 
@@ -90,4 +97,4 @@ html {
 
 
 
-  
+

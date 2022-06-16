@@ -860,8 +860,31 @@ export class VisualsComponent implements OnInit, OnDestroy {
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
+          this.isLoading = false;
+          let procurementsByMethod = res.data;
+
+          const planAmounts = [];
+          const planMethods = [];
+
+          procurementsByMethod.forEach((method: any) => {
+            if (method.procurementMethod != null) {
+              const amount = parseInt(method?.marketPrice.split(',').join(''));
+              planAmounts.push((amount / 1000000000000).toFixed(2));
+              planMethods.push({
+                'x': method?.procurementMethod,
+                'y': amount
+              });
+            }
+          });
+
+          if (planAmounts && planMethods) {
+            this.initRadarChartMethod(planAmounts, planMethods);
+          }
+
         },
-        (error) => {}
+        (error) => {
+          this.isLoading = false;
+        }
       );
   }
   getSummaryStatsByFundingSource(reportName, financialYear, procuringEntity) {
@@ -1179,9 +1202,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
     // Initialize Chart
     this.initDonutChart();
-    // this.initRadarChartMethod();
+    this.initRadarChartMethod();
     this.initSemiCircleGaugeChartBudgetStatus();
-    // this.initStackedBarGraphBudgetPlannedVsSpent();
   }
 
   public initDonutChart(marketPrice?: Array<any>, types?: Array<any>): void {
@@ -1199,7 +1221,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       },
       title: {
-        text: 'Planned Procurements by Procurement Types',
+        text: 'Planned Procurements by Type',
         align: 'center',
         margin: 2,
         offsetX: 0,
@@ -1352,7 +1374,137 @@ export class VisualsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public initRadarChartMethod() {
+  public initRadarChartMethod(planAmounts?: Array<any>, methods?: Array<string>) {
+    this.chartOptionsMethod = {
+      series: [
+        {
+          data: methods
+        }
+      ],
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+        y: {
+          formatter: function (val) {
+            return 'UGX ' + convertNumbersWithCommas(val);
+          },
+        },
+      },
+      title: {
+        text: 'Planned Procurements by Method',
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '18px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        type: 'treemap',
+        width: '100%',
+        height: 350,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 320,
+          options: {
+            chart: {
+              width: 260,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 280,
+            },
+            legend: {
+              position: 'bottom',
+            },
+            title: {
+              style: {
+                fontSize: '12px',
+              },
+            },
+          },
+        },
+        {
+          breakpoint: 640,
+          options: {
+            chart: {
+              width: 360,
+            },
+            legend: {
+              position: 'bottom',
+            },
+            title: {
+              style: {
+                fontSize: '15px',
+              },
+            },
+          },
+        },
+        {
+          breakpoint: 768,
+          options: {
+            chart: {
+              width: 380,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+        {
+          breakpoint: 1024,
+          options: {
+            chart: {
+              width: 400,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+        {
+          breakpoint: 1280,
+          options: {
+            chart: {
+              width: 480,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+      ],
+      noData: {
+        text: 'No Data Available',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS'
+        }
+      }
+    };
   }
 
   public initSemiCircleGaugeChartBudgetStatus(percentage?: Array<number>) {

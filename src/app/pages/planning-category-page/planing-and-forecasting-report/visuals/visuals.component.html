@@ -15,7 +15,7 @@
         <span class="py-1 text-sm font-medium text-gray-500 truncate ">Registered Entities</span>
       </div>
 
-      <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hidden">
+      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
         <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">
           <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
             {{numberOfPlannedContracts |
@@ -59,7 +59,7 @@
             [fill]="chartOptionsFinancialYearBudget.fill"
             [title]="chartOptionsFinancialYearBudget.title"
           ></apx-chart>
-          <div *ngIf="!chartOptionsFinancialYearBudget?.series && isLoading">Loading...</div>
+          <div *ngIf="isLoading">Loading...</div>
       </div>
 
       <!-- Bar -->
@@ -97,7 +97,20 @@
           [tooltip]="chartOptionsType.tooltip"
           [legend]="chartOptionsType.legend"
         ></apx-chart>
-        <div *ngIf="!chartOptionsType?.series && isLoading">Loading...</div>
+        <div *ngIf="isLoading">Loading...</div>
+      </div>
+      <div class="px-4 py-5 sm:p-6 min-w-1/2">
+        <apx-chart
+          *ngIf="chartOptionsMethod?.series && !isLoading"
+          [series]="chartOptionsMethod.series"
+          [chart]="chartOptionsMethod.chart"
+          [xaxis]="chartOptionsMethod.xaxis"
+          [title]="chartOptionsMethod.title"
+          [responsive]="chartOptionsMethod.responsive"
+          [tooltip]="chartOptionsMethod.tooltip"
+          [noData]="chartOptionsMethod.noData"
+        ></apx-chart>
+        <div *ngIf="isLoading">Loading...</div>
       </div>
     </div>
 
