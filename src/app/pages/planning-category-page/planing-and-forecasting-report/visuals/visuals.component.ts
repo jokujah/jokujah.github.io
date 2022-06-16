@@ -495,10 +495,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
                     type: "column",
                   },
                 ],
-                //series: pdePercentage,
                 chart: {
                   fontFamily: 'Trebuchet MS',
-                  height: 'auto',
+                  height: '450',
                   type: 'bar',
                   events: {
                     click: function (chart, w, e) {
@@ -524,13 +523,27 @@ export class VisualsComponent implements OnInit, OnDestroy {
                     columnWidth: '35%',
                     distributed: false,
                     horizontal: true,
+                    // dataLabels: {
+                    //   position: 'top'
+                    // }
                   },
+                },
+                stroke: {
+                  show: true,
+                  width: 2,
+                  colors: ["transparent"]
                 },
                 dataLabels: {
                   enabled: false,
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2);
+                  style: {
+                    //colors: ['#fff'],
+                    fontWeight: 'bold',
+                    fontSize: '12px',
                   },
+                  formatter: function (val) {
+                    return NumberSuffix(val, 0)+'%';
+                  },
+                  hideOverflowingLabels: true,
                 },
                 legend: {
                   show: false,
