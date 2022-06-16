@@ -22,6 +22,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
 import { AnimatedDigitComponent } from "./animated-digit/animated-digit.component";
+import {GoTopButtonModule} from 'ng-go-top-button';
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
@@ -58,7 +59,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     EmptyStateComponent,
     LoaderComponent,
     AnimatedDigitComponent,
-    EmptyPageModule
+    EmptyPageModule,
+    GoTopButtonModule
   ]
 })
 export class SharedModule { }

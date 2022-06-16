@@ -64,7 +64,8 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
     NgApexchartsModule,
     ToastrModule.forRoot(),
     ReportPageModule,
-    LoginPageModule
+    LoginPageModule,
+    
 
   ],
   providers: [
