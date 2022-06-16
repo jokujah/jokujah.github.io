@@ -437,9 +437,11 @@ export class MicroProcurementVisualsComponent implements OnInit {
       },
       title: {
         text: "Top Micro Procurements by Contract Amount",
-        style:{
-          fontSize:'14px'
-        }
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          //color: '#1286f3'
+        },
       },
       colors:["#69D2E7"],
       legend: {
