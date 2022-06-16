@@ -1,6 +1,6 @@
 import { AutoLogoutService } from './../../services/AutoLogOut/auto-logout.service';
 import { element } from 'protractor';
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import {
   trigger,
@@ -21,6 +21,7 @@ import { UtilsService } from 'src/app/services/Utils/utils.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None ,
   animations: [
     trigger(
       'menuOverLayAnimation',

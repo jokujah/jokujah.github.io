@@ -63,7 +63,8 @@ import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.c
     NgApexchartsModule,
     ToastrModule.forRoot(),
     ReportPageModule,
-    LoginPageModule
+    LoginPageModule,
+    
 
   ],
   providers: [
