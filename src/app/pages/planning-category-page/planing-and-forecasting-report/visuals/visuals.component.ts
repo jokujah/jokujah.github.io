@@ -148,6 +148,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
     };
   }
+  
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -407,6 +408,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
           var sortedData = [];
 
+          console.log(data)
+
           //labelName.push(procuringEntity == ""?"All":procuringEntity)
           if (data.length > 0) {
             if (procuringEntity == '') {
@@ -475,19 +478,24 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 return 0;
               });
 
+              console.log("SORTED DATA",sortedData)
+
               sortedData.forEach((element) => {
                 labelName.push(element.x);
                 pdePercentage.push(element.y);
               });
+
+              console.log("pdePercentage",pdePercentage)
 
               this.chartBudgetStatus?.updateOptions({
                 series: [
                   {
                     name: 'Percentage of Budget Spent',
                     data: pdePercentage,
-                    fontSize: '12px',
+                    type: "column",
                   },
                 ],
+                //series: pdePercentage,
                 chart: {
                   fontFamily: 'Trebuchet MS',
                   height: 'auto',
