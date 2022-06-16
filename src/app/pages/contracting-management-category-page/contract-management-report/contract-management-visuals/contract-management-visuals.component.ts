@@ -252,7 +252,7 @@ export class ContractManagementVisualsComponent implements OnInit {
                 },
                 {
                   name: "Number Of Contracts",
-                  type: "line",
+                  type: "area",
                   data: actualAmount
                 }
               ],
@@ -328,17 +328,30 @@ export class ContractManagementVisualsComponent implements OnInit {
       series: [],
       chart: {
         type: "bar",
-        height: '500px'
+        height: '450px',
+        fontFamily:'Trebuchet Ms'
       },
       plotOptions: {
         bar: {
           horizontal: true,
-          columnWidth: "55%",
-          borderRadius: 2
+          columnWidth: "35%",
+          borderRadius: 2,
+          dataLabels: {
+            position: 'top'
+          }
         }
       },
       dataLabels: {
-        enabled: false
+        enabled: true,
+        style: {
+          colors: ['#333'],
+          fontWeight:'bold',
+          fontSize:'12px'
+        },
+        offsetX:60,
+        formatter:function(val){
+          return NumberSuffix(val,2)
+        }
       },
       stroke: {
         show: true,
@@ -367,7 +380,12 @@ export class ContractManagementVisualsComponent implements OnInit {
         text: 'No Data Available ...'
       },
       title: {
-        text: "Contract Managers with Highest Contract Values"
+        text: "Contract Managers with Highest Contract Values",
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: '#1286f3'
+          },
       },
     };
 
@@ -386,7 +404,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       ],
       chart: {
         fontFamily:'Trebuchet Ms',
-        height: 500,
+        height: 450,
         type: "line"
       },
       // plotOptions: {
@@ -408,15 +426,16 @@ export class ContractManagementVisualsComponent implements OnInit {
       },
       title: {
         text: "Contract Management by Procurement Methods",
-        style:{
-          fontSize:"14px"
-        }
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: '#1286f3'
+          },
       },
       dataLabels: {
         enabled: true,
         enabledOnSeries: [1]
       },
-
       xaxis: {
         categories: [],
         labels: {
@@ -428,7 +447,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       yaxis: [
         {
           title: {
-            text: "Procurement Method"
+            text: "Contract Value"
           },
           labels: {
             style: {             
@@ -446,6 +465,29 @@ export class ContractManagementVisualsComponent implements OnInit {
           }
         }
       ],
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: [
+          {
+            formatter: function (y) {
+              if (typeof y !== "undefined") {
+                return "UGX " + NumberSuffix(y, 2);
+              }
+              return y;
+            }
+          },
+          {
+            formatter: function (y) {
+            if (typeof y !== "undefined") {
+              return "" + y;
+            }
+            return y;
+          }
+
+          }
+        ]
+      },
       noData: {
         text: 'Loading Data ...'
       }

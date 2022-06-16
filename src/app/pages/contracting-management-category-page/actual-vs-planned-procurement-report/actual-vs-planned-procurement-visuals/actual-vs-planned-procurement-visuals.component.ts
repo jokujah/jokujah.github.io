@@ -22,7 +22,7 @@ import { AwardedContractReportService } from 'src/app/services/ContractCategory/
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
-  dataLabels: ApexDataLabels;
+  dataLabels: ApexDataLabels|any;
   plotOptions: ApexPlotOptions;
   yaxis: ApexYAxis;
   xaxis: ApexXAxis;
@@ -67,12 +67,12 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
 
   submit(data) {
     this.getSummaryStats('plan-vs-actual-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
     this.getSummaryStats('plan-vs-actual-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -91,8 +91,10 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
+        this.numberOfContracts = (data?.numberOfProcurementItems)?sanitizeCurrencyToString(data.numberOfProcurementItems):0
+        this.valueOfContracts = (data?.marketPrice)?NumberSuffix( sanitizeCurrencyToString(data?.marketPrice),2):0
+
+        //console.log(this.valueOfContracts)
         //this.allEvavluatedBidders = data.total_evaluated_bidders
 
         this.isLoading = false
@@ -138,7 +140,7 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         let sortedData = []
 
         switch (reportName) {
-          case 'high-value-contracts':           
+          case 'top-contracts-summary':           
             console.log("AWARDED", data)
 
             sortedData = data.sort(function (a, b) {
@@ -159,11 +161,11 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
             sortedData.forEach(element => {
               var valueC = element?.estimatedAmount.split(',')
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.actualCost.split(',')
-              var valueF = parseInt(valueE.join(''))
+              // var valueE = element?.actualCost.split(',')
+              // var valueF = parseInt(valueE.join(''))
               subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
               estimatedAmount.push(valueD)
-              actualAmount.push(valueF)
+              // actualAmount.push(valueF)
             });
             this.chart?.updateOptions({
               series: [
@@ -171,11 +173,11 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
                   name: "Estimated Amount",
                   data: estimatedAmount
                 },
-                {
-                  name: "Actual Amount",
-                  type: "line",
-                  data: actualAmount
-                }
+                // {
+                //   name: "Actual Amount",
+                //   type: "line",
+                //   data: actualAmount
+                // }
               ],
               xaxis: {
                 categories: subjectOfProcurement,
@@ -236,17 +238,18 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
       series: [ ],
       chart: {
         type: "bar",
-        height: '500px'
+        height: '450px',
+        fontFamily:'Trebuchet Ms'
       },
       plotOptions: {
         bar: {
           horizontal: true,
-          columnWidth: "55%",
-          borderRadius: 2
+          columnWidth: "35%",
+          borderRadius: 2,
+          dataLabels: {
+            position: 'top'
+          }
         }
-      },
-      dataLabels: {
-        enabled: false
       },
       stroke: {
         show: true,
@@ -254,11 +257,14 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       xaxis: {
-        categories: []
+        categories: [],
+        title: {
+          text: "Contract Value"
+        }
       },
       yaxis: {
         title: {
-          text: "Providers"
+          text: "Subject of Procurement"
         }
       },
       fill: {
@@ -276,8 +282,22 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
       },
       title: {
         text: "Actual Vs Planned Procurements",
-        style:{
-          fontSize:'14px'
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          color: '#1286f3'
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['#333'],
+          fontWeight:'bold',
+          fontSize:'12px'
+        },
+        offsetX:60,
+        formatter:function(val){
+          return NumberSuffix(val,2)
         }
       },
     };

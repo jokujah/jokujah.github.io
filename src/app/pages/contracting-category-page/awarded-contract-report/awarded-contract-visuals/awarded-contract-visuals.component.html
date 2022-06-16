@@ -31,50 +31,6 @@
   
     <!-- Graphs -->
     <div>
-      <!-- <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-        <div class="flex ">
-          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
-            <div id="chart" *ngIf="chartOptions"  class="w-full  p-5">
-              <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
-                [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
-                [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
-                [tooltip]="chartOptions.tooltip" [noData]="chartOptions.noData"></apx-chart>
-            </div>
-          </div>
-        </div>
-        <div class="flex ">         
-          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
-            <div id="chartProcurementType" class="w-full  p-5">
-              <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
-                [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
-                [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
-                [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
-            </div>  
-          </div>
-        </div>
-      </div> -->
-
-      <div class="mt-4">
-        <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
-          <div id="chart" *ngIf="chartOptions"  class="w-full  p-5">
-            <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
-              [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
-              [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
-              [tooltip]="chartOptions.tooltip" [noData]="chartOptions.noData"></apx-chart>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-4 hidden">
-        <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
-          <div id="chartProcurementType" class="w-full  p-5">
-            <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
-              [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
-              [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
-              [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
-          </div>  
-        </div>
-      </div>
 
       <div class="mt-4">
         <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
@@ -89,9 +45,20 @@
         </div>
       </div>
 
-      <div class="mt-4 mb-4">
-        <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
-          <div id="chartProcurementMethodContracts" *ngIf="chartOptionsProcurementMethodContracts" class="w-full  p-5">
+      <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+        <div class="flex ">
+          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
+            <div id="chart" *ngIf="chartOptions"  class="w-full  p-5">
+              <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
+                [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
+                [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                [tooltip]="chartOptions.tooltip" [noData]="chartOptions.noData" [plotOptions]="chartOptions.plotOptions"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="flex ">         
+          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
+            <div id="chartProcurementMethodContracts" *ngIf="chartOptionsProcurementMethodContracts" class="w-full  p-5">
             <apx-chart #chartProcurementMethodContracts [series]="chartOptionsProcurementMethodContracts.series"
               [chart]="chartOptionsProcurementMethodContracts.chart" [yaxis]="chartOptionsProcurementMethodContracts.yaxis"
               [xaxis]="chartOptionsProcurementMethodContracts.xaxis" [labels]="chartOptionsProcurementMethodContracts.labels"
@@ -99,7 +66,21 @@
               [dataLabels]="chartOptionsProcurementMethodContracts.dataLabels" [fill]="chartOptionsProcurementMethodContracts.fill"
               [tooltip]="chartOptionsProcurementMethodContracts.tooltip" [noData]="chartOptionsProcurementMethodContracts.noData"
               [plotOptions]="chartOptionsProcurementMethodContracts.plotOptions"></apx-chart>
+          </div> 
           </div>
+        </div>
+      </div>
+
+    
+
+      <div class="mt-4 hidden">
+        <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
+          <div id="chartProcurementType" class="w-full  p-5">
+            <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
+              [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
+              [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
+              [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData"></apx-chart>
+          </div>  
         </div>
       </div>
 

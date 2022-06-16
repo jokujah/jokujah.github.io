@@ -23,10 +23,12 @@ export class ContractingReportsListComponent implements OnInit {
     },
     {
       "name":'PDE Average Contract Value Report',
+      //"name":'Number of Contracts, total Value, average Value by Procuring Entity',
       "route":'pde-average-contract-value-report'
     },
     {
       "name":'Procurement Method Average Contract Value Report',
+      //"name":'Number of Contracts, total Value, average Value by Procurement Method',
       "route":'procurement-method-average-contract-value-report'
     },
     {

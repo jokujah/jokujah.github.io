@@ -12,6 +12,14 @@
       </div>
 
       <div class="statsCard">
+        <span *ngIf="!isLoading" class="stats">UGX {{cardValue3 | numberSuffix: 2}}</span>
+        <span *ngIf="isLoading">
+          <app-loading-pulse></app-loading-pulse>
+        </span>
+        <span class="statsText">Costs Resulting from Termination</span>
+      </div>
+
+      <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
@@ -19,36 +27,33 @@
         <span class="statsText">Contract Value</span>
       </div>
 
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{cardValue3 | numberSuffix: 2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Costs Resulting from Termination</span>
-      </div>
+      
     </div>
   </div>
   
     <!-- Graphs -->
     <div>
       <!-- Row 1 -->
-      <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chart">
-            <apx-chart #chart
-              [series]="chartOptions.series"
-              [chart]="chartOptions.chart"
-              [dataLabels]="chartOptions.dataLabels"
-              [plotOptions]="chartOptions.plotOptions"
-              [yaxis]="chartOptions.yaxis"
-              [legend]="chartOptions.legend"
-              [fill]="chartOptions.fill"
-              [stroke]="chartOptions.stroke"
-              [tooltip]="chartOptions.tooltip"
-              [xaxis]="chartOptions.xaxis"
-              [title]="chartOptions.title"
-              [noData]="chartOptions.noData"
-            ></apx-chart>
+      <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+        <div class="flex ">
+          <div  class="flex w-full bg-white shadow rounded-lg overflow-hidden">          
+            <div id="chartTerminated" *ngIf="chartOptionsTerminated"  class="w-full  p-5">
+              <apx-chart #chartTerminated [series]="chartOptionsTerminated.series" [chart]="chartOptionsTerminated.chart" [yaxis]="chartOptionsTerminated.yaxis"
+                [xaxis]="chartOptionsTerminated.xaxis" [labels]="chartOptionsTerminated.labels" [stroke]="chartOptionsTerminated.stroke"
+                [title]="chartOptionsTerminated.title" [dataLabels]="chartOptionsTerminated.dataLabels" [fill]="chartOptionsTerminated.fill"
+                [tooltip]="chartOptionsTerminated.tooltip" [noData]="chartOptionsTerminated.noData" [plotOptions]="chartOptionsTerminated.plotOptions"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="flex ">
+          <div class=" flex flex-col w-full overflow-hidden bg-white rounded-lg shadow">
+            <div id="chart" *ngIf="chartOptions" class="w-full  p-5">
+              <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
+                [legend]="chartOptions.legend" [fill]="chartOptions.fill" [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title"
+                [noData]="chartOptions.noData"></apx-chart>
+            </div>
           </div>
         </div>
       </div>

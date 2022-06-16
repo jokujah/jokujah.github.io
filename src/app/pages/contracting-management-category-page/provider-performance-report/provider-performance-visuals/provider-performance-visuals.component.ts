@@ -14,7 +14,8 @@ import {
   ApexFill,
   ApexTooltip,
   ApexNoData,
-  ApexTitleSubtitle
+  ApexTitleSubtitle,
+  ApexMarkers
 } from "ng-apexcharts";
 import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
@@ -33,6 +34,7 @@ export type ChartOptions = {
   legend: ApexLegend;
   title: ApexTitleSubtitle,
   noData:ApexNoData
+  markers: ApexMarkers;
 };
 
 
@@ -53,6 +55,9 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
 
   @ViewChild("chartProcurementType") chartProcurementType: ChartComponent;
   public chartOptionsProcurementType: Partial<ChartOptions>;
+
+  @ViewChild("chartRadar") chartRadar: ChartComponent;
+  public chartOptionsRadar: Partial<ChartOptions>;
 
 
   isLoading:boolean = false 
@@ -418,6 +423,26 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
                 text: 'No Data Available...'
               }
             });
+
+            this.chartRadar.updateOptions({
+              series: [
+                {
+                  name: "Contract Value",
+                  data: value1
+                },
+                {
+                  name: "Ammendments Value",
+                  data: value2
+                },
+              ],
+              xaxis: {
+                categories: labelName
+              }, 
+              noData: {
+                text: 'No Data Available ...'
+              }              
+            })
+
             break;
         }
           this.isLoading = false
@@ -623,6 +648,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         colors: ['transparency','transparency','#546E7A', '#E91E63']
       },
     };
+
     this.chartOptionsProcurementMethodContractValue = {
       series: [],
       chart: {
@@ -682,6 +708,44 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         colors: ['transparency','transparency','#546E7A', '#E91E63']
       },
     };
+
+    this.chartOptionsRadar = {
+      series: [],
+      chart: {
+        height: 350,
+        type: "radar",
+        dropShadow: {
+          enabled: true,
+          blur: 1,
+          left: 1,
+          top: 1
+        }
+      },
+      title: {
+        text: "Radar Chart - Multi Series"
+      },
+      plotOptions:{
+        radar: {
+          size: 100,
+          // offsetX: 0,
+          // offsetY: 0
+        }
+      },
+      stroke: {
+        width: 0
+      },
+      fill: {
+        opacity: 0.4
+      },
+      markers: {
+        size: 0
+      },
+      xaxis: {
+        categories: []
+      }
+    };
+
+
   }
 
 }

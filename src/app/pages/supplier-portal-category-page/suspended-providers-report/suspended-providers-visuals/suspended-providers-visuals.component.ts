@@ -14,7 +14,7 @@ import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCate
 import { ToastrService } from 'ngx-toastr';
 
 export type ChartOptions = {
-  series: ApexAxisChartSeries;
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
   yaxis: ApexYAxis | ApexYAxis[];
@@ -29,6 +29,7 @@ export type ChartOptions = {
   legend:ApexLegend;
   annotations: any; //ApexAnnotations;
   grid: ApexGrid;
+  responsive: ApexResponsive[];
 };
 
 @Component({
@@ -39,7 +40,10 @@ export type ChartOptions = {
 export class SuspendedProvidersVisualsComponent implements OnInit {
 
   @ViewChild("chartSuspendedProviders") chartSuspendedProviders: ChartComponent;
-  public chartOptionsSuspendedProviders: Partial<ChartOptions>;
+  public chartOptionsSuspendedProviders: Partial<ChartOptions>; 
+
+  @ViewChild("chartPercentageSuspended") chartPercentageSuspended: ChartComponent;
+  public chartOptionsPercentageSuspended: Partial<ChartOptions>; 
 
   downloading = false
   isLoading:boolean = false
@@ -86,6 +90,14 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
           this.cardValue2 = data.numberOfSuspendedProviders?parseInt(data.numberOfSuspendedProviders):0  
           this.cardValue3 = 97        
         }
+
+        var suspendedValues = [this.cardValue2 ,this.cardValue1]
+
+        this.chartPercentageSuspended.updateOptions({
+          series: suspendedValues,          
+          //labels: ["Suspended","Not Suspended"],          
+        })
+        
         this.isLoading = false;
       },
       (error) => {
@@ -143,7 +155,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
                 series: [
                   {
                     name: "Days of Suspension Left",
-                    data: [100, 350]
+                    data: [100, 250]
                   }
                 ],
           
@@ -270,11 +282,11 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         height: 350,
       },
       title: {
-        text: "Suspended Suppliers by Period of Suspension",
+        text: "Suspended Suppliers by Period of Suspension Left",
         style: {
-          fontSize: '14px',
+          fontSize: '16px',
           fontWeight: 'bold',
-          color: '#263238'
+          color: '#1286f3'
         },
       },
       annotations: {
@@ -305,12 +317,30 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
       plotOptions: {
         bar: {
           horizontal: true,
-          borderRadius: 2
+          borderRadius: 2,
+          // columnWidth: '10%',
+          barHeight: '35%',
+          dataLabels: {
+            position: 'bottom'
+          }
         }
       },
-      dataLabels: {
-        enabled: false
+    //   dataLabels: {
+    //     position: 'top',
+    //     maxItems: 100,
+    //     hideOverflowingLabels: true,
+    //     orientation: horizontal
+    // }
+    //   dataLabels: {
+    //     enabled: true
+    //   },
+    dataLabels: {
+      enabled: true,
+      style: {
+          colors: ['#333']
       },
+      offsetX: -30
+    },
       xaxis: {
         title:{
           text:'Days of Suspension Left'
@@ -336,6 +366,36 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
       noData: {
         text: 'Loading Data ...'
       }
+    };
+
+    this.chartOptionsPercentageSuspended = {
+      series: [],
+      title: {
+        text: "% of Suppliers by Suspension ",
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          color: '#1286f3'
+        },
+      },
+      chart: {
+        type: "donut",
+        height: 350,
+      },
+      labels: ["Suspended","Not Suspended"],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
     };
   }
 }
