@@ -6,7 +6,7 @@
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="numberOfRegisteredEntities" [duration]="1000">
-            {{numberOfRegisteredEntities}}
+            {{numberOfRegisteredEntities | numberSuffix: 0 }}
           </animated-digit>
         </span>
         <span *ngIf="isLoading">
@@ -18,8 +18,7 @@
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
-            {{numberOfPlannedContracts |
-              numberSuffix:0}}
+            {{ numberOfPlannedContracts | numberSuffix: 0 }}
             </animated-digit>
           </span>
         <span *ngIf="isLoading">
@@ -30,7 +29,7 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats flex flex-row">
-          UGX <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
+          UGX &nbsp;<animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
              {{ totalValueofPlannedContracts | numberSuffix:1 }}
             </animated-digit></span>
         <span *ngIf="isLoading">

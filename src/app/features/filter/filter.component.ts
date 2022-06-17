@@ -112,7 +112,7 @@ export class FilterComponent implements OnInit {
       'selectedPDE': '',
       'selectedFinancialYear': '',
     }
-    
+
     this.options.get('pde')?.setValue('');
     this.options.get('financialYear')?.setValue('');
     this.selectedPDE = ''

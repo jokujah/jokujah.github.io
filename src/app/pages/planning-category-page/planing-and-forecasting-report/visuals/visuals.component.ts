@@ -326,12 +326,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
               },
             });
 
-            this.numberOfPlannedContracts = addArrayValues(x);
+            this.numberOfPlannedContracts = addArrayValues(x).toFixed(0);
             this.totalValueofPlannedContracts =  addArrayValues(y);
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1
-              : data[0].noOfRegisteredPdes;
+              : data[0].noOfRegisteredPdes.toFixed(0);
             this.isLoading = false;
           } else {
             this.numberOfPlannedContracts = 0;
@@ -343,11 +343,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoading = false;
-          this.toastr.error('Something Went Wrong', '', {
-            progressBar: true,
-            positionClass: 'toast-top-right',
-          });
-          this.isLoading = false;
+          console.log('Error ', error);
         }
       );
   }
