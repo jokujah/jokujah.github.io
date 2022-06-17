@@ -35,6 +35,9 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
+  @ViewChild("chartRadialBar") chartRadialBar: ChartComponent;
+  public chartOptionsRadialBar: Partial<ChartOptions> | any;
+
   isLoading:boolean = false 
   topTenHighestContracts: any;
   valueOfContracts: number;
@@ -42,6 +45,9 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   yearOfBids: number;
   numberOfReviewedContracts: number;
   valueOfReviewedContracts: number;
+  methodWithHighestContractUnderReview: any = 0;
+  highestContractUnderReview: any = 0;
+  isEmpty: boolean = false;
 
   constructor(
     private toastr:ToastrService,
@@ -63,12 +69,14 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
+    this.isEmpty = false
     this.numberOfContracts = 0
     this.valueOfContracts = 0
     this.numberOfReviewedContracts = 0
     this.valueOfReviewedContracts = 0
     this.yearOfBids = financialYear
     
+    let percentageUnderReview = 0
 
     console.log(reportName)
 
@@ -76,12 +84,27 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
-        
-        this.numberOfContracts =  data.totalNoOfAwards
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalEstimatedValueOfAwards)
-        this.numberOfReviewedContracts =  data.totalNoUnderReview
-        this.valueOfReviewedContracts =sanitizeCurrencyToString(data.totalAmountUnderReview)
+        if (response.data.length > 0) {
+          this.numberOfContracts = data?.totalNoOfAwards ? data?.totalNoOfAwards : 0
+          this.valueOfContracts = data?.totalEstimatedValueOfAwards ? sanitizeCurrencyToString(data?.totalEstimatedValueOfAwards) : 0
+          this.numberOfReviewedContracts = data?.totalNoUnderReview ? data?.totalNoUnderReview : 0
+          this.valueOfReviewedContracts = data?.totalAmountUnderReview ? sanitizeCurrencyToString(data?.totalAmountUnderReview):0
 
+
+          console.log(data?.totalNoUnderReview)
+          console.log(data?.totalNoOfAwards)
+          console.log(Math.floor(parseInt(data?.totalNoUnderReview)/parseInt(data?.totalNoOfAwards))*100)
+
+          percentageUnderReview = Math.floor((parseInt(data?.totalNoUnderReview)/parseInt(data?.totalNoOfAwards))*100)
+
+          let series = [percentageUnderReview]
+
+          console.log(series)
+
+          this.initRadialBar(series)
+        }else{
+          this.isEmpty=true
+        }
         this.isLoading = false
         },
       (error) => {
@@ -90,6 +113,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
+        this.isEmpty=true
         this.isLoading = false
         console.log(error)
       }
@@ -101,6 +125,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
     this.valueOfContracts = 0
     this.numberOfContracts = 0
     this.yearOfBids = 0
+    this.isEmpty = false
 
     this.chart?.updateOptions({
 
@@ -119,94 +144,90 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{ 
+      (response) => {
         let data = response.data
-        let  x = []
-        let  y = []
+        let x = []
+        let y = []
 
-        let categories=[]
-        let categoryValues=[]
-        let numOfContracts=[]
+        let categories = []
+        let categoryValues = []
+        let numOfContracts = []
 
-        console.log("AWARDED",data)
-        // data.forEach(element => {
-        //   if (element.financial_year == financialYear)
-        //   {
-        //     x.push(element?.number_of_plans)
-        //     var e = element?.estimated_amount.split(',')
-        //     y.push(parseInt(e.join('')))
-        //   }
-        // });
+        console.log("REVIEW", data)
 
-         this.topTenHighestContracts = data.sort(function(a, b) {
-          var nameA = a?.totalAmountUnderReview.split(',') 
-          var nameB = b?.totalAmountUnderReview.split(',') 
-          var valueA = parseInt(nameA.join(''))
-          var valueB = parseInt(nameB.join(''))
-          
-          if (valueA >  valueB) {
-            return -1;
-          }
-          if (valueA < valueB) {
-            return 1;
-          }
-          return 0;
-        })
+        if (data.length > 0) {
 
-        console.log(this.topTenHighestContracts)
-        console.log(x)
-        console.log(y)
+          this.topTenHighestContracts = data.sort(function (a, b) {
+            var nameA = a?.totalAmountUnderReview.split(',')
+            var nameB = b?.totalAmountUnderReview.split(',')
+            var valueA = parseInt(nameA.join(''))
+            var valueB = parseInt(nameB.join(''))
 
-       
-
-
-        this.topTenHighestContracts.forEach(element => {   
-          if(element.procurementMethod == null) return
-          if(element.totalAmountUnderReview == null) return
-          if(element.totalNoUnderReview == null) return
-          var valueC = element?.totalAmountUnderReview.split(',')
-          var valueD = parseInt(valueC.join(''))
-          //var valueE = element.procurementMethod.split(' ')
-          categories.push(element.procurementMethod)
-          categoryValues.push(valueD)
-          numOfContracts.push(parseInt(element?.totalNoUnderReview))
-        });
-
-        console.log(categories)
-
-        this.chart?.updateOptions({
-          series: [
-            {
-              name: "Contract Value",
-              type: "column",
-              data: categoryValues
-            },
-            {
-              name: "Number of Contracts",
-              type: "column",
-              data: numOfContracts
+            if (valueA > valueB) {
+              return -1;
             }
-          ],
+            if (valueA < valueB) {
+              return 1;
+            }
+            return 0;
+          })
 
-          xaxis: {
-            categories: categories,
-            labels: {
-              style: {
-                fontSize: "12px"
+          console.log(this.topTenHighestContracts)
+          console.log(x)
+          console.log(y)
+
+          this.topTenHighestContracts.forEach(element => {
+            if (element.procurementMethod == null) return
+            if (element.totalAmountUnderReview == null) return
+            if (element.totalNoUnderReview == null) return
+            var valueC = element?.totalAmountUnderReview.split(',')
+            var valueD = parseInt(valueC.join(''))
+            //var valueE = element.procurementMethod.split(' ')
+            categories.push(element.procurementMethod)
+            categoryValues.push(valueD)
+            numOfContracts.push(parseInt(element?.totalNoUnderReview))
+          });
+
+          this.methodWithHighestContractUnderReview = categories[0]
+          this.highestContractUnderReview = categoryValues[0]
+
+          console.log(categories)
+
+          this.chart?.updateOptions({
+            series: [
+              {
+                name: "Contract Value",
+                type: "column",
+                data: categoryValues
               },
-            }
-          }
-        })
+              {
+                name: "Number of Contracts",
+                type: "column",
+                data: numOfContracts
+              }
+            ],
 
-          
-          this.isLoading = false
-        },
+            xaxis: {
+              categories: categories,
+              labels: {
+                style: {
+                  fontSize: "12px"
+                },
+              }
+            }
+          })
+        }else{
+          this.isEmpty = true
+        }
+        this.isLoading = false
+      },
       (error) => {
         this.isLoading = false;
         this.toastr.error("Something Went Wrong", '', {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
+        this.isEmpty = true
         this.isLoading = false
         console.log(error)
       }
@@ -305,5 +326,50 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         text: 'Loading Data ...'
       }
     };
+  }
+
+
+  public initRadialBar(series?: any): void {
+    this.chartOptionsRadialBar = {
+      series: series,
+      chart: {
+        fontFamily:'Trebuchet MS',
+      height: 250,
+      type: 'radialBar',
+    },
+    plotOptions: {
+      radialBar: {
+        hollow: {
+          size: '70%',
+        } ,dataLabels: {
+          show: true,
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#888',
+            fontSize: '13px',
+          },
+          value: {
+            color: '#111',
+            fontSize: '30px',
+            show: true,
+          },
+        },
+      },
+    },
+    tooltip: {
+      enabled: true,
+      y: {
+        formatter: function (value) {
+          return `${value}%`;
+        },
+      },
+    },
+    stroke: {
+      lineCap: 'round',
+    },
+     labels: ['Under Admin Review'],
+    };
+
   }
 }
