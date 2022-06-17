@@ -23,6 +23,7 @@ import { MatSelectSearchModule } from './mat-select-search/mat-select-search.mod
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
+import { VisualizationTableComponent } from './visualization-table/visualization-table.component';
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
@@ -34,7 +35,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     NumberSuffixPipe,
     EmptyStateComponent,
     LoaderComponent,
-    AnimatedDigitComponent
+    AnimatedDigitComponent,
+    VisualizationTableComponent
   ],
   imports: [
   CommonModule,

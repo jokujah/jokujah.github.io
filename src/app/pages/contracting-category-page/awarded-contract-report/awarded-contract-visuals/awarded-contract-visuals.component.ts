@@ -32,6 +32,8 @@ export type ChartOptions = {
 })
 export class AwardedContractVisualsComponent implements OnInit {
 
+  @ViewChild("myTable2") myTable2: any;
+
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
@@ -46,17 +48,33 @@ export class AwardedContractVisualsComponent implements OnInit {
   public chartOptionsProcurementType: Partial<ChartOptions>;
 
   isLoading:boolean = false 
-  valueOfContracts;
-  numberOfContracts;
+  
   yearOfBids;
   allEvavluatedBidders;
   topTenHighestContracts 
+
+  awardedContractsByProcurementMethod = []
+  awardedContractsByContractsNumber = []
+
+  awardedContractsByContractType = []
+
+  dir
+
+
+  //KPIs
+  valueOfContracts;
+  numberOfContracts;
+  highestAwardedContractValue;
+  highestNoOfConstracts;
+  averageValueOfContracts;
+  
 
 
   
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
+  isEmpty: boolean;
 
   constructor(
     fb: FormBuilder,
@@ -90,7 +108,7 @@ export class AwardedContractVisualsComponent implements OnInit {
     this.valueOfContracts = 0
     this.numberOfContracts = 0
     this.yearOfBids = financialYear
-    
+    this.isEmpty = false;
 
     console.log(reportName)
 
@@ -99,10 +117,13 @@ export class AwardedContractVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.numberOfContracts = data.numberOfContracts?data.numberOfContracts:0
-        this.valueOfContracts = data.valueOfContracts?sanitizeCurrencyToString(data.valueOfContracts):0
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
+        if (response.data.length > 0) {
+          this.numberOfContracts = data?.numberOfContracts ? data?.numberOfContracts : 0
+          this.valueOfContracts = data?.valueOfContracts ? sanitizeCurrencyToString(data?.valueOfContracts) : 0
+          this.averageValueOfContracts =  Math.floor((this.valueOfContracts/parseInt(this.numberOfContracts))*100)
+        }else{
+          this.isEmpty = true;
+        }
         this.isLoading = false
         },
       (error) => {
@@ -123,24 +144,6 @@ export class AwardedContractVisualsComponent implements OnInit {
     this.numberOfContracts = 0
     this.yearOfBids = 0
 
-    // this.chart?.updateOptions({
-
-    //   series: [],
-
-    //   xaxis: {
-    //     categories:[],
-    //     labels: {
-    //       style: {
-    //         fontSize: "12px"
-    //       },
-    //       formatter: function(val) {
-    //         return NumberSuffix(val,2)}
-    //     }            
-    //   },
-    //   noData: {
-    //     text: 'Loading Data...'
-    //   }
-    // })
 
     this.chartProcurementMethod?.updateOptions({
 
@@ -208,6 +211,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         let categorieValues = []
         let numOfBids = []
         let sortedData = []
+        let sortedByContractNumber = []
 
         switch (reportName) {
           case 'contracts-by-contract-type':           
@@ -227,6 +231,8 @@ export class AwardedContractVisualsComponent implements OnInit {
               }
               return 0;
             })
+
+            this.awardedContractsByContractType = sortedData
             
             sortedData.forEach(element => {
               var valueC = element?.contractValue.split(',')
@@ -244,8 +250,8 @@ export class AwardedContractVisualsComponent implements OnInit {
           case 'contracts-by-procurement-method':           
            
             console.log("contracts-by-procurement-method", data)
-
-            sortedData = data.sort(function (a, b) {
+            sortedData = []
+            sortedData  = data.sort(function (a, b) {
               var nameA = a?.contractValue.split(',')
               var nameB = b?.contractValue.split(',')
               var valueA = parseInt(nameA.join(''))
@@ -259,73 +265,29 @@ export class AwardedContractVisualsComponent implements OnInit {
               }
               return 0;
             })
+
+            // sortedByContractNumber = response.data.sort(function (a, b) {
+            //   var nameA = a?.numberOfContracts.split(',')
+            //   var nameB = b?.numberOfContracts.split(',')
+            //   var valueA = parseInt(nameA.join(''))
+            //   var valueB = parseInt(nameB.join(''))
+
+            //   if (valueA > valueB) {
+            //     return -1;
+            //   }
+            //   if (valueA < valueB) {
+            //     return 1;
+            //   }
+            //   return 0;
+            // })
+
+            this.awardedContractsByProcurementMethod = sortedData
+            this.highestAwardedContractValue = sanitizeCurrencyToString(this.awardedContractsByProcurementMethod[0]?.contractValue)
             
-            sortedData.forEach(element => {
-              var valueC = element?.contractValue.split(',')
-              var valueD = parseInt(valueC.join(''))
-              categories.push(capitalizeFirstLetter(element.procurementMethod))
-              categorieValues.push(valueD)
-            });
+            // this.awardedContractsByContractsNumber = sortedByContractNumber
+            // this.highestNoOfConstracts = sanitizeCurrencyToString(this.awardedContractsByContractsNumber[0]?.numberOfContracts)
 
-            this.chartProcurementMethod?.updateOptions({
-              series: [
-                {
-                  name: "Contract Award Value",
-                  type: "column",
-                  data: categorieValues
-                }
-              ],
-              xaxis: {
-                categories: categories,
-                labels: {
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
-                  }
-                }
-              },
-              noData: {
-                text: 'No Data Available...'
-              }
-            })
-
-            sortedData = []
-
-            sortedData = data.sort(function (a, b) {
-              var nameA = a?.numberOfContracts.split(',')
-              var nameB = b?.numberOfContracts.split(',')
-              var valueA = parseInt(nameA.join(''))
-              var valueB = parseInt(nameB.join(''))
-
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            })
-            categories=[]
-            sortedData.forEach(element => {
-              categories.push(capitalizeFirstLetter(element.procurementMethod))
-              numOfBids.push(parseInt(element?.numberOfContracts))
-            });
-
-
-
-            this.chartProcurementMethodContracts?.updateOptions({
-              series: [
-                {
-                  name: "Number of Contracts",
-                  data: numOfBids
-                }
-              ],
-              xaxis: {
-                categories: categories,               
-              },
-              noData: {
-                text: 'No Data Available...'
-              }
-            })
+           
             break;
           case 'contracts-by-procurement-type':           
            
@@ -462,7 +424,7 @@ export class AwardedContractVisualsComponent implements OnInit {
 
   getFontSize() {
     return Math.max(10, 12);
-  }
+  }  
 
   initCharts(){
     // this.chartOptions = {
@@ -535,7 +497,7 @@ export class AwardedContractVisualsComponent implements OnInit {
     this.chartOptions = {
       series: [],
       title: {
-        text: "% of Awarded Contracts Value by Type ",
+        text: "% of Awarded Contracts Value by Contract Type ",
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
@@ -838,6 +800,67 @@ export class AwardedContractVisualsComponent implements OnInit {
         text: 'Loading Data ...'
       }
     };
+  }
+
+  sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable2");
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = "asc";
+    this.dir="asc"
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+        based on the direction, asc or desc: */
+
+        // console.log(x)
+        // console.log(y)
+
+        if (dir == "asc") {
+          if (sanitizeCurrencyToString(x.innerHTML) > sanitizeCurrencyToString(y.innerHTML)) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (sanitizeCurrencyToString(x.innerHTML) < sanitizeCurrencyToString(y.innerHTML) ) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          this.dir="desc"
+          switching = true;
+        }
+      }
+    }
   }
 
 }

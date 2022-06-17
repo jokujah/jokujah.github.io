@@ -6,12 +6,12 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
-import html2canvas from 'html2canvas';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { ToastrService } from 'ngx-toastr';
+import html2canvas from 'html2canvas';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -63,14 +63,16 @@ export class LateInitiationVisualsComponent implements OnInit {
   chartLateInitiationsTopTen!: ChartComponent;
   chartOptionsLateInitiationsTopTen: Partial<ChartOptionsLateInitiationsTopTen> | any;
 
-
   downloading = false
   isLoading:boolean = false
 
-
   marketPrice ;
-  numberOfRequisitions ;
-  requisitionEstimatedAmount ;
+  numberOfRequisitions;
+  numberOfCancelledRequisitions;
+  requisitionEstimatedAmount;
+  cancelledRequisitionEstimatedAmount;
+
+
   isError: boolean;
   isEmpty: boolean;
 
@@ -82,7 +84,6 @@ export class LateInitiationVisualsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts()
-    
   }
 
   submit(data) {
@@ -91,47 +92,42 @@ export class LateInitiationVisualsComponent implements OnInit {
     this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
   }
-  
-  reset(data){     
+
+  reset(data){
      this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
      this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
      this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
      this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
-      
+
   }
 
 
   getSummaryStats(reportName, financialYear, procuringEntity) {
     this.isLoading = true
-    this.marketPrice = 0
-    this.numberOfRequisitions = 0
-    this.requisitionEstimatedAmount = 0
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
         let data = response.data[0]
-        console.log(data)
 
         if (response.data.length > 0) {
-          this.marketPrice = data.marketPrice?data.marketPrice:0
-          this.numberOfRequisitions = data.numberOfRequisitions?data.numberOfRequisitions:0
-          this.requisitionEstimatedAmount = data.requisitionEstimatedAmount?data.requisitionEstimatedAmount:0
+          this.marketPrice = data.marketPrice ? sanitizeCurrencyToString(data.marketPrice) : 0;
+          this.numberOfRequisitions = data.numberOfRequisitions ? sanitizeCurrencyToString(data.numberOfRequisitions) : 0;
+          this.numberOfCancelledRequisitions = data.numberOfCancelledRequisitions ? sanitizeCurrencyToString(data.numberOfCancelledRequisitions) : 0;
+          this.requisitionEstimatedAmount = data.requisitionEstimatedAmount ?sanitizeCurrencyToString(data.requisitionEstimatedAmount) : 0;
+          this.cancelledRequisitionEstimatedAmount = data.cancelledRequisitionEstimatedAmount ? sanitizeCurrencyToString(data.cancelledRequisitionEstimatedAmount) : 0;
         }
+
         this.isLoading = false;
       },
       (error) => {
-        console.log(error)
         this.isLoading = false;
-        this.toastr.info("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        console.error('Error ', error);
       }
     )
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true   
+    this.isLoading=true
 
     this.chartLateInitiationsTopTen?.updateOptions({
       series: [],
@@ -147,12 +143,12 @@ export class LateInitiationVisualsComponent implements OnInit {
           },
           formatter: function(val) {
             return NumberSuffix(val,2)}
-        }            
+        }
       },
       noData: {
              text: 'Loading Data ...'
-        } 
-    })    
+        }
+    })
 
     this.chartLateInitiationsMethod?.updateOptions({
 
@@ -166,11 +162,11 @@ export class LateInitiationVisualsComponent implements OnInit {
           },
           formatter: function(val) {
             return NumberSuffix(val,2)}
-        }            
+        }
       },
       noData: {
         text: 'Loading Data ...'
-      } 
+      }
     })
 
     this.chartLateInitiationsType?.updateOptions({
@@ -183,21 +179,18 @@ export class LateInitiationVisualsComponent implements OnInit {
           },
           formatter: function(val) {
             return NumberSuffix(val,2)}
-        }            
+        }
       },
       noData: {
         text: 'Loading Data ...'
-      } 
+      }
     })
-
-    console.log(`Visualistion ${reportName} + ${financialYear} + ${procuringEntity}`,)
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
           switch (reportName) {
             case'late-initiations-by-type':
-              console.log(`Report Name ${reportName} , Data ${data}`)
               this.chartLateInitiationsType?.updateOptions({
                 series: [],
                 xaxis: {
@@ -208,19 +201,18 @@ export class LateInitiationVisualsComponent implements OnInit {
                     },
                     formatter: function(val) {
                       return NumberSuffix(val,2)}
-                  }            
+                  }
                 },
                 noData: {
                   text: 'No Data Available...'
-                } 
+                }
               })
             break;
             case'late-initiations-by-method':
-              console.log(`Report Name ${reportName} , Data ${data}`)
               this.chartLateInitiationsMethod?.updateOptions({
 
                 series: [],
-          
+
                 xaxis: {
                   categories:[],
                   labels: {
@@ -229,17 +221,16 @@ export class LateInitiationVisualsComponent implements OnInit {
                     },
                     formatter: function(val) {
                       return NumberSuffix(val,2)}
-                  }            
+                  }
                 },
                 noData: {
                   text: 'No Data Available...'
-                } 
+                }
               })
             break;
             case'top-late-initiations':
-              console.log(`Report Name ${reportName} `,data)
               this.chartLateInitiationsMethod?.updateOptions({
-                series: [],          
+                series: [],
                 xaxis: {
                   categories:[],
                   labels: {
@@ -248,11 +239,11 @@ export class LateInitiationVisualsComponent implements OnInit {
                     },
                     formatter: function(val) {
                       return NumberSuffix(val,2)}
-                  }            
+                  }
                 },
                 noData: {
                   text: 'No Data Available...'
-                } 
+                }
               })
             break;
           }
@@ -260,12 +251,8 @@ export class LateInitiationVisualsComponent implements OnInit {
         this.isLoading = false
         },
       (error) => {
-        console.log(error)
-        this.isLoading = false;        
-        this.toastr.info("Error retrieving data", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        this.isLoading = false;
+        console.error('Error ', error)
         this.chartLateInitiationsTopTen?.updateOptions({
           series: [],
           xaxis: {
@@ -280,17 +267,17 @@ export class LateInitiationVisualsComponent implements OnInit {
               },
               formatter: function(val) {
                 return NumberSuffix(val,2)}
-            }            
+            }
           },
           noData: {
                  text: 'Error Loading Data ...'
-            } 
-        })    
-    
+            }
+        })
+
         this.chartLateInitiationsMethod?.updateOptions({
-    
+
           series: [],
-    
+
           xaxis: {
             categories:[],
             labels: {
@@ -299,13 +286,13 @@ export class LateInitiationVisualsComponent implements OnInit {
               },
               formatter: function(val) {
                 return NumberSuffix(val,2)}
-            }            
+            }
           },
           noData: {
             text: 'Error Loading Data ...'
-          } 
+          }
         })
-    
+
         this.chartLateInitiationsType?.updateOptions({
           series: [],
           xaxis: {
@@ -316,18 +303,18 @@ export class LateInitiationVisualsComponent implements OnInit {
               },
               formatter: function(val) {
                 return NumberSuffix(val,2)}
-            }            
+            }
           },
           noData: {
             text: 'Error Loading Data ...'
-          } 
+          }
         })
         this.isError = true
         this.isLoading = false
       }
     )
 
-  } 
+  }
 
   getFontSize() {
     return Math.max(10, 12);
@@ -381,7 +368,7 @@ export class LateInitiationVisualsComponent implements OnInit {
             text: "Procurement Method"
           },
           labels: {
-            style: {             
+            style: {
               fontSize: "12px"
             },
             formatter: function (val) {
@@ -478,7 +465,7 @@ export class LateInitiationVisualsComponent implements OnInit {
       noData: {
         text: 'Loading Data'
       }
-    };   
+    };
 
     this.chartOptionsLateInitiationsTopTen = {
       series: [
@@ -546,7 +533,7 @@ export class LateInitiationVisualsComponent implements OnInit {
           },
           formatter: function(val) {
             return NumberSuffix(val,2)}
-        }            
+        }
       },
       title: {
         text: "Top 10 Highest Late Initiations By Value"
