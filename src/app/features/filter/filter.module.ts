@@ -32,9 +32,6 @@ import { SharedModule } from './../../shared/shared.module';
   ],
   exports:[
     FilterComponent
-  ],
-  providers: [
-    {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {autoActiveFirstOption: true}}
   ]
 })
 export class FilterModule { }
