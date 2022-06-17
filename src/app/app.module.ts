@@ -65,7 +65,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
     ToastrModule.forRoot(),
     ReportPageModule,
     LoginPageModule,
-    
+
 
   ],
   providers: [
@@ -76,7 +76,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
     },
     {
       provide: LocationStrategy,
-      useClass: PathLocationStrategy,      
+      useClass: PathLocationStrategy,
     },
     {provide: SAVER, useFactory: getSaver}
   ],

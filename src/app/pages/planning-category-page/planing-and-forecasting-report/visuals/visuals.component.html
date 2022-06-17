@@ -5,8 +5,8 @@
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
-          <animated-digit [digit]="numberOfRegisteredEntities" [duration]="1000">
-            {{numberOfRegisteredEntities}}
+          <animated-digit [digit]="numberOfRegisteredEntities"  [duration]="1000">
+            {{numberOfRegisteredEntities | numberSuffix: 0 }}
           </animated-digit>
         </span>
         <span *ngIf="isLoading">
@@ -18,8 +18,7 @@
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
-            {{numberOfPlannedContracts |
-              numberSuffix:0}}
+            {{ numberOfPlannedContracts | numberSuffix: 0 }}
             </animated-digit>
           </span>
         <span *ngIf="isLoading">
@@ -30,7 +29,7 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats flex flex-row">
-          UGX <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
+          UGX &nbsp;<animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
              {{ totalValueofPlannedContracts | numberSuffix:1 }}
             </animated-digit></span>
         <span *ngIf="isLoading">
@@ -58,7 +57,7 @@
           [noData]="chartOptionsFinancialYearBudget.noData"></apx-chart>
         <div *ngIf="isLoading">Loading...</div>
       </div>
-  
+
       <!-- Bar -->
       <div class="px-4 py-5 sm:p-6">
         <div *ngIf="chartOptionsPlannedVsSpent?.series && !isLoading">
@@ -72,7 +71,7 @@
         </div>
       </div>
     </div>
-  
+
     <div
       class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
       <!-- Plans by Type -->
@@ -92,7 +91,7 @@
         <div *ngIf="isLoading">Loading...</div>
       </div>
     </div>
-  
+
     <!-- Row 1 -->
     <div class="mt-4 mb-4">
       <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4 ">
@@ -108,27 +107,23 @@
           <div class="md:w-1/4 flex flex-row sm:place-content-between sm:space-x-8 md:space-x-0  md:grid md:grid-cols-1 md:content-between ">
             <div *ngIf="!isLoading" class="flex flex-col items-center overflow-hidden p-5 bg-white rounded-lg shadow">
               <span
-                class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Budget Amount
+                class="text-sm  md:text-base font-bold text-gray-700 text-center flex mb-8">Highest Budget Amount
                 Planned</span>
               <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX
                 {{highestContractValue
                 | numberSuffix}}</span>
               <span
                 class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{entityWithHighestProcurement}}</span>
-              
+
             </div>
             <div *ngIf="!isLoading" class="flex flex-col items-center overflow-hidden p-5 bg-white rounded-lg shadow">
               <span
-                class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Budget V Planned</span>
+                class="text-sm  md:text-base font-bold text-gray-700 text-center flex mb-8">Highest Budget V Planned</span>
               <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{highestPercentage |
                 numberSuffix}}%</span>
               <span
                 class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{entityWithHighestProcurement}}</span>
             </div>
-            <!-- <div class="flex flex-col items-center">
-              <span class="text-2xl md:text-5xl font-normal flex">90%</span>
-              <span class="text-sm  md:text-xl font-light flex">Ministry Of Finance</span>
-            </div> -->
           </div>
         </div>
       </div>

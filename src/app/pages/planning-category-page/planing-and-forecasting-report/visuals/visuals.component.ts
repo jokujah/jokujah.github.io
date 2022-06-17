@@ -116,8 +116,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
   public chartOptionsFinancialYearBudget: Partial<ChartOptions> | any;
   public chartOptionsPlannedVsSpent: Partial<ChartOptions> | any;
 
+  numbersuffixVal = '1';
 
-  
   isLoading: boolean = false;
   registeredProviders;
 
@@ -136,7 +136,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService
   ) {
-   
+
     (window as any).Apex = {
       theme: {
         palette: 'palette4',
@@ -144,7 +144,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
     };
   }
-  
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -267,7 +267,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let x = [];
           let y = [];
           let providersInSelectedYear = [];
-
           var e = data.length > 0;
           if (data.length > 0) {
             data.forEach((element) => {
@@ -304,7 +303,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
               categoryValues.push(valueD);
             });
 
-           
+
             this.chartEducationStatus?.updateOptions({
               series: [
                 {
@@ -325,9 +324,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 },
               },
             });
-
+            
             this.numberOfPlannedContracts = addArrayValues(x);
-            this.totalValueofPlannedContracts =  addArrayValues(y);              
+            this.totalValueofPlannedContracts =  addArrayValues(y);
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1
@@ -343,11 +342,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoading = false;
-          this.toastr.error('Something Went Wrong', '', {
-            progressBar: true,
-            positionClass: 'toast-top-right',
-          });
-          this.isLoading = false;
+          console.log('Error ', error);
         }
       );
   }
@@ -381,6 +376,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           var sortedData = [];
 
           console.log(data)
+          console.log(procuringEntity)
 
           //labelName.push(procuringEntity == ""?"All":procuringEntity)
           if (data.length > 0) {
@@ -461,7 +457,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
               this.highestContractValue = spentAmount[0]
               this.highestPercentage = pdePercentage[0]
               this.entityWithHighestProcurement = labelName[0]
-  
+
 
               console.log("pdePercentage",pdePercentage)
 
@@ -574,7 +570,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                     fontFamily: 'Trebuchet MS',
                   },
                 },
-               
+
               });
             } else {
               data.forEach((element) => {
@@ -985,91 +981,15 @@ export class VisualsComponent implements OnInit, OnDestroy {
   }
 
   initCharts() {
-    this.chartOptionsEducationStatus = {
-      series: [
-        {
-          name: 'Planned Contract Value',
-          data: [],
-          fontSize: '12px',
-        },
-      ],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 'auto',
-        type: 'bar',
-        events: {
-          click: function (chart, w, e) {
-            // console.log(chart, w, e)
-          },
-        },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 2000,
-          animateGradually: {
-            enabled: true,
-            delay: 150,
-          },
-          dynamicAnimation: {
-            enabled: true,
-            speed: 450,
-          },
-        },
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: '35%',
-          distributed: false,
-          horizontal: true,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-        formatter: function (val) {
-          return val + '%';
-        },
-        textAnchor: 'end',
-      },
-      legend: {
-        show: false,
-      },
-      grid: {
-        show: true,
-      },
-      xaxis: {
-        categories: [],
-        title: {
-          text: 'Value of Plans',
-        },
-        labels: {
-          style: {
-            fontSize: '12px',
-          },
-          formatter: function (val) {
-            return NumberSuffix(val, 2);
-          },
-        },
-      },
-      title: {
-        text: 'Top 10 Highest PDE Plans By Value',
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return 'UGX ' + NumberSuffix(val, 2);
-          },
-        },
-      },
-      yaxis: {
-        title: {
-          text: 'Procuring and Disposal Entities',
-        },
-      },
-      noData: {
-        text: 'No Data Available ...',
-      },
-    };
+    // Initialize Chart
+    this.initChartBudgetStatus();
+    this.initChartProcurementType();
+    this.initDonutChart();
+    this.initRadarChartMethod();
+    this.initSemiCircleGaugeChartBudgetStatus();
+  }
 
+  public initChartBudgetStatus() {
     this.chartOptionsBudgetStatus = {
       series: [],
       chart: {
@@ -1124,9 +1044,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
       },
       labels: [],
     };
+  }
 
-    
-
+  public initChartProcurementType() {
     this.chartOptionsProcurementTypes = {
       series: [],
       chart: {
@@ -1194,11 +1114,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
         text: 'Loading Data ...',
       },
     };
-
-    // Initialize Chart
-    this.initDonutChart();
-    this.initRadarChartMethod();
-    this.initSemiCircleGaugeChartBudgetStatus();
   }
 
   public initDonutChart(marketPrice?: Array<any>, types?: Array<any>): void {
@@ -1845,7 +1760,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
       // }
     };
   }
-
 
   public progressGraphOptions(
     series?:any,
