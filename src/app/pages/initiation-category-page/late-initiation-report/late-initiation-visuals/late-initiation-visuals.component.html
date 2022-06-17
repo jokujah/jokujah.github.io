@@ -4,8 +4,11 @@
     <div>
       <div class="mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{ numberOfRequisitions |
-            numberSuffix: 1 }}</span>
+          <span *ngIf="!isLoading" class="stats">
+            <animated-digit [digit]="numberOfRequisitions"  [duration]="1000">
+              {{ numberOfRequisitions | numberSuffix: 1 }}
+            </animated-digit>
+          </span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
@@ -13,7 +16,11 @@
         </div>
 
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{ requisitionEstimatedAmount | numberSuffix:2}}</span>
+          <span *ngIf="!isLoading" class="stats">
+            <animated-digit [digit]="requisitionEstimatedAmount"  [duration]="1000">
+              UGX {{ requisitionEstimatedAmount | numberSuffix: 2}}
+            </animated-digit>
+          </span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
@@ -22,7 +29,9 @@
 
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats">
-            {{ numberOfCancelledRequisitions | numberSuffix: 1 }}
+            <animated-digit [digit]="numberOfCancelledRequisitions"  [duration]="1000">
+              {{ numberOfCancelledRequisitions | numberSuffix: 1 }}
+            </animated-digit>
           </span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
@@ -32,7 +41,9 @@
 
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats">
-            UGX {{cancelledRequisitionEstimatedAmount | numberSuffix: 2}}
+            <animated-digit [digit]="cancelledRequisitionEstimatedAmount"  [duration]="1000">
+              UGX {{cancelledRequisitionEstimatedAmount | numberSuffix: 2}}
+            </animated-digit>
           </span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
