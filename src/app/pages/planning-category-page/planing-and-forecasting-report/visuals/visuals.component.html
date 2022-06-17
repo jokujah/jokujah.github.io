@@ -5,7 +5,7 @@
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
-          <animated-digit [digit]="numberOfRegisteredEntities" [duration]="1000">
+          <animated-digit [digit]="numberOfRegisteredEntities"  [duration]="1000">
             {{numberOfRegisteredEntities | numberSuffix: 0 }}
           </animated-digit>
         </span>

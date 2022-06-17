@@ -152,6 +152,7 @@ export class DashboardComponent implements OnInit {
     fb: FormBuilder
   ) {
 
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         // Show progress spinner or progress bar
@@ -187,6 +188,10 @@ export class DashboardComponent implements OnInit {
 
     this.email = localStorage.getItem('email');
     this.role = localStorage.getItem('role');
+    let user:any = JSON.parse(localStorage.getItem('user'))
+    console.log(user)
+
+    this.entityName = (user?.entities[0]?.name)?(user?.entities[0]?.name):''
 
     
     this._autoLogOutService.check()

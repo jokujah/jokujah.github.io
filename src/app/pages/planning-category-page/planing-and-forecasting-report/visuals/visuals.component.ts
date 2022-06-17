@@ -116,7 +116,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   public chartOptionsFinancialYearBudget: Partial<ChartOptions> | any;
   public chartOptionsPlannedVsSpent: Partial<ChartOptions> | any;
 
-
+  numbersuffixVal = '1';
 
   isLoading: boolean = false;
   registeredProviders;
@@ -267,7 +267,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let x = [];
           let y = [];
           let providersInSelectedYear = [];
-
           var e = data.length > 0;
           if (data.length > 0) {
             data.forEach((element) => {
@@ -325,13 +324,13 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 },
               },
             });
-
-            this.numberOfPlannedContracts = addArrayValues(x).toFixed(0);
+            
+            this.numberOfPlannedContracts = addArrayValues(x);
             this.totalValueofPlannedContracts =  addArrayValues(y);
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1
-              : data[0].noOfRegisteredPdes.toFixed(0);
+              : data[0].noOfRegisteredPdes;
             this.isLoading = false;
           } else {
             this.numberOfPlannedContracts = 0;
@@ -377,6 +376,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           var sortedData = [];
 
           console.log(data)
+          console.log(procuringEntity)
 
           //labelName.push(procuringEntity == ""?"All":procuringEntity)
           if (data.length > 0) {

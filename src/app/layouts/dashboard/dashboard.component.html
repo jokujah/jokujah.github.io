@@ -335,9 +335,9 @@
               </nav>
             </div>
             <div class="flex flex-row col-span-1 justify-end space-x-4">
-              <!-- <div class="flex text-xs space-x-2 items-center">
-                PDE: <span class="text-gray-700">{{entityName}}</span>
-              </div> -->
+              <div *ngIf="entityName" class="flex text-sm space-x-2 items-center">
+                <span class="text-gray-700 font-semibold">{{entityName}}</span>
+              </div>
               <div class="flex " >
                 <mat-icon class="screen cursor-pointer text-gray-700" matTooltip="Enter Full Screen Mode" *ngIf="!isFullScreen" (click)="openFullscreen()">fullscreen</mat-icon>
                 <mat-icon class="screen cursor-pointer text-gray-700" *ngIf="isFullScreen" matTooltip="Exit Full Screen Mode" (click)="closeFullscreen()">fullscreen_exit</mat-icon>
