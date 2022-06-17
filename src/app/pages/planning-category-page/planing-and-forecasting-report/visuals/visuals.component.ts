@@ -111,13 +111,16 @@ export class VisualsComponent implements OnInit, OnDestroy {
   highestContractValue = 0;
   highestPercentage = 0;
   entityWithHighestProcurement = 'N/A';
-  selectedFinancialYear
+  selectedFinancialYear;
+
+  isLoadingBudgetSummary: boolean = false;
+  isLoadingTypeSummary: boolean = false;
+  isLoadingMethodSummary: boolean = false;
 
   constructor(
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService
   ) {
-
     (window as any).Apex = {
       theme: {
         palette: 'palette4',
@@ -135,7 +138,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   }
 
   submit(data) {
-    this.selectedFinancialYear = data?.selectedFinancialYear
+    this.selectedFinancialYear = data?.selectedFinancialYear;
     this.getSummaryStatsWithPDE(
       'plan-summary',
       data?.selectedFinancialYear,
@@ -169,11 +172,10 @@ export class VisualsComponent implements OnInit, OnDestroy {
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
-
   }
 
   reset(data) {
-    this.selectedFinancialYear = data?.selectedFinancialYear
+    this.selectedFinancialYear = data?.selectedFinancialYear;
 
     this.getSummaryStatsWithPDE(
       'plan-summary',
@@ -262,7 +264,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
             });
 
             this.numberOfPlannedContracts = addArrayValues(x);
-            this.totalValueofPlannedContracts =  addArrayValues(y);
+            this.totalValueofPlannedContracts = addArrayValues(y);
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1
@@ -283,7 +285,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       );
   }
 
-    getSummaryStatsBudget(reportName, financialYear, procuringEntity) {
+  getSummaryStatsBudget(reportName, financialYear, procuringEntity) {
     this.isLoading = true;
 
     this.chartBudgetStatus?.updateOptions({
@@ -305,7 +307,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let seriesObject = [];
           let budgetSpentPercentage = [];
           let labelName = [];
-          let spentAmount=[]
+          let spentAmount = [];
           let pdePercentage = [];
           let sortedData = [];
 
@@ -367,12 +369,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
               sortedData.forEach((element) => {
                 labelName.push(element.x);
                 pdePercentage.push(element.y);
-                spentAmount.push(element.budgetSpent)
+                spentAmount.push(element.budgetSpent);
               });
 
-              this.highestContractValue = spentAmount[0]
-              this.highestPercentage = pdePercentage[0]
-              this.entityWithHighestProcurement = labelName[0]
+              this.highestContractValue = spentAmount[0];
+              this.highestPercentage = pdePercentage[0];
+              this.entityWithHighestProcurement = labelName[0];
 
               this.chartBudgetStatus?.updateOptions({
                 series: [
@@ -419,7 +421,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                   show: true,
                   width: 2,
                   // colors: ["transparent"]
-                  curve: "straight"
+                  curve: 'straight',
                 },
                 dataLabels: {
                   enabled: true,
@@ -429,7 +431,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                     fontSize: '12px',
                   },
                   formatter: function (val) {
-                    return NumberSuffix(val, 0)+'%';
+                    return NumberSuffix(val, 0) + '%';
                   },
                   hideOverflowingLabels: true,
                 },
@@ -483,7 +485,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
                     fontFamily: 'Trebuchet MS',
                   },
                 },
-
               });
             } else {
               data.forEach((element) => {
@@ -517,10 +518,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
               });
               labelName.push(procuringEntity);
 
-
-              this.highestContractValue =  seriesData[0]
-              this.highestPercentage = budgetSpentPercentage[0]
-              this.entityWithHighestProcurement = labelName[0]
+              this.highestContractValue = seriesData[0];
+              this.highestPercentage = budgetSpentPercentage[0];
+              this.entityWithHighestProcurement = labelName[0];
 
               this.chartBudgetStatus?.updateOptions({
                 series: budgetSpentPercentage,
@@ -681,7 +681,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   }
 
   getSummaryStatsProcurementType(reportName, financialYear, procuringEntity) {
-    this.isLoading = true;
+    this.isLoadingTypeSummary = true;
 
     this.chartProcurementTypes?.updateOptions({
       series: [],
@@ -706,6 +706,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (response) => {
+          this.isLoadingTypeSummary = false;
+
           let data = response.data;
           let x = [];
           let y = [];
@@ -762,11 +764,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
           });
 
           this.initDonutChart(categoryValues, categories);
-
-          this.isLoading = false;
         },
         (error) => {
-          this.isLoading = false;
+          this.isLoadingTypeSummary = false;
         }
       );
   }
@@ -776,12 +776,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
     financialYear,
     procuringEntity
   ) {
-    this.isLoading = true;
+    this.isLoadingMethodSummary = true;
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
-          this.isLoading = false;
+          this.isLoadingMethodSummary = false;
           let procurementsByMethod = res.data;
 
           const planAmounts = [];
@@ -792,8 +792,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
               const amount = parseInt(method?.marketPrice.split(',').join(''));
               planAmounts.push((amount / 1000000000000).toFixed(2));
               planMethods.push({
-                'x': method?.procurementMethod,
-                'y': amount
+                x: method?.procurementMethod,
+                y: amount,
               });
             }
           });
@@ -801,10 +801,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
           if (planAmounts && planMethods) {
             this.initTreeMapChartMethod(planAmounts, planMethods);
           }
-
         },
         (error) => {
-          this.isLoading = false;
+          this.isLoadingMethodSummary = false;
         }
       );
   }
@@ -826,8 +825,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
             );
             fundingSources.push(item?.fundingSource);
           });
-
-
         },
         (error) => {
           this.isLoading = false;
@@ -840,12 +837,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
     financialYear,
     procuringEntity
   ) {
-    this.isLoading = true;
+    this.isLoadingBudgetSummary = true;
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
-          this.isLoading = false;
+          this.isLoadingBudgetSummary = false;
           let planBudgetStatus = res.data;
 
           const financialYears = [];
@@ -865,15 +862,17 @@ export class VisualsComponent implements OnInit, OnDestroy {
             );
           });
 
-          calculatedPercentage = (spentAmounts.reduce((a, b) => a + b, 0) /
-          plannedAmounts.reduce((a, b) => a + b, 0)) * 100;
+          calculatedPercentage =
+            (spentAmounts.reduce((a, b) => a + b, 0) /
+              plannedAmounts.reduce((a, b) => a + b, 0)) *
+            100;
 
           percentage.push(parseFloat(calculatedPercentage.toFixed(2)));
 
           if (plannedAmounts && spentAmounts) {
-             (!isNaN(percentage[0])) ?
-             this.initSemiCircleGaugeChartBudgetStatus(percentage) :
-             this.initSemiCircleGaugeChartBudgetStatus([0]);
+            !isNaN(percentage[0])
+              ? this.initSemiCircleGaugeChartBudgetStatus(percentage)
+              : this.initSemiCircleGaugeChartBudgetStatus([0]);
 
             this.initStackedBarGraphBudgetPlannedVsSpent(
               plannedAmounts,
@@ -883,7 +882,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.isLoading = false;
+          this.isLoadingBudgetSummary = false;
         }
       );
   }
@@ -1196,18 +1195,21 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         style: {
           fontSize: '12px',
-          fontFamily: 'Trebuchet MS'
-        }
-      }
+          fontFamily: 'Trebuchet MS',
+        },
+      },
     };
   }
 
-  public initTreeMapChartMethod(planAmounts?: Array<any>, methods?: Array<string>) {
+  public initTreeMapChartMethod(
+    planAmounts?: Array<any>,
+    methods?: Array<string>
+  ) {
     this.chartOptionsMethod = {
       series: [
         {
-          data: methods
-        }
+          data: methods,
+        },
       ],
       tooltip: {
         style: {
@@ -1329,9 +1331,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         style: {
           fontSize: '12px',
-          fontFamily: 'Trebuchet MS'
-        }
-      }
+          fontFamily: 'Trebuchet MS',
+        },
+      },
     };
   }
 
@@ -1345,7 +1347,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         height: 380,
         toolbar: {
           show: true,
-          offsetY: 20
+          offsetY: 20,
         },
       },
       plotOptions: {
@@ -1477,9 +1479,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         style: {
           fontSize: '12px',
-          fontFamily: 'Trebuchet MS'
-        }
-      }
+          fontFamily: 'Trebuchet MS',
+        },
+      },
     };
   }
 
@@ -1532,7 +1534,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         // stackType: "100%",
         toolbar: {
           show: true,
-          offsetY: 20
+          offsetY: 20,
         },
         zoom: {
           enabled: false,
@@ -1551,23 +1553,23 @@ export class VisualsComponent implements OnInit, OnDestroy {
         show: true,
         labels: {
           show: true,
-          formatter: (val: any) => `${val/1000000000000} T`,
+          formatter: (val: any) => `${val / 1000000000000} T`,
         },
         title: {
-          text: 'Budget Values (UGX)'
-        }
+          text: 'Budget Values (UGX)',
+        },
       },
       dataLabels: {
         enabled: true,
         // textAnchor: 'start',
         style: {
-          colors: ['#fff']
+          colors: ['#fff'],
         },
-        formatter: (val, opt) => `${((val / 1000000000000)).toFixed(2)} T`,
+        formatter: (val, opt) => `${(val / 1000000000000).toFixed(2)} T`,
         offsetX: 0,
         dropShadow: {
-          enabled: false
-        }
+          enabled: false,
+        },
       },
       legend: {
         position: 'bottom',
@@ -1659,9 +1661,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         style: {
           fontSize: '12px',
-          fontFamily: 'Trebuchet MS'
-        }
-      }
+          fontFamily: 'Trebuchet MS',
+        },
+      },
       // fill: {
       //   opacity: 1
       // }
@@ -1669,48 +1671,50 @@ export class VisualsComponent implements OnInit, OnDestroy {
   }
 
   public progressGraphOptions(
-    series?:any,
+    series?: any,
     title?: any,
     subtitle?: any,
-    xaxis?:any
-  ){
+    xaxis?: any
+  ) {
     let optionsProgress3 = {
       chart: {
         height: 70,
         type: 'bar',
         stacked: true,
         sparkline: {
-          enabled: true
-        }
+          enabled: true,
+        },
       },
       plotOptions: {
         bar: {
           horizontal: true,
           barHeight: '20%',
           colors: {
-            backgroundBarColors: ['#40475D']
-          }
+            backgroundBarColors: ['#40475D'],
+          },
         },
       },
       colors: ['#f02fc2'],
       stroke: {
         width: 0,
       },
-      series: [{
-        name: 'Process 3',
-        data: [74]
-      }],
+      series: [
+        {
+          name: 'Process 3',
+          data: [74],
+        },
+      ],
       fill: {
         type: 'gradient',
         gradient: {
-          gradientToColors: ['#6094ea']
-        }
+          gradientToColors: ['#6094ea'],
+        },
       },
       title: {
         floating: true,
         offsetX: -10,
         offsetY: 5,
-        text: 'Process 3'
+        text: 'Process 3',
       },
       subtitle: {
         floating: true,
@@ -1718,19 +1722,18 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         text: '74%',
         style: {
-          fontSize: '20px'
-        }
+          fontSize: '20px',
+        },
       },
       tooltip: {
-        enabled: false
+        enabled: false,
       },
       xaxis: {
         categories: ['Process 3'],
       },
       yaxis: {
-        max: 100
+        max: 100,
       },
-    }
+    };
   }
-
 }
