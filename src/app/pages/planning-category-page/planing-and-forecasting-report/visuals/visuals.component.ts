@@ -170,34 +170,29 @@ export class VisualsComponent implements OnInit, OnDestroy {
       data?.selectedPDE
     );
 
-    //this.getSummaryStatsWithPDE('plan-by-funding-source',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data) {
     this.selectedFinancialYear = data?.selectedFinancialYear
-    //for changing stats at the top and the highest procurement budgets graph
+
     this.getSummaryStatsWithPDE(
       'plan-summary',
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
 
-    //for budget graph
     this.getSummaryStatsBudget(
       'plan-budget-status',
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
 
-    //procurement graph
     this.getSummaryStatsProcurementType(
       'plan-by-procurement-type',
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
 
-    //procurement by method graph
     this.getSummaryStatsByProcurementMethod(
       'plan-by-procurement-method',
       data?.selectedFinancialYear,
@@ -235,12 +230,10 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let e = data.length > 0;
           if (data.length > 0) {
             data.forEach((element) => {
-              //if (element.financialYear == financialYear) {
               x.push(parseInt(element?.noOfPlanItems));
               let e = element?.estimatedAmount.split(',');
               y.push(parseInt(e.join('')));
               providersInSelectedYear.push(element?.pdeName);
-              // }
             });
 
             this.topTenHighestContracts = data.sort(function (a, b) {
@@ -313,23 +306,11 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let budgetSpentPercentage = [];
           let labelName = [];
           let spentAmount=[]
-
           let pdePercentage = [];
-
           let sortedData = [];
 
-          console.log(data)
-          console.log(procuringEntity)
-
-          //labelName.push(procuringEntity == ""?"All":procuringEntity)
           if (data.length > 0) {
             if (procuringEntity == '') {
-              // let totalplanned = data[0]?.totalBudgetPlannedAmount.split(',')
-              // let totalSpent = data[0]?.totalSpentAmount.split(',')
-
-              // let percentage = parseInt(totalSpent.join('')) / parseInt(totalplanned.join('')) * 100
-              // budgetSpentPercentage.push(Math.round(percentage))
-
               this.chartBudgetStatus?.updateOptions({
                 series: [],
                 labels: [],
@@ -371,15 +352,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 budgetSpentPercentage.push(Math.round(percentage));
                 seriesData.push(oneSerieData);
                 seriesObject.push(oneSerieObject);
-                //labelName.push(element?.pdeName)
               });
 
               sortedData = seriesObject.sort(function (a, b) {
-                // let nameA = a?.estimatedAmount.split(',')
-                // let nameB = b?.estimatedAmount.split(',')
-                // let valueA = parseInt(nameA.join(''))
-                // let valueB = parseInt(nameB.join(''))
-
                 if (a.y > b.y) {
                   return -1;
                 }
@@ -388,8 +363,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 }
                 return 0;
               });
-
-              console.log("SORTED DATA",sortedData)
 
               sortedData.forEach((element) => {
                 labelName.push(element.x);
@@ -400,9 +373,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
               this.highestContractValue = spentAmount[0]
               this.highestPercentage = pdePercentage[0]
               this.entityWithHighestProcurement = labelName[0]
-
-
-              console.log("pdePercentage",pdePercentage)
 
               this.chartBudgetStatus?.updateOptions({
                 series: [
@@ -520,11 +490,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 x.push(element?.noOfPlanItems);
 
                 let planned = element?.budgetPlannedAmount.split(',');
-
                 let totalplanned = element?.totalBudgetPlannedAmount.split(',');
 
                 let spent = element?.spentAmount.split(',');
-
                 let percentage =
                   (parseInt(spent.join('')) / parseInt(planned.join(''))) * 100;
 
@@ -541,8 +509,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
                 let oneSerieObject = {
                   x: element?.pdeName,
-                  // "budgetSpent":spent,
-                  // "planned":planned,
                   y: Math.round(percentage),
                 };
                 budgetSpentPercentage.push(Math.round(percentage));
@@ -927,12 +893,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   }
 
   initCharts() {
-    // Initialize Chart
     this.initChartBudgetStatus();
-    // this.initChartProcurementType();
-    // this.initDonutChart();
-    // this.initTreeMapChartMethod();
-    // this.initSemiCircleGaugeChartBudgetStatus();
   }
 
   public initChartBudgetStatus() {
