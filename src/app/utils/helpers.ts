@@ -81,17 +81,11 @@ export function addArrayValues(data) {
 //   }
 
 
-  export function NumberSuffix(input,args)  {
+  export function NumberSuffix(input, args)  {
 
     let exp;
     const suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
     const isNagtiveValues = input < 0;
-
-    // console.log(`Number.isNaN(input)`,Number.isNaN(input))
-    // console.log(`(input < 1000 && input >= 0)`,(input < 1000 && input >= 0))
-    // console.log(`!isNumeric(input)`,!isNumeric(input))
-    // console.log(`(input < 0 && input > -1000)`,(input < 0 && input > -1000))
-    
 
     if (Number.isNaN(input) || (input < 1000 && input >= 0) || !isNumeric(input) || (input < 0 && input > -1000)) {
       if (!!args && isNumeric(input) && !(input < 0) && input != 0) {
@@ -100,13 +94,6 @@ export function addArrayValues(data) {
         return input;
       }
     }
-
-    // console.log(input)
-    // console.log('1000000000000')
-
-    // console.log(`(input > 1000000000000)`,(input > 1000000000000))
-
-    // console.log(`(input < 1000000000000)`,(input < 1000000000000))
 
     if (!isNagtiveValues) {
       if (input > 1000000000000) {
@@ -117,17 +104,16 @@ export function addArrayValues(data) {
       else if (input < 1000000000000) {
       exp = Math.floor(Math.log(input) / Math.log(1000));
 
-      return (input / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
+      return `${(input / Math.pow(1000, exp)).toFixed(args)} ${suffixes[exp - 1]}`;
     }
     } else {
       input = input * -1;
 
       exp = Math.floor(Math.log(input) / Math.log(1000));
 
-      return (input * -1 / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
+      return `${(input * -1 / Math.pow(1000, exp)).toFixed(args)} ${suffixes[exp - 1]}`;
     }
   }
-
 
   export function isNumeric(value): boolean {
     if (value < 0) value = value * -1;
@@ -140,11 +126,9 @@ export function addArrayValues(data) {
     }
   }
 
-
-
   export function sanitizeCurrencyToString(data){
-    var valueC = data.split(',')
-    var valueD = parseInt(valueC.join(''))
+    let valueC = data.split(',')
+    let valueD = parseInt(valueC.join(''))
     return valueD
   }
 
@@ -159,7 +143,6 @@ export function capitalizeFirstLetter(string) {
   }else{
     return "Unknown"
   }
-
 }
 
 export function convertNumbersWithCommas(number: number) {
