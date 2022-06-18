@@ -4,47 +4,81 @@
     <div>
       <div class="mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{ numberOfRequisitions |
-            numberSuffix: 1 }}</span>
-          <span *ngIf="isLoading">
+          <span *ngIf="!isLoadingSummary" class="stats">
+            <animated-digit [digit]="numberOfRequisitions"  [duration]="1000">
+              {{ numberOfRequisitions | numberSuffix: 1 }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoadingSummary">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Requisitions</span>
+          <span class="statsText">Initiations</span>
         </div>
 
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{ requisitionEstimatedAmount | numberSuffix:2}}</span>
-          <span *ngIf="isLoading">
+          <span *ngIf="!isLoadingSummary" class="stats">
+            <animated-digit [digit]="requisitionEstimatedAmount"  [duration]="1000">
+              UGX {{ requisitionEstimatedAmount | numberSuffix: 2}}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoadingSummary">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Estimated Requisition Amount</span>
+          <span class="statsText">Initiated Amount</span>
         </div>
 
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">
-            {{ numberOfCancelledRequisitions | numberSuffix: 1 }}
+          <span *ngIf="!isLoadingSummary" class="stats">
+            <animated-digit [digit]="numberOfCancelledRequisitions"  [duration]="1000">
+              {{ numberOfCancelledRequisitions | numberSuffix: 1 }}
+            </animated-digit>
           </span>
-          <span *ngIf="isLoading">
+          <span *ngIf="isLoadingSummary">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Cancelled Requisitions</span>
+          <span class="statsText">Cancelled Initiations</span>
         </div>
 
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">
-            UGX {{cancelledRequisitionEstimatedAmount | numberSuffix: 2}}
+          <span *ngIf="!isLoadingSummary" class="stats">
+            <animated-digit [digit]="cancelledRequisitionEstimatedAmount"  [duration]="1000">
+              UGX {{cancelledRequisitionEstimatedAmount | numberSuffix: 2}}
+            </animated-digit>
           </span>
-          <span *ngIf="isLoading">
+          <span *ngIf="isLoadingSummary">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Cancelled Requisitions Estimate</span>
+          <span class="statsText">Cancelled Initiated Amount</span>
         </div>
 
       </div>
     </div>
 
+    <div>
+      <!-- Row 1 -->
+      <div class="mt-4 ">
+        <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
+          <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
+            <div class="flex flex-col px-2 py-2">
+              <div *ngIf="!isLoadingSummary">
+                <app-loader></app-loader>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
+            <div class="flex flex-col px-2 py-2">
+              <div>
+                <app-empty-page></app-empty-page>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Graphs -->
-    <div *ngIf="!isEmpty">
+    <div>
       <!-- Row 1 -->
       <div class="mt-4 ">
         <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
@@ -93,22 +127,8 @@
                 [title]="chartOptionsLateInitiationsTopTen.title" [tooltip]="chartOptionsLateInitiationsTopTen.tooltip"
                 [noData]="chartOptionsLateInitiationsTopTen.noData"></apx-chart>
             </div>
-            <!-- Empty State -->
-            <!-- <div *ngIf="chartOptionsLateInitiationsTopTen.series">
-              <app-empty-page></app-empty-page>
-            </div> -->
           </div>
-
-
         </div>
-
-
       </div>
     </div>
-
-    <!-- Empty State -->
-    <div *ngIf="isEmpty">
-      <app-empty-state></app-empty-state>
-    </div>
-
   </div>

@@ -16,7 +16,7 @@ import {
   ApexNoData,
   ApexTitleSubtitle
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, addArrayValues, sortTable } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -41,8 +41,12 @@ export type ChartOptions = {
   styleUrls: ['./signed-contracts-visuals.component.scss']
 })
 export class SignedContractsVisualsComponent implements OnInit {
+  isEmpty: boolean;
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
+
+  sortTable = sortTable
+  dir = 'asc'
 
   isLoading:boolean = false 
   valueOfContracts;
@@ -50,7 +54,10 @@ export class SignedContractsVisualsComponent implements OnInit {
   yearOfBids;
   allEvavluatedBidders;
 
-  topTenHighestContracts 
+  //KPI
+  topTenHighestContracts : any;
+  highestSignedContractValue: any = 0;
+  valueOfTopContracts: any = 0;
   
 
 
@@ -90,11 +97,14 @@ export class SignedContractsVisualsComponent implements OnInit {
       (response )=>{ 
         console.log(response)
         let data = response.data[0]
-        
-        this.numberOfContracts = data.numberOfSignedContracts
-        this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
+        if (response.data.length > 0) {
+          this.isEmpty = false;
+          this.numberOfContracts = data.numberOfSignedContracts
+          this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
+          //this.allEvavluatedBidders = data.total_evaluated_bidders
+        }else{
+          this.isEmpty = true;
+        }
         this.isLoading = false
         },
       (error) => {
@@ -103,6 +113,8 @@ export class SignedContractsVisualsComponent implements OnInit {
           progressBar: true,
           positionClass: 'toast-top-right'
         });
+        
+        this.isEmpty = true;        
         this.isLoading = false
         console.log(error)
       }
@@ -137,13 +149,15 @@ export class SignedContractsVisualsComponent implements OnInit {
         let actualAmount = []
         let sortedData = []
 
+        if(response.data.length > 0){
+          this.isEmpty = false;
         switch (reportName) {
           case 'high-value-signed-contracts':           
             console.log("high-value-signed-contracts", data)
 
             sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
+              var nameA = a?.actualCost.split(',')
+              var nameB = b?.actualCost.split(',')
               var valueA = parseInt(nameA.join(''))
               var valueB = parseInt(nameB.join(''))
 
@@ -155,6 +169,11 @@ export class SignedContractsVisualsComponent implements OnInit {
               }
               return 0;
             })
+
+            this.topTenHighestContracts = sortedData
+            this.highestSignedContractValue = sortedData[0]?.actualCost?sanitizeCurrencyToString(sortedData[0]?.actualCost):0
+
+
             
             sortedData.forEach(element => {
               var valueC = element?.estimatedAmount.split(',')
@@ -165,6 +184,9 @@ export class SignedContractsVisualsComponent implements OnInit {
               estimatedAmount.push(valueD)
               actualAmount.push(valueF)
             });
+
+            this.valueOfTopContracts = actualAmount?addArrayValues(actualAmount):0
+            
             this.chart?.updateOptions({
               series: [
                 {
@@ -173,7 +195,6 @@ export class SignedContractsVisualsComponent implements OnInit {
                 },
                 {
                   name: "Actual Amount",
-                  type: "line",
                   data: actualAmount
                 }
               ],
@@ -196,6 +217,9 @@ export class SignedContractsVisualsComponent implements OnInit {
             break;
           
           }
+        }else{
+          this.isEmpty = true
+        }
          
           this.isLoading = false
         },
@@ -206,6 +230,7 @@ export class SignedContractsVisualsComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         this.isLoading = false
+        this.isEmpty = true
         this.chart?.updateOptions({
           series: [],
           xaxis: {
@@ -255,7 +280,8 @@ export class SignedContractsVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       xaxis: {
-        categories: []
+        categories: [],
+        
       },
       yaxis: {
         title: {

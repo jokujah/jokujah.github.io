@@ -74,12 +74,12 @@ export class LateInitiationVisualsComponent implements OnInit {
 
 
   isError: boolean;
-  isEmpty: boolean;
+
+  isLoadingSummary: boolean = false;
 
   constructor(
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
-    this.isEmpty= true
   }
 
   ngOnInit(): void {
@@ -103,10 +103,11 @@ export class LateInitiationVisualsComponent implements OnInit {
 
 
   getSummaryStats(reportName, financialYear, procuringEntity) {
-    this.isLoading = true
+    this.isLoadingSummary = true
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
+        this.isLoadingSummary = false;
         let data = response.data[0]
 
         if (response.data.length > 0) {
@@ -117,10 +118,9 @@ export class LateInitiationVisualsComponent implements OnInit {
           this.cancelledRequisitionEstimatedAmount = data.cancelledRequisitionEstimatedAmount ? sanitizeCurrencyToString(data.cancelledRequisitionEstimatedAmount) : 0;
         }
 
-        this.isLoading = false;
       },
       (error) => {
-        this.isLoading = false;
+        this.isLoadingSummary = false;
         console.error('Error ', error);
       }
     )
