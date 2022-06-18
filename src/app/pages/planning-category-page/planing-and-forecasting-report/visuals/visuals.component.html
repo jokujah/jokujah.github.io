@@ -122,7 +122,7 @@
     <div class="mt-4 mb-4">
       <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4 ">
         <div class="flex flex-col sm:space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full ">
-          <div id="chartBudgetStatus" class="md:w-3/4 p-5 overflow-hidden bg-white rounded-lg shadow">
+          <div id="chartBudgetStatus" class="md:w-3/4 w-full p-5 overflow-hidden bg-white rounded-lg shadow">
             <apx-chart *ngIf="chartOptionsBudgetStatus.series && !isLoading"    #chartBudgetStatus
               [series]="chartOptionsBudgetStatus.series"
               [chart]="chartOptionsBudgetStatus.chart"
@@ -139,9 +139,9 @@
               <app-loader></app-loader>
             </div>
           </div>
-          <div class="md:w-1/4 flex flex-row sm:place-content-between sm:space-x-8 md:space-x-0  md:grid md:grid-cols-1 md:content-between ">
-            <div class="flex flex-col items-center overflow-hidden p-5 bg-white rounded-lg shadow">
-              <div *ngIf="!isLoading">
+          <div class="md:w-1/4 flex flex-row space-x-4 w-full md:space-x-0 md:space-y-4 sm:space-y-0  md:grid md:grid-cols-1  ">
+            <div class="w-full flex flex-col items-center overflow-hidden p-5 bg-white rounded-lg shadow">
+              <div *ngIf="!isLoading" class="flex flex-col items-center">
                 <span
                   class="text-sm  md:text-base font-bold text-gray-700 text-center flex mb-8">
                   Highest Budget Amount Planned
@@ -158,8 +158,8 @@
               </span>
             </div>
 
-            <div class="flex flex-col items-center overflow-hidden p-5 bg-white rounded-lg shadow">
-              <div *ngIf="!isLoading">
+            <div class="w-full flex flex-col items-center overflow-hidden p-5 bg-white rounded-lg shadow">
+              <div *ngIf="!isLoading" class="flex flex-col items-center">
                 <span
                   class="text-sm  md:text-base font-bold text-gray-700 text-center flex mb-8">Highest Budget V Planned
                 </span>
