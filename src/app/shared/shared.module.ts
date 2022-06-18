@@ -24,6 +24,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
 import { VisualizationTableComponent } from './visualization-table/visualization-table.component';
+import { EmptyStateDetailedReportComponent } from "./empty-state-detailed-report/empty-state-detailed-report.component";
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
@@ -36,7 +37,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     EmptyStateComponent,
     LoaderComponent,
     AnimatedDigitComponent,
-    VisualizationTableComponent
+    VisualizationTableComponent,
+    EmptyStateDetailedReportComponent
   ],
   imports: [
   CommonModule,
@@ -62,7 +64,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     LoaderComponent,
     AnimatedDigitComponent,
     EmptyPageModule,
-    GoTopButtonModule
+    GoTopButtonModule,
+    EmptyStateDetailedReportComponent
   ]
 })
 export class SharedModule { }

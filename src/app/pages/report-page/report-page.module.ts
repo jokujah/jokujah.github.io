@@ -16,8 +16,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   declarations: [
     ReportPageComponent
   ],
-  imports: [    
-    ReportsModule
+  imports: [
+    ReportsModule,
+    SharedModule,
   ]
 })
 export class ReportPageModule { }
