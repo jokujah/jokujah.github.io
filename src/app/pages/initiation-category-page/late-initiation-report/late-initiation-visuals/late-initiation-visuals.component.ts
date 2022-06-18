@@ -4,7 +4,7 @@ import {
   ApexNonAxisChartSeries,
   ApexResponsive
 } from "ng-apexcharts";
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
@@ -12,6 +12,7 @@ import { ChartType } from 'angular-google-charts';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { ToastrService } from 'ngx-toastr';
 import html2canvas from 'html2canvas';
+import { Subscription } from 'rxjs';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -48,7 +49,7 @@ export type ChartOptionsLateInitiationsTopTen  = {
   templateUrl: './late-initiation-visuals.component.html',
   styleUrls: ['./late-initiation-visuals.component.scss']
 })
-export class LateInitiationVisualsComponent implements OnInit {
+export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   @ViewChild("chartLateInitiationsType") chartLateInitiationsType: ChartComponent;
   public chartOptionsLateInitiationsType: Partial<ChartOptions>;
@@ -63,6 +64,10 @@ export class LateInitiationVisualsComponent implements OnInit {
   chartLateInitiationsTopTen!: ChartComponent;
   chartOptionsLateInitiationsTopTen: Partial<ChartOptionsLateInitiationsTopTen> | any;
 
+  @ViewChild('chart') chart!: ChartComponent;
+  public chartOptionsPercentageLateInitiation: Partial<ChartOptions> | any;
+  public chartOptionsPlannedVsActualLateInitiation: Partial<ChartOptions> | any;
+
   downloading = false
   isLoading:boolean = false
 
@@ -76,28 +81,40 @@ export class LateInitiationVisualsComponent implements OnInit {
   isError: boolean;
 
   isLoadingSummary: boolean = false;
+  isLoadingPercentageSummary: boolean = false;
+
+  subscription: Subscription;
 
   constructor(
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
+      (window as any).Apex = {
+        theme: {
+          palette: 'palette4',
+        },
+        colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
+      };
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.initCharts()
   }
 
   submit(data) {
     this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getPlannedVsActualLateInitiations('actual-vs-late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
     this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
+    // this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
+    // this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
      this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
-     this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
-     this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-     this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
+    //  this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
+    //  this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
+    //  this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -309,11 +326,30 @@ export class LateInitiationVisualsComponent implements OnInit {
             text: 'Error Loading Data ...'
           }
         })
-        this.isError = true
-        this.isLoading = false
       }
     )
 
+  }
+
+  getPlannedVsActualLateInitiations(reportName?: string, financialYear?: string, procuringEntity?: string) {
+    this.isLoadingPercentageSummary = true;
+    this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear, procuringEntity).subscribe(
+      (res) => {
+        this.isLoadingPercentageSummary = false;
+
+        let plannedVsActualInitiations = res.data[0];
+        const percentageOfInitiation = ((parseInt(plannedVsActualInitiations.numberOfLateRequisitions.split(',').join('')) / parseInt(plannedVsActualInitiations.numberOfRequisitions.split(',').join(''))) * 100).toFixed(2);
+        const percentageData = [percentageOfInitiation];
+
+        this.initPercentageInitiationChart(percentageData);
+        console.log('percentageOfInitiation ', percentageOfInitiation);
+        console.log('plannedVsActualInitiations', plannedVsActualInitiations[0]);
+      },
+      (error) => {
+        this.isLoadingPercentageSummary = false;
+        console.error(error);
+      }
+    );
   }
 
   getFontSize() {
@@ -321,233 +357,43 @@ export class LateInitiationVisualsComponent implements OnInit {
   }
 
   initCharts(){
-    this.chartOptionsLateInitiationsMethod = {
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        }
-      ],
+
+  }
+
+  public initPercentageInitiationChart(percentageData?: Array<string>)
+  {
+    this.chartOptionsPercentageLateInitiation = {
+      series: percentageData,
       chart: {
         fontFamily: 'Trebuchet MS',
         height: 350,
-        type: "bar"
+        type: "radialBar",
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
       },
       plotOptions: {
-        bar: {
-          horizontal: true,
-          columnWidth: "35%",
-          borderRadius: 2
-        }
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      title: {
-        text: "Late Initiations by Method and Value"
-      },
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1]
-      },
-
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            fontSize: "12px"
+        radialBar: {
+          hollow: {
+            size: 70
           }
-        }
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Procurement Method"
-          },
-          labels: {
-            style: {
-              fontSize: "12px"
-            },
-            formatter: function (val) {
-              return NumberSuffix(val, 2)
-            }
-          }
-        }
-      ],
-      noData: {
-        text: 'Loading Data...'
-      }
-    };
-
-    this.chartOptionsLateInitiationsType ={
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Contracts",
-          type: "line",
-          data: []
-        }
-      ],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 350,
-        type: "bar"
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          borderRadius: 2
-        }
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      title: {
-        text: "Late Initiations by Procurement Type"
-      },
-      dataLabels: {
-        enabled: false,
-        enabledOnSeries: [1]
-      },
-
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            fontSize: "12px"
-          }
-        }
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Contract Value"
-          },
-          labels: {
-            style: {
-              colors: [
-                "#008FFB",
-              ],
-              fontSize: "12px"
-            },
-            formatter: function (val) {
-              return NumberSuffix(val, 2)
-            }
-          }
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Number of Contracts"
-          }
-        }
-      ],
-      fill: {
-        opacity: 1
-      },
-      // tooltip: {
-      //   y: {
-      //     formatter: function(val) {
-      //       return "UGX " + NumberSuffix(val,2) ;
-      //     }
-      //   }
-      // },
-      noData: {
-        text: 'Loading Data'
-      }
-    };
-
-    this.chartOptionsLateInitiationsTopTen = {
-      series: [
-        {
-          name: "Planned Contract Value",
-          data: [],
-          fontSize: "12px"
-        }
-      ],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 'auto',
-        type: "bar",
-        events: {
-          click: function(chart, w, e) {
-            // console.log(chart, w, e)
-          }
-        },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 2000,
-          animateGradually: {
-              enabled: true,
-              delay: 150
-          },
-          dynamicAnimation: {
-              enabled: true,
-              speed: 450
-          }
-      }
-
-      },
-      colors: [
-        "#008FFB"
-      ],
-      plotOptions: {
-        bar: {
-          columnWidth: "35%",
-          distributed: false,
-          horizontal:true
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return NumberSuffix(val,2)
-      },
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        show: true
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
         }
       },
       title: {
-        text: "Top 10 Highest Late Initiations By Value"
+        text: 'Percentage of Late Initiations',
+        align: 'center',
+        margin: 1,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '18px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
       },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
-          }
-        }
-      },
-      noData: {
-        text: 'Loading Data ...'
-      }
+      labels: ["% of Late Initiations"]
     };
   }
 }

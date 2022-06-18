@@ -26,16 +26,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
   NumberSuffix,
   addArrayValues,
-  getFinancialYears,
-  getsortedPDEList,
 } from 'src/app/utils/helpers';
 
 import { ChartOptions } from './IChartOptions';

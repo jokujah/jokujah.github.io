@@ -60,7 +60,16 @@
         <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
             <div class="flex flex-col px-2 py-2">
-              <div *ngIf="!isLoadingSummary">
+              <div>
+                <apx-chart *ngIf="chartOptionsPercentageLateInitiation?.series && !isLoadingPercentageSummary"
+                  [series]="chartOptionsPercentageLateInitiation.series"
+                  [chart]="chartOptionsPercentageLateInitiation.chart"
+                  [plotOptions]="chartOptionsPercentageLateInitiation.plotOptions"
+                  [labels]="chartOptionsPercentageLateInitiation.labels"
+                  [title]="chartOptionsPercentageLateInitiation.title"
+                ></apx-chart>
+              </div>
+              <div *ngIf="isLoadingPercentageSummary">
                 <app-loader></app-loader>
               </div>
             </div>
@@ -84,13 +93,13 @@
         <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
             <div class="flex flex-col px-2 py-2">
-              <div id="chartLateInitiationsMethod" *ngIf="chartOptionsLateInitiationsMethod">
+              <!-- <div id="chartLateInitiationsMethod" *ngIf="chartOptionsLateInitiationsMethod">
                 <apx-chart #chartLateInitiationsMethod [series]="chartOptionsLateInitiationsMethod.series"
                   [chart]="chartOptionsLateInitiationsMethod.chart" [dataLabels]="chartOptionsLateInitiationsMethod.dataLabels"
                   [plotOptions]="chartOptionsLateInitiationsMethod.plotOptions" [title]="chartOptionsLateInitiationsMethod.title"
                   [legend]="chartOptionsLateInitiationsMethod.legend" [tooltip]="chartOptionsLateInitiationsMethod.tooltip"
                   [noData]="chartOptionsLateInitiationsMethod.noData"></apx-chart>
-              </div>
+              </div> -->
               <div *ngIf="!chartOptionsLateInitiationsMethod">
                 <app-empty-page></app-empty-page>
               </div>
@@ -100,7 +109,7 @@
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
             <div class="flex flex-col px-2 py-2">
               <div>
-                <div id="chartLateInitiationsType">
+                <!-- <div id="chartLateInitiationsType">
                   <apx-chart #chartLateInitiationsType
                     [series]="chartOptionsLateInitiationsType.series"
                     [chart]="chartOptionsLateInitiationsType.chart" [dataLabels]="chartOptionsLateInitiationsType.dataLabels"
@@ -110,7 +119,7 @@
                     [xaxis]="chartOptionsLateInitiationsType.xaxis" [title]="chartOptionsLateInitiationsType.title"
                     [noData]="chartOptionsLateInitiationsType.noData">
                   </apx-chart>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -118,7 +127,7 @@
 
         <div class="mt-4 mb-4">
           <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-            <div id="chartLateInitiationsTopTen">
+            <!-- <div id="chartLateInitiationsTopTen">
               <apx-chart #chartLateInitiationsTopTen [series]="chartOptionsLateInitiationsTopTen.series"
                 [chart]="chartOptionsLateInitiationsTopTen.chart" [dataLabels]="chartOptionsLateInitiationsTopTen.dataLabels"
                 [plotOptions]="chartOptionsLateInitiationsTopTen.plotOptions" [yaxis]="chartOptionsLateInitiationsTopTen.yaxis"
@@ -126,7 +135,7 @@
                 [colors]="chartOptionsLateInitiationsTopTen.colors" [grid]="chartOptionsLateInitiationsTopTen.grid"
                 [title]="chartOptionsLateInitiationsTopTen.title" [tooltip]="chartOptionsLateInitiationsTopTen.tooltip"
                 [noData]="chartOptionsLateInitiationsTopTen.noData"></apx-chart>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
