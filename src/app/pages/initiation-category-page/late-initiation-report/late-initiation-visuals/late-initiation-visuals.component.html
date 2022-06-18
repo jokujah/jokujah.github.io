@@ -78,7 +78,15 @@
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
             <div class="flex flex-col px-2 py-2">
               <div>
-                <app-empty-page></app-empty-page>
+                <apx-chart *ngIf="chartOptionsPlannedVsActualLateInitiation?.series && !isLoadingPercentageSummary"
+                  [series]="chartOptionsPlannedVsActualLateInitiation.series"
+                  [chart]="chartOptionsPlannedVsActualLateInitiation.chart" [labels]="chartOptionsPlannedVsActualLateInitiation.labels" [responsive]="chartOptionsPlannedVsActualLateInitiation.responsive"
+                  [title]="chartOptionsPlannedVsActualLateInitiation.title" [plotOptions]="chartOptionsPlannedVsActualLateInitiation.plotOptions"
+                  [tooltip]="chartOptionsPlannedVsActualLateInitiation.tooltip" [legend]="chartOptionsPlannedVsActualLateInitiation.legend" [noData]="chartOptionsPlannedVsActualLateInitiation.noData">
+                </apx-chart>
+                <div *ngIf="isLoadingPercentageSummary">
+                  <app-loader></app-loader>
+                </div>
               </div>
             </div>
           </div>

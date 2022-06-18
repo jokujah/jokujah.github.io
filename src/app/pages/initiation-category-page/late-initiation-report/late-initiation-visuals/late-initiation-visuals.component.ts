@@ -6,7 +6,7 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString, convertNumbersWithCommas } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
@@ -77,6 +77,9 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   requisitionEstimatedAmount;
   cancelledRequisitionEstimatedAmount;
 
+  initiationEstimatedAmount: number = 0;
+  lateInitiationEstimateAmount: number = 0;
+  percentageOfInitiation: number = 0;
 
   isError: boolean;
 
@@ -112,6 +115,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   reset(data){
      this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
+     this.getPlannedVsActualLateInitiations('actual-vs-late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
     //  this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
     //  this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
     //  this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
@@ -337,13 +341,35 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
       (res) => {
         this.isLoadingPercentageSummary = false;
 
-        let plannedVsActualInitiations = res.data[0];
-        const percentageOfInitiation = ((parseInt(plannedVsActualInitiations.numberOfLateRequisitions.split(',').join('')) / parseInt(plannedVsActualInitiations.numberOfRequisitions.split(',').join(''))) * 100).toFixed(2);
-        const percentageData = [percentageOfInitiation];
+        // cancelledLateRequisitionEstimatedAmount: "110,100"
+        // cancelledRequisitionEstimatedAmount: "5,614,824,600"
+        // lateRequisitionEstimatedAmount: "3,043,066,100"
+        // numberOfCancelledRequisitions: "1"
+        // numberOfLateCancelledRequisitions: "110,100"
+        // numberOfLateRequisitions: "53"
+        // numberOfPlanItems: "6,771"
+        // numberOfRequisitions: "2,576"
+        // planEstimateValue: "11,117,959,425,634,322"
+        // requisitionEstimatedAmount: "3,044,379,416,702,638"
 
-        this.initPercentageInitiationChart(percentageData);
-        console.log('percentageOfInitiation ', percentageOfInitiation);
-        console.log('plannedVsActualInitiations', plannedVsActualInitiations[0]);
+        let data = res.data[0];
+
+        if(res.data?.length > 0) {
+          this.initiationEstimatedAmount = data?.requisitionEstimatedAmount ? sanitizeCurrencyToString(data?.requisitionEstimatedAmount) : 0;
+          this.lateInitiationEstimateAmount = data?.lateRequisitionEstimatedAmount ? sanitizeCurrencyToString(data?.lateRequisitionEstimatedAmount) : 0;
+
+          let numOfLateRequisitions = data?.numberOfLateRequisitions ? sanitizeCurrencyToString(data?.numberOfLateRequisitions) : 0;
+          let numOfRequisitions = data?.numberOfRequisitions ? sanitizeCurrencyToString(data?.numberOfRequisitions) : 0;
+
+          this.percentageOfInitiation = parseFloat(((numOfLateRequisitions / numOfRequisitions) * 100).toFixed(2));
+
+
+          this.initPercentageInitiationChart(this.percentageOfInitiation ? [this.percentageOfInitiation] : ['0']);
+
+          this.initPlannedVsActualInitiationChart([this.initiationEstimatedAmount, this.lateInitiationEstimateAmount]);
+        }
+
+
       },
       (error) => {
         this.isLoadingPercentageSummary = false;
@@ -356,11 +382,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
     return Math.max(10, 12);
   }
 
-  initCharts(){
-
-  }
-
-  public initPercentageInitiationChart(percentageData?: Array<string>)
+  public initPercentageInitiationChart(percentageData?: Array<string | number>)
   {
     this.chartOptionsPercentageLateInitiation = {
       series: percentageData,
@@ -394,6 +416,185 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
       },
       labels: ["% of Late Initiations"]
+    };
+  }
+
+  public initPlannedVsActualInitiationChart(estimatedPrice?: Array<number>) {
+    this.chartOptionsPlannedVsActualLateInitiation = {
+      series: estimatedPrice,
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+        y: {
+          formatter: function (val) {
+            return 'UGX ' + convertNumbersWithCommas(val);
+          },
+        },
+      },
+      title: {
+        text: 'Initiated Vs Late Initiations by Value',
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '18px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        type: 'donut',
+        width: '100%',
+        height: 380,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
+      },
+      plotOptions: {
+        pie: {
+          offsetX: 0,
+          offsetY: 30,
+          donut: {
+            size: '70%',
+            labels: {
+              show: true,
+              name: {
+                fontSize: '10px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold',
+              },
+              value: {
+                fontSize: '9px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: (val) => `UGX ${convertNumbersWithCommas(val)}`,
+              },
+              total: {
+                show: true,
+                fontSize: '9px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `UGX ${convertNumbersWithCommas(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0)
+                  )}`;
+                },
+              },
+            },
+          },
+        },
+        legend: {
+          position: 'bottom',
+        },
+      },
+      legend: {
+        show: true,
+        offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
+      },
+      labels: ['Initiated', 'Initiated Late'],
+      responsive: [
+        {
+          breakpoint: 320,
+          options: {
+            chart: {
+              width: 260,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 280,
+            },
+            legend: {
+              position: 'bottom',
+            },
+            title: {
+              style: {
+                fontSize: '12px',
+              },
+            },
+          },
+        },
+        {
+          breakpoint: 640,
+          options: {
+            chart: {
+              width: 360,
+            },
+            legend: {
+              position: 'bottom',
+            },
+            title: {
+              style: {
+                fontSize: '15px',
+              },
+            },
+          },
+        },
+        {
+          breakpoint: 768,
+          options: {
+            chart: {
+              width: 380,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+        {
+          breakpoint: 1024,
+          options: {
+            chart: {
+              width: 400,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+        {
+          breakpoint: 1280,
+          options: {
+            chart: {
+              width: 480,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+      ],
+      noData: {
+        text: 'No Data Available',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
     };
   }
 }
