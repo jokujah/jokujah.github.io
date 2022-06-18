@@ -4,9 +4,7 @@
     <mat-progress-bar *ngIf="downloadData"
       [mode]="downloadData.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="downloadData.progress">
     </mat-progress-bar>
-    <!-- <mat-progress-bar *ngIf="download$ | async as download"
-      [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
-    </mat-progress-bar> -->
+
     <div *ngIf="!isLoading">
       <div *ngIf="searchedPDE && (searchedPDE?.length > 0)">
         <ul role="list" class="border border-gray-200 divide-y divide-gray-200 rounded-md">
@@ -19,7 +17,6 @@
                   clip-rule="evenodd" />
               </svg>
               <div class="grid flex-1 grid-cols-3 ml-2">
-                <!-- <span class="truncate "> {{(item == '') ? 'All' : item}} </span> -->
                 <div class="grid col-span-2"><span class="truncate ">{{item}}</span></div>
                 <div class="grid col-span-1"><span class="text-xs text-gray-600 truncate "> {{selectedFinancialYear}} </span></div>
               </div>
@@ -33,15 +30,22 @@
         </ul>
       </div>
 
-      <div class="items-center w-full h-screen"
-        *ngIf="!searchedPDE || (searchedPDE?.length <= 0) ">
-        <div class="text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto text-gray-400" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-          </svg>
-          <h3 class="mt-1 text-2xl text-gray-500">Filter for Entity Reports.</h3>
+      <div class="flex" *ngIf="!searchedPDE || (searchedPDE?.length <= 0) ">
+        <div class="m-auto">
+          <div class="relative p-8 text-center border border-gray-200 rounded-lg">
+            <div class="inline-flex items-center px-5 py-5 mt-6 mb-2 font-medium text-gray-400 bg-gray-200 rounded-full">
+
+              <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+
+            <h2 class="text-2xl font-medium text-gray-500">
+              No Reports Available
+            </h2>
+
+            <p class="mt-4 text-sm text-gray-500">
+              <span class="font-bold">Tip:</span> Use the filters above to search and filter the reports for download
+            </p>
+          </div>
         </div>
       </div>
 
