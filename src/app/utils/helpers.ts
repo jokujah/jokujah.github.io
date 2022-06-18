@@ -91,34 +91,54 @@ export function addArrayValues(data) {
     // console.log(`(input < 1000 && input >= 0)`,(input < 1000 && input >= 0))
     // console.log(`!isNumeric(input)`,!isNumeric(input))
     // console.log(`(input < 0 && input > -1000)`,(input < 0 && input > -1000))
+    // console.log(`(input < 1000)`,(input < 1000))
     
 
     if (Number.isNaN(input) || (input < 1000 && input >= 0) || !isNumeric(input) || (input < 0 && input > -1000)) {
       if (!!args && isNumeric(input) && !(input < 0) && input != 0) {
-        return input.toFixed(args);
+        if ((input < 1000)) {
+          return input;
+        } else {
+          return input.toFixed(args);
+        }
       } else {
         return input;
       }
     }
 
-    // console.log(input)
-    // console.log('1000000000000')
-
-    // console.log(`(input > 1000000000000)`,(input > 1000000000000))
-
-    // console.log(`(input < 1000000000000)`,(input < 1000000000000))
-
     if (!isNagtiveValues) {
       if (input > 1000000000000) {
         exp = Math.floor(Math.log(input) / Math.log(1000000000000));
 
-        return (input / Math.pow(1000000000000, exp)).toFixed(args) + "T";
+        let value = input / Math.pow(1000000000000, exp)
+        
+        if(Number.isInteger(value)){          
+          return convertNumbersWithCommas(value) + "T";
+        }else{
+          let splitValue = value.toFixed(args).split('.')
+
+          return convertNumbersWithCommas(parseFloat(splitValue[0]))+"."+splitValue[1] + "T";
+
+          //return parseFloat(convertNumbersWithCommas(value)).toFixed(args) + "T";
+        } 
+
       }
       else if (input < 1000000000000) {
-      exp = Math.floor(Math.log(input) / Math.log(1000));
+        exp = Math.floor(Math.log(input) / Math.log(1000));
 
-      return (input / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
-    }
+        let value = input / Math.pow(1000, exp)
+        
+       
+        if(Number.isInteger(value)){
+          return convertNumbersWithCommas(value) + suffixes[exp - 1];
+        }else{
+          let splitValue = value.toFixed(args).split('.')
+
+          return convertNumbersWithCommas(parseFloat(splitValue[0]))+"."+splitValue[1] + "T";
+
+         // return parseFloat(convertNumbersWithCommas(value)).toFixed(args) + suffixes[exp - 1];
+        }        
+      }
     } else {
       input = input * -1;
 
@@ -164,6 +184,67 @@ export function capitalizeFirstLetter(string) {
 
 export function convertNumbersWithCommas(number: number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function sortTable(n,tableName) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById(tableName);
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc";
+  this.dir="asc"
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+
+      // console.log(x)
+      // console.log(y)
+
+      if (dir == "asc") {
+        if (sanitizeCurrencyToString(x.innerHTML) > sanitizeCurrencyToString(y.innerHTML)) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (sanitizeCurrencyToString(x.innerHTML) < sanitizeCurrencyToString(y.innerHTML) ) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        this.dir="desc"
+        switching = true;
+      }
+    }
+  }
 }
 
 
