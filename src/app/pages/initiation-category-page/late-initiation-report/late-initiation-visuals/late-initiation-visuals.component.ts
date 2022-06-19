@@ -52,19 +52,6 @@ export type ChartOptionsLateInitiationsTopTen  = {
 })
 export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
-  @ViewChild("chartLateInitiationsType") chartLateInitiationsType: ChartComponent;
-  public chartOptionsLateInitiationsType: Partial<ChartOptions>;
-
-  @ViewChild("chartLateInitiationsMethod") chartLateInitiationsMethod: ChartComponent;
-  public chartOptionsLateInitiationsMethod: Partial<ChartOptions>;
-
-  // @ViewChild("chartLateInitiationsTopTen") chartLateInitiationsTopTen!: ChartComponent;
-  // public chartOptionsLateInitiationsTopTen: Partial<ChartOptions> | any;
-
-  @ViewChild("chartLateInitiationsTopTen")
-  chartLateInitiationsTopTen!: ChartComponent;
-  chartOptionsLateInitiationsTopTen: Partial<ChartOptionsLateInitiationsTopTen> | any;
-
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptionsPercentageLateInitiation: Partial<ChartOptions> | any;
   public chartOptionsPlannedVsActualLateInitiation: Partial<ChartOptions> | any;
@@ -161,186 +148,15 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
 
-    this.chartLateInitiationsTopTen?.updateOptions({
-      series: [],
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }
-      },
-      noData: {
-             text: 'Loading Data ...'
-        }
-    })
-
-    this.chartLateInitiationsMethod?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }
-      },
-      noData: {
-        text: 'Loading Data ...'
-      }
-    })
-
-    this.chartLateInitiationsType?.updateOptions({
-      series: [],
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }
-      },
-      noData: {
-        text: 'Loading Data ...'
-      }
-    })
-
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
-          switch (reportName) {
-            case'late-initiations-by-type':
-              this.chartLateInitiationsType?.updateOptions({
-                series: [],
-                xaxis: {
-                  categories:[],
-                  labels: {
-                    style: {
-                      fontSize: "12px"
-                    },
-                    formatter: function(val) {
-                      return NumberSuffix(val,2)}
-                  }
-                },
-                noData: {
-                  text: 'No Data Available...'
-                }
-              })
-            break;
-            case'late-initiations-by-method':
-              this.chartLateInitiationsMethod?.updateOptions({
-
-                series: [],
-
-                xaxis: {
-                  categories:[],
-                  labels: {
-                    style: {
-                      fontSize: "12px"
-                    },
-                    formatter: function(val) {
-                      return NumberSuffix(val,2)}
-                  }
-                },
-                noData: {
-                  text: 'No Data Available...'
-                }
-              })
-            break;
-            case'top-late-initiations':
-              this.chartLateInitiationsMethod?.updateOptions({
-                series: [],
-                xaxis: {
-                  categories:[],
-                  labels: {
-                    style: {
-                      fontSize: "12px"
-                    },
-                    formatter: function(val) {
-                      return NumberSuffix(val,2)}
-                  }
-                },
-                noData: {
-                  text: 'No Data Available...'
-                }
-              })
-            break;
-          }
 
         this.isLoading = false
         },
       (error) => {
         this.isLoading = false;
-        console.error('Error ', error)
-        this.chartLateInitiationsTopTen?.updateOptions({
-          series: [],
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                colors: [
-                  "#008FFB",
-                  "#D10CE8",
-                ],
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }
-          },
-          noData: {
-                 text: 'Error Loading Data ...'
-            }
-        })
-
-        this.chartLateInitiationsMethod?.updateOptions({
-
-          series: [],
-
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }
-          },
-          noData: {
-            text: 'Error Loading Data ...'
-          }
-        })
-
-        this.chartLateInitiationsType?.updateOptions({
-          series: [],
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }
-          },
-          noData: {
-            text: 'Error Loading Data ...'
-          }
-        })
+        console.error('Error ', error);
       }
     )
 
@@ -668,7 +484,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
        series: [
          {
            name: title,
-           data: [percentage]
+           data: [!isNaN(percentage) ? percentage : 0]
          }
        ],
        title: {
@@ -681,7 +497,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          floating: true,
          align: "right",
          offsetY: 0,
-         text: `${percentage}%`,
+         text: `${!isNaN(percentage) ? percentage : 0}%`,
          style: {
            fontSize: "20px"
          }
@@ -728,7 +544,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
        series: [
          {
            name: title,
-           data: [percentage]
+           data: [!isNaN(percentage) ? percentage : 0]
          }
        ],
        title: {
@@ -741,7 +557,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          floating: true,
          align: "right",
          offsetY: 0,
-         text: `${percentage}%`,
+         text: `${!isNaN(percentage) ? percentage : 0}%`,
          style: {
            fontSize: "20px"
          }
@@ -788,7 +604,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
        series: [
          {
            name: title,
-           data: [percentage]
+           data: [!isNaN(percentage) ? percentage : 0]
          }
        ],
        title: {
@@ -801,7 +617,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          floating: true,
          align: "right",
          offsetY: 0,
-         text: `${percentage}%`,
+         text: `${!isNaN(percentage) ? percentage : 0}%`,
          style: {
            fontSize: "20px"
          }
@@ -848,7 +664,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
        series: [
          {
            name: title,
-           data: [percentage]
+           data: [!isNaN(percentage) ? percentage : 0]
          }
        ],
        title: {
@@ -861,7 +677,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          floating: true,
          align: "right",
          offsetY: 0,
-         text: `${percentage}%`,
+         text: `${!isNaN(percentage) ? percentage : 0}%`,
          style: {
            fontSize: "20px"
          }
@@ -908,7 +724,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
        series: [
          {
            name: title,
-           data: [percentage]
+           data: [!isNaN(percentage) ? percentage : 0]
          }
        ],
        title: {
@@ -921,7 +737,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          floating: true,
          align: "right",
          offsetY: 0,
-         text: `${percentage}%`,
+         text: `${!isNaN(percentage) ? percentage : 0}%`,
          style: {
            fontSize: "20px"
          }
