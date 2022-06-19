@@ -85,6 +85,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   breakdownIndicators;
   breakdowns: any;
+  topLateInitiations: any = [];
 
   constructor(
     private toastr: ToastrService,
@@ -106,18 +107,13 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   submit(data) {
     this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getPlannedVsActualLateInitiations('actual-vs-late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
-    this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE);
   }
 
   reset(data){
      this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
      this.getPlannedVsActualLateInitiations('actual-vs-late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
-    //  this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE)
-    //  this.getVisualisation('late-initiations-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-    //  this.getVisualisation('late-initiations-by-type',data?.selectedFinancialYear,data?.selectedPDE)
-
+     this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE);
   }
 
 
@@ -147,12 +143,12 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+    this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
-        let data = response.data
-
         this.isLoading = false
+        let data = response.data
+        this.topLateInitiations = data;
+        console.log('Top Late Initiations ', this.topLateInitiations);
         },
       (error) => {
         this.isLoading = false;
