@@ -73,7 +73,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   numberOfRegisteredEntities  ;
   topTenHighestContracts
 
-  cardValue1;
+  cardValue1: number;
   cardValue2;
   cardValue3;
   cardValue4;
@@ -121,22 +121,18 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.cardValue1 = 0
-    this.cardValue2 = 0
-    this.cardValue3 = 0
-
 
     this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
+        this.isLoading = false;
         let data = response.data[0];
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfBids?sanitizeCurrencyToString(data.numberOfBids):0
-          this.cardValue2 = data.numberOfBidsRespondedTo?sanitizeCurrencyToString(data.numberOfBidsRespondedTo):0
-          this.cardValue3 = data.numberOfProvidersThatResponded?parseInt(data.numberOfProvidersThatResponded):0
+          this.cardValue1 = data.numberOfBids ? sanitizeCurrencyToString(data.numberOfBids) : 0;
+          this.cardValue2 = data.numberOfBidsRespondedTo ?sanitizeCurrencyToString(data.numberOfBidsRespondedTo) : 0
+          this.cardValue3 = data.numberOfProvidersThatResponded ? parseInt(data.numberOfProvidersThatResponded) : 0
           // this.cardValue3 = '2,000,000,000'
         }
 
-        this.isLoading = false;
         },
       (error) => {
         this.isLoading = false;
