@@ -89,11 +89,7 @@ export function addArrayValues(data) {
 
     if (Number.isNaN(input) || (input < 1000 && input >= 0) || !isNumeric(input) || (input < 0 && input > -1000)) {
       if (!!args && isNumeric(input) && !(input < 0) && input != 0) {
-        if ((input < 1000)) {
-          return input;
-        } else {
-          return input.toFixed(args);
-        }
+        return input.toFixed(args);
       } else {
         return input;
       }
@@ -103,35 +99,13 @@ export function addArrayValues(data) {
       if (input > 1000000000000) {
         exp = Math.floor(Math.log(input) / Math.log(1000000000000));
 
-        let value = input / Math.pow(1000000000000, exp)
-        
-        if(Number.isInteger(value)){          
-          return convertNumbersWithCommas(value) + "T";
-        }else{
-          let splitValue = value.toFixed(args).split('.')
-
-          return convertNumbersWithCommas(parseFloat(splitValue[0]))+"."+splitValue[1] + "T";
-
-          //return parseFloat(convertNumbersWithCommas(value)).toFixed(args) + "T";
-        } 
-
+        return (input / Math.pow(1000000000000, exp)).toFixed(args) + "T";
       }
       else if (input < 1000000000000) {
-        exp = Math.floor(Math.log(input) / Math.log(1000));
+      exp = Math.floor(Math.log(input) / Math.log(1000));
 
-        let value = input / Math.pow(1000, exp)
-        
-       
-        if(Number.isInteger(value)){
-          return convertNumbersWithCommas(value) + suffixes[exp - 1];
-        }else{
-          let splitValue = value.toFixed(args).split('.')
-
-          return convertNumbersWithCommas(parseFloat(splitValue[0]))+"."+splitValue[1] + "T";
-
-         // return parseFloat(convertNumbersWithCommas(value)).toFixed(args) + suffixes[exp - 1];
-        }        
-      }
+      return `${(input / Math.pow(1000, exp)).toFixed(args)} ${suffixes[exp - 1]}`;
+    }
     } else {
       input = input * -1;
 
@@ -174,6 +148,9 @@ export function capitalizeFirstLetter(string) {
 export function convertNumbersWithCommas(number: number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+
 
 export function sortTable(n,tableName) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
