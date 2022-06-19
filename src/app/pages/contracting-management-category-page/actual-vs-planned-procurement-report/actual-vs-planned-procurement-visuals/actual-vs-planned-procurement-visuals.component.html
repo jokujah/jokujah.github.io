@@ -1,9 +1,9 @@
 <div class="max-w-full mx-auto">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+      <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{numberOfContracts | numberSuffix:1}}</span>
+          <span *ngIf="!isLoading" class="stats">{{plannedNumberOfContracts | numberSuffix:1}}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
@@ -12,15 +12,23 @@
         </div>
   
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{valueOfContracts }}</span>
+          <span *ngIf="!isLoading" class="stats">UGX {{plannedValueOfContracts | numberSuffix:1 }}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
           <span class="statsText">Planned Procurements Value</span>
         </div>
+
+        <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats"> {{actualNumberOfContracts | numberSuffix:1 }}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Actual Procurements  </span>
+        </div>
     
         <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats"> UGX {{valueOfContracts }}</span>
+          <span *ngIf="!isLoading" class="stats"> UGX {{actualValueOfContracts | numberSuffix:1 }}</span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>

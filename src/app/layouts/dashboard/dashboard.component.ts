@@ -191,9 +191,14 @@ export class DashboardComponent implements OnInit {
     let user:any = JSON.parse(localStorage.getItem('user'))
     console.log(user)
 
-    this.entityName = (user?.entities[0]?.name)?(user?.entities[0]?.name):''
+    this.entityName = (user?.entities[0]?.name)?(user?.entities[0]?.name):'';
 
-    
+    (window as any).Apex = {
+      theme: {
+        palette: 'palette4',
+      },
+      colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
+    };
     this._autoLogOutService.check()
   }
 

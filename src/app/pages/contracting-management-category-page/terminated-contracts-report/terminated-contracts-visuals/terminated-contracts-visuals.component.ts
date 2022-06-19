@@ -339,7 +339,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          color: '#1286f3'
+          // color: '#1286f3'
         },
       },
     };
@@ -351,7 +351,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          color: '#1286f3'
+          // color: '#1286f3'
         },
       },
       chart: {

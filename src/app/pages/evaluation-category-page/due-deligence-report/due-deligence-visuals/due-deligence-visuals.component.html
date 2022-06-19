@@ -1,58 +1,53 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
-  <div>
-    <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">{{successfullEvaluatedBidders | numberSuffix: 1}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Successfull Evaluated Bidders</span>
-      </div>
-
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{valueOfBids | numberSuffix: 2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Bids Value</span>
-      </div>
-
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats"> {{allEvaluatedBidders | numberSuffix: 1}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">All Evaluated Bidders </span>
+  <div *ngIf="!isEmpty">
+    <div>
+      <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+        <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats">{{successfullEvaluatedBidders | numberSuffix: 1}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Successfull Evaluated Bidders</span>
+        </div>
+  
+        <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats">UGX {{valueOfBids | numberSuffix: 2}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Bids Value</span>
+        </div>
+  
+        <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats"> {{allEvaluatedBidders | numberSuffix: 1}}</span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">All Evaluated Bidders </span>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- Graphs -->
-  <div>    
-    <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex ">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chart">
-            <apx-chart #chart
-              [series]="chartOptions.series"
-              [chart]="chartOptions.chart"
-              [dataLabels]="chartOptions.dataLabels"
-              [plotOptions]="chartOptions.plotOptions"
-              [yaxis]="chartOptions.yaxis"
-              [legend]="chartOptions.legend"
-              [fill]="chartOptions.fill"
-              [stroke]="chartOptions.stroke"
-              [tooltip]="chartOptions.tooltip"
-              [xaxis]="chartOptions.xaxis"
-              [title]="chartOptions.title"
-              [noData]="chartOptions.noData"
-            ></apx-chart>
+  
+    <!-- Graphs -->
+    <div>
+      <div class="mt-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+        <div class="flex ">
+          <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+            <div id="chart">
+              <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
+                [yaxis]="chartOptions.yaxis" [legend]="chartOptions.legend" [fill]="chartOptions.fill"
+                [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis"
+                [title]="chartOptions.title" [noData]="chartOptions.noData"></apx-chart>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  <div *ngIf="isEmpty">
+    <app-empty-page></app-empty-page>
+  </div>
   
 </div>

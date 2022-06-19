@@ -51,6 +51,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
   pdeControl = new FormControl('');
   financialYearControl = new FormControl('');
 
+  isEmpty=true
+
 
   
  
@@ -72,6 +74,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
   submit(data) {
     this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getBidsByFinancialYear('bids-by-financial-year',data?.selectedFinancialYear,data?.selectedPDE)
   }
@@ -79,7 +82,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
   reset(data){
     this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getBidsByFinancialYear('bids-by-financial-year',data?.selectedFinancialYear,data?.selectedPDE)
 

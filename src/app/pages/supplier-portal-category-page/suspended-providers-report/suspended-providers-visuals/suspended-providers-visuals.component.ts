@@ -6,7 +6,7 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sortTable } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
 import html2canvas from 'html2canvas';
@@ -48,10 +48,15 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
   downloading = false
   isLoading:boolean = false
 
+  dir='asc'
+  sortTable = sortTable
+
 
   cardValue1 ;
   cardValue2 ;
   cardValue3 ;
+  suspendedProviders: any;
+  percentageOfSuspendedProviders: number;
 
   constructor(
     fb: FormBuilder,
@@ -88,7 +93,8 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfProvidersNotSuspended?parseInt(data.numberOfProvidersNotSuspended):0
           this.cardValue2 = data.numberOfSuspendedProviders?parseInt(data.numberOfSuspendedProviders):0  
-          this.cardValue3 = 97        
+          this.cardValue3 = 97      
+          this.percentageOfSuspendedProviders = Math.floor((this.cardValue2/(this.cardValue1+this.cardValue2))*100 ) 
         }
 
         var suspendedValues = [this.cardValue2 ,this.cardValue1]
@@ -145,6 +151,8 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
               console.log('Report Data',data)
               let providers = []
               let suspensionDaysLeft = []
+
+              this.suspendedProviders = data
               data.forEach(element => {
                 providers.push(element?.providerName)
                 //calculate days here

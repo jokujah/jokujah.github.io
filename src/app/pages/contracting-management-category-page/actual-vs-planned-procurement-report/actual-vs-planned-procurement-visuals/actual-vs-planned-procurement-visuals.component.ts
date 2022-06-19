@@ -51,6 +51,10 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
   allEvavluatedBidders;
 
   topTenHighestContracts 
+  actualNumberOfContracts: number;
+  plannedNumberOfContracts: number;
+  actualValueOfContracts: any;
+  plannedValueOfContracts: any;
   
 
 
@@ -89,22 +93,26 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         console.log(response)
-        let data = response.data[0]
-        
-        this.numberOfContracts = (data?.numberOfProcurementItems)?sanitizeCurrencyToString(data.numberOfProcurementItems):0
-        this.valueOfContracts = (data?.marketPrice)?NumberSuffix( sanitizeCurrencyToString(data?.marketPrice),2):0
+        let data ={
+          actualNumber : response.data[0]?.numberOfProcurementItems,
+          actualValueOfContracts : response.data[0]?.marketPrice,
+          plannedNumber : response.data[1]?.numberOfProcurementItems,
+          plannedValueOfContracts : response.data[1]?.marketPrice
+        } 
 
-        //console.log(this.valueOfContracts)
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
+        console.log(data)
+        
+        this.actualNumberOfContracts = (data?.actualNumber)?sanitizeCurrencyToString(data.actualNumber):0
+        this.actualValueOfContracts = (data?.actualValueOfContracts)?NumberSuffix( sanitizeCurrencyToString(data?.actualValueOfContracts),1):0
+        this.plannedNumberOfContracts = (data?.plannedNumber)?sanitizeCurrencyToString(data.plannedNumber):0
+        this.plannedValueOfContracts = (data?.plannedValueOfContracts)?NumberSuffix( sanitizeCurrencyToString(data?.plannedValueOfContracts),1):0
+
+        
 
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.isLoading = false;        
         this.isLoading = false
         console.log(error)
         throw error
@@ -287,7 +295,7 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          color: '#1286f3'
+          // color: '#1286f3'
         },
       },
       dataLabels: {

@@ -18,7 +18,7 @@ import {
   ApexGrid,
   ChartComponent
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -53,6 +53,9 @@ export class CancelledTenderVisualsComponent implements OnInit {
   isLoading:boolean = false 
   cardValue2;
   cardValue1;
+  topCancelledContracts: any;
+  sortTable = sortTable
+  dir = 'asc'
 
   constructor(
     private toastr: ToastrService,
@@ -157,6 +160,8 @@ export class CancelledTenderVisualsComponent implements OnInit {
             //   }
             //   return 0;
             // })
+
+            this.topCancelledContracts = data
             
             data.forEach(element => {
               console.log(element)
@@ -168,6 +173,8 @@ export class CancelledTenderVisualsComponent implements OnInit {
               contractValue.push(valueD)
               // actualAmount.push(valueF)
             });
+
+
             this.chart?.updateOptions({
               series: [
                 {

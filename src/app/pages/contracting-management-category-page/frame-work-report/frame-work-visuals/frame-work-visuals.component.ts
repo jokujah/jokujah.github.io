@@ -16,7 +16,7 @@ import {
   ApexNoData,
   ApexTitleSubtitle
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable, addArrayValues } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -54,12 +54,15 @@ export class FrameWorkVisualsComponent implements OnInit {
   isLoading:boolean = false 
   cardValue1;
   cardValue2
+  sortTable = sortTable
+  dir = 'asc'
   
 
   topTenHighestContracts 
+  highestFrameWorkContractValue
   
 
-  isEmpty = true
+  isEmpty:boolean = false
 
   constructor(
     private toastr: ToastrService,
@@ -73,13 +76,13 @@ export class FrameWorkVisualsComponent implements OnInit {
 
 
   submit(data) {
-    this.getSummaryStats('framework-contract-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getSummaryStats('framework-contract-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('framework-contract-by-funding-source-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('top-framework-contract-list',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
-    this.getSummaryStats('framework-contract-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getSummaryStats('framework-contract-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('framework-contract-by-funding-source-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('top-framework-contract-list',data?.selectedFinancialYear,data?.selectedPDE)
   }
@@ -106,10 +109,6 @@ export class FrameWorkVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -165,6 +164,8 @@ export class FrameWorkVisualsComponent implements OnInit {
         let categorieValues = []
         let numOfBids = []
 
+        
+
         switch (reportName) {
           case 'top-framework-contract-list':
             console.log("top-framework-contract-list", data)
@@ -184,15 +185,22 @@ export class FrameWorkVisualsComponent implements OnInit {
             //   return 0;
             // })
 
+            this.topTenHighestContracts = data
+            this.highestFrameWorkContractValue = data[0]?.contractValue?sanitizeCurrencyToString(data[0]?.contractValue):0
+
             data.forEach(element => {
-              var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
+              var valueC = (element?.contractValue)?element?.contractValue.split(','):['0']
               var valueD = parseInt(valueC.join(''))
               // var valueE = element?.actualCost.split(',')
               // var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.contractManager))
+              subjectOfProcurement.push(capitalizeFirstLetter(element.subject_of_procurement))
               estimatedAmount.push(valueD)
               // actualAmount.push(valueF)
             });
+
+            this.cardValue1 = data.length
+            this.cardValue2 = addArrayValues(estimatedAmount)
+
             this.chart?.updateOptions({
               series: [
                 {
