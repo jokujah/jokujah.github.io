@@ -25,6 +25,7 @@ import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
 import { VisualizationTableComponent } from './visualization-table/visualization-table.component';
 import { EmptyStateDetailedReportComponent } from "./empty-state-detailed-report/empty-state-detailed-report.component";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
@@ -65,7 +66,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     AnimatedDigitComponent,
     EmptyPageModule,
     GoTopButtonModule,
-    EmptyStateDetailedReportComponent
+    EmptyStateDetailedReportComponent,
+    MatSnackBarModule
   ]
 })
 export class SharedModule { }

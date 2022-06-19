@@ -117,12 +117,13 @@ export class CompletedContractsVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }
@@ -386,10 +387,10 @@ export class CompletedContractsVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         this.chart?.updateOptions({
           series: [],
@@ -445,6 +446,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
           }
         })
         console.log(error)
+        throw error
       }
     )
   }

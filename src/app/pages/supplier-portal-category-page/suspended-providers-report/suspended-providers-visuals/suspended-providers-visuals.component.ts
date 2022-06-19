@@ -103,10 +103,11 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
       (error) => {
         console.log(error)
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
+        throw error
       }
     )
   }
@@ -174,10 +175,10 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
       (error) => {
         console.log(error)
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         
         this.chartSuspendedProviders?.updateOptions({
     
@@ -198,6 +199,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
           } 
         })
         this.isLoading = false
+        throw error
       }
     )
 

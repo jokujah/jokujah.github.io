@@ -67,8 +67,10 @@ export class HttpServiceInterceptor implements HttpInterceptor {
           tap((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
               // Response with HttpResponse type
+              console.log('authorized success in interceptor')
             }
           },(error) => {
+            console.log('authorized error in interceptor')
             this.handleError(error);
           }),
         );
@@ -79,12 +81,17 @@ export class HttpServiceInterceptor implements HttpInterceptor {
             .set('Content-Type', 'application/json')
         })
         return next.handle(unauthReq).pipe(
-          // catchError(this.handleError)
+          tap((event: HttpEvent<any>) => {
+            if (event instanceof HttpResponse) {
+              // Response with HttpResponse type
+              console.log('unauthorized success in interceptor')
+            }
+          },(error) => {
+            console.log('unauthorized error in interceptor')
+            this.handleError(error);
+          }),
         );
-      }
-
-
-   
+      }   
   }
 
 

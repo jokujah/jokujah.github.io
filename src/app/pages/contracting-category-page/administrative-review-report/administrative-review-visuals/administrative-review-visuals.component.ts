@@ -109,13 +109,14 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isEmpty=true
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }
@@ -223,13 +224,14 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
       },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isEmpty = true
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }

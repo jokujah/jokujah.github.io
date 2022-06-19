@@ -117,12 +117,13 @@ export class MicroProcurementVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }
@@ -351,14 +352,15 @@ export class MicroProcurementVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         
         this.isEmpty = true
         console.log(error)
+        throw error
       }
     )
   }

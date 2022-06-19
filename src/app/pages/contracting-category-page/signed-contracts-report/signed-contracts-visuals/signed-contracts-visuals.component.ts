@@ -109,14 +109,15 @@ export class SignedContractsVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         
         this.isEmpty = true;        
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }
@@ -225,10 +226,10 @@ export class SignedContractsVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         this.isEmpty = true
         this.chart?.updateOptions({
@@ -248,6 +249,7 @@ export class SignedContractsVisualsComponent implements OnInit {
           },
         })
         console.log(error)
+        throw error
       }
     )
   }

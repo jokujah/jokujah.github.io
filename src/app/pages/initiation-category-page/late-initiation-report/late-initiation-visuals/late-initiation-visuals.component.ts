@@ -88,7 +88,6 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   topLateInitiations: any = [];
 
   constructor(
-    private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
       (window as any).Apex = {
         theme: {
@@ -137,6 +136,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
       (error) => {
         this.isLoadingSummary = false;
         console.error('Error ', error);
+        throw error
       }
     )
   }
