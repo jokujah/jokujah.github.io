@@ -121,6 +121,9 @@ export class ReportsComponent implements OnInit {
     this.downloadService.download(fileName,filePath,pde,financialYear).subscribe(
       (response)=>{
         this.downloadData = response
+      },
+      (error)=>{
+        throw error
       }
     )
   }

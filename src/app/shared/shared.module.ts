@@ -24,6 +24,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgModule } from '@angular/core';
 import { NumberSuffixPipe } from '../utils/pipes';
 import { VisualizationTableComponent } from './visualization-table/visualization-table.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
@@ -62,7 +63,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     LoaderComponent,
     AnimatedDigitComponent,
     EmptyPageModule,
-    GoTopButtonModule
+    GoTopButtonModule,
+    MatSnackBarModule
   ]
 })
 export class SharedModule { }

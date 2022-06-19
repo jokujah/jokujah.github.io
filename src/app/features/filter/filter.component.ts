@@ -144,6 +144,7 @@ export class FilterComponent implements OnInit {
       (error) => {
          this.isLoading = false;
          console.log('Error ', error);
+         throw error
       }
     )
   }

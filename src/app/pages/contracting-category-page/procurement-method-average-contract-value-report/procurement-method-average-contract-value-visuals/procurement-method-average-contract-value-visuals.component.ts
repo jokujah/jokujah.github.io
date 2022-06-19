@@ -432,11 +432,12 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
       (error) => {
         console.log(error)
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
+        throw error
       }
     )
 
@@ -457,10 +458,10 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
       }
     )
@@ -616,12 +617,13 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }

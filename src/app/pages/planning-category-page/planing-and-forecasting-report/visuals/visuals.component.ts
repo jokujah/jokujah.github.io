@@ -625,10 +625,10 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoading = false;
-          this.toastr.error('Something Went Wrong', '', {
-            progressBar: true,
-            positionClass: 'toast-top-right',
-          });
+          // this.toastr.error('Something Went Wrong', '', {
+          //   progressBar: true,
+          //   positionClass: 'toast-top-right',
+          // });
           this.chartBudgetStatus?.updateOptions({
             series: [],
             chart: {
@@ -677,6 +677,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
             labels: [],
           });
           this.isLoading = false;
+          throw error
         }
       );
   }
@@ -768,6 +769,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoadingTypeSummary = false;
+          throw error
         }
       );
   }

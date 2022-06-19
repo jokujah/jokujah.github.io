@@ -8,7 +8,7 @@ import { ContractingManagementCategoryPageModule } from './pages/contracting-man
 import { ContractingCategoryPageModule } from './pages/contracting-category-page/contracting-category-page.module';
 import { EvaluationCategoryPageModule } from './pages/evaluation-category-page/evaluation-category-page.module';
 import { DashboardModule } from './layouts/dashboard/dashboard.module';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,6 +36,7 @@ import { LoginPageModule } from './pages/login-page/login-page.module';
 import { EmptyStateComponent } from './shared/empty-state/empty-state.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { GlobalErrorHandler } from './utils/global-error-handler.provider';
 //import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.component';
 
 @NgModule({
@@ -68,17 +69,23 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 
   ],
-  providers: [
+  providers: [    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpServiceInterceptor,
       multi: true
     },
+    { 
+      provide: ErrorHandler, 
+      useClass: GlobalErrorHandler
+    },
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy,
     },
-    {provide: SAVER, useFactory: getSaver}
+    { provide: SAVER, 
+      useFactory: getSaver
+    }
   ],
   bootstrap: [AppComponent]
 })

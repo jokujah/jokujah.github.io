@@ -127,7 +127,7 @@ export function addArrayValues(data) {
         }else{
           let splitValue = value.toFixed(args).split('.')
 
-          return convertNumbersWithCommas(parseFloat(splitValue[0]))+"."+splitValue[1] + "T";
+          return convertNumbersWithCommas(parseFloat(splitValue[0]))+"."+splitValue[1] + suffixes[exp - 1];
 
          // return parseFloat(convertNumbersWithCommas(value)).toFixed(args) + suffixes[exp - 1];
         }        

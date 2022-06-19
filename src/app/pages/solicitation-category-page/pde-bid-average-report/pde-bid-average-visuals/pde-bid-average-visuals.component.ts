@@ -112,11 +112,12 @@ export class PdeBidAverageVisualsComponent implements OnInit {
       (error) => {
         console.log(error)
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
+        throw error
       }
     )
 
@@ -175,10 +176,10 @@ export class PdeBidAverageVisualsComponent implements OnInit {
       (error) => {
         console.log(error)
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });    
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });    
         this.chartSolicitationsType?.updateOptions({
           series: [],
           xaxis: {
@@ -195,7 +196,9 @@ export class PdeBidAverageVisualsComponent implements OnInit {
             text: 'Error Loading Data ...'
           } 
         })
+        
         this.isLoading = false
+        throw error
       }
     )
 

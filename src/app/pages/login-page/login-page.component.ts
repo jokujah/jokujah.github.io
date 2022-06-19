@@ -1,3 +1,4 @@
+import { throwError } from 'rxjs';
 import { AuthenticationService } from './../../services/Authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -43,22 +44,18 @@ export class LoginPageComponent implements OnInit {
       'email': form.controls.email.value,
       'password': form.controls.password.value
     }
+    console.log('clicked')
 
      this._authService.login(credentials).subscribe(
       (res) => {
+        console.log('clicked 12')
         this.isLoading = false;
         this.router.navigate(['/dashboard']);
       },
       (error) => {
         this.isLoading = false;
-
-        this.toastr.error("Please check your credentials are valid or check your Internet Connection", 'Something Went Wrong', {
-          progressBar: true,
-          positionClass: 'toast-top-center',
-          tapToDismiss:true,
-          timeOut:10000
-        });
-        this.router.navigate(['/login']);
+        console.log('clicked 123')
+        throw error        
       }
     );
   }

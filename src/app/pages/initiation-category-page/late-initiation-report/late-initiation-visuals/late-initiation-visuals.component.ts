@@ -78,7 +78,6 @@ export class LateInitiationVisualsComponent implements OnInit {
   isLoadingSummary: boolean = false;
 
   constructor(
-    private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
   }
 
@@ -122,6 +121,7 @@ export class LateInitiationVisualsComponent implements OnInit {
       (error) => {
         this.isLoadingSummary = false;
         console.error('Error ', error);
+        throw error
       }
     )
   }
@@ -311,6 +311,7 @@ export class LateInitiationVisualsComponent implements OnInit {
         })
         this.isError = true
         this.isLoading = false
+        throw error
       }
     )
 

@@ -108,12 +108,13 @@ export class DueDeligenceVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        this.toastr.error("Something Went Wrong", '', {
-          progressBar: true,
-          positionClass: 'toast-top-right'
-        });
+        // this.toastr.error("Something Went Wrong", '', {
+        //   progressBar: true,
+        //   positionClass: 'toast-top-right'
+        // });
         this.isLoading = false
         console.log(error)
+        throw error
       }
     )
   }
@@ -236,72 +237,24 @@ export class DueDeligenceVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        
-        let categories=[]
-        let categorieValues=[]
-        
-        let numOfBids=[]
-
-        console.log(financialYear)
-        // let fy=['2021-2022','2020-2019','2020-2021']
-        // var s = Math.floor(Math.random() * 2);
-        // financialYear = fy[s]
-        if (financialYear == '') {
-          categorieValues = [9500000000000, 3000000000000, 1150000000000, 1210000000000, 2190000000000, 1174000000000, 1150000000000]
-          numOfBids = [13000, 3800, 12000, 11000, 12500, 2200, 9200]
-          categories = ["A and B Traders", "Masaka SACCO", "Atala Co", "Mujim and Sons", "Alabama Contracts", "Elohim Tailors"]
-        }
-       
-         if (financialYear == '2021-2022') {
-          categorieValues = [450000000000, 300000000000, 250000000000, 210000000000, 190000000000, 174000000000, 150000000000]
-          numOfBids = [3000, 800, 2000, 1000, 1500, 200, 900]
-          categories = ["A and B Traders", "Masaka SACCO", "Atala Co", "Mujim and Sons", "Alabama Contracts", "Elohim Tailors"]
-        }
-        if (financialYear == '2020-2019') {
-          categorieValues = [650000000000, 400000000000, 350000000000, 270000000000, 200000000000, 194000000000, 180000000000]
-          numOfBids = [10000, 2000, 6000, 5000, 3500, 2000, 1900]
-          categories = ["Mujim and Sons", "Alabama Contracts", "Atala Co", "A and B Traders", "Masaka SACCO", "Elohim Tailors"]
-        }
-        if (financialYear == '2020-2021') {
-          categorieValues = [450000000000, 300000000000, 250000000000, 210000000000, 190000000000, 174000000000, 150000000000]
-          numOfBids = [3000, 800, 2000, 1000, 1500, 200, 900]
-          categories = ["A and B Traders", "Masaka SACCO", "Atala Co", "Mujim and Sons", "Alabama Contracts", "Elohim Tailors"]
-        }
         this.chart?.updateOptions({
-          series: [
-            {
-              name: "Estimated Value",
-              type: "column",
-              data: categorieValues
-            },
-            {
-              name: "Bid Submited",
-              type: "column",
-              data: numOfBids
-            }
-          ],
+          series: [],
           xaxis: {
-            categories: categories,
+            categories:[],
             labels: {
               style: {
                 fontSize: "12px"
               },
-              formatter: function (val) {
-                return NumberSuffix(val, 2)
-              }
-            }
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
           },
           noData:{
-            text:"No Data Availabel..."
+            text:"No Data ...."
           }
         })
-        this.isLoading = false
-        console.log(error)
-      }
+        throw error
+      }      
     )
   }
 
