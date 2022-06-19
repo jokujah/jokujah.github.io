@@ -96,20 +96,93 @@
 
     <!-- Graphs -->
     <div>
-      <!-- Row 1 -->
+      <!-- Row 2 -->
       <div class="mt-4 ">
         <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
             <div class="flex flex-col px-2 py-2">
-              <!-- <div id="chartLateInitiationsMethod" *ngIf="chartOptionsLateInitiationsMethod">
-                <apx-chart #chartLateInitiationsMethod [series]="chartOptionsLateInitiationsMethod.series"
-                  [chart]="chartOptionsLateInitiationsMethod.chart" [dataLabels]="chartOptionsLateInitiationsMethod.dataLabels"
-                  [plotOptions]="chartOptionsLateInitiationsMethod.plotOptions" [title]="chartOptionsLateInitiationsMethod.title"
-                  [legend]="chartOptionsLateInitiationsMethod.legend" [tooltip]="chartOptionsLateInitiationsMethod.tooltip"
-                  [noData]="chartOptionsLateInitiationsMethod.noData"></apx-chart>
-              </div> -->
-              <div *ngIf="!chartOptionsLateInitiationsMethod">
-                <app-empty-page></app-empty-page>
+              <div *ngIf="!isLoadingPercentageSummary" class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]">
+                Breakdown of Initiations Made
+              </div>
+              <div class="px-4 mt-8 animate-f" *ngIf="!isLoadingPercentageSummary">
+                <apx-chart *ngIf="optionsProgressBreakdown1?.series"
+                  [series]="optionsProgressBreakdown1.series"
+                  [chart]="optionsProgressBreakdown1.chart"
+                  [dataLabels]="optionsProgressBreakdown1.dataLabels"
+                  [plotOptions]="optionsProgressBreakdown1.plotOptions"
+                  [yaxis]="optionsProgressBreakdown1.yaxis"
+                  [legend]="optionsProgressBreakdown1.legend"
+                  [fill]="optionsProgressBreakdown1.fill"
+                  [stroke]="optionsProgressBreakdown1.stroke"
+                  [tooltip]="optionsProgressBreakdown1.tooltip"
+                  [xaxis]="optionsProgressBreakdown1.xaxis"
+                  [title]="optionsProgressBreakdown1.title"
+                  [subtitle]="optionsProgressBreakdown1.subtitle"
+                  [noData]="optionsProgressBreakdown1.noData">
+                </apx-chart>
+                <apx-chart *ngIf="optionsProgressBreakdown2?.series"
+                  [series]="optionsProgressBreakdown2.series"
+                  [chart]="optionsProgressBreakdown2.chart"
+                  [dataLabels]="optionsProgressBreakdown2.dataLabels"
+                  [plotOptions]="optionsProgressBreakdown2.plotOptions"
+                  [yaxis]="optionsProgressBreakdown2.yaxis"
+                  [legend]="optionsProgressBreakdown2.legend"
+                  [fill]="optionsProgressBreakdown2.fill"
+                  [stroke]="optionsProgressBreakdown2.stroke"
+                  [tooltip]="optionsProgressBreakdown2.tooltip"
+                  [xaxis]="optionsProgressBreakdown2.xaxis"
+                  [title]="optionsProgressBreakdown2.title"
+                  [subtitle]="optionsProgressBreakdown2.subtitle"
+                  [noData]="optionsProgressBreakdown2.noData">
+                </apx-chart>
+                <apx-chart *ngIf="optionsProgressBreakdown3?.series"
+                  [series]="optionsProgressBreakdown3.series"
+                  [chart]="optionsProgressBreakdown3.chart"
+                  [dataLabels]="optionsProgressBreakdown3.dataLabels"
+                  [plotOptions]="optionsProgressBreakdown3.plotOptions"
+                  [yaxis]="optionsProgressBreakdown3.yaxis"
+                  [legend]="optionsProgressBreakdown3.legend"
+                  [fill]="optionsProgressBreakdown3.fill"
+                  [stroke]="optionsProgressBreakdown3.stroke"
+                  [tooltip]="optionsProgressBreakdown3.tooltip"
+                  [xaxis]="optionsProgressBreakdown3.xaxis"
+                  [title]="optionsProgressBreakdown3.title"
+                  [subtitle]="optionsProgressBreakdown3.subtitle"
+                  [noData]="optionsProgressBreakdown3.noData">
+                </apx-chart>
+                <apx-chart *ngIf="optionsProgressBreakdown4?.series"
+                  [series]="optionsProgressBreakdown4.series"
+                  [chart]="optionsProgressBreakdown4.chart"
+                  [dataLabels]="optionsProgressBreakdown4.dataLabels"
+                  [plotOptions]="optionsProgressBreakdown4.plotOptions"
+                  [yaxis]="optionsProgressBreakdown4.yaxis"
+                  [legend]="optionsProgressBreakdown4.legend"
+                  [fill]="optionsProgressBreakdown4.fill"
+                  [stroke]="optionsProgressBreakdown4.stroke"
+                  [tooltip]="optionsProgressBreakdown4.tooltip"
+                  [xaxis]="optionsProgressBreakdown4.xaxis"
+                  [title]="optionsProgressBreakdown4.title"
+                  [subtitle]="optionsProgressBreakdown4.subtitle"
+                  [noData]="optionsProgressBreakdown4.noData">
+                </apx-chart>
+                <apx-chart *ngIf="optionsProgressBreakdown5?.series"
+                  [series]="optionsProgressBreakdown5.series"
+                  [chart]="optionsProgressBreakdown5.chart"
+                  [dataLabels]="optionsProgressBreakdown5.dataLabels"
+                  [plotOptions]="optionsProgressBreakdown5.plotOptions"
+                  [yaxis]="optionsProgressBreakdown5.yaxis"
+                  [legend]="optionsProgressBreakdown5.legend"
+                  [fill]="optionsProgressBreakdown5.fill"
+                  [stroke]="optionsProgressBreakdown5.stroke"
+                  [tooltip]="optionsProgressBreakdown5.tooltip"
+                  [xaxis]="optionsProgressBreakdown5.xaxis"
+                  [title]="optionsProgressBreakdown5.title"
+                  [subtitle]="optionsProgressBreakdown5.subtitle"
+                  [noData]="optionsProgressBreakdown5.noData">
+                </apx-chart>
+              </div>
+              <div *ngIf="isLoadingPercentageSummary">
+                <app-loader></app-loader>
               </div>
             </div>
           </div>

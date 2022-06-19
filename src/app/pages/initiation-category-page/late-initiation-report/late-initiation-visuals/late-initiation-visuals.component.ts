@@ -13,6 +13,7 @@ import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCate
 import { ToastrService } from 'ngx-toastr';
 import html2canvas from 'html2canvas';
 import { Subscription } from 'rxjs';
+import { title } from 'process';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -67,6 +68,13 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptionsPercentageLateInitiation: Partial<ChartOptions> | any;
   public chartOptionsPlannedVsActualLateInitiation: Partial<ChartOptions> | any;
+  public chartOptionsLateInitiationBreakdown: Partial<ChartOptions> | any;
+  public optionsProgressBreakdown: Partial<ChartOptions> | any;
+  public optionsProgressBreakdown1: Partial<ChartOptions> | any;
+  public optionsProgressBreakdown2: Partial<ChartOptions> | any;
+  public optionsProgressBreakdown3: Partial<ChartOptions> | any;
+  public optionsProgressBreakdown4: Partial<ChartOptions> | any;
+  public optionsProgressBreakdown5: Partial<ChartOptions> | any;
 
   downloading = false
   isLoading:boolean = false
@@ -87,6 +95,9 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   isLoadingPercentageSummary: boolean = false;
 
   subscription: Subscription;
+
+  breakdownIndicators;
+  breakdowns: any;
 
   constructor(
     private toastr: ToastrService,
@@ -341,17 +352,6 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
       (res) => {
         this.isLoadingPercentageSummary = false;
 
-        // cancelledLateRequisitionEstimatedAmount: "110,100"
-        // cancelledRequisitionEstimatedAmount: "5,614,824,600"
-        // lateRequisitionEstimatedAmount: "3,043,066,100"
-        // numberOfCancelledRequisitions: "1"
-        // numberOfLateCancelledRequisitions: "110,100"
-        // numberOfLateRequisitions: "53"
-        // numberOfPlanItems: "6,771"
-        // numberOfRequisitions: "2,576"
-        // planEstimateValue: "11,117,959,425,634,322"
-        // requisitionEstimatedAmount: "3,044,379,416,702,638"
-
         let data = res.data[0];
 
         if(res.data?.length > 0) {
@@ -367,15 +367,58 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           this.initPercentageInitiationChart(this.percentageOfInitiation ? [this.percentageOfInitiation] : ['0']);
 
           this.initPlannedVsActualInitiationChart([this.initiationEstimatedAmount, this.lateInitiationEstimateAmount]);
+
+          this.breakdowns = this.getBreakdownPercentages(data);
+
+          this.initLateInitiationBreakdownChart1(this.breakdowns[0]?.title, this.breakdowns[0]?.percentage);
+          this.initLateInitiationBreakdownChart2(this.breakdowns[1]?.title, this.breakdowns[1]?.percentage);
+          this.initLateInitiationBreakdownChart3(this.breakdowns[2]?.title, this.breakdowns[2]?.percentage);
+          this.initLateInitiationBreakdownChart4(this.breakdowns[3]?.title, this.breakdowns[3]?.percentage);
+          this.initLateInitiationBreakdownChart5(this.breakdowns[4]?.title, this.breakdowns[4]?.percentage);
         }
-
-
       },
       (error) => {
         this.isLoadingPercentageSummary = false;
         console.error(error);
       }
     );
+  }
+
+  getBreakdownPercentages(data: any) {
+    const noOfPlanItems = data?.numberOfPlanItems ? sanitizeCurrencyToString(data?.numberOfPlanItems) : 0;
+
+    const noOfRequisitions = data?.numberOfRequisitions ? sanitizeCurrencyToString(data?.numberOfRequisitions) : 0;
+
+    const noOfCancelledRequisitions = data?.numberOfCancelledRequisitions ? sanitizeCurrencyToString(data?.numberOfCancelledRequisitions) : 0;
+
+    const noOfLateRequisitions = data?.numberOfLateRequisitions ? sanitizeCurrencyToString(data?.numberOfLateRequisitions) : 0;
+
+    const noOfCancelledLateRequisitions = data?.numberOfLateCancelledRequisitions ? sanitizeCurrencyToString(data?.numberOfLateCancelledRequisitions) : 0;
+
+    this.breakdownIndicators = [
+      {
+        'title': '% of Plan Items',
+        'percentage': +((noOfPlanItems/noOfPlanItems) * 100).toFixed(2)
+      },
+      {
+        'title': '% of Initiations Made',
+        'percentage': +((noOfRequisitions/noOfPlanItems) * 100).toFixed(2)
+      },
+      {
+        'title': '% of Cancelled Initiations',
+        'percentage': +((noOfCancelledRequisitions/ noOfRequisitions) * 100).toFixed(2)
+      },
+      {
+        'title': '% of Late Initiations',
+        'percentage': +((noOfLateRequisitions/noOfRequisitions) * 100).toFixed(2)
+      },
+      {
+        'title': '% of Cancelled Late Initiations',
+        'percentage': +((noOfCancelledLateRequisitions/noOfCancelledRequisitions) * 100).toFixed(2)
+      }
+    ];
+
+    return this.breakdownIndicators;
   }
 
   getFontSize() {
@@ -596,6 +639,306 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
       },
     };
+  }
+
+  public initLateInitiationBreakdownChart1(title?: string, percentage?: number)
+  {
+    this.optionsProgressBreakdown1 = {
+       chart: {
+         fontFamily: 'Trebuchet MS',
+         height: 70,
+         type: "bar",
+         stacked: true,
+         sparkline: {
+           enabled: true
+         }
+       },
+       plotOptions: {
+         bar: {
+           horizontal: true,
+           barHeight: "20%",
+           colors: {
+             backgroundBarColors: ['rgb(241 245 249)']
+           }
+         }
+       },
+       stroke: {
+         width: 0
+       },
+       series: [
+         {
+           name: title,
+           data: [percentage]
+         }
+       ],
+       title: {
+         floating: true,
+         offsetX: -10,
+         offsetY: 5,
+         text: title
+       },
+       subtitle: {
+         floating: true,
+         align: "right",
+         offsetY: 0,
+         text: `${percentage}%`,
+         style: {
+           fontSize: "20px"
+         }
+       },
+       tooltip: {
+         enabled: false
+       },
+       xaxis: {
+         categories: [title]
+       },
+       yaxis: {
+         max: 100
+       },
+       fill: {
+         opacity: 1
+       },
+     };
+  }
+
+  public initLateInitiationBreakdownChart2(title?: string, percentage?: number)
+  {
+      this.optionsProgressBreakdown2 = {
+       chart: {
+         fontFamily: 'Trebuchet MS',
+         height: 70,
+         type: "bar",
+         stacked: true,
+         sparkline: {
+           enabled: true
+         }
+       },
+       plotOptions: {
+         bar: {
+           horizontal: true,
+           barHeight: "20%",
+           colors: {
+             backgroundBarColors: ['rgb(241 245 249)']
+           }
+         }
+       },
+       stroke: {
+         width: 0
+       },
+       series: [
+         {
+           name: title,
+           data: [percentage]
+         }
+       ],
+       title: {
+         floating: true,
+         offsetX: -10,
+         offsetY: 5,
+         text: title
+       },
+       subtitle: {
+         floating: true,
+         align: "right",
+         offsetY: 0,
+         text: `${percentage}%`,
+         style: {
+           fontSize: "20px"
+         }
+       },
+       tooltip: {
+         enabled: false
+       },
+       xaxis: {
+         categories: [title]
+       },
+       yaxis: {
+         max: 100
+       },
+       fill: {
+         opacity: 1
+       }
+     };
+  }
+
+  public initLateInitiationBreakdownChart3(title?: string, percentage?: number)
+  {
+      this.optionsProgressBreakdown3 = {
+       chart: {
+         fontFamily: 'Trebuchet MS',
+         height: 70,
+         type: "bar",
+         stacked: true,
+         sparkline: {
+           enabled: true
+         }
+       },
+       plotOptions: {
+         bar: {
+           horizontal: true,
+           barHeight: "20%",
+           colors: {
+             backgroundBarColors: ['rgb(241 245 249)']
+           }
+         }
+       },
+       stroke: {
+         width: 0
+       },
+       series: [
+         {
+           name: title,
+           data: [percentage]
+         }
+       ],
+       title: {
+         floating: true,
+         offsetX: -10,
+         offsetY: 5,
+         text: title
+       },
+       subtitle: {
+         floating: true,
+         align: "right",
+         offsetY: 0,
+         text: `${percentage}%`,
+         style: {
+           fontSize: "20px"
+         }
+       },
+       tooltip: {
+         enabled: false
+       },
+       xaxis: {
+         categories: [title]
+       },
+       yaxis: {
+         max: 100
+       },
+       fill: {
+         opacity: 1
+       }
+     };
+  }
+
+  public initLateInitiationBreakdownChart4(title?: string, percentage?: number)
+  {
+      this.optionsProgressBreakdown4 = {
+       chart: {
+         fontFamily: 'Trebuchet MS',
+         height: 70,
+         type: "bar",
+         stacked: true,
+         sparkline: {
+           enabled: true
+         }
+       },
+       plotOptions: {
+         bar: {
+           horizontal: true,
+           barHeight: "20%",
+           colors: {
+             backgroundBarColors: ['rgb(241 245 249)']
+           }
+         }
+       },
+       stroke: {
+         width: 0
+       },
+       series: [
+         {
+           name: title,
+           data: [percentage]
+         }
+       ],
+       title: {
+         floating: true,
+         offsetX: -10,
+         offsetY: 5,
+         text: title
+       },
+       subtitle: {
+         floating: true,
+         align: "right",
+         offsetY: 0,
+         text: `${percentage}%`,
+         style: {
+           fontSize: "20px"
+         }
+       },
+       tooltip: {
+         enabled: false
+       },
+       xaxis: {
+         categories: [title]
+       },
+       yaxis: {
+         max: 100
+       },
+       fill: {
+         opacity: 1
+       }
+     };
+  }
+
+  public initLateInitiationBreakdownChart5(title?: string, percentage?: number)
+  {
+      this.optionsProgressBreakdown5 = {
+       chart: {
+         fontFamily: 'Trebuchet MS',
+         height: 70,
+         type: "bar",
+         stacked: true,
+         sparkline: {
+           enabled: true
+         }
+       },
+       plotOptions: {
+         bar: {
+           horizontal: true,
+           barHeight: "20%",
+           colors: {
+             backgroundBarColors: ['rgb(241 245 249)']
+           }
+         }
+       },
+       stroke: {
+         width: 0
+       },
+       series: [
+         {
+           name: title,
+           data: [percentage]
+         }
+       ],
+       title: {
+         floating: true,
+         offsetX: -10,
+         offsetY: 5,
+         text: title
+       },
+       subtitle: {
+         floating: true,
+         align: "right",
+         offsetY: 0,
+         text: `${percentage}%`,
+         style: {
+           fontSize: "20px"
+         }
+       },
+       tooltip: {
+         enabled: false
+       },
+       xaxis: {
+         categories: [title]
+       },
+       yaxis: {
+         max: 100
+       },
+       fill: {
+         opacity: 1
+       }
+     };
   }
 }
 
