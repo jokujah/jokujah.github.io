@@ -148,7 +148,6 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         this.isLoading = false
         let data = response.data
         this.topLateInitiations = data;
-        console.log('Top Late Initiations ', this.topLateInitiations);
         },
       (error) => {
         this.isLoading = false;
