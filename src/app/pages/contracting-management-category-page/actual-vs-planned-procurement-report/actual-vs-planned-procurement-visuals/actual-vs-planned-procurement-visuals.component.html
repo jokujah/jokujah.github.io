@@ -41,27 +41,62 @@
       <!-- Graphs -->
       <div>
         <!-- Row 1 -->
-        <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-          <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-            <div id="chart">
-              <apx-chart #chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [dataLabels]="chartOptions.dataLabels"
-                [plotOptions]="chartOptions.plotOptions"
-                [yaxis]="chartOptions.yaxis"
-                [legend]="chartOptions.legend"
-                [fill]="chartOptions.fill"
-                [stroke]="chartOptions.stroke"
-                [tooltip]="chartOptions.tooltip"
-                [xaxis]="chartOptions.xaxis"
-                [title]="chartOptions.title"
-                [noData]="chartOptions.noData"
-              ></apx-chart>
+       
+
+
+        <div class="mt-4 mb-4">
+          <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">         
+            <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+              <div *ngIf="chartOptions && !isLoading" id="chart">
+                <apx-chart 
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [plotOptions]="chartOptions.plotOptions"
+                  [yaxis]="chartOptions.yaxis"
+                  [legend]="chartOptions.legend"
+                  [fill]="chartOptions.fill"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [xaxis]="chartOptions.xaxis"
+                  [title]="chartOptions.title"
+                  [noData]="chartOptions.noData"
+                ></apx-chart>
+              </div>
+              <div *ngIf="!chartOptions && isLoading">
+                <app-loading-pulse></app-loading-pulse>
+              </div>
+              <div *ngIf="!chartOptions && !isLoading">
+                <app-empty-page></app-empty-page>
+              </div>
+            </div>
+            
+            <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+              <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
+                <div *ngIf="!isLoading" class="flex flex-col items-center">
+                  <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Actual Contract
+                    Value</span>
+                  <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{ averageActualValueOfContracts |
+                    numberSuffix:1}}</span>
+                </div>
+                <span *ngIf="isLoading">
+                  <app-loading-pulse></app-loading-pulse>
+                </span>   
+              </div>
+              <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
+                <div *ngIf="!isLoading" class="flex flex-col items-center">
+                  <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Planned Contract
+                    Value</span>
+                  <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                    averagePlannedValueOfContracts | numberSuffix:1}}</span>                  
+                </div>
+                <span *ngIf="isLoading">
+                  <app-loading-pulse></app-loading-pulse>
+                </span>  
+              </div>
+                     
             </div>
           </div>
-          <!-- <div class="flex bg-white">
-          </div> -->
         </div>
         
       </div>

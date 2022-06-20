@@ -18,21 +18,23 @@ import {
 } from "ng-apexcharts";
 import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
+import { initColumnChart, initRadialChart } from 'src/app/utils/chartsApex';
+import { ChartOptions } from 'src/app/utils/IChartOptions';
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels|any;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  title: ApexTitleSubtitle,
-  noData:ApexNoData
-};
+// export type ChartOptions = {
+//   series: ApexAxisChartSeries;
+//   chart: ApexChart;
+//   dataLabels: ApexDataLabels|any;
+//   plotOptions: ApexPlotOptions;
+//   yaxis: ApexYAxis;
+//   xaxis: ApexXAxis;
+//   fill: ApexFill;
+//   tooltip: ApexTooltip;
+//   stroke: ApexStroke;
+//   legend: ApexLegend;
+//   title: ApexTitleSubtitle,
+//   noData:ApexNoData
+// };
 
 
 @Component({
@@ -41,7 +43,7 @@ export type ChartOptions = {
   styleUrls: ['./actual-vs-planned-procurement-visuals.component.scss']
 })
 export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
-  @ViewChild("chart") chart: ChartComponent;
+  @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
   isLoading:boolean = false 
@@ -55,6 +57,8 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
   plannedNumberOfContracts: number;
   actualValueOfContracts: any;
   plannedValueOfContracts: any;
+  averagePlannedValueOfContracts: number;
+  averageActualValueOfContracts: number;
   
 
 
@@ -64,19 +68,19 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.initCharts()
+    //this.initCharts()
   }
 
 
 
   submit(data) {
     this.getSummaryStats('plan-vs-actual-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
     this.getSummaryStats('plan-vs-actual-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 
@@ -91,26 +95,50 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
     console.log(reportName)
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{ 
+      (response) => {
         console.log(response)
-        let data ={
-          actualNumber : response.data[0]?.numberOfProcurementItems,
-          actualValueOfContracts : response.data[0]?.marketPrice,
-          plannedNumber : response.data[1]?.numberOfProcurementItems,
-          plannedValueOfContracts : response.data[1]?.marketPrice
-        } 
+        if(response.data.length > 0){
+        let data = {
+          actualNumber: response.data[0]?.numberOfProcurementItems,
+          actualValueOfContracts: response.data[0]?.marketPrice,
+          plannedNumber: response.data[1]?.numberOfProcurementItems,
+          plannedValueOfContracts: response.data[1]?.marketPrice
+        }
 
-        console.log(data)
-        
-        this.actualNumberOfContracts = (data?.actualNumber)?sanitizeCurrencyToString(data.actualNumber):0
-        this.actualValueOfContracts = (data?.actualValueOfContracts)?NumberSuffix( sanitizeCurrencyToString(data?.actualValueOfContracts),1):0
-        this.plannedNumberOfContracts = (data?.plannedNumber)?sanitizeCurrencyToString(data.plannedNumber):0
-        this.plannedValueOfContracts = (data?.plannedValueOfContracts)?NumberSuffix( sanitizeCurrencyToString(data?.plannedValueOfContracts),1):0
+        console.log('Datat in if',data)
 
+        this.actualNumberOfContracts = (data?.actualNumber) ? sanitizeCurrencyToString(data.actualNumber) : 0
+        this.actualValueOfContracts = (data?.actualValueOfContracts) ? NumberSuffix(sanitizeCurrencyToString(data?.actualValueOfContracts), 1) : 0
+        this.plannedNumberOfContracts = (data?.plannedNumber) ? sanitizeCurrencyToString(data.plannedNumber) : 0
+        this.plannedValueOfContracts = (data?.plannedValueOfContracts) ? NumberSuffix(sanitizeCurrencyToString(data?.plannedValueOfContracts), 1) : 0
+
+        let averagePlanned = sanitizeCurrencyToString(data?.plannedValueOfContracts) / sanitizeCurrencyToString(data?.plannedNumber)
+        let averageActual = sanitizeCurrencyToString(data?.actualValueOfContracts) / sanitizeCurrencyToString(data?.actualNumber)
         
+        this.averagePlannedValueOfContracts = averagePlanned
+        this.averageActualValueOfContracts = averageActual
+
+          let series = [{
+            name: "Actual",
+            data: [sanitizeCurrencyToString(data?.actualValueOfContracts)]
+          }, {
+            name: "Planned",
+            data: [sanitizeCurrencyToString(data?.plannedValueOfContracts)]
+          }]        
+
+        let seriesCategories = ['Actual Value','Planned Value']
+       
+        this.chartOptions = initColumnChart(
+            series,
+            seriesCategories,
+            'Actual Vs Planned by Contract Value',
+            'Contract Value(UGX)',
+            'Subject Of Procurement'
+          )
+        }
 
         this.isLoading = false
-        },
+      },
       (error) => {
         this.isLoading = false;        
         this.isLoading = false
@@ -243,74 +271,74 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-  initCharts(){
-    this.chartOptions = {
-      series: [ ],
-      chart: {
-        type: "bar",
-        height: '450px',
-        fontFamily:'Trebuchet Ms'
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          columnWidth: "35%",
-          borderRadius: 2,
-          dataLabels: {
-            position: 'top'
-          }
-        }
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: [],
-        title: {
-          text: "Contract Value"
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Subject of Procurement"
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
-          }
-        }
-      },
-      noData: {
-        text: 'Loading Data ...'
-      },
-      title: {
-        text: "Actual Vs Planned Procurements",
-        style: {
-          fontSize: '16px',
-          fontWeight: 'bold',
-          // color: '#1286f3'
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        style: {
-          colors: ['#333'],
-          fontWeight:'bold',
-          fontSize:'12px'
-        },
-        offsetX:60,
-        formatter:function(val){
-          return NumberSuffix(val,2)
-        }
-      },
-    };
-  }
+  // initCharts(){
+  //   this.chartOptions = {
+  //     series: [ ],
+  //     chart: {
+  //       type: "bar",
+  //       height: '450px',
+  //       fontFamily:'Trebuchet Ms'
+  //     },
+  //     plotOptions: {
+  //       bar: {
+  //         horizontal: true,
+  //         columnWidth: "35%",
+  //         borderRadius: 2,
+  //         dataLabels: {
+  //           position: 'top'
+  //         }
+  //       }
+  //     },
+  //     stroke: {
+  //       show: true,
+  //       width: 2,
+  //       colors: ["transparent"]
+  //     },
+  //     xaxis: {
+  //       categories: [],
+  //       title: {
+  //         text: "Contract Value"
+  //       }
+  //     },
+  //     yaxis: {
+  //       title: {
+  //         text: "Subject of Procurement"
+  //       }
+  //     },
+  //     fill: {
+  //       opacity: 1
+  //     },
+  //     tooltip: {
+  //       y: {
+  //         formatter: function(val) {
+  //           return "UGX " + NumberSuffix(val,2) ;
+  //         }
+  //       }
+  //     },
+  //     noData: {
+  //       text: 'Loading Data ...'
+  //     },
+  //     title: {
+  //       text: "Actual Vs Planned Procurements",
+  //       style: {
+  //         fontSize: '16px',
+  //         fontWeight: 'bold',
+  //         // color: '#1286f3'
+  //       },
+  //     },
+  //     dataLabels: {
+  //       enabled: true,
+  //       style: {
+  //         colors: ['#333'],
+  //         fontWeight:'bold',
+  //         fontSize:'12px'
+  //       },
+  //       offsetX:60,
+  //       formatter:function(val){
+  //         return NumberSuffix(val,2)
+  //       }
+  //     },
+  //   };
+  // }
 
 }

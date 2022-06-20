@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -15,9 +16,10 @@ import {
   ApexTooltip,
   ApexNoData,
   ApexTitleSubtitle,
-  ApexMarkers
+  ApexMarkers,
+  ApexGrid
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { lineBreak } from 'html2canvas/dist/types/css/property-descriptors/line-break';
 
@@ -35,6 +37,7 @@ export type ChartOptions = {
   title: ApexTitleSubtitle,
   noData:ApexNoData
   markers: ApexMarkers;
+  grid:ApexGrid
 };
 
 
@@ -63,10 +66,14 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
   isLoading:boolean = false 
   cardValue1;
   cardValue2
+  dir=''
+  sortTable = sortTable
   
   
 
   topTenHighestContracts 
+  highestAmmendmentValue: any;
+  highestAmmendmentMethod: any;
   
 
 
@@ -217,6 +224,8 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         let estimatedAmount = []
         let actualAmount = []
         let sortedData = []
+        let sortedDataAmmendments = []
+        let totalContractCost = []
         //var value1,value2,labelName
         var value1 = [],value2 =[],value3 = [],value4 =[],labelName=[]
 
@@ -350,9 +359,22 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
            
             console.log("provider-performance-contracts-by-method-summary", data)
 
-            sortedData = data.sort(function (a, b) {
-              var valueA = parseInt(a?.numberOfContracts)
-              var valueB = parseInt(b?.numberOfContracts)
+            totalContractCost = data.map((element)=>{
+              let total = sanitizeCurrencyToString((element?.contractAmount)?(element?.contractAmount):0) + sanitizeCurrencyToString((element?.amountAmended)?(element?.contractAmount):0)
+              
+              return  {
+                ...element,
+                totalContractAmount:total
+              }
+
+            })
+
+            console.log('Total',totalContractCost)
+
+
+            sortedData = totalContractCost.map((element)=>(element)).sort(function (a, b) {
+              var valueA = sanitizeCurrencyToString((a?.contractAmount)?(a?.contractAmount):0)
+              var valueB = sanitizeCurrencyToString((b?.contractAmount)?(b?.contractAmount):0)
 
               if (valueA > valueB) {
                 return -1;
@@ -362,6 +384,26 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
               }
               return 0;
             })
+
+            this.topTenHighestContracts = sortedData 
+            console.log('topTenHighestContracts',this.topTenHighestContracts)
+
+            sortedDataAmmendments = totalContractCost.map((element)=>(element)).sort(function (a, b) {              
+              var valueA = sanitizeCurrencyToString((a?.amountAmended)?(a?.amountAmended):0)
+              var valueB = sanitizeCurrencyToString((b?.amountAmended)?(b?.amountAmended):0)
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+
+            this.highestAmmendmentValue = sanitizeCurrencyToString(sortedDataAmmendments[0]?.amountAmended) 
+            this.highestAmmendmentMethod = sortedDataAmmendments[0]?.procurementMethod
+
             
             sortedData.forEach(element => {
               labelName.push(capitalizeFirstLetter(element.procurementMethod))
@@ -450,10 +492,6 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         },
       (error) => {
         this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         this.chart?.updateOptions({
 
@@ -601,6 +639,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         toolbar: {
           show: true
         },
+        width: '100%',
         zoom: {
           enabled: true
         }
@@ -612,7 +651,8 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         }
       },
       xaxis: {
-        categories:[]
+        categories:[],
+        
       },
       // yaxis: {
       //   title: {
@@ -649,6 +689,13 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         curve: 'smooth',
         colors: ['transparency','transparency','#546E7A', '#E91E63']
       },
+      grid:{
+        padding:{
+          left:200
+
+        }
+
+      }
     };
 
     this.chartOptionsProcurementMethodContractValue = {
@@ -671,7 +718,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         }
       },
       xaxis: {
-        categories:[]
+        categories:[],
       },
       yaxis: [
         {

@@ -30,11 +30,11 @@ import {
   addArrayValues,
 } from 'src/app/utils/helpers';
 
-import { ChartOptions } from './IChartOptions';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ToastrService } from 'ngx-toastr';
 import { convertNumbersWithCommas } from '../../../../utils/helpers';
+import { ChartOptions } from 'src/app/utils/IChartOptions';
 
 export type ChartOptionsBudgetStatus = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
