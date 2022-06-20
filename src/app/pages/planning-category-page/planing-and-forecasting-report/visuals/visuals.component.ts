@@ -303,15 +303,17 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let pdePercentage = [];
           let sortedData = [];
 
+          console.log("chartOptionsBudgetStatus",data)
+
           if (data.length > 0) {
             if (procuringEntity == '') {
-              this.chartBudgetStatus?.updateOptions({
-                series: [],
-                labels: [],
-                noData: {
-                  text: 'Loading Data ...',
-                },
-              });
+              // this.chartBudgetStatus?.updateOptions({
+              //   series: [],
+              //   labels: [],
+              //   noData: {
+              //     text: 'Loading Data ...',
+              //   },
+              // });
 
               data.forEach((element) => {
                 x.push(element?.noOfPlanItems);
