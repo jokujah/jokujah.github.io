@@ -109,6 +109,15 @@ export class VisualsComponent implements OnInit, OnDestroy {
   isLoadingTypeSummary: boolean = false;
   isLoadingMethodSummary: boolean = false;
 
+
+  checkIfSuperAdmin = localStorage.getItem('isSuperAdmin');
+
+    roles = this.checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
+  
+    entityOrDept = this.roles == 'super-admin'?'Entities':'Departments' 
+
+  
+
   constructor(
     private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService
@@ -119,7 +128,11 @@ export class VisualsComponent implements OnInit, OnDestroy {
       },
       colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
     };
+    
+
   }
+
+  
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

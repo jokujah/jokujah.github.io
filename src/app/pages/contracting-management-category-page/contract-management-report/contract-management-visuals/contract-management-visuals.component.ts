@@ -54,6 +54,10 @@ export class ContractManagementVisualsComponent implements OnInit {
   
 
   topTenHighestContracts 
+  highestContractValue: any;
+  contractManagerOfHighestContractValue: any;
+  highestContractValueByMethod: any;
+  procurementMethodOfHighestContractValue: any;
   
 
 
@@ -181,6 +185,7 @@ export class ContractManagementVisualsComponent implements OnInit {
             //   }
             //   return 0;
             // })
+            
 
             data.forEach(element => {
               var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
@@ -191,6 +196,13 @@ export class ContractManagementVisualsComponent implements OnInit {
               estimatedAmount.push(valueD)
               // actualAmount.push(valueF)
             });
+
+            this.highestContractValue = estimatedAmount[0]
+            this.contractManagerOfHighestContractValue = subjectOfProcurement[0]
+
+
+            console.log('update')
+
             this.chart?.updateOptions({
               series: [
                 {
@@ -210,7 +222,7 @@ export class ContractManagementVisualsComponent implements OnInit {
                     fontSize: "12px"
                   },
                   formatter: function (val) {
-                    return NumberSuffix(val, 2)
+                    return NumberSuffix(val, 0)
                   }
                 }
               },
@@ -244,6 +256,11 @@ export class ContractManagementVisualsComponent implements OnInit {
               estimatedAmount.push(valueD)
               actualAmount.push(parseInt(valueE))
             });
+
+            this.highestContractValueByMethod = estimatedAmount[0]
+            this.procurementMethodOfHighestContractValue = subjectOfProcurement[0]
+
+
             this.chartProcurementMethod?.updateOptions({
               series: [
                 {
@@ -330,12 +347,12 @@ export class ContractManagementVisualsComponent implements OnInit {
       series: [],
       chart: {
         type: "bar",
-        height: '450px',
+        height: '350px',
         fontFamily:'Trebuchet Ms'
       },
       plotOptions: {
         bar: {
-          horizontal: true,
+          horizontal: false,
           columnWidth: "35%",
           borderRadius: 2,
           dataLabels: {
@@ -352,7 +369,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         },
         offsetX:60,
         formatter:function(val){
-          return NumberSuffix(val,2)
+          return NumberSuffix(val,0)
         }
       },
       stroke: {
@@ -361,11 +378,22 @@ export class ContractManagementVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       xaxis: {
-        categories: []
+        categories: [],
+        title:{
+          text:'Contract Manager'
+        }
       },
       yaxis: {
         title: {
-          text: "Contract Manager "
+          text: "Contract Value "
+        },
+        labels: {
+          style: {             
+            fontSize: "12px"
+          },
+          formatter: function (val) {
+            return NumberSuffix(val, 0)
+          }
         }
       },
       fill: {
@@ -374,7 +402,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
+            return "UGX " + NumberSuffix(val,0) ;
           }
         }
       },
@@ -406,7 +434,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       ],
       chart: {
         fontFamily:'Trebuchet Ms',
-        height: 450,
+        height: 350,
         type: "line"
       },
       // plotOptions: {
@@ -456,7 +484,7 @@ export class ContractManagementVisualsComponent implements OnInit {
               fontSize: "12px"
             },
             formatter: function (val) {
-              return NumberSuffix(val, 2)
+              return NumberSuffix(val, 0)
             }
           }
         },
@@ -474,7 +502,7 @@ export class ContractManagementVisualsComponent implements OnInit {
           {
             formatter: function (y) {
               if (typeof y !== "undefined") {
-                return "UGX " + NumberSuffix(y, 2);
+                return "UGX " + NumberSuffix(y, 0);
               }
               return y;
             }

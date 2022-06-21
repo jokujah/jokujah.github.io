@@ -30,37 +30,110 @@
   <!-- Graphs -->
   <div>
     <!-- Row 1 -->
-    <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-        <div id="chart">
-          <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
-            [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
-            [legend]="chartOptions.legend" [fill]="chartOptions.fill" [stroke]="chartOptions.stroke"
-            [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title"
-            [noData]="chartOptions.noData"></apx-chart>
+    <div class="mt-4 ">
+      <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">
+        <div class="md:w-3/4 flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+          <div id="chart" *ngIf="chartOptions.series">
+            <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
+              [legend]="chartOptions.legend" [fill]="chartOptions.fill" [stroke]="chartOptions.stroke"
+              [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title"
+              [noData]="chartOptions.noData"></apx-chart>
+          </div>
+          <div *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </div>
+          <div *ngIf="!isLoading && !chartOptions.series">
+            <app-empty-page></app-empty-page>
+          </div>
         </div>
-      </div>
-      <!-- <div class="flex bg-white">
-          </div> -->
-    </div>
-    <div class="mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex w-full bg-white shadow rounded-lg overflow-hidden">
-        <div id="chartProcurementMethod" *ngIf="chartOptionsProcurementMethod" class="w-full  p-5">
-          <apx-chart #chartProcurementMethod [series]="chartOptionsProcurementMethod.series"
-            [chart]="chartOptionsProcurementMethod.chart"
-            [yaxis]="chartOptionsProcurementMethod.yaxis"
-            [xaxis]="chartOptionsProcurementMethod.xaxis"
-            [labels]="chartOptionsProcurementMethod.labels"
-            [stroke]="chartOptionsProcurementMethod.stroke"
-            [title]="chartOptionsProcurementMethod.title"
-            [dataLabels]="chartOptionsProcurementMethod.dataLabels"
-            [fill]="chartOptionsProcurementMethod.fill"
-            [tooltip]="chartOptionsProcurementMethod.tooltip"
-            [noData]="chartOptionsProcurementMethod.noData"
-            [plotOptions]="chartOptionsProcurementMethod.plotOptions"></apx-chart>
+        <div
+          class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
+          <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
+            <div *ngIf="!isLoading" class="flex flex-col items-center">
+              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Contract Value
+                Value</span>
+              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                highestContractValue |
+                numberSuffix:1}}</span>
+                <span class="text-sm  md:text-base font-bold text-gray-400 text-center flex">Highest Contract Value
+                  Value</span>
+            </div>
+            <span *ngIf="isLoading">
+              <app-loading-pulse></app-loading-pulse>
+            </span>
+            <div *ngIf="!isLoading && !highestContractValue">
+              <app-empty-page></app-empty-page>
+            </div>
+          </div>
+          <!-- <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
+                <div *ngIf="!isLoading" class="flex flex-col items-center">
+                  <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Total Contract
+                    Value</span>
+                  <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                    highestAwardedContractValue | numberSuffix:1}}</span>
+                  <span
+                    class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{awardedContractsByProcurementMethod[0]?.procurementMethod
+                    ? awardedContractsByProcurementMethod[0]?.procurementMethod : 'Unknown'}}</span>
+                </div>
+                <span *ngIf="isLoading">
+                  <app-loading-pulse></app-loading-pulse>
+                </span>  
+              </div> -->
+    
         </div>
       </div>
     </div>
 
+    <div class="mt-4 mb-4">
+      <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">
+        <div class="md:w-3/4 flex w-full bg-white shadow rounded-lg overflow-hidden">
+          <div id="chartProcurementMethod" *ngIf="chartOptionsProcurementMethod" class="w-full  p-5">
+            <apx-chart #chartProcurementMethod [series]="chartOptionsProcurementMethod.series"
+              [chart]="chartOptionsProcurementMethod.chart" [yaxis]="chartOptionsProcurementMethod.yaxis"
+              [xaxis]="chartOptionsProcurementMethod.xaxis" [labels]="chartOptionsProcurementMethod.labels"
+              [stroke]="chartOptionsProcurementMethod.stroke" [title]="chartOptionsProcurementMethod.title"
+              [dataLabels]="chartOptionsProcurementMethod.dataLabels" [fill]="chartOptionsProcurementMethod.fill"
+              [tooltip]="chartOptionsProcurementMethod.tooltip" [noData]="chartOptionsProcurementMethod.noData"
+              [plotOptions]="chartOptionsProcurementMethod.plotOptions"></apx-chart>
+          </div>
+        </div>
+        <div
+          class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
+          <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
+            <div *ngIf="!isLoading" class="flex flex-col items-center">
+              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Procurement Method with
+                highest contract value
+                Value</span>
+              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                highestContractValueByMethod |
+                numberSuffix:1}}</span>
+              <span class="text-sm  md:text-base font-bold text-gray-400 text-center flex">{{procurementMethodOfHighestContractValue}}</span>
+            </div>
+            <span *ngIf="isLoading">
+              <app-loading-pulse></app-loading-pulse>
+            </span>
+            <div *ngIf="!isLoading && !highestContractValue">
+              <app-empty-page></app-empty-page>
+            </div>
+          </div>
+          <!-- <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
+              <div *ngIf="!isLoading" class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Total Contract
+                  Value</span>
+                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                  highestAwardedContractValue | numberSuffix:1}}</span>
+                <span
+                  class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{awardedContractsByProcurementMethod[0]?.procurementMethod
+                  ? awardedContractsByProcurementMethod[0]?.procurementMethod : 'Unknown'}}</span>
+              </div>
+              <span *ngIf="isLoading">
+                <app-loading-pulse></app-loading-pulse>
+              </span>  
+            </div> -->
+    
+        </div>
+      </div>
+    </div>
   </div>
 </div>

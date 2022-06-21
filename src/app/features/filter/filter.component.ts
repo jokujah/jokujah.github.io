@@ -53,7 +53,7 @@ export class FilterComponent implements OnInit {
 
     let checkIfSuperAdmin = localStorage.getItem('isSuperAdmin');
 
-    let roles = checkIfSuperAdmin ? 'super-admin' : 'pde-admin'
+    let roles = checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
 
     let checkIfPdeOrDept = (roles == 'super-admin') ? 'pde' : 'dept'
 
