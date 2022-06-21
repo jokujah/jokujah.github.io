@@ -17,25 +17,27 @@ import {
   ApexTitleSubtitle,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
+import { initRadarChart, initRadialChart } from 'src/app/utils/chartsApex';
+import { ChartOptions } from 'src/app/utils/IChartOptions';
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis | ApexYAxis[];
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  title: ApexTitleSubtitle,
-  noData:ApexNoData,
-  labels: string[];
-  colors : any
-};
+// export type ChartOptions = {
+//   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+//   chart: ApexChart;
+//   dataLabels: ApexDataLabels;
+//   plotOptions: ApexPlotOptions;
+//   yaxis: ApexYAxis | ApexYAxis[];
+//   xaxis: ApexXAxis;
+//   fill: ApexFill;
+//   tooltip: ApexTooltip;
+//   stroke: ApexStroke;
+//   legend: ApexLegend;
+//   title: ApexTitleSubtitle,
+//   noData:ApexNoData,
+//   labels: string[];
+//   colors : any
+// };
 
 
 @Component({
@@ -54,14 +56,25 @@ export class CompletedContractsVisualsComponent implements OnInit {
   public chartOptionsProcurementType: Partial<ChartOptions>;
 
 
+  @ViewChild("chartRadarFundingSource") chartRadarFundingSource: ChartComponent;
+  public chartOptionsRadarFundingSource: Partial<ChartOptions>;
+
+
   isLoading:boolean = false 
   cardValue1;
   cardValue2;
   cardValue3;
   cardValue4;
+
+  dir
+  sortTable = sortTable
   
 
   topTenHighestContracts 
+  completedByContractType: any;
+  averageValueOfContracts: number;
+  highestContractValueofCompletedContracts: any;
+  contractsByFundingSource: any;
   
 
 
@@ -97,6 +110,11 @@ export class CompletedContractsVisualsComponent implements OnInit {
     this.cardValue2 = 0
     this.cardValue3 = 0
     this.cardValue4 = 0
+    this.topTenHighestContracts = []
+    this.completedByContractType = []
+    this.averageValueOfContracts= 0;
+    this.highestContractValueofCompletedContracts = 0
+    this.contractsByFundingSource = []
     
 
     console.log(reportName)
@@ -111,6 +129,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
           this.cardValue2 = data.totalActualCost ? sanitizeCurrencyToString(data.totalActualCost) : 0
           this.cardValue3 = data.noOfCompletedContracts ? data.noOfCompletedContracts : 0
           this.cardValue4 = data.totalValueOfCompletedContracts ? sanitizeCurrencyToString(data.totalValueOfCompletedContracts) : 0
+          this.averageValueOfContracts = sanitizeCurrencyToString(data.totalValueOfCompletedContracts)/data.noOfCompletedContracts
         }
 
         this.isLoading = false
@@ -159,7 +178,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
             fontSize: "12px"
           },
           formatter: function(val) {
-            return NumberSuffix(val,2)}
+            return NumberSuffix(val,0)}
         }            
       },
       noData: {
@@ -178,7 +197,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
             fontSize: "12px"
           },
           formatter: function(val) {
-            return NumberSuffix(val,2)}
+            return NumberSuffix(val,0)}
         }            
       },
       noData: {
@@ -195,7 +214,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         let sortedData = []
         let categories = []
         let categorieValues = []
-        let numOfBids = []
+        let numOfContracts = []
         let percentage = []
 
         switch (reportName) {
@@ -217,51 +236,54 @@ export class CompletedContractsVisualsComponent implements OnInit {
             //   return 0;
             // })
 
-            let i;
+            if (data.length > 0) {
+              let i;
+              for (i = 0; i < 6; i++) {
+                var valueC = (data[i]?.value_of_completed_contracts) ? data[i]?.value_of_completed_contracts.split(',') : ['0']
+                var valueD = parseInt(valueC.join(''))
+                // var valueE = element?.actualCost.split(',')
+                // var valueF = parseInt(valueE.join(''))
+                subjectOfProcurement.push(capitalizeFirstLetter(data[i]?.pde_name))
+                estimatedAmount.push(valueD)
+                // actualAmount.push(valueF)
+              }
+              this.topTenHighestContracts = data.slice(0, 9)
+              this.highestContractValueofCompletedContracts = sanitizeCurrencyToString(data[0].value_of_completed_contracts)
+              // data.forEach(element => {
+              //   var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
+              //   var valueD = parseInt(valueC.join(''))
+              //    var valueE = element?.actualCost.split(',')
+              //   var valueF = parseInt(valueE.join(''))
+              //   subjectOfProcurement.push(capitalizeFirstLetter(element.contractManager))
+              //   estimatedAmount.push(valueD)
+              //    actualAmount.push(valueF)
+              // });
 
-            for (i = 0;i<6;i++) {
-              var valueC = (data[i]?.value_of_completed_contracts)?data[i]?.value_of_completed_contracts.split(','):['0']
-              var valueD = parseInt(valueC.join(''))
-              // var valueE = element?.actualCost.split(',')
-              // var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(data[i]?.pde_name))
-              estimatedAmount.push(valueD)
-              // actualAmount.push(valueF)
-            }
-
-            // data.forEach(element => {
-            //   var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
-            //   var valueD = parseInt(valueC.join(''))
-            //    var valueE = element?.actualCost.split(',')
-            //   var valueF = parseInt(valueE.join(''))
-            //   subjectOfProcurement.push(capitalizeFirstLetter(element.contractManager))
-            //   estimatedAmount.push(valueD)
-            //    actualAmount.push(valueF)
-            // });
-            this.chart?.updateOptions({
-              series: [
-                {
-                  name: "Value Of Completed Contracts",
-                  data: estimatedAmount
-                },
-                // {
-                //   name: "Actual Amount",
-                //   type: "line",
-                //   data: actualAmount
-                // }
-              ],
-              xaxis: {
-                categories: subjectOfProcurement,
-                labels: {
-                  style: {
-                    fontSize: "12px"
+              this.chart?.updateOptions({
+                series: [
+                  {
+                    name: "Value Of Completed Contracts",
+                    data: estimatedAmount
                   },
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
+                  // {
+                  //   name: "Actual Amount",
+                  //   type: "line",
+                  //   data: actualAmount
+                  // }
+                ],
+                xaxis: {
+                  categories: subjectOfProcurement,
+                  labels: {
+                    style: {
+                      fontSize: "12px"
+                    },
+                    formatter: function (val) {
+                      return NumberSuffix(val, 2)
+                    }
                   }
-                }
-              },
-            })
+                },
+              })
+            }
             break;
           case 'completed-contracts-by-funding-source-summary':
             console.log("completed-contracts-by-funding-source-summary", data)
@@ -281,50 +303,43 @@ export class CompletedContractsVisualsComponent implements OnInit {
             //   return 0;
             // })
 
-            data.forEach(element => {
-              var valueC = (element?.total_actual_cost)?element?.total_actual_cost.split(','):['0']              
-              var valueD = parseInt(valueC.join(''))
-              var valueE = element?.total_value_of_completed_contracts
-              // var valueF = parseInt(valueE.join(''))
+            if (data.length > 0) {
+              data.forEach(element => {
+                var valueC = (element?.total_actual_cost) ? element?.total_actual_cost.split(',') : ['0']
+                var valueD = parseInt(valueC.join(''))
+                var valueE = sanitizeCurrencyToString(element?.total_value_of_completed_contracts)
+                // var valueF = parseInt(valueE.join(''))
 
-              //subjectOfProcurement.push(capitalizeFirstLetter(element.funding_source))
-              estimatedAmount.push(valueD)
-              actualAmount.push(parseInt(valueE))
-              percentage.push(Math.floor((parseInt(element?.no_of_completed_contracts)/parseInt(element?.number_of_contracts))*100))
-            });
-            // this.chartFundingSource?.updateOptions({
-            //   series: [
-            //     {
-            //       name: "Contract Value",
-            //       type: "column",
-            //       data: estimatedAmount
-            //     },
-            //     {
-            //       name: "Number Of Contracts",
-            //       type: "line",
-            //       data: actualAmount
-            //     }
-            //   ],
-            //   xaxis: {
-            //     categories: subjectOfProcurement,
-            //     labels: {
-            //       formatter: function (val) {
-            //         return NumberSuffix(val, 2)
-            //       }
-            //     }
-            //   },
-            //   noData: {
-            //     text: 'No Data Available...'
-            //   }
-            // })
+                numOfContracts.push(parseInt(element?.no_of_completed_contracts))
+                subjectOfProcurement.push(capitalizeFirstLetter(element.funding_source))
+                estimatedAmount.push(valueD)
+                actualAmount.push(valueE)
+                percentage.push(Math.floor((parseInt(element?.no_of_completed_contracts) / parseInt(element?.number_of_contracts)) * 100))
+              });
 
+              this.contractsByFundingSource = data
 
-            this.chartFundingSource?.updateOptions({
-              series: percentage,
-              noData:{
-                text:'No Data Available'
-              }
-            })
+              this.chartOptionsFundingSource = initRadialChart(
+                actualAmount, subjectOfProcurement, 'Completed Contracts by Funding Source'
+              )
+
+              let serieValue = [
+                {
+                  name: 'Number Of Completed Contracts',
+                  data: numOfContracts
+                }
+              ]
+
+              let categorieValue = subjectOfProcurement
+
+              this.chartOptionsRadarFundingSource = initRadarChart(
+                serieValue,
+                categorieValue,
+                'Number Of Completed Contracts by Funding Source'
+              )
+            }else{
+              this.chartOptionsFundingSource = {}
+            }
             break;
           case 'completed-contracts-by-contract-type-summary':
             console.log("completed-contracts-by-contract-type-summary", data)
@@ -343,7 +358,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
             //   }
             //   return 0;
             // })
-
+            if(data.length > 0){
             data.forEach(element => {
               var valueC = (element?.total_value_of_completed_contracts)?element?.total_value_of_completed_contracts.split(','):['0']              
               var valueD = parseInt(valueC.join(''))
@@ -355,6 +370,12 @@ export class CompletedContractsVisualsComponent implements OnInit {
               actualAmount.push(parseInt(valueE))
               percentage.push(parseInt(element?.no_of_completed_contracts)/element?.number_of_contracts)
             });
+
+
+            this.completedByContractType = data
+
+            console.log("actualAmount",actualAmount)
+
             this.chartProcurementType?.updateOptions({
               series: [
                 {
@@ -364,7 +385,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
                 },
                 {
                   name: "Number Of Contracts",
-                  type: "line",
+                  type: "area",
                   data: actualAmount
                 }
               ],
@@ -372,14 +393,14 @@ export class CompletedContractsVisualsComponent implements OnInit {
                 categories: subjectOfProcurement,
                 labels: {
                   formatter: function (val) {
-                    return NumberSuffix(val, 2)
+                    return val
                   }
                 }
               },
               noData: {
                 text: 'No Data Available...'
               }
-            })
+            })}
             break;
           }   
                 
@@ -506,163 +527,23 @@ export class CompletedContractsVisualsComponent implements OnInit {
       },
     };
 
-    // this.chartOptionsFundingSource = {
-    //   series: [
-    //     {
-    //       name: "Contract Award Value",
-    //       type: "column",
-    //       data: []
-    //     },
-    //     {
-    //       name: "Number of Contracts",
-    //       type: "line",
-    //       data: []
-    //     }
-    //   ],
-    //   chart: {
-    //     fontFamily:'Trebuchet Ms',
-    //     height: 500,
-    //     type: "line"
-    //   },
-    //   // plotOptions: {
-    //   //   bar: {
-    //   //     horizontal: false,
-    //   //     columnWidth: "35%",
-    //   //     borderRadius: 2
-    //   //   }
-    //   // },
-
-
-    //   // stroke: {
-    //   //   show: true,
-    //   //   width: 2,
-    //   // },
-    //   stroke: {
-    //     width: [0, 4],
-    //     curve:'smooth'
-    //   },
-    //   title: {
-    //     text: "Completed Contracts by Funding Source",
-    //     style:{
-    //       fontSize:"14px"
-    //     }
-    //   },
-    //   dataLabels: {
-    //     enabled: true,
-    //     enabledOnSeries: [1]
-    //   },
-
-    //   xaxis: {
-    //     categories: [],
-    //     labels: {
-    //       style: {
-    //         fontSize: "12px"
-    //       }
-    //     }
-    //   },
-    //   yaxis: [
-    //     {
-    //       title: {
-    //         text: "Procurement Method"
-    //       },
-    //       labels: {
-    //         style: {             
-    //           fontSize: "12px"
-    //         },
-    //         formatter: function (val) {
-    //           return NumberSuffix(val, 2)
-    //         }
-    //       }
-    //     },
-    //     {
-    //       opposite: true,
-    //       title: {
-    //         text: "Number of Contracts"
-    //       }
-    //     }
-    //   ],
-    //   noData: {
-    //     text: 'Loading Data ...'
-    //   }
-    // };
-
-
-
-
     this.chartOptionsFundingSource = {
+      series: [],
       chart: {
-        height: 'auto',
-        type: "radialBar",
-      },
-      series: [0],
-      colors: ["#20E647"],
-      plotOptions: {
-        radialBar: {
-          startAngle: -90,
-          endAngle: 90,
-          track: {
-            background: "#e7e7e7",
-            strokeWidth: "97%",
-            margin: 5, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              opacity: 0.31,
-              blur: 2
-            }
-          },
-          dataLabels: {
-            name: {
-              show: false
-            },
-            value: {
-              offsetY: -2,
-              fontSize: "22px"
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "light",
-          shadeIntensity: 0.4,
-          inverseColors: false,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 50, 53, 91]
-        }
-      },
-      stroke: {
-        lineCap: "butt"
-      },
-      title: {
-            text: "Completed Contracts",
-            style:{
-              fontSize:"14px"
-            }
-          },
-      labels: ["Number "]
+        fontFamily:'Trebuchet Ms',
+        type: "donut"
+      },      
+      noData: {
+        text: 'Loading Data ...'
+      }
     };
 
     this.chartOptionsProcurementType = {
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Contracts",
-          type: "line",
-          data: []
-        }
-      ],
+      series: [],
       chart: {
         fontFamily:'Trebuchet Ms',
         height: 350,
-        type: "bar"
+        type: "line"
       },
       plotOptions: {
         bar: {
@@ -672,21 +553,19 @@ export class CompletedContractsVisualsComponent implements OnInit {
         }
       },
       stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
+        width: [0, 4],
+        curve:'smooth'
       },
       title: {
-        text: "Completed Contracts by Procurement Type",
+        text: "Completed Contracts by Contract Type",
         style:{
           fontSize:"14px"
         }
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
         enabledOnSeries: [1]
       },
-
       xaxis: {
         categories: [],
         labels: {
@@ -702,33 +581,48 @@ export class CompletedContractsVisualsComponent implements OnInit {
           },
           labels: {
             style: {
-              // colors: [
-              //   "#008FFB",
-              // ],
               fontSize: "12px"
             },
             formatter: function (val) {
-              return NumberSuffix(val, 2)
+              return NumberSuffix(val, 0)
             }
-          }
+          },
+          showForNullSeries: false,
         },
         {
           opposite: true,
           title: {
             text: "Number of Contracts"
-          }
+          },
+          showForNullSeries: false,
         }
       ],
       fill: {
         opacity: 1
       },
-      // tooltip: {
-      //   y: {
-      //     formatter: function(val) {
-      //       return "UGX " + NumberSuffix(val,2) ;
-      //     }
-      //   }
-      // },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: [
+          {
+            formatter: function (y) {
+              if (typeof y !== "undefined") {
+                return "UGX " + NumberSuffix(y, 0);
+              }
+              return y;
+            }
+          },
+          {
+            formatter: function (y) {
+            if (typeof y !== "undefined") {
+              return "" + y;
+            }
+            return y;
+          }
+
+          }
+        ]
+      },
       noData: {
         text: 'Loading Data ...'
       }

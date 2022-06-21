@@ -197,7 +197,7 @@ export class DashboardComponent implements OnInit {
       theme: {
         palette: 'palette4',
       },
-      colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
+      colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800','#FAA0A0'],
     };
     this._autoLogOutService.check()
   }

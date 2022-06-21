@@ -12,10 +12,11 @@ export type ChartOptions = {
   title: ApexTitleSubtitle;
   fill: ApexFill,
   markers: ApexMarkers;
-  yaxis: ApexYAxis;
-  tooltip: ApexTooltip;
-  plotOptions:ApexPlotOptions,
+  yaxis: ApexYAxis | ApexYAxis[];
+  tooltip: ApexTooltip | any;
+  plotOptions : ApexPlotOptions,
   toolbar:any,
   legend: ApexLegend;
-  noData:ApexNoData
+  noData:ApexNoData,
+  colors: string[];  
 };

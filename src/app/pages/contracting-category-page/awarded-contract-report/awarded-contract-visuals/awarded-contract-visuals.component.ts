@@ -349,7 +349,7 @@ export class AwardedContractVisualsComponent implements OnInit {
                 value: {
                   show: true,
                   formatter: function (val) {
-                    return 'UGX'+NumberSuffix(val,2)
+                    return 'UGX'+NumberSuffix(val,1)
                   }
                 }
               }

@@ -56,8 +56,7 @@
               <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
                 highestContractValue |
                 numberSuffix:1}}</span>
-                <span class="text-sm  md:text-base font-bold text-gray-400 text-center flex">Highest Contract Value
-                  Value</span>
+                <span class="text-sm  md:text-base font-bold text-gray-400 text-center flex">{{contractManagerOfHighestContractValue}}</span>
             </div>
             <span *ngIf="isLoading">
               <app-loading-pulse></app-loading-pulse>

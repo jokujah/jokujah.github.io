@@ -1,5 +1,6 @@
 import { ChartOptions } from './IChartOptions';
 import { NumberSuffix } from "./helpers";
+import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font-family';
 
 export function initRadialChart(series?, categories?, title?):Partial<ChartOptions> {
     return    {
@@ -15,7 +16,6 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
       chart: {
         type: "donut",
         fontFamily:'Trebuchet Ms',
-        height:250
       },
       plotOptions: {
         pie: {
@@ -30,7 +30,7 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
               value: {
                 show: true,
                 formatter: function (val) {
-                  return 'UGX'+NumberSuffix(val,2)
+                  return 'UGX'+NumberSuffix(val,1)
                 }
               }
             }
@@ -113,7 +113,8 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
         yaxis: {
           title: {
             text: yAxisTitle
-          }
+          },
+          showForNullSeries: false,
         },
         fill: {
           opacity: 1
@@ -151,3 +152,28 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
       };
 
 }
+
+export function initRadarChart(series?,categories?,title?):Partial<ChartOptions>{
+ 
+  return {
+    series: series,
+    chart: {
+      type: "radar",
+      fontFamily:'Trebuchet Ms'
+    },
+    title: {
+      text: title,
+      style: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+        // color: '#1286f3'
+      },
+    },
+    xaxis: {
+      categories: categories
+    }
+  };
+}
+
+
+
