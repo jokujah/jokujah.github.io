@@ -64,7 +64,7 @@
                 ></apx-chart>
               </div>
               <div *ngIf="!chartOptions && isLoading">
-                <app-loading-pulse></app-loading-pulse>
+                <app-loader></app-loader>
               </div>
               <div *ngIf="!chartOptions && !isLoading">
                 <app-empty-page></app-empty-page>
@@ -80,7 +80,7 @@
                     numberSuffix:1}}</span>
                 </div>
                 <span *ngIf="isLoading">
-                  <app-loading-pulse></app-loading-pulse>
+                  <app-loader></app-loader>
                 </span>   
               </div>
               <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
@@ -91,7 +91,7 @@
                     averagePlannedValueOfContracts | numberSuffix:1}}</span>                  
                 </div>
                 <span *ngIf="isLoading">
-                  <app-loading-pulse></app-loading-pulse>
+                  <app-loader></app-loader>
                 </span>  
               </div>
                      

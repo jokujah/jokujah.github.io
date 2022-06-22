@@ -69,12 +69,12 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.isEmpty = false
     this.numberOfContracts = 0
     this.valueOfContracts = 0
     this.numberOfReviewedContracts = 0
     this.valueOfReviewedContracts = 0
     this.yearOfBids = financialYear
+    this.topTenHighestContracts = []
     
     let percentageUnderReview = 0
 
@@ -93,17 +93,22 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
           console.log(data?.totalNoUnderReview)
           console.log(data?.totalNoOfAwards)
-          console.log(Math.floor(parseInt(data?.totalNoUnderReview)/parseInt(data?.totalNoOfAwards))*100)
+          //console.log(Math.floor(parseInt(data?.totalNoUnderReview)/parseInt(data?.totalNoOfAwards))*100)
 
-          percentageUnderReview = Math.floor((parseInt(data?.totalNoUnderReview)/parseInt(data?.totalNoOfAwards))*100)
-
-          let series = [percentageUnderReview]
+          if((parseInt(data?.totalNoUnderReview) > 0)  &&  (parseInt(data?.totalNoOfAwards) > 0)){
+              percentageUnderReview = Math.floor((parseInt(data?.totalNoUnderReview)/parseInt(data?.totalNoOfAwards))*100)
+          }else{
+            percentageUnderReview = 0
+          }
+          
+          let series = [percentageUnderReview?percentageUnderReview:0]
 
           console.log(series)
 
+          if(series.length>0){
           this.initRadialBar(series)
-        }else{
-          this.isEmpty=true
+        }
+
         }
         this.isLoading = false
         },
@@ -113,7 +118,8 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         //   progressBar: true,
         //   positionClass: 'toast-top-right'
         // });
-        this.isEmpty=true
+        //this.isEmpty=true
+        this.initRadialBar([0])
         this.isLoading = false
         console.log(error)
         throw error
@@ -126,12 +132,12 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
     this.valueOfContracts = 0
     this.numberOfContracts = 0
     this.yearOfBids = 0
-    this.isEmpty = false
+    this.topTenHighestContracts = []
+    this.methodWithHighestContractUnderReview = null
+    this.highestContractUnderReview = null
 
     this.chart?.updateOptions({
-
       series: [],
-
       xaxis: {
         categories:[],
         labels: {
@@ -142,6 +148,9 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
             return NumberSuffix(val,2)}
         }            
       },
+      noData:{
+        text:'Loading Data ...'
+      }
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -189,8 +198,8 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
             numOfContracts.push(parseInt(element?.totalNoUnderReview))
           });
 
-          this.methodWithHighestContractUnderReview = categories[0]
-          this.highestContractUnderReview = categoryValues[0]
+          this.methodWithHighestContractUnderReview = categories[0]?categories[0]:null
+          this.highestContractUnderReview = categoryValues[0]?categoryValues[0]:null
 
           console.log(categories)
 
@@ -215,10 +224,11 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
                   fontSize: "12px"
                 },
               }
+            },
+            noData:{
+              text:'No Results found , Try changing the search ...'
             }
           })
-        }else{
-          this.isEmpty = true
         }
         this.isLoading = false
       },
@@ -228,9 +238,27 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         //   progressBar: true,
         //   positionClass: 'toast-top-right'
         // });
-        this.isEmpty = true
+        //this.isEmpty = true
         this.isLoading = false
         console.log(error)
+        this.chart?.updateOptions({
+
+          series: [],
+    
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {            
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,2)}
+            }            
+          },
+          noData:{
+            text:'Error Loading Data , Refresh ....'
+          }
+        })
         throw error
       }
     )
@@ -257,6 +285,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
       chart: {
         height: 500,
         type: "bar",
+        fontFamily:'Trebuchet Ms',
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -276,7 +305,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: "55%",
+          //columnWidth: "55%",
           borderRadius: 2
         }
       },
@@ -306,6 +335,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
           title: {
             text: "Contract Value"
           },
+          showForNullSeries: false,
           labels: {
             style: {
               colors: [
@@ -319,6 +349,7 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
         },
         {
           opposite: true,
+          showForNullSeries: false,
           title: {
             text: "Number of Contracts"
           }

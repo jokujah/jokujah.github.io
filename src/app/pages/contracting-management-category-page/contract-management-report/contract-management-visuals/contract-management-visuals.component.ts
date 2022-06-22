@@ -170,23 +170,6 @@ export class ContractManagementVisualsComponent implements OnInit {
         switch (reportName) {
           case 'top-contracts-at-management-list-summary':
             console.log("top-contracts-at-management-list-summary", data)
-
-            // sortedData = data.sort(function (a, b) {
-            //   var nameA = a?.estimatedAmount.split(',')
-            //   var nameB = b?.estimatedAmount.split(',')
-            //   var valueA = parseInt(nameA.join(''))
-            //   var valueB = parseInt(nameB.join(''))
-
-            //   if (valueA > valueB) {
-            //     return -1;
-            //   }
-            //   if (valueA < valueB) {
-            //     return 1;
-            //   }
-            //   return 0;
-            // })
-            
-
             data.forEach(element => {
               var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
               var valueD = parseInt(valueC.join(''))
@@ -199,9 +182,6 @@ export class ContractManagementVisualsComponent implements OnInit {
 
             this.highestContractValue = estimatedAmount[0]
             this.contractManagerOfHighestContractValue = subjectOfProcurement[0]
-
-
-            console.log('update')
 
             this.chart?.updateOptions({
               series: [
@@ -226,26 +206,17 @@ export class ContractManagementVisualsComponent implements OnInit {
                   }
                 }
               },
+              
+              noData: {
+                text: 'No Results found,Try adjusting your search or filter to get results'
+              }
             })
+            // if((data.length <= 0)|| !data){
+            //   this.chart.destroy()
+            // }
             break;
           case 'contract-management-by-procurement-method':
             console.log("contract-management-by-procurement-method", data)
-
-            // sortedData = data.sort(function (a, b) {
-            //   var nameA = a?.estimatedAmount.split(',')
-            //   var nameB = b?.estimatedAmount.split(',')
-            //   var valueA = parseInt(nameA.join(''))
-            //   var valueB = parseInt(nameB.join(''))
-
-            //   if (valueA > valueB) {
-            //     return -1;
-            //   }
-            //   if (valueA < valueB) {
-            //     return 1;
-            //   }
-            //   return 0;
-            // })
-
             data.forEach(element => {
               var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']              
               var valueD = parseInt(valueC.join(''))
@@ -283,7 +254,7 @@ export class ContractManagementVisualsComponent implements OnInit {
                 }
               },
               noData: {
-                text: 'No Data Available...'
+                text: 'No Results found,Try adjusting your search or filter to get results'
               }
             })
             break;
@@ -291,11 +262,6 @@ export class ContractManagementVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         this.chart?.updateOptions({
           series: [],
@@ -332,6 +298,10 @@ export class ContractManagementVisualsComponent implements OnInit {
             text: 'Error Loading Data...'
           }
         })
+
+        // this.chart.destroy()
+        this.chartProcurementMethod.destroy()
+
         console.log(error)
         throw error
       }
@@ -352,8 +322,8 @@ export class ContractManagementVisualsComponent implements OnInit {
       },
       plotOptions: {
         bar: {
-          horizontal: false,
-          columnWidth: "35%",
+          horizontal: true,
+          columnWidth: "55%",
           borderRadius: 2,
           dataLabels: {
             position: 'top'
@@ -387,10 +357,13 @@ export class ContractManagementVisualsComponent implements OnInit {
         title: {
           text: "Contract Value "
         },
+        //showForNullSeries:false,
         labels: {
           style: {             
             fontSize: "12px"
           },
+          minWidth: 0,
+          maxWidth: 700,
           formatter: function (val) {
             return NumberSuffix(val, 0)
           }

@@ -20,7 +20,7 @@ import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffi
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
-  series: ApexAxisChartSeries;
+  series: ApexAxisChartSeries | any;
   chart: ApexChart;
   dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
@@ -133,6 +133,7 @@ export class MicroProcurementVisualsComponent implements OnInit {
     this.highestContractValue = 0;
     this.highestProcurement = 'N/A';
     this.entityWithHighestProcurement = 'N/A';
+    this.topTenHighestContracts = []
     
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
@@ -165,6 +166,8 @@ export class MicroProcurementVisualsComponent implements OnInit {
                 }
                 return 0;
               })
+
+              this.topTenHighestContracts = sortedData
 
               sortedData.forEach(element => {
                 console.log(element)
@@ -229,10 +232,16 @@ export class MicroProcurementVisualsComponent implements OnInit {
               ]
 
            
-              this.initCharts(series,[])
+              this.chartOptions = this.initCharts(series,[])
 
             }else{
-              
+              let series = [
+                {
+                  name: "Contract Value",
+                  data: []
+                }
+              ]
+              this.chartOptions = this.initCharts(series,[])
           
               this.isEmpty = true
             }
@@ -249,8 +258,16 @@ export class MicroProcurementVisualsComponent implements OnInit {
         //   progressBar: true,
         //   positionClass: 'toast-top-right'
         // });
+        let series = [
+          {
+            name: "Contract Value",
+            data: []
+          }
+        ]
+        this.chartOptions = this.initCharts(series,[])
+
         this.isLoading = false
-        
+      
         this.isEmpty = true
         console.log(error)
         throw error
@@ -268,8 +285,8 @@ export class MicroProcurementVisualsComponent implements OnInit {
     title?: any,
     subtitle?: any,
     xaxis?:any
-  ){
-    this.chartOptions = {
+  ):Partial<ChartOptions>{
+    return {
       series: series,
       chart: {
         fontFamily:'Trebuchet Ms',
@@ -302,20 +319,38 @@ export class MicroProcurementVisualsComponent implements OnInit {
         categories: categories,
         title: {
           text: 'Contract Amount (UGX)'
+        },
+        labels:{
+          formatter: function (val) {
+            return NumberSuffix(val, 0)
+          }
         } 
       },
       yaxis: {
         title: {
           text: "Subject Of Procurement"
         },
+        showForNullSeries:false,
+        // labels: {
+        //   style: {             
+        //     fontSize: "12px"
+        //   },
+        //   formatter: function (val) {
+        //     return NumberSuffix(val, 0)
+        //   }
+        // }  ,
         labels: {
-          style: {             
+          show: true,
+          align: 'right',
+          minWidth: 0,
+          maxWidth: 700,
+          style: {
             fontSize: "12px"
           },
           formatter: function (val) {
             return NumberSuffix(val, 0)
           }
-        }        
+        }      
       },
       fill: {
         opacity: 1
@@ -323,7 +358,7 @@ export class MicroProcurementVisualsComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
+            return "UGX " + NumberSuffix(val,1) ;
           }
         }
       },

@@ -6,23 +6,23 @@ import { Injectable } from '@angular/core';
 })
 export class ErrorService {
 
-  getClientMessage(error: Error): string {
-    if (!navigator.onLine) {
-        return 'No Internet Connection';
+    getClientMessage(error: Error): string {
+        if (!navigator.onLine) {
+            return 'No Internet Connection';
+        }
+        return error.message ? error.message : error.toString();
     }
-    return error.message ? error.message : error.toString();
-}
 
-getClientStack(error: Error): string {
-    return error.stack;
-}
+    getClientStack(error: Error): string {
+        return error.stack;
+    }
 
-getServerMessage(error: HttpErrorResponse): string {
-    return (error?.error?.message) ? (error?.error?.message) : error.message;
-}
+    getServerMessage(error: HttpErrorResponse): string {
+        return (error?.error?.message) ? (error?.error?.message) : 'Server error. Contact the System Administrator';
+    }
 
-getServerStack(error: HttpErrorResponse): string {
-    // handle stack trace
-    return 'stack';
-}
+    getServerStack(error: HttpErrorResponse): string {
+        // handle stack trace
+        return 'stack';
+    }
 }

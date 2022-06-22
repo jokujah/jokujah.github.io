@@ -28,8 +28,7 @@
     </div>
     
       <!-- Graphs -->
-      <div>
-        <!-- Row 1 -->
+      <!-- <div>
         <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
           <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
             <div id="chart">
@@ -49,9 +48,103 @@
               ></apx-chart>
             </div>
           </div>
-          <!-- <div class="flex bg-white">
-          </div> -->
+        </div>        
+      </div> -->
+
+
+      <div class="mt-4 mb-4">
+        <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">
+          <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+            <div *ngIf="!isLoading">
+              <div class="font-bold mb-4">Top Value Procurements Awarded to Suspended Providers</div>
+              <div *ngIf="topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                          Subject of Procurement
+                        </th>
+                        <th scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Provider                            
+                          </span>
+                        </th>
+                        <th (click)="sortTable(2,'myTable2')" scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Contract Value(UGX)
+                            <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
+                            <span class="ml-2 flex-none rounded text-gray-400 ">
+                              <!-- Heroicon name: solid/chevron-down -->
+                              <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clip-rule="evenodd" />
+                              </svg>
+    
+                              <svg *ngIf="dir === 'desc'" xmlns="http://www.w3.org/2000/svg"
+                                class="ml-2 h-5 w-5 flex-none rounded text-gray-400" fill="currentColor" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                              </svg>
+                            </span>
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <!-- Odd row -->
+                      <tr *ngFor="let item of topTenHighestContracts">
+                        <td class="whitespace-normal py-2 pl-4 pr-3   sm:pl-6">
+                          <div class="flex flex-col items-left">
+                            <span
+                              class="text-sm font-medium text-gray-900">{{item?.subjectOfProcurement?item?.subjectOfProcurement:'Unknown'}}</span>
+                              <span
+                              class="text-xs font-medium text-gray-700">{{item?.pdeName?item?.pdeName:'Unknown'}}</span>
+                          </div>
+                        </td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.providerName}}</td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.contractAmount}}</td>
+                      </tr>
+    
+                      <!-- More people... -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div *ngIf="!topTenHighestContracts || topTenHighestContracts <= 0">
+                <app-empty-state></app-empty-state>
+              </div>
+            </div>
+            <span *ngIf="isLoading">
+              <app-loader></app-loader>
+            </span>
+          </div>
+    
+          <div
+            class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-0 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">
+            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div *ngIf="!isLoading && (topTenHighestContracts && topTenHighestContracts.length>0)" class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Value Contract Awarded</span>
+                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-4">UGX {{
+                  highestValue | numberSuffix:1}}</span>
+                <span class="text-xs  md:text-sm font-normal text-gray-600 text-center flex ">{{highestSubjectOfProcurement ?
+                  highestSubjectOfProcurement : 'Unknown'}}</span>
+                  <span class="text-xs  md:text-sm font-normal text-gray-600 text-center flex ">{{highestProviderName ?
+                    highestProviderName : 'Unknown'}}</span>
+              </div>
+              <span *ngIf="isLoading">
+                <app-loader></app-loader>
+              </span>
+              <span *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
+                <app-loader></app-loader>
+              </span>
+            </div>
+          </div>
         </div>
-        
       </div>
     </div>

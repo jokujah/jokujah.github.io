@@ -18,7 +18,7 @@ import {
   ApexGrid,
   ChartComponent
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -50,9 +50,16 @@ export class ProcurementsAwardedToSuspendedProvidersVisualsComponent implements 
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
+  dir;
+  sortTable = sortTable
+
   isLoading:boolean = false 
   cardValue2;
   cardValue1;
+  topTenHighestContracts: any;
+  highestValue: number;
+  highestSubjectOfProcurement: any;
+  highestProviderName: any;
 
   constructor(
     private toastr: ToastrService,
@@ -112,7 +119,12 @@ export class ProcurementsAwardedToSuspendedProvidersVisualsComponent implements 
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true   
+    this.isLoading=true  
+      
+    this.topTenHighestContracts = []
+    this.highestValue = null
+    this.highestSubjectOfProcurement = null
+    this.highestProviderName = null
 
     this.chart?.updateOptions({
       series: [],
@@ -168,6 +180,13 @@ export class ProcurementsAwardedToSuspendedProvidersVisualsComponent implements 
               contractValue.push(valueD)
               // actualAmount.push(valueF)
             });
+
+            this.topTenHighestContracts = data
+            console.log(data[0]?.contractAmount)
+            this.highestValue = sanitizeCurrencyToString((data[0]?.contractAmount)? (data[0]?.contractAmount):0)
+            this.highestSubjectOfProcurement = data[0]?.subjectOfProcurement?data[0]?.subjectOfProcurement:'Unknown'
+            this.highestProviderName = data[0]?.providerName?data[0]?.providerName:'Unknown'
+            
             this.chart?.updateOptions({
               series: [
                 {

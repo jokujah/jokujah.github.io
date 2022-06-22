@@ -51,7 +51,7 @@
             [tooltip]="chartOptionsFundingSource.tooltip" [noData]="chartOptionsFundingSource.noData" [plotOptions]="chartOptionsFundingSource.plotOptions"></apx-chart>
         </div>
         <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
+          <app-loader></app-loader>
         </span>
         <span *ngIf="!isLoading && !chartOptionsFundingSource.series">
           <app-empty-state></app-empty-state>
@@ -103,7 +103,7 @@
             </div>
           </div>
           <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
+            <app-loader></app-loader>
           </span>
           <span *ngIf="!isLoading && (!contractsByFundingSource || contractsByFundingSource.length <= 0)">
             <app-empty-state></app-empty-state>
@@ -124,10 +124,10 @@
             [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
         </div>
         <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
+          <app-loader></app-loader>
         </span>
         <span *ngIf="!isLoading && !chartOptionsProcurementType.series">
-          <app-loading-pulse></app-loading-pulse>
+          <app-loader></app-loader>
         </span>
       </div>
       <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
@@ -138,7 +138,7 @@
               numberSuffix:1}}</span>
           </div>
           <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
+            <app-loader></app-loader>
           </span> 
           <span *ngIf="!isLoading && !averageValueOfContracts">
             <app-empty-state></app-empty-state>
@@ -155,7 +155,7 @@
               ? topTenHighestContracts[0]?.subject_of_procurement : 'Unknown'}}</span>
           </div>
           <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
+            <app-loader></app-loader>
           </span>  
           <span *ngIf="!isLoading && ((topTenHighestContracts.length <= 0) || !topTenHighestContracts)">
             <app-empty-state></app-empty-state>
@@ -224,7 +224,7 @@
             </div>
           </div>
           <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
+            <app-loader></app-loader>
           </span>
           <span *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
             <app-empty-state></app-empty-state>
@@ -239,7 +239,7 @@
                 numberSuffix:1}}</span>
             </div>
             <span *ngIf="isLoading">
-              <app-loading-pulse></app-loading-pulse>
+              <app-loader></app-loader>
             </span>   
           </div>
           <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
@@ -253,7 +253,7 @@
                 ? topTenHighestContracts[0]?.subject_of_procurement : 'Unknown'}}</span>
             </div>
             <span *ngIf="isLoading">
-              <app-loading-pulse></app-loading-pulse>
+              <app-loader></app-loader>
             </span>  
           </div>
                  

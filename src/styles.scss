@@ -99,6 +99,14 @@ html {
     @apply max-w-full mx-auto
   }
 
+  .errorMatSnackBar{
+    @apply bg-rose-500
+  }
+
+  .warningMatSnackBar{
+    @apply bg-amber-500
+  }
+
 
 
 

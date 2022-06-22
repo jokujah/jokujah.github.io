@@ -100,7 +100,7 @@ export class SignedContractsVisualsComponent implements OnInit {
         if (response.data.length > 0) {
           this.isEmpty = false;
           this.numberOfContracts = data.numberOfSignedContracts
-          this.valueOfContracts = sanitizeCurrencyToString(data.totalValueOfSignedContracts)
+          this.valueOfContracts = sanitizeCurrencyToString(data?.actualCost?data?.actualCost:0)
           //this.allEvavluatedBidders = data.total_evaluated_bidders
         }else{
           this.isEmpty = true;
@@ -118,7 +118,9 @@ export class SignedContractsVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true   
+    this.isLoading=true  
+    
+    this.valueOfTopContracts = 0
 
     this.chart?.updateOptions({
       series: [],
@@ -144,6 +146,9 @@ export class SignedContractsVisualsComponent implements OnInit {
         let estimatedAmount = []
         let actualAmount = []
         let sortedData = []
+        this.topTenHighestContracts = []
+        this.highestSignedContractValue = null
+
 
         if(response.data.length > 0){
           this.isEmpty = false;

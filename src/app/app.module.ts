@@ -37,6 +37,7 @@ import { EmptyStateComponent } from './shared/empty-state/empty-state.component'
 import { LoaderComponent } from './shared/loader/loader.component';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { GlobalErrorHandler } from './utils/global-error-handler.provider';
+//import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar/snack-bar';
 //import { AnimatedDigitComponent } from './shared/animated-digit/animated-digit.component';
 
 @NgModule({
@@ -85,7 +86,11 @@ import { GlobalErrorHandler } from './utils/global-error-handler.provider';
     },
     { provide: SAVER, 
       useFactory: getSaver
-    }
+    },
+    // {
+    //   provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+    //   useValue: {duration: 5000}
+    // }
   ],
   bootstrap: [AppComponent]
 })
