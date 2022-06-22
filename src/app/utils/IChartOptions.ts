@@ -18,5 +18,5 @@ export type ChartOptions = {
   toolbar:any,
   legend: ApexLegend;
   noData:ApexNoData,
-  colors: string[];  
+  colors: string[]; 
 };

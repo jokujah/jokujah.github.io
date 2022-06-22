@@ -1,3 +1,4 @@
+import { actualRadialChart, initColumnChart, initRadialChart } from 'src/app/utils/chartsApex';
 import { PlaningAndForecastingReportService } from './../../../../services/PlaningCategory/planing-and-forecasting-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
@@ -18,27 +19,28 @@ import {
   ApexGrid,
   ChartComponent
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getDays, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
+import { ChartOptions } from 'src/app/utils/IChartOptions';
 
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  markers: ApexMarkers;
-  title: ApexTitleSubtitle;
-  fill: ApexFill;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  grid: ApexGrid;
-  colors: any;
-  toolbar: any;  
-  plotOptions: ApexPlotOptions;  
-  legend: ApexLegend;
-  noData:ApexNoData
-};
+// export type ChartOptions = {
+//   series: ApexAxisChartSeries;
+//   chart: ApexChart;
+//   dataLabels: ApexDataLabels;
+//   markers: ApexMarkers;
+//   title: ApexTitleSubtitle;
+//   fill: ApexFill;
+//   yaxis: ApexYAxis;
+//   xaxis: ApexXAxis;
+//   tooltip: ApexTooltip;
+//   stroke: ApexStroke;
+//   grid: ApexGrid;
+//   colors: any;
+//   toolbar: any;  
+//   plotOptions: ApexPlotOptions;  
+//   legend: ApexLegend;
+//   noData:ApexNoData
+// };
 
 @Component({
   selector: 'app-contracts-completed-on-time-visuals',
@@ -50,13 +52,20 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
+  @ViewChild("chartRadialBar") chartRadialBar: ChartComponent;
+  public chartOptionsRadialBar: Partial<ChartOptions>;
+
   isLoading:boolean = false 
   cardValue2;
   cardValue1;
   cardValue3: any;
   cardValue4: number;
 
+  dir
+  sortTable = sortTable
+
   isEmpty = true
+  completedOnTime: any =[];
 
   constructor(
     private toastr: ToastrService,
@@ -100,15 +109,17 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
           this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
           this.cardValue3 = data.numberOfContractsCompletedOnTime?data.numberOfContractsCompletedOnTime:0
           this.cardValue4 = data.valueOfContractsCompletedOnTime?sanitizeCurrencyToString(data.valueOfContractsCompletedOnTime):0
+
+          let series =[this.cardValue4,this.cardValue2]
+          let categories = ['Completed On Time','Other Contracts']
+          this.chartOptionsRadialBar = initColumnChart(series,categories,'% Completed On Time') 
+          //actualRadialChart(series,categories,'% Completed On Time')
+        }else{
+          this.chartOptionsRadialBar = initColumnChart([],['Completed On Time','Other Contracts'],'% Completed On Time')
         }
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -117,7 +128,8 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true   
+    this.isLoading=true 
+    this.completedOnTime = [];  
 
     this.chart?.updateOptions({
       series: [],
@@ -165,7 +177,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
             
             data.forEach(element => {
               console.log(element)
-              var valueC = (element?.contractValue)?(element?.contractValue.split(',')):['0'];
+              var valueC = (element?.contractAmount)?(element?.contractAmount.split(',')):['0'];
               var valueD = parseInt(valueC.join(''))
               // var valueE = element?.actualCost.split(',')
               // var valueF = parseInt(valueE.join(''))
@@ -173,6 +185,34 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
               contractValue.push(valueD)
               // actualAmount.push(valueF)
             });
+
+            this.completedOnTime = data.map((element)=>{
+              if (element.subjectOfProcurement) {
+                if (element?.plannedCompletionDate && element?.plannedCompletionDate) {
+                  return {
+                    ...element,
+                    daysLeft: getDays(element?.plannedCompletionDate, element?.actualEndDate)
+                  }
+                } else {
+                  return {
+                    ...element,
+                    daysLeft: null
+                  }
+                }
+              }
+            }).sort(function (a, b) {
+                var valueA = a?.daysLeft
+                var valueB = b?.daysLeft  
+                if (valueA > valueB) {
+                  return -1;
+                }
+                if (valueA < valueB) {
+                  return 1;
+                }
+                return 0;
+              })
+
+            console.log(this.completedOnTime)
             this.chart?.updateOptions({
               series: [
                 {
@@ -208,11 +248,6 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         this.chart?.updateOptions({
           series: [],
@@ -249,11 +284,21 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
         bar: {
           horizontal: true,
           columnWidth: "55%",
-          borderRadius: 2
+          borderRadius: 2,
+          dataLabels:{
+            position:'top'
+          }
         }
       },
       dataLabels: {
-        enabled: false
+        enabled: true,
+        style:{
+          colors:['#333']
+        },
+        offsetX:0,
+        formatter:function(val){
+          return NumberSuffix (val,0)
+        }
       },
       stroke: {
         show: true,
@@ -261,11 +306,23 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
         colors: ["transparent"]
       },
       xaxis: {
-        categories: []
+        categories: [],
+        title:{
+          text: 'Contract Value (UGX)'
+        },
+        // labels:{
+        //   formatter:function(val){
+        //     return NumberSuffix(val,0)
+        //   }
+        // }
       },
       yaxis: {
         title: {
-          text: "Providers "
+          text: "Subject of Procurement "
+        },
+        labels:{
+          minWidth:0,
+          maxWidth:700
         }
       },
       fill: {
@@ -274,7 +331,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
+            return "UGX " + NumberSuffix(val,0) ;
           }
         }
       },

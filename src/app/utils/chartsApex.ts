@@ -73,6 +73,52 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
     };
 }
 
+export function actualRadialChart(series?, categories?, title?):Partial<ChartOptions>{
+  return {
+    series: series,
+    chart: {
+      fontFamily:'Trebuchet MS',
+    height: 250,
+    type: 'radialBar',
+  },
+  plotOptions: {
+    radialBar: {
+      hollow: {
+        size: '70%',
+      } ,dataLabels: {
+        show: true,
+        name: {
+          offsetY: -10,
+          show: true,
+          color: '#888',
+          fontSize: '13px',
+        },
+        value: {
+          color: '#111',
+          fontSize: '30px',
+          show: true,
+        },
+      },
+    },
+  },
+  tooltip: {
+    enabled: true,
+    y: {
+      formatter: function (value) {
+        return `${value}%`;
+      },
+    },
+  },
+  title:{
+    text:title
+  },
+  stroke: {
+    lineCap: 'round',
+  },
+   labels: categories,
+  };
+}
+
 
 export function initColumnChart(series?: Array<any>, categories?: Array<any>, title?,xAxisTitle?,yAxisTitle?):Partial<ChartOptions>{
     console.log(series)
