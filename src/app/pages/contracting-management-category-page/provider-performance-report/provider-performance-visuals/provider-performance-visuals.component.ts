@@ -71,7 +71,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
   
   
 
-  topTenHighestContracts 
+  topTenHighestContracts = [] 
   highestAmmendmentValue: any;
   highestAmmendmentMethod: any;
   
@@ -90,14 +90,14 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
 
   submit(data) {
     this.getSummaryStats('provider-performance-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getVisualisation('provider-performance-contracts-by-type-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('provider-performance-contracts-by-method-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
     this.getSummaryStats('provider-performance-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getVisualisation('provider-performance-contracts-by-type-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('provider-performance-contracts-by-method-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
@@ -123,11 +123,6 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -137,6 +132,8 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
+
+    this.topTenHighestContracts = []
 
     this.chart?.updateOptions({
 
@@ -229,6 +226,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         //var value1,value2,labelName
         var value1 = [],value2 =[],value3 = [],value4 =[],labelName=[]
 
+        if(data.length > 0){
         switch (reportName) {
           case 'provider-performance-contracts-list-summary':           
             console.log("provider-performance-contracts-list-summary", data)
@@ -467,31 +465,30 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
               }
             });
 
-            this.chartRadar.updateOptions({
-              series: [
-                {
-                  name: "Contract Value",
-                  data: value1
-                },
-                {
-                  name: "Ammendments Value",
-                  data: value2
-                },
-              ],
-              xaxis: {
-                categories: labelName
-              }, 
-              noData: {
-                text: 'No Data Available ...'
-              }              
-            })
+            // this.chartRadar.updateOptions({
+            //   series: [
+            //     {
+            //       name: "Contract Value",
+            //       data: value1
+            //     },
+            //     {
+            //       name: "Ammendments Value",
+            //       data: value2
+            //     },
+            //   ],
+            //   xaxis: {
+            //     categories: labelName
+            //   }, 
+            //   noData: {
+            //     text: 'No Data Available ...'
+            //   }              
+            // })
 
             break;
-        }
+        }}
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
         this.isLoading = false
         this.chart?.updateOptions({
 
@@ -514,8 +511,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
           noData: {
             text: 'Error Loading Data...'
           }
-        })
-    
+        })    
         this.chartProcurementMethod?.updateOptions({
     
           series: [],
@@ -534,7 +530,6 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
             text: 'Error Loading Data...'
           }
         })
-
         this.chartProcurementMethodContractValue?.updateOptions({
     
           series: [],
@@ -553,7 +548,6 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
             text: 'Error Loading Data...'
           }
         })
-
         this.chartProcurementType?.updateOptions({
     
           series: [],

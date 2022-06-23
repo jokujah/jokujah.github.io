@@ -55,7 +55,7 @@ export class SignedContractsVisualsComponent implements OnInit {
   allEvavluatedBidders;
 
   //KPI
-  topTenHighestContracts : any;
+  topTenHighestContracts = [];
   highestSignedContractValue: any = 0;
   valueOfTopContracts: any = 0;
   

@@ -58,7 +58,7 @@ export class FrameWorkVisualsComponent implements OnInit {
   dir = 'asc'
   
 
-  topTenHighestContracts 
+  topTenHighestContracts = []
   highestFrameWorkContractValue
   
 

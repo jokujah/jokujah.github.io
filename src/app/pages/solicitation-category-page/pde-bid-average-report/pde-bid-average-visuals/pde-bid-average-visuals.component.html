@@ -29,7 +29,7 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats flex flex-row">
-          UGX &nbsp;<animated-digit [digit]="cardValue3"  [duration]="1000">
+          <animated-digit [digit]="cardValue3"  [duration]="1000">
             {{ cardValue3 | numberSuffix }}
           </animated-digit>
           </span>

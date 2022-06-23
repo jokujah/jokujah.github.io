@@ -108,11 +108,6 @@ export class DisposalVisualsComponent implements OnInit {
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -135,8 +130,11 @@ export class DisposalVisualsComponent implements OnInit {
             fontSize: "12px"
           },
           formatter: function(val) {
-            return NumberSuffix(val,2)}
+            return NumberSuffix(val,0)}
         }            
+      },
+      noData: {
+        text: 'Loading Data ...'
       },
     })
 
@@ -167,50 +165,68 @@ export class DisposalVisualsComponent implements OnInit {
             //   return 0;
             // })
 
-            for (let i = 0; i < 9; i++) {              
-              var valueC = data[i]?.reservePrice.split(',')
-              var valueD = parseInt(valueC.join(''))
-              var valueE = data[i]?.contractAmount.split(',')
-              var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(data[i].subjectOfProcurement))
-              reservePrice.push(valueD)
-              contractAmount.push(valueF)
-            }
-            
-            // data.forEach(element => {
-            //   var valueC = element?.reservePrice.split(',')
-            //   var valueD = parseInt(valueC.join(''))
-            //   var valueE = element?.contractAmount.split(',')
-            //   var valueF = parseInt(valueE.join(''))
-            //   subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
-            //   reservePrice.push(valueD)
-            //   contractAmount.push(valueF)
-            // });
-            this.chart?.updateOptions({
-              series: [
-                {
-                  name: "Reserve Price",
-                  data: reservePrice
-                },
-                // {
-                //   name: "Contract Amount",
-                //   type: "line",
-                //   data: contractAmount
-                // }
-              ],
-              xaxis: {
-                categories: subjectOfProcurement,
-                labels: {
-                  style: {
-                    fontSize: "12px"
-                  },
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
-                  }
-                }
-              },
-            })
+            if (data.length > 0) {
+              for (let i = 0; i < 9; i++) {
+                var valueC = data[i]?.reservePrice.split(',')
+                var valueD = parseInt(valueC.join(''))
+                var valueE = data[i]?.contractAmount.split(',')
+                var valueF = parseInt(valueE.join(''))
+                subjectOfProcurement.push(capitalizeFirstLetter(data[i].subjectOfProcurement))
+                reservePrice.push(valueD)
+                contractAmount.push(valueF)
+              }
 
+              // data.forEach(element => {
+              //   var valueC = element?.reservePrice.split(',')
+              //   var valueD = parseInt(valueC.join(''))
+              //   var valueE = element?.contractAmount.split(',')
+              //   var valueF = parseInt(valueE.join(''))
+              //   subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
+              //   reservePrice.push(valueD)
+              //   contractAmount.push(valueF)
+              // });
+              this.chart?.updateOptions({
+                series: [
+                  {
+                    name: "Reserve Price",
+                    data: reservePrice
+                  },
+                  // {
+                  //   name: "Contract Amount",
+                  //   type: "line",
+                  //   data: contractAmount
+                  // }
+                ],
+                xaxis: {
+                  categories: subjectOfProcurement,
+                  labels: {
+                    style: {
+                      fontSize: "12px"
+                    },
+                    formatter: function (val) {
+                      return NumberSuffix(val, 2)
+                    }
+                  }
+                },
+              })
+            }else{
+              this.chart?.updateOptions({
+                series: [],
+                xaxis: {
+                  categories:[],
+                  labels: {
+                    style: {
+                      fontSize: "12px"
+                    },
+                    formatter: function(val) {
+                      return NumberSuffix(val,0)}
+                  }            
+                },
+                noData:{
+                  text:'There is no data available, Try changing the search filter'
+                }
+              })
+            }
             break;
           
           }
@@ -218,11 +234,22 @@ export class DisposalVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
+        this.chart?.updateOptions({
+          series: [],
+          xaxis: {
+            categories:[],
+            labels: {
+              style: {
+                fontSize: "12px"
+              },
+              formatter: function(val) {
+                return NumberSuffix(val,0)}
+            }            
+          },
+          noData:{
+            text:'Error Loading Data , Reload to retrieve data'
+          }
+        })
         this.isLoading = false
         console.log(error)
         throw error
@@ -271,12 +298,12 @@ export class DisposalVisualsComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
+            return "UGX " + NumberSuffix(val,1) ;
           }
         }
       },
       noData: {
-        text: 'No Data Available ...'
+        text: 'Loading Data ...'
       },
       title: {
         text: "Top 10 Disposal Contracts",

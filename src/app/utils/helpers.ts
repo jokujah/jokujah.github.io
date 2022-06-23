@@ -89,7 +89,7 @@ export function addArrayValues(data) {
 
     if (Number.isNaN(input) || (input < 1000 && input >= 0) || !isNumeric(input) || (input < 0 && input > -1000)) {
       if (!!args && isNumeric(input) && !(input < 0) && input != 0) {
-        return input.toFixed(args);
+        return checkIfNumberAfterDecimalPointIsZero(input.toFixed(args),args);
       } else {
         return input;
       }
@@ -99,12 +99,19 @@ export function addArrayValues(data) {
       if (input > 1000000000000) {
         exp = Math.floor(Math.log(input) / Math.log(1000000000000));
 
-        return (input / Math.pow(1000000000000, exp)).toFixed(args) + "T";
+        return checkIfNumberAfterDecimalPointIsZero(
+
+          (input / Math.pow(1000000000000, exp)).toFixed(args)
+
+          ,args
+          ) + "T";
       }
       else if (input < 1000000000000) {
       exp = Math.floor(Math.log(input) / Math.log(1000));
 
-      return `${(input / Math.pow(1000, exp)).toFixed(args)}${suffixes[exp - 1]}`;
+      return checkIfNumberAfterDecimalPointIsZero(
+        ((input / Math.pow(1000, exp)).toFixed(args)),args
+        ) + suffixes[exp - 1];
     }
     } else {
       input = input * -1;
@@ -225,6 +232,22 @@ var Difference_In_Time = date1.getTime() - date2.getTime();
 var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
 return Difference_In_Days
+}
+
+
+function checkIfNumberAfterDecimalPointIsZero(numberToBeChanged , decimalPoints){
+  if(decimalPoints > 0 && decimalPoints < 2){
+    var splitNumber = numberToBeChanged.split('.')
+    var numbersAfterDecimal = splitNumber[1]
+
+    if(parseInt(numbersAfterDecimal) == 0){
+      return splitNumber[0]
+    }else {
+      return numberToBeChanged
+    }
+  }else{
+    return numberToBeChanged
+  }
 }
 
 

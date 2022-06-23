@@ -48,7 +48,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
   downloading = false
   isLoading:boolean = false
 
-  dir='asc'
+  dir
   sortTable = sortTable
 
 
@@ -99,20 +99,16 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
 
         var suspendedValues = [this.cardValue2 ,this.cardValue1]
 
-        this.chartPercentageSuspended.updateOptions({
-          series: suspendedValues,          
-          //labels: ["Suspended","Not Suspended"],          
-        })
+        // this.chartPercentageSuspended.updateOptions({
+        //   series: suspendedValues,          
+        //   //labels: ["Suspended","Not Suspended"],          
+        // })
         
         this.isLoading = false;
       },
       (error) => {
         console.log(error)
         this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         throw error
       }
     )
@@ -381,7 +377,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
     this.chartOptionsPercentageSuspended = {
       series: [],
       title: {
-        text: "% of Suppliers by Suspension ",
+        text: "% of Suspended Suppliers ",
         style: {
           fontSize: '16px',
           fontWeight: 'bold',

@@ -45,83 +45,90 @@
 
   <!-- Graphs -->
   <div>
-    <!-- Percentage Plan and Budget Status -->
-    <div
-      class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
-      <!-- Semi Circle -->
-      <div class="px-4 py-5 sm:p-6 min-w-1/2">
-        <apx-chart *ngIf="chartOptionsFinancialYearBudget?.series && !isLoadingBudgetSummary"
-          [series]="chartOptionsFinancialYearBudget.series"
-          [chart]="chartOptionsFinancialYearBudget.chart"
-          [plotOptions]="chartOptionsFinancialYearBudget.plotOptions"
-          [labels]="chartOptionsFinancialYearBudget.labels"
-          [fill]="chartOptionsFinancialYearBudget.fill"
-          [title]="chartOptionsFinancialYearBudget.title"
-          [noData]="chartOptionsFinancialYearBudget.noData">
-        </apx-chart>
-
-        <div *ngIf="isLoadingBudgetSummary">
-          <app-loader></app-loader>
-        </div>
-      </div>
-
-      <!-- Bar -->
-      <div class="px-4 py-5 sm:p-6 min-w-1/2">
-        <div>
-          <apx-chart *ngIf="chartOptionsPlannedVsSpent?.series && !isLoadingBudgetSummary"
-            [series]="chartOptionsPlannedVsSpent.series"
-            [chart]="chartOptionsPlannedVsSpent.chart"
-            [dataLabels]="chartOptionsPlannedVsSpent.dataLabels"
-            [plotOptions]="chartOptionsPlannedVsSpent.plotOptions"
-            [responsive]="chartOptionsPlannedVsSpent.responsive"
-            [xaxis]="chartOptionsPlannedVsSpent.xaxis"
-            [yaxis]="chartOptionsPlannedVsSpent.yaxis"
-            [legend]="chartOptionsPlannedVsSpent.legend"
-            [fill]="chartOptionsPlannedVsSpent.fill"
-            [tooltip]="chartOptionsPlannedVsSpent.tooltip"
-            [title]="chartOptionsPlannedVsSpent.title"
-            [labels]="chartOptionsPlannedVsSpent.labels"
-            [noData]="chartOptionsPlannedVsSpent.noData">
-          </apx-chart>
-
-          <div *ngIf="isLoadingBudgetSummary">
-            <app-loader></app-loader>
+    <div>
+      <!-- Row 1 -->
+      <div class="mt-4">
+        <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+          <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
+            <div class="flex flex-col px-2 py-2">
+              <apx-chart *ngIf="chartOptionsFinancialYearBudget?.series && !isLoadingBudgetSummary"
+                [series]="chartOptionsFinancialYearBudget.series"
+                [chart]="chartOptionsFinancialYearBudget.chart"
+                [plotOptions]="chartOptionsFinancialYearBudget.plotOptions"
+                [labels]="chartOptionsFinancialYearBudget.labels"
+                [fill]="chartOptionsFinancialYearBudget.fill"
+                [title]="chartOptionsFinancialYearBudget.title"
+                [noData]="chartOptionsFinancialYearBudget.noData">
+              </apx-chart>
+      
+              <div *ngIf="isLoadingBudgetSummary">
+                <app-loader></app-loader>
+              </div>
+            </div>
+          </div>
+  
+          <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
+            <!-- Bar -->
+            <div class="flex flex-col px-2 py-2">
+              <div>
+                <apx-chart *ngIf="chartOptionsPlannedVsSpent?.series && !isLoadingBudgetSummary"
+                  [series]="chartOptionsPlannedVsSpent.series" [chart]="chartOptionsPlannedVsSpent.chart"
+                  [dataLabels]="chartOptionsPlannedVsSpent.dataLabels" [plotOptions]="chartOptionsPlannedVsSpent.plotOptions"
+                  [responsive]="chartOptionsPlannedVsSpent.responsive" [xaxis]="chartOptionsPlannedVsSpent.xaxis"
+                  [yaxis]="chartOptionsPlannedVsSpent.yaxis" [legend]="chartOptionsPlannedVsSpent.legend"
+                  [fill]="chartOptionsPlannedVsSpent.fill" [tooltip]="chartOptionsPlannedVsSpent.tooltip"
+                  [title]="chartOptionsPlannedVsSpent.title" [labels]="chartOptionsPlannedVsSpent.labels"
+                  [noData]="chartOptionsPlannedVsSpent.noData">
+                </apx-chart>
+          
+                <div *ngIf="isLoadingBudgetSummary">
+                  <app-loader></app-loader>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div
-      class="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0">
-      <div class="px-4 py-5 sm:p-6 min-w-1/2">
-        <apx-chart *ngIf="chartOptionsType?.series && !isLoadingTypeSummary" [series]="chartOptionsType.series"
-          [chart]="chartOptionsType.chart" [labels]="chartOptionsType.labels" [responsive]="chartOptionsType.responsive"
-          [title]="chartOptionsType.title" [plotOptions]="chartOptionsType.plotOptions"
-          [tooltip]="chartOptionsType.tooltip" [legend]="chartOptionsType.legend" [noData]="chartOptionsType.noData">
-        </apx-chart>
-        <div *ngIf="isLoadingTypeSummary">
-          <app-loader></app-loader>
-        </div>
-      </div>
-      <div class="px-4 py-5 sm:p-6 min-w-1/2">
-        <apx-chart *ngIf="chartOptionsMethod?.series && !isLoadingMethodSummary"
-          [series]="chartOptionsMethod.series"
-          [chart]="chartOptionsMethod.chart"
-          [xaxis]="chartOptionsMethod.xaxis"
-          [title]="chartOptionsMethod.title"
-          [responsive]="chartOptionsMethod.responsive"
-          [tooltip]="chartOptionsMethod.tooltip"
-          [noData]="chartOptionsMethod.noData"></apx-chart>
-        <div *ngIf="isLoadingMethodSummary">
-          <app-loader></app-loader>
+    <div>
+      <!-- Row 2 -->
+      <div class="mt-4">
+        <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+          <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
+            <div class="flex flex-col px-2 py-2">
+              <apx-chart *ngIf="chartOptionsType?.series && !isLoadingTypeSummary" [series]="chartOptionsType.series"
+                [chart]="chartOptionsType.chart" [labels]="chartOptionsType.labels" [responsive]="chartOptionsType.responsive"
+                [title]="chartOptionsType.title" [plotOptions]="chartOptionsType.plotOptions"
+                [tooltip]="chartOptionsType.tooltip" [legend]="chartOptionsType.legend" [noData]="chartOptionsType.noData">
+              </apx-chart>
+              <div *ngIf="isLoadingTypeSummary">
+                <app-loader></app-loader>
+              </div>
+            </div>
+          </div>
+  
+          <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
+            <div class="flex flex-col px-2 py-2">
+              <apx-chart *ngIf="chartOptionsMethod?.series && !isLoadingMethodSummary"
+                [series]="chartOptionsMethod.series"
+                [chart]="chartOptionsMethod.chart"
+                [xaxis]="chartOptionsMethod.xaxis"
+                [title]="chartOptionsMethod.title"
+                [responsive]="chartOptionsMethod.responsive"
+                [tooltip]="chartOptionsMethod.tooltip"
+                [noData]="chartOptionsMethod.noData"></apx-chart>
+              <div *ngIf="isLoadingMethodSummary">
+                <app-loader></app-loader>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Row 1 -->
+    <!-- Row 3 -->
     <div class="mt-4 mb-4">
       <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4 ">
-        <div class="flex flex-col sm:space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full ">
+        <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full ">
           <div id="chartBudgetStatus" class="md:w-3/4 w-full p-5 overflow-hidden bg-white rounded-lg shadow">
             <apx-chart #chartBudgetStatus    
               [series]="chartOptionsBudgetStatus.series"

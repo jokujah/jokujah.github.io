@@ -488,7 +488,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                   offsetY: 0,
                   floating: false,
                   style: {
-                    fontSize: '18px',
+                    fontSize: '16px',
                     fontWeight: 'bold',
                     fontFamily: 'Trebuchet MS',
                   },
@@ -1054,7 +1054,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         floating: false,
         style: {
-          fontSize: '18px',
+          fontSize: '16px',
           fontWeight: 'bold',
           fontFamily: 'Trebuchet MS',
         },
@@ -1119,84 +1119,84 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       },
       labels: types,
-      responsive: [
-        {
-          breakpoint: 320,
-          options: {
-            chart: {
-              width: 260,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 280,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '12px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 640,
-          options: {
-            chart: {
-              width: 360,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '15px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              width: 380,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1024,
-          options: {
-            chart: {
-              width: 400,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1280,
-          options: {
-            chart: {
-              width: 480,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+      // responsive: [
+      //   {
+      //     breakpoint: 320,
+      //     options: {
+      //       chart: {
+      //         width: 260,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 280,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '12px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 640,
+      //     options: {
+      //       chart: {
+      //         width: 360,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '15px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 768,
+      //     options: {
+      //       chart: {
+      //         width: 380,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1024,
+      //     options: {
+      //       chart: {
+      //         width: 400,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1280,
+      //     options: {
+      //       chart: {
+      //         width: 480,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      // ],
       noData: {
         text: 'No Data Available',
         align: 'center',
@@ -1240,7 +1240,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         floating: false,
         style: {
-          fontSize: '18px',
+          fontSize: '16px',
           fontWeight: 'bold',
           fontFamily: 'Trebuchet MS',
         },
@@ -1255,84 +1255,84 @@ export class VisualsComponent implements OnInit, OnDestroy {
           offsetY: 20,
         },
       },
-      responsive: [
-        {
-          breakpoint: 320,
-          options: {
-            chart: {
-              width: 260,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 280,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '12px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 640,
-          options: {
-            chart: {
-              width: 360,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '15px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              width: 380,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1024,
-          options: {
-            chart: {
-              width: 400,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1280,
-          options: {
-            chart: {
-              width: 480,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+      // responsive: [
+      //   {
+      //     breakpoint: 320,
+      //     options: {
+      //       chart: {
+      //         width: 260,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 280,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '12px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 640,
+      //     options: {
+      //       chart: {
+      //         width: 360,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '15px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 768,
+      //     options: {
+      //       chart: {
+      //         width: 380,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1024,
+      //     options: {
+      //       chart: {
+      //         width: 400,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1280,
+      //     options: {
+      //       chart: {
+      //         width: 480,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      // ],
       noData: {
         text: 'No Data Available',
         align: 'center',
@@ -1397,90 +1397,90 @@ export class VisualsComponent implements OnInit, OnDestroy {
         offsetY: 0,
         floating: false,
         style: {
-          fontSize: '18px',
+          fontSize: '16px',
           fontWeight: 'bold',
           fontFamily: 'Trebuchet MS',
         },
       },
       labels: ['% of Budget Spent'],
-      responsive: [
-        {
-          breakpoint: 320,
-          options: {
-            chart: {
-              width: 260,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 280,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '12px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 640,
-          options: {
-            chart: {
-              width: 360,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '15px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              width: 380,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1024,
-          options: {
-            chart: {
-              width: 400,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1280,
-          options: {
-            chart: {
-              width: 480,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+      // responsive: [
+      //   {
+      //     breakpoint: 320,
+      //     options: {
+      //       chart: {
+      //         width: 260,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 280,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '12px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 640,
+      //     options: {
+      //       chart: {
+      //         width: 360,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '15px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 768,
+      //     options: {
+      //       chart: {
+      //         width: 380,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1024,
+      //     options: {
+      //       chart: {
+      //         width: 400,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1280,
+      //     options: {
+      //       chart: {
+      //         width: 480,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      // ],
       noData: {
         text: 'No Data Available',
         align: 'center',
@@ -1512,14 +1512,14 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       ],
       title: {
-        text: 'Planned Vs Actual Spent Budget by Financial Year',
+        text: 'Planned Vs Spent by Financial Year',
         align: 'center',
         margin: 2,
         offsetX: 0,
         offsetY: 0,
         floating: false,
         style: {
-          fontSize: '18px',
+          fontSize: '16px',
           fontWeight: 'bold',
           fontFamily: 'Trebuchet MS',
         },
@@ -1585,84 +1585,84 @@ export class VisualsComponent implements OnInit, OnDestroy {
         position: 'bottom',
         // offsetY: 10
       },
-      responsive: [
-        {
-          breakpoint: 320,
-          options: {
-            chart: {
-              width: 260,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 280,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '12px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 640,
-          options: {
-            chart: {
-              width: 360,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '15px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              width: 380,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1024,
-          options: {
-            chart: {
-              width: 400,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1280,
-          options: {
-            chart: {
-              width: 480,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+      // responsive: [
+      //   {
+      //     breakpoint: 320,
+      //     options: {
+      //       chart: {
+      //         width: 260,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 280,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '12px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 640,
+      //     options: {
+      //       chart: {
+      //         width: 360,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '15px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 768,
+      //     options: {
+      //       chart: {
+      //         width: 380,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1024,
+      //     options: {
+      //       chart: {
+      //         width: 400,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1280,
+      //     options: {
+      //       chart: {
+      //         width: 480,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      // ],
       noData: {
         text: 'No Data Available',
         align: 'center',
