@@ -98,7 +98,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         
-        this.cardValue1 = data.numberOfContracts?data.numberOfContracts:0
+        this.cardValue1 = data.numberOfContracts?sanitizeCurrencyToString(data.numberOfContracts):0
         this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
         //this.allEvavluatedBidders = data.total_evaluated_bidders
 

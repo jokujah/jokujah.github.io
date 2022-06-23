@@ -109,7 +109,7 @@ export class MicroProcurementVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.numberOfContracts = data.numberOfProcurements ? data.numberOfProcurements : 0
+          this.numberOfContracts = data.numberOfProcurements ? sanitizeCurrencyToString(data.numberOfProcurements) : 0
           this.valueOfContracts = data.contractValue ? sanitizeCurrencyToString(data.contractValue) : 0
           //this.allEvavluatedBidders = data.total_evaluated_bidders
         }

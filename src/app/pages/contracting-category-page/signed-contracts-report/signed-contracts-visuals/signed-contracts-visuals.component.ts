@@ -99,7 +99,7 @@ export class SignedContractsVisualsComponent implements OnInit {
         let data = response.data[0]
         if (response.data.length > 0) {
           this.isEmpty = false;
-          this.numberOfContracts = data.numberOfSignedContracts
+          this.numberOfContracts = sanitizeCurrencyToString(data?.numberOfSignedContracts?data?.numberOfSignedContracts:0)
           this.valueOfContracts = sanitizeCurrencyToString(data?.actualCost?data?.actualCost:0)
           //this.allEvavluatedBidders = data.total_evaluated_bidders
         }else{

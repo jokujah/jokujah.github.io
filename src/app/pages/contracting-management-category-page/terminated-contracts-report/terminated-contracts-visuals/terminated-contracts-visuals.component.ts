@@ -109,7 +109,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.noOfTerminatedContracts?data.noOfTerminatedContracts:0
+          this.cardValue1 = data.noOfTerminatedContracts?sanitizeCurrencyToString(data.noOfTerminatedContracts):0
           this.cardValue2 = data.contractValue?sanitizeCurrencyToString(data.contractValue):0
           this.cardValue3 = data.costResultingFromTermination?sanitizeCurrencyToString(data.costResultingFromTermination):0
           this.chartTerminated?.updateOptions({

@@ -95,7 +95,7 @@ export class CancelledTenderVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.noOfCancelledTenders?data.noOfCancelledTenders:0
+          this.cardValue1 = data.noOfCancelledTenders?sanitizeCurrencyToString(data.noOfCancelledTenders):0
           this.cardValue2 = data.totalContractValue?sanitizeCurrencyToString(data.totalContractValue):0
           //this.allEvavluatedBidders = data.total_evaluated_bidders
         }

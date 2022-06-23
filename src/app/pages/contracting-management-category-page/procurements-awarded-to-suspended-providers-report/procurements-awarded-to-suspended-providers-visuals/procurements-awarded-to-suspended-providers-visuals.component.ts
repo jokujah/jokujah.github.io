@@ -99,7 +99,7 @@ export class ProcurementsAwardedToSuspendedProvidersVisualsComponent implements 
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.noOfContracts?data.noOfContracts:0
+          this.cardValue1 = data.noOfContracts?sanitizeCurrencyToString(data.noOfContracts):0
           this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
           //this.allEvavluatedBidders = data.total_evaluated_bidders
         }
@@ -182,8 +182,7 @@ export class ProcurementsAwardedToSuspendedProvidersVisualsComponent implements 
             });
 
             this.topTenHighestContracts = data
-            console.log(data[0]?.contractAmount)
-            this.highestValue = sanitizeCurrencyToString((data[0]?.contractAmount)? (data[0]?.contractAmount):0)
+            this.highestValue = (data[0]?.contractAmount)? sanitizeCurrencyToString((data[0]?.contractAmount)):0
             this.highestSubjectOfProcurement = data[0]?.subjectOfProcurement?data[0]?.subjectOfProcurement:'Unknown'
             this.highestProviderName = data[0]?.providerName?data[0]?.providerName:'Unknown'
             

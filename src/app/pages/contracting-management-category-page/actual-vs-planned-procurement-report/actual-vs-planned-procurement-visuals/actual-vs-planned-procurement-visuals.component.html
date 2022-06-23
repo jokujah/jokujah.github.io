@@ -2,38 +2,32 @@
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
       <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-        <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{plannedNumberOfContracts | numberSuffix:1}}</span>
-          <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
-          </span>
-          <span class="statsText">Planned Procurements</span>
-  
-        </div>
-  
-        <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{plannedValueOfContracts | numberSuffix:1 }}</span>
-          <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
-          </span>
-          <span class="statsText">Planned Procurements Value</span>
-        </div>
+        <app-stats-card 
+        [title]="'Planned Procurements'" 
+        [isLoading]="isLoading" 
+        [value]="plannedNumberOfContracts"
+      ></app-stats-card>
 
-        <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats"> {{actualNumberOfContracts | numberSuffix:1 }}</span>
-          <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
-          </span>
-          <span class="statsText">Actual Procurements  </span>
-        </div>
-    
-        <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats"> UGX {{actualValueOfContracts | numberSuffix:1 }}</span>
-          <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
-          </span>
-          <span class="statsText">Actual Procurements Value </span>
-        </div>
+      <app-stats-card 
+        [title]="'Planned Procurements Value'" 
+        [isLoading]="isLoading" 
+        [value]="plannedValueOfContracts"
+        [prefix]="'UGX'"
+      ></app-stats-card>
+
+      <app-stats-card 
+          [title]="'Actual Procurements'" 
+          [isLoading]="isLoading" 
+          [value]="actualNumberOfContracts"
+        ></app-stats-card>
+
+        <app-stats-card 
+          [title]="'Actual Procurements Value '" 
+          [isLoading]="isLoading" 
+          [value]="actualValueOfContracts"
+          [prefix]="'UGX'"
+        ></app-stats-card>
+
   
       </div>
     </div>
@@ -45,7 +39,7 @@
 
 
         <div class="mt-4 mb-4">
-          <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">         
+          <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
             <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
               <div *ngIf="chartOptions && !isLoading" id="chart">
                 <apx-chart 
@@ -71,8 +65,8 @@
               </div>
             </div>
             
-            <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
-              <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
+            <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+              <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
                 <div *ngIf="!isLoading" class="flex flex-col items-center">
                   <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Actual Contract
                     Value</span>
@@ -83,7 +77,7 @@
                   <app-loader></app-loader>
                 </span>   
               </div>
-              <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
+              <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
                 <div *ngIf="!isLoading" class="flex flex-col items-center">
                   <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Planned Contract
                     Value</span>

@@ -3,32 +3,18 @@
 
   <div>
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfPlannedContracts |
-          numberSuffix:1}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="py-1 text-sm font-medium text-gray-500 truncate">Procurements</span>
-      </div>
+        <app-stats-card 
+          [title]="'Procurements'" 
+          [isLoading]="isLoading" 
+          [value]="numberOfPlannedContracts"
+        ></app-stats-card>
 
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">UGX {{totalValueofPlannedContracts |
-          numberSuffix:
-          2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="overflow-hidden text-sm font-medium text-gray-500 text-ellipsis">Procurements Contract Value</span>
-      </div>
-
-      <!-- <div class="statsCard">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfRegisteredEntities}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="py-1 text-sm font-medium text-gray-500 truncate ">Bids Responded To</span>
-      </div> -->
+        <app-stats-card 
+          [title]="'Procurements Contract Value'" 
+          [isLoading]="isLoading" 
+          [value]="totalValueofPlannedContracts"
+          [prefix]="'UGX'"
+        ></app-stats-card>
 
     </div>
   </div>

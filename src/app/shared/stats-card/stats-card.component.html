@@ -1,0 +1,10 @@
+<div class="statsCard">
+    <span *ngIf="!isLoading" class="stats flex flex-row">
+        <span *ngIf="prefix">{{prefix}}&nbsp;</span>
+        <animated-digit [digit]="value" [duration]="1000"></animated-digit>
+    </span>
+    <span *ngIf="isLoading">
+        <app-loading-pulse></app-loading-pulse>
+    </span>
+    <span class="statsText">{{title}}</span>
+</div>

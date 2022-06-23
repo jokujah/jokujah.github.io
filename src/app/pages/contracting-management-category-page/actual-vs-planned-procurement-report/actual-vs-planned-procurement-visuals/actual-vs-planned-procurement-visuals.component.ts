@@ -108,9 +108,9 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         console.log('Datat in if',data)
 
         this.actualNumberOfContracts = (data?.actualNumber) ? sanitizeCurrencyToString(data.actualNumber) : 0
-        this.actualValueOfContracts = (data?.actualValueOfContracts) ? NumberSuffix(sanitizeCurrencyToString(data?.actualValueOfContracts), 1) : 0
+        this.actualValueOfContracts = (data?.actualValueOfContracts) ? sanitizeCurrencyToString(data?.actualValueOfContracts) : 0
         this.plannedNumberOfContracts = (data?.plannedNumber) ? sanitizeCurrencyToString(data.plannedNumber) : 0
-        this.plannedValueOfContracts = (data?.plannedValueOfContracts) ? NumberSuffix(sanitizeCurrencyToString(data?.plannedValueOfContracts), 1) : 0
+        this.plannedValueOfContracts = (data?.plannedValueOfContracts) ? sanitizeCurrencyToString(data?.plannedValueOfContracts) : 0
 
         let averagePlanned = sanitizeCurrencyToString(data?.plannedValueOfContracts) / sanitizeCurrencyToString(data?.plannedNumber)
         let averageActual = sanitizeCurrencyToString(data?.actualValueOfContracts) / sanitizeCurrencyToString(data?.actualNumber)

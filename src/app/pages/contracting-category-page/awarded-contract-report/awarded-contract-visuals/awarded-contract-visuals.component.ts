@@ -114,7 +114,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         let data = response.data[0]
         
         if (response.data.length > 0) {
-          this.numberOfContracts = data?.numberOfContracts ? data?.numberOfContracts : 0
+          this.numberOfContracts = data?.numberOfContracts ? sanitizeCurrencyToString(data?.numberOfContracts) : 0
           this.valueOfContracts = data?.valueOfContracts ? sanitizeCurrencyToString(data?.valueOfContracts) : 0
           this.averageValueOfContracts =  this.valueOfContracts/parseInt(this.numberOfContracts)
         }else{

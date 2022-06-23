@@ -125,9 +125,9 @@ export class CompletedContractsVisualsComponent implements OnInit {
         let data = response.data[0]
         
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfContracts ? data.numberOfContracts : 0
+          this.cardValue1 = data.numberOfContracts ? sanitizeCurrencyToString(data.numberOfContracts) : 0
           this.cardValue2 = data.totalActualCost ? sanitizeCurrencyToString(data.totalActualCost) : 0
-          this.cardValue3 = data.noOfCompletedContracts ? data.noOfCompletedContracts : 0
+          this.cardValue3 = data.noOfCompletedContracts ? sanitizeCurrencyToString(data.noOfCompletedContracts) : 0
           this.cardValue4 = data.totalValueOfCompletedContracts ? sanitizeCurrencyToString(data.totalValueOfCompletedContracts) : 0
           this.averageValueOfContracts = sanitizeCurrencyToString(data.totalValueOfCompletedContracts)/data.noOfCompletedContracts
         }

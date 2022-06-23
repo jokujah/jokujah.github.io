@@ -105,9 +105,9 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfContracts?data.numberOfContracts:0
+          this.cardValue1 = data.numberOfContracts?sanitizeCurrencyToString(data.numberOfContracts):0
           this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
-          this.cardValue3 = data.numberOfContractsCompletedOnTime?data.numberOfContractsCompletedOnTime:0
+          this.cardValue3 = data.numberOfContractsCompletedOnTime?sanitizeCurrencyToString(data.numberOfContractsCompletedOnTime):0
           this.cardValue4 = data.valueOfContractsCompletedOnTime?sanitizeCurrencyToString(data.valueOfContractsCompletedOnTime):0
 
           let series =[this.cardValue4,this.cardValue2]

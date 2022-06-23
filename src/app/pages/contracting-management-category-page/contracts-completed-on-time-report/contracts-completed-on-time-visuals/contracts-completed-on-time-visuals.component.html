@@ -2,38 +2,31 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
     <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">{{cardValue1}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Contracts </span>
+        <app-stats-card 
+          [title]="'Contracts'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue1"
+        ></app-stats-card>
 
-      </div>
+        <app-stats-card 
+          [title]="'Contract Value'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue2"
+          [prefix]="'UGX'"
+        ></app-stats-card>
 
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Contract Value</span>
-      </div>
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">{{cardValue3}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Completed On Time</span>
+        <app-stats-card 
+          [title]="'Completed On Time'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue3"
+        ></app-stats-card>
 
-      </div>
-
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{cardValue4 | numberSuffix: 2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Contract Value Completed On Time</span>
-      </div>
+        <app-stats-card 
+          [title]="'Contract Value Completed On Time'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue4"
+          [prefix]="'UGX'"
+        ></app-stats-card>
       <!--   
         <div class="statsCard">
           <span class="stats"> {{allEvavluatedBidders }}</span>
@@ -84,7 +77,7 @@
 
 
   <div class="mt-4 mb-4">
-    <div class="flex flex-col sm:space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full">
+    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full">
       <div class="md:w-3/4 flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
         <div *ngIf="!isLoading && completedOnTime.length > 0" class="w-full">
           <div class="font-bold mb-4">Top Completed Contracts on Time</div>
@@ -147,8 +140,8 @@
       </div>
 
       <div
-        class="md:w-1/4 flex flex-row sm:place-content-between sm:space-x-8 md:space-x-0  md:grid md:grid-cols-1 md:content-between ">
-        <div class=" overflow-hidden p-5 bg-white rounded-lg shadow">
+        class="md:w-1/4 flex flex-row sm:place-content-between space-x-4 md:space-x-0  md:grid md:grid-cols-1 md:content-between ">
+        <div class=" overflow-hidden p-5 bg-white rounded-lg shadow w-full">
           <div *ngIf="!isLoading && completedOnTime.length > 0" class="flex flex-col items-center">
             <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Earliest Completed Contract</span>
             <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{completedOnTime[0]?.daysLeft}} Days</span>

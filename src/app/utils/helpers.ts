@@ -251,3 +251,34 @@ function checkIfNumberAfterDecimalPointIsZero(numberToBeChanged , decimalPoints)
 }
 
 
+export function visualisationMessages(type){
+  let message 
+
+  switch(type){
+    case  'empty':
+      message = 'No Data Available , Try changing the search or filter '
+      break
+    case  'error':
+        message = 'Error Loading Data ,Refresh or Try changing the search or filter '
+        break
+    case  'loading':
+      message = 'Loading Data ...'
+        break
+  }
+
+  return message
+}
+
+export function emptyVisualisation(type) {
+  return {
+    series: [],
+    xaxis: {
+      categories:[],
+    },
+    noData:{
+      text:visualisationMessages(type)
+    }      
+  }
+}
+
+

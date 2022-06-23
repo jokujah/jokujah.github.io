@@ -2,22 +2,18 @@
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
       <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-        <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">{{cardValue1}}</span>
-          <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
-          </span>
-          <span class="statsText">Contracts</span>
-  
-        </div>
-  
-        <div class="statsCard">
-          <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
-          <span *ngIf="isLoading">
-            <app-loading-pulse></app-loading-pulse>
-          </span>
-          <span class="statsText">Contract Value</span>
-        </div>
+       <app-stats-card 
+        [title]="'Contracts'" 
+        [isLoading]="isLoading" 
+        [value]="cardValue1"
+      ></app-stats-card>
+
+      <app-stats-card 
+        [title]="'Contract Value'" 
+        [isLoading]="isLoading" 
+        [value]="cardValue2"
+        [prefix]="'UGX'"
+      ></app-stats-card>
   <!--   
         <div class="statsCard">
           <span class="stats"> {{allEvavluatedBidders }}</span>
@@ -53,7 +49,7 @@
 
 
       <div class="mt-4 mb-4">
-        <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">
+        <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">
           <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
             <div *ngIf="!isLoading">
               <div class="font-bold mb-4">Top Value Procurements Awarded to Suspended Providers</div>
@@ -126,7 +122,7 @@
           </div>
     
           <div
-            class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-0 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">
+            class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">
             <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
               <div *ngIf="!isLoading && (topTenHighestContracts && topTenHighestContracts.length>0)" class="flex flex-col items-center">
                 <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Value Contract Awarded</span>

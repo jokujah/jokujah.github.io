@@ -2,30 +2,26 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
     <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">{{cardValue1}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Terminated Contracts</span>
+      
+      <app-stats-card 
+      [title]="'Terminated Contracts'" 
+      [isLoading]="isLoading" 
+      [value]="cardValue1"
+    ></app-stats-card>
 
-      </div>
+    <app-stats-card 
+    [title]="'Costs Resulting from Termination'" 
+    [isLoading]="isLoading" 
+    [value]="cardValue3"
+    [prefix]="'UGX'"
+  ></app-stats-card>
 
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{cardValue3 | numberSuffix: 2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Costs Resulting from Termination</span>
-      </div>
-
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats">UGX {{cardValue2 | numberSuffix: 2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Contract Value</span>
-      </div>
+    <app-stats-card 
+      [title]="'Contract Value'" 
+      [isLoading]="isLoading" 
+      [value]="cardValue2"
+      [prefix]="'UGX'"
+    ></app-stats-card>
 
       
     </div>

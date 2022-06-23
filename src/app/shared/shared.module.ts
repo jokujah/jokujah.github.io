@@ -1,3 +1,4 @@
+import { AnimatedDigitModule } from './animated-digit/animated-digit.module';
 // Import FusionCharts library and chart modules
 import * as FusionCharts from "fusioncharts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
@@ -5,8 +6,6 @@ import * as charts from "fusioncharts/fusioncharts.charts";
 import * as excel from "fusioncharts/fusioncharts.excelexport";
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AnimatedDigitComponent } from "./animated-digit/animated-digit.component";
 import { CommonModule } from '@angular/common';
 import { EmptyPageModule } from './empty-page/empty-page.module';
 import { EmptyStateComponent } from './empty-state/empty-state.component';
@@ -26,6 +25,7 @@ import { NumberSuffixPipe } from '../utils/pipes';
 import { VisualizationTableComponent } from './visualization-table/visualization-table.component';
 import { EmptyStateDetailedReportComponent } from "./empty-state-detailed-report/empty-state-detailed-report.component";
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { StatsCardModule } from "./stats-card/stats-card.module";
 
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 
@@ -37,7 +37,6 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     NumberSuffixPipe,
     EmptyStateComponent,
     LoaderComponent,
-    AnimatedDigitComponent,
     VisualizationTableComponent,
     EmptyStateDetailedReportComponent
   ],
@@ -47,6 +46,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     GoogleChartsModule,
     FilterModule,
     MatSelectSearchModule,
+    StatsCardModule,
+    AnimatedDigitModule
   ],
   exports:[
     FusionChartsModule,
@@ -63,11 +64,12 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     MatSelectSearchModule,
     EmptyStateComponent,
     LoaderComponent,
-    AnimatedDigitComponent,
     EmptyPageModule,
     GoTopButtonModule,
     EmptyStateDetailedReportComponent,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StatsCardModule,
+    AnimatedDigitModule
   ]
 })
 export class SharedModule { }
