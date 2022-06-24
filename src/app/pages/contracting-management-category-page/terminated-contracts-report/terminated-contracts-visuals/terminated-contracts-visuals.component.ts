@@ -20,7 +20,7 @@ import {
   ApexResponsive,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -100,32 +100,37 @@ export class TerminatedContractsVisualsComponent implements OnInit {
       series:[],
       labels: [],
       noData:{
-        text:'Loading Data'
+        text:visualisationMessages('loading')
       }
     })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
-        console.log(response)
+        console.log("Terminated",response)
         let data = response.data[0]
         if (response.data.length > 0) {
           this.cardValue1 = data.noOfTerminatedContracts?sanitizeCurrencyToString(data.noOfTerminatedContracts):0
           this.cardValue2 = data.contractValue?sanitizeCurrencyToString(data.contractValue):0
           this.cardValue3 = data.costResultingFromTermination?sanitizeCurrencyToString(data.costResultingFromTermination):0
+          if((this.cardValue2 <=0) && (this.cardValue3 <=0))
+          {
+            this.chartTerminated.updateOptions(emptyVisualisation('empty'))
+          }else{
           this.chartTerminated?.updateOptions({
             series:[this.cardValue2,this.cardValue3],
             labels: ['Contract Value','Termination Cost'],
             noData:{
-              text:'No Data Available ...'
+              text:visualisationMessages('empty')
             }
-          })
+          })}
+
         }else{
 
         this.chartTerminated?.updateOptions({
           series:[],
           labels: [],
           noData:{
-            text:'No Data Available ...'
+            text:visualisationMessages('empty')
           }
         })}
         
@@ -133,16 +138,11 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.chartTerminated?.updateOptions({
           series: [],
           labels: [],
           noData:{
-            text:'Error Loading Data ...'
+            text:visualisationMessages('error')
           }
         })
         this.isLoading = false
@@ -168,7 +168,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data...'
+        text: visualisationMessages('loading')
       },
     })
 
@@ -232,7 +232,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
                 }
               },
               noData: {
-                text: 'No Data Available...'
+                text: visualisationMessages('empty')
               },
             })
 
@@ -244,11 +244,6 @@ export class TerminatedContractsVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         this.chart?.updateOptions({
           series: [],
@@ -263,7 +258,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text: visualisationMessages('error')
           },
         })
         console.log(error)
@@ -408,7 +403,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         }
       ],
       noData:{
-        text:'Loading Data'
+        text:visualisationMessages('loading')
       },
       toolbar: {
         show: true,

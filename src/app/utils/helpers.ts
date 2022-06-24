@@ -256,13 +256,13 @@ export function visualisationMessages(type){
 
   switch(type){
     case  'empty':
-      message = 'No Data Available , Try changing the search or filter '
+      message = 'No Data For Financial Year '
       break
     case  'error':
-        message = 'Error Loading Data ,Refresh or Try changing the search or filter '
+        message = 'Error Loading Data , Refresh or Try changing the search or filter '
         break
     case  'loading':
-      message = 'Loading Data ...'
+      message = 'Loading Data , Please Wait'
         break
   }
 

@@ -36,11 +36,14 @@
             <span *ngIf="isLoading">
               <app-loader></app-loader>
             </span>
+            <span *ngIf="!isLoading && !chartOptions">
+              <app-empty-state></app-empty-state>
+            </span>
           </div>
         </div>
         <div class="flex">
           <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-            <div *ngIf="!isLoading" class="w-full">
+            <div *ngIf="!isLoading && (awardedContractsByContractType.length > 0)" class="w-full">
               <div class="font-bold mb-4">Number of Awarded Contracts By Contract Type</div>
               <div class="inline-block min-w-full align-middle ">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -86,16 +89,19 @@
             <span *ngIf="isLoading">
               <app-loader></app-loader>
             </span>
+            <span *ngIf="!isLoading && (!awardedContractsByContractType || awardedContractsByContractType.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
           </div>
         </div>
       </div>
 
       <div class="mt-4 mb-4">
-        <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">         
+        <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
           <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
-            <div *ngIf="!isLoading">
+            <div>
               <div class="font-bold mb-4">Awarded Contracts By Procurement Method</div>
-              <div class="inline-block min-w-full align-middle ">
+              <div *ngIf="!isLoading && awardedContractsByProcurementMethod.length > 0" class="inline-block min-w-full align-middle ">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                   <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
                     <thead class="bg-gray-50">
@@ -169,11 +175,14 @@
             <span *ngIf="isLoading">
               <app-loader></app-loader>
             </span>
+            <span *ngIf="!isLoading &&(!awardedContractsByProcurementMethod || awardedContractsByProcurementMethod.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
           </div>
           
-          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
-            <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
-              <div *ngIf="!isLoading" class="flex flex-col items-center">
+          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div *ngIf="!isLoading && numberOfContracts > 0" class="flex flex-col items-center">
                 <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Awarded Contract
                   Value</span>
                 <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{ averageValueOfContracts |
@@ -181,21 +190,29 @@
               </div>
               <span *ngIf="isLoading">
                 <app-loader></app-loader>
+              </span>  
+              <span *ngIf="!isLoading && ( !numberOfContracts || numberOfContracts <= 0  )">
+                <app-empty-state></app-empty-state>
               </span>   
             </div>
-            <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
-              <div *ngIf="!isLoading" class="flex flex-col items-center">
+            <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div  *ngIf="!isLoading && awardedContractsByProcurementMethod.length > 0" class="flex flex-col items-center">
                 <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Total Contract
                   Value</span>
                 <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
                   highestAwardedContractValue | numberSuffix:1}}</span>
-                <span
-                  class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{awardedContractsByProcurementMethod[0]?.procurementMethod
-                  ? awardedContractsByProcurementMethod[0]?.procurementMethod : 'Unknown'}}</span>
+                <span class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">
+                  {{
+                  (awardedContractsByProcurementMethod[0]?.procurementMethod)
+                  ? (awardedContractsByProcurementMethod[0]?.procurementMethod) : 'Unknown'
+                  }}</span>
               </div>
               <span *ngIf="isLoading">
                 <app-loader></app-loader>
-              </span>  
+              </span> 
+              <span *ngIf="!isLoading && (!awardedContractsByProcurementMethod || awardedContractsByProcurementMethod.length <= 0)">
+                <app-empty-state></app-empty-state>
+              </span> 
             </div>
                    
           </div>

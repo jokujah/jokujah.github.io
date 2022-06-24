@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexResponsive, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { DueDeligenceReportService } from 'src/app/services/EvaluationCategory/due-deligence-report.service';
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, emptyVisualisation, visualisationMessages } from 'src/app/utils/helpers';
 import ROP from './../../../../../assets/ROP.json'
 import { Toast, ToastrService } from 'ngx-toastr';
 
@@ -116,18 +116,13 @@ export class AwardedContractVisualsComponent implements OnInit {
         if (response.data.length > 0) {
           this.numberOfContracts = data?.numberOfContracts ? sanitizeCurrencyToString(data?.numberOfContracts) : 0
           this.valueOfContracts = data?.valueOfContracts ? sanitizeCurrencyToString(data?.valueOfContracts) : 0
-          this.averageValueOfContracts =  this.valueOfContracts/parseInt(this.numberOfContracts)
+          this.averageValueOfContracts =  (this.numberOfContracts > 0) ? this.valueOfContracts/this.numberOfContracts : 0
         }else{
           this.isEmpty = true;
         }
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -141,24 +136,7 @@ export class AwardedContractVisualsComponent implements OnInit {
     this.numberOfContracts = 0
     this.yearOfBids = 0
 
-    this.chartProcurementType?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      noData: {
-        text: 'Loading Data...'
-      }
-    })
+    this.chartProcurementType?.updateOptions(emptyVisualisation('loading'))
 
     console.log(reportName)
 
@@ -225,7 +203,7 @@ export class AwardedContractVisualsComponent implements OnInit {
             })
 
             this.awardedContractsByProcurementMethod = sortedData
-            this.highestAwardedContractValue = sanitizeCurrencyToString(this.awardedContractsByProcurementMethod[0]?.contractValue)
+            this.highestAwardedContractValue = (this.awardedContractsByProcurementMethod[0]?.contractValue)?sanitizeCurrencyToString(this.awardedContractsByProcurementMethod[0]?.contractValue):0
            
            
             break;
@@ -278,7 +256,7 @@ export class AwardedContractVisualsComponent implements OnInit {
                 }
               },
               noData: {
-                text: 'No Data Available...'
+                text: visualisationMessages('empty')
               }
             })
             break;
@@ -310,7 +288,7 @@ export class AwardedContractVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text: visualisationMessages('error')
           }
         })
         console.log(error)
@@ -388,6 +366,9 @@ export class AwardedContractVisualsComponent implements OnInit {
           tools: {
             download: true,
           }
+        },
+        noData:{
+          text:visualisationMessages('empty')
         }
       };
     }

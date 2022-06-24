@@ -169,7 +169,7 @@ export class ReportsComponent implements OnInit {
         value = 'Plan and Forecasting Report'
       break;
       case 'post-qualification' :
-        value = 'Due Deligence Report'
+        value = 'Due Diligence Report'
       break;
       case 'admin-review' :
         value = 'Administrative Review Report'

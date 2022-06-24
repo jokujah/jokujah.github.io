@@ -116,6 +116,7 @@ export class CancelledTenderVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true   
+    this.topCancelledContracts = []
 
     this.chart?.updateOptions({
       series: [],

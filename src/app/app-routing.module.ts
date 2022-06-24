@@ -213,7 +213,7 @@ const routes: Routes = [
             pathMatch: 'full',
           },
           {
-            path: 'due-deligence-report',
+            path: 'due-diligence-report',
             component:DueDeligenceReportComponent,
             children: [
               {

@@ -160,7 +160,7 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           title: {
             text: yAxisTitle
           },
-          showForNullSeries: false,
+          //showForNullSeries: false,
         },
         fill: {
           opacity: 1

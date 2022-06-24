@@ -67,6 +67,8 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts()
+    this.getSummaryStats('suspended-providers-summary',null,null)
+    this.getVisualisation('suspended-suppliers-list-summary',null,null) 
   }
 
   submit(data) {
@@ -93,8 +95,10 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfProvidersNotSuspended?parseInt(data.numberOfProvidersNotSuspended):0
           this.cardValue2 = data.numberOfSuspendedProviders?parseInt(data.numberOfSuspendedProviders):0  
-          this.cardValue3 = 97      
+          this.cardValue3 = 97   
+
           this.percentageOfSuspendedProviders = Math.floor((this.cardValue2/(this.cardValue1+this.cardValue2))*100 ) 
+
         }
 
         var suspendedValues = [this.cardValue2 ,this.cardValue1]
@@ -179,11 +183,6 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
       (error) => {
         console.log(error)
         this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        
         this.chartSuspendedProviders?.updateOptions({
     
           series: [],

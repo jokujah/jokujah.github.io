@@ -112,18 +112,18 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
         this.plannedNumberOfContracts = (data?.plannedNumber) ? sanitizeCurrencyToString(data.plannedNumber) : 0
         this.plannedValueOfContracts = (data?.plannedValueOfContracts) ? sanitizeCurrencyToString(data?.plannedValueOfContracts) : 0
 
-        let averagePlanned = sanitizeCurrencyToString(data?.plannedValueOfContracts) / sanitizeCurrencyToString(data?.plannedNumber)
-        let averageActual = sanitizeCurrencyToString(data?.actualValueOfContracts) / sanitizeCurrencyToString(data?.actualNumber)
+        let averagePlanned = (this.plannedNumberOfContracts > 0) ? this.plannedValueOfContracts / this.plannedNumberOfContracts:0
+        let averageActual = (this.actualNumberOfContracts > 0) ? this.actualValueOfContracts / this.actualNumberOfContracts:0
         
         this.averagePlannedValueOfContracts = averagePlanned
         this.averageActualValueOfContracts = averageActual
 
           let series = [{
             name: "Actual",
-            data: [sanitizeCurrencyToString(data?.actualValueOfContracts)]
+            data: [this.actualValueOfContracts]
           }, {
             name: "Planned",
-            data: [sanitizeCurrencyToString(data?.plannedValueOfContracts)]
+            data: [this.plannedValueOfContracts]
           }]        
 
         let seriesCategories = ['Actual Value','Planned Value']
