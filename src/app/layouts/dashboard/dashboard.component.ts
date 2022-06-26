@@ -228,17 +228,17 @@ export class DashboardComponent implements OnInit {
 
     this.pageHeading = `${words[2]}`
 
-    var splitPageHeading = this.pageHeading.split('-')
-    if (splitPageHeading.length > 0) {
-      let holdCapitalizedHeadings = []
-      console.log(splitPageHeading)
-      splitPageHeading.forEach(element => {
-        holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
-      })
-      this.pageHeadingDisplay = holdCapitalizedHeadings.join(' ')
-    } else {
-      this.pageHeadingDisplay = this.capitalizeFirstLetter(this.capitalizeFirstLetter)
-    }
+        var splitPageHeading = this.pageHeading.split('-')
+        if (splitPageHeading.length > 0) {
+          let holdCapitalizedHeadings = []
+          console.log(splitPageHeading)
+          splitPageHeading.forEach(element => {
+            holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
+          })
+          this.pageHeadingDisplay = holdCapitalizedHeadings.join(' ')
+        } else {
+          this.pageHeadingDisplay = this.capitalizeFirstLetter(this.capitalizeFirstLetter)
+        }
 
 
     this.reportName = `${words[3] ? words[3] : ''}`
@@ -246,16 +246,29 @@ export class DashboardComponent implements OnInit {
     if (this.reportName == 'reports-list') {
       this.reportName = 'All Reports'
     } else if ((this.reportName != '') || (this.reportName != undefined)) {
-      let splitName = [] = this.reportName.split('-')
 
-      if (splitName.length > 0) {
-        let holdCapitalizedHeadings = []
-        splitName.forEach(element => {
-          holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
-        })
-        this.reportName = splitName.join(' ')
-        this.reportNameDisplay = holdCapitalizedHeadings.join(' ')
+      switch (this.reportName) {
+        case 'pde-average-contract-value-report':
+          this.reportNameDisplay = "Number of Contracts, Total Value, Average Value by Procuring Entity"
+          break;
+        case 'procurement-method-average-contract-value-report':
+          this.reportNameDisplay = "Number of Contracts, Total Value, Average Value by Procuring Method"
+          break;
+        default:
+          let splitName = [] = this.reportName.split('-')
+
+          if (splitName.length > 0) {
+            let holdCapitalizedHeadings = []
+            splitName.forEach(element => {
+              holdCapitalizedHeadings.push(this.capitalizeFirstLetter(element))
+            })
+            this.reportName = splitName.join(' ')
+            this.reportNameDisplay = holdCapitalizedHeadings.join(' ')
+          }
       }
+
+
+
     }
   }
 

@@ -1,125 +1,176 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
-
   <div>
-    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
-      
-
+    <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+    
       <app-stats-card 
-          [title]="'Contracts'" 
-          [isLoading]="isLoading" 
-          [value]="numberOfPlannedContracts"
-        ></app-stats-card>
+      [title]="'Total Number Of Contracts'" 
+      [isLoading]="isLoading" 
+      [value]="cardValue1"
+    ></app-stats-card>
 
-        <app-stats-card 
-          [title]="'Contract Value'" 
-          [isLoading]="isLoading" 
-          [value]="totalValueofPlannedContracts"
-          [prefix]="'UGX'"
-        ></app-stats-card>
+    <app-stats-card 
+      [title]="'Total Contract Value'" 
+      [isLoading]="isLoading" 
+      [value]="cardValue2"
+      [prefix]="'UGX'"
+    ></app-stats-card>
+
+    <app-stats-card 
+    [title]="'Average Contract Value'" 
+    [isLoading]="isLoading" 
+    [value]="cardValue4"
+    [prefix]="'UGX'"
+  ></app-stats-card>
+
+
     </div>
   </div>
 
-  <!-- Graphs -->
-  <div *ngIf="!isEmpty">
-    <!-- Row 1 -->
-    <div class="mt-4 ">
-      <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
-            <!-- <div *ngIf="!isLoading"> -->
-            <div id="chartBudgetStatus">
-              <apx-chart #chartBudgetStatus [series]="chartOptionsBudgetStatus.series"
-                [chart]="chartOptionsBudgetStatus.chart" [dataLabels]="chartOptionsBudgetStatus.dataLabels"
-                [plotOptions]="chartOptionsBudgetStatus.plotOptions" [title]="chartOptionsBudgetStatus.title"
-                [legend]="chartOptionsBudgetStatus.legend" [tooltip]="chartOptionsBudgetStatus.tooltip"
-                [noData]="chartOptionsBudgetStatus.noData"></apx-chart>
+ 
+
+  <div class="mt-4 mb-4">
+    <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
+      <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+        <div *ngIf="!isLoading">
+          <div class="font-bold mb-4">Top PDE Contracts by Contract Value</div>
+          <div *ngIf="topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                      PDE Name
+                    </th>
+                    <th (click)="sortTable(1,'myTable2')" scope="col"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                      <span class="group inline-flex">
+                        Contract Value(UGX)
+                        <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
+                        <span class="ml-2 flex-none rounded text-gray-400 ">
+                          <!-- Heroicon name: solid/chevron-down -->
+                          <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd" />
+                          </svg>
+      
+                          <svg *ngIf="dir === 'desc'" xmlns="http://www.w3.org/2000/svg"
+                            class="ml-2 h-5 w-5 flex-none rounded text-gray-400" fill="currentColor" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                          </svg>
+                        </span>
+                      </span>
+                    </th>
+                    <th (click)="sortTable(2,'myTable2')" scope="col"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                      <span class="group inline-flex">
+                        Number Of Contracts
+                        <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
+                        <span class="ml-2 flex-none rounded text-gray-400 ">
+                          <!-- Heroicon name: solid/chevron-down -->
+                          <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd" />
+                          </svg>
+      
+                          <svg *ngIf="dir === 'desc'" xmlns="http://www.w3.org/2000/svg"
+                            class="ml-2 h-5 w-5 flex-none rounded text-gray-400" fill="currentColor" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                          </svg>
+                        </span>
+                      </span>
+                    </th> 
+                    <th (click)="sortTable(3,'myTable2')" scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                    <span class="group inline-flex">
+                      Average Contract Value(UGX)
+                      <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
+                      <span class="ml-2 flex-none rounded text-gray-400 ">
+                        <!-- Heroicon name: solid/chevron-down -->
+                        <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
+                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd" />
+                        </svg>
+    
+                        <svg *ngIf="dir === 'desc'" xmlns="http://www.w3.org/2000/svg"
+                          class="ml-2 h-5 w-5 flex-none rounded text-gray-400" fill="currentColor" viewBox="0 0 24 24"
+                          stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
+                      </span>
+                    </span>
+                  </th>   
+
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <!-- Odd row -->
+                  <tr *ngFor="let item of topTenHighestContracts">
+                    <td class="whitespace-normal py-2 pl-4 pr-3   sm:pl-6">
+                      <div class="flex flex-col items-left">
+                        <span class="text-sm font-medium text-gray-900">{{item?.pdeName?item?.pdeName:'Unknown'}}</span>
+                      </div>
+                    </td>
+                    <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.contractValue}}</td>
+                    <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfContracts}}</td>
+                    <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.averageContractValue}}</td>
+                  </tr>
+      
+                  <!-- More people... -->
+                </tbody>
+              </table>
             </div>
-            <!-- </div> -->
-            <!-- <div *ngIf="isLoading">
-                <div  class="relative top-0 left-0 z-50 block w-full h-full opacity-75">
-                  <div class="flex items-center justify-center h-80">
-                    <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                      </path>
-                    </svg>
-                  </div>
-                </div>
-              </div> -->
+          </div>
+          <div *ngIf="!topTenHighestContracts || topTenHighestContracts.length <= 0">
+            <app-empty-state></app-empty-state>
           </div>
         </div>
-
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
-
-            <div>
-              <div id="chartProcurementTypes" *ngIf="chartOptionsProcurementTypes">
-                <apx-chart #chartProcurementTypes [series]="chartOptionsProcurementTypes.series"
-                  [chart]="chartOptionsProcurementTypes.chart" [dataLabels]="chartOptionsProcurementTypes.dataLabels"
-                  [plotOptions]="chartOptionsProcurementTypes.plotOptions" [yaxis]="chartOptionsProcurementTypes.yaxis"
-                  [legend]="chartOptionsProcurementTypes.legend" [fill]="chartOptionsProcurementTypes.fill"
-                  [stroke]="chartOptionsProcurementTypes.stroke" [tooltip]="chartOptionsProcurementTypes.tooltip"
-                  [xaxis]="chartOptionsProcurementTypes.xaxis" [title]="chartOptionsProcurementTypes.title"
-                  [theme]="chartOptionsProcurementTypes.theme" [noData]="chartOptionsProcurementTypes.noData">
-                </apx-chart>
-              </div>
-            </div>
-            <!-- <div>
-                <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
-                  <div class="flex items-center justify-center h-80">
-                    <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                      </path>
-                    </svg>
-                  </div>
-                </div>
-              </div> -->
-          </div>
-        </div>
+        <span *ngIf="isLoading">
+          <app-loader></app-loader>
+        </span>
       </div>
-
-
-
-      <div class="mt-4 mb-4">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <!-- <div class="hidden text-base font-medium text-gray-500">Intersex Persons Education Status</div> -->
-          <div id="chartEducationStatus">
-            <apx-chart #chartEducationStatus [series]="chartOptionsEducationStatus.series"
-              [chart]="chartOptionsEducationStatus.chart" [dataLabels]="chartOptionsEducationStatus.dataLabels"
-              [plotOptions]="chartOptionsEducationStatus.plotOptions" [yaxis]="chartOptionsEducationStatus.yaxis"
-              [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
-              [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid"
-              [title]="chartOptionsEducationStatus.title" [tooltip]="chartOptionsEducationStatus.tooltip"
-              [noData]="chartOptionsEducationStatus.noData"></apx-chart>
+      
+      <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">            
+        <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+          <div *ngIf="!isLoading && topTenHighestContracts.length > 0"  class="flex flex-col items-center">
+            <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Average Contract
+              Value</span>
+            <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{ highestContractValue |
+              numberSuffix:1}}</span>
+              <span class="text-sm  md:text-sm font-bold text-gray-600 text-center flex">{{topTenHighestContracts[0]?.pdeName}}</span>
           </div>
-          <!-- <div *ngIf="!chartOptionsEducationStatus">
-                <app-loading-pulse></app-loading-pulse>
-              </div> -->
-
-          <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading || !chartOptionsEducationStatus">
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span> 
+          <div *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
+            <app-empty-state></app-empty-state>
+          </div>  
+        </div>
+        <!-- <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+          <div *ngIf="!isLoading" class="flex flex-col items-center">
+            <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Signed Contract
+              Value</span>
+            <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+              highestSignedContractValue | numberSuffix:1}}</span>
+            <span
+              class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{topTenHighestContracts[0]?.subjectOfProcurement
+              ? topTenHighestContracts[0]?.subjectOfProcurement : 'Unknown'}}</span>
+          </div>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>  
+        </div> -->
                
-                <div class="flex items-center justify-center h-80">
-                  <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                  </svg>
-                </div>
-              </div> -->
-
-        </div>
-
-
       </div>
     </div>
   </div>
 
-  <div *ngIf="isEmpty">
-    <app-empty-state></app-empty-state>
-  </div>
 </div>
