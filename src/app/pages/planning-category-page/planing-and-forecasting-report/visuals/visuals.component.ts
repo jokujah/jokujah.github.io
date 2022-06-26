@@ -28,6 +28,7 @@ import {
 import {
   NumberSuffix,
   addArrayValues,
+  visualisationMessages,
 } from 'src/app/utils/helpers';
 
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
@@ -225,6 +226,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
     this.totalValueofPlannedContracts = 0;
     this.yearOfPlannedContracts = 0;
     this.numberOfRegisteredEntities = 0;
+    
 
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
@@ -292,6 +294,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
   getSummaryStatsBudget(reportName, financialYear, procuringEntity) {
     this.isLoading = true;
+    this.highestContractValue = 0
+    this.highestPercentage = 0
+    this.entityWithHighestProcurement = ''
 
     this.chartBudgetStatus?.updateOptions({
       series: [],
@@ -478,7 +483,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                   //max:100
                 },
                 noData: {
-                  text: 'No Data Available ...',
+                  text: visualisationMessages('empty'),
                 },
                 title: {
                   text: 'PDEs by Percentage of Budget Spent',
@@ -574,7 +579,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                   lineCap: 'round',
                 },
                 noData: {
-                  text: 'No Data Available...',
+                  text: visualisationMessages('empty'),
                 },
                 labels: labelName,
               });
@@ -623,7 +628,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 lineCap: 'round',
               },
               noData: {
-                text: 'No Data Available...',
+                text: visualisationMessages('empty'),
               },
               labels: [],
             });
@@ -679,7 +684,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
               lineCap: 'round',
             },
             noData: {
-              text: 'Error Loading Data...',
+              text: visualisationMessages('error'),
             },
             labels: [],
           });
@@ -707,7 +712,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       },
       noData: {
-        text: 'Loading Data',
+        text: visualisationMessages('loading'),
       },
     });
 
@@ -956,7 +961,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         lineCap: 'round',
       },
       noData: {
-        text: 'Loading Data ...',
+        text: visualisationMessages('loading'),
       },
       labels: [],
     };
@@ -1027,7 +1032,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       },
       noData: {
-        text: 'Loading Data ...',
+        text: visualisationMessages('loading'),
       },
     };
   }

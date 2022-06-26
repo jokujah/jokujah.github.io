@@ -67,6 +67,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
   cardValue3;
   topTenHighestContracts = [];
   highestCostResultingFromTermination: number;
+  averageCostResultingFromTermination: number;
 
 
 
@@ -99,6 +100,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
     this.isLoading=true
     this.cardValue2 = 0
     this.cardValue1 = 0
+    this.averageCostResultingFromTermination = 0
     
 
     console.log(reportName)
@@ -123,6 +125,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
           {
             this.chartTerminated.updateOptions(emptyVisualisation('empty'))
           }else{
+            this.averageCostResultingFromTermination = (this.cardValue1 > 0) ? this.cardValue3/this.cardValue1 : 0
           this.chartTerminated?.updateOptions({
             series:[this.cardValue2,this.cardValue3],
             labels: ['Contract Value','Termination Cost'],
@@ -378,7 +381,8 @@ export class TerminatedContractsVisualsComponent implements OnInit {
       chart: {
         type: "donut",
         fontFamily:'Trebuchet Ms',
-        width:'100%'
+        width:'100%',
+        height: 350
       },
       plotOptions: {
         pie: {

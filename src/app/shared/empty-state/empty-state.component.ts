@@ -7,7 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmptyStateComponent implements OnInit {
 
-  constructor() { }
+  deptOrPde
+
+  constructor() {
+    let checkIfSuperAdmin = localStorage.getItem('isSuperAdmin');
+
+    let roles = checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
+
+    let checkIfPdeOrDept = (roles == 'super-admin') ? 'PDE' : 'Department'
+
+    this.deptOrPde = checkIfPdeOrDept
+   }
+
 
   ngOnInit(): void {
   }
