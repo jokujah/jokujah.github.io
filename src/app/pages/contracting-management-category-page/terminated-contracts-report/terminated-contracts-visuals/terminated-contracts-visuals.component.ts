@@ -20,7 +20,7 @@ import {
   ApexResponsive,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation, sortTable } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -58,10 +58,17 @@ export class TerminatedContractsVisualsComponent implements OnInit {
   @ViewChild("chartTerminated") chartTerminated: ChartComponent;
   public chartOptionsTerminated: Partial<ChartOptions>;
 
+  dir
+  sortTable = sortTable
+
   isLoading:boolean = false 
   cardValue2;
   cardValue1;
   cardValue3;
+  topTenHighestContracts = [];
+  highestCostResultingFromTermination: number;
+
+
 
   constructor(
     private toastr: ToastrService,
@@ -153,7 +160,9 @@ export class TerminatedContractsVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true   
+    this.isLoading=true  
+    this.highestCostResultingFromTermination = 0
+    this.topTenHighestContracts = [] 
 
     this.chart?.updateOptions({
       series: [],
@@ -184,22 +193,24 @@ export class TerminatedContractsVisualsComponent implements OnInit {
           case 'top-terminated-contracts':           
             console.log("top-terminated-contracts", data)
 
-            // sortedData = data.sort(function (a, b) {
-            //   var nameA = a?.estimatedAmount.split(',')
-            //   var nameB = b?.estimatedAmount.split(',')
-            //   var valueA = parseInt(nameA.join(''))
-            //   var valueB = parseInt(nameB.join(''))
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.costResultingFromTermination.split(',')
+              var nameB = b?.costResultingFromTermination.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
 
-            //   if (valueA > valueB) {
-            //     return -1;
-            //   }
-            //   if (valueA < valueB) {
-            //     return 1;
-            //   }
-            //   return 0;
-            // })
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+
+            this.topTenHighestContracts = sortedData
             
-            data.forEach(element => {
+            sortedData.forEach(element => {
               var valueC = (element?.contractValue)?(element?.contractValue.split(',')):['0'];
               var valueD = parseInt(valueC.join(''))
               var valueE = (element?.costResultingFromTermination)?(element?.costResultingFromTermination.split(',')):['0'];
@@ -208,6 +219,12 @@ export class TerminatedContractsVisualsComponent implements OnInit {
               contractValue.push(valueD)
               actualAmount.push(valueF)
             });
+
+            //this.topTenHighestContracts = sortedData
+            
+            this.highestCostResultingFromTermination = this.topTenHighestContracts[0]?.costResultingFromTermination ? sanitizeCurrencyToString(this.topTenHighestContracts[0]?.costResultingFromTermination):0
+
+
             this.chart?.updateOptions({
               series: [
                 {
@@ -270,12 +287,15 @@ export class TerminatedContractsVisualsComponent implements OnInit {
 
   initCharts(){
     this.chartOptions = {
-      series: [ ],
+      series: [],
       chart: {
         fontFamily:'Trebuchet Ms',
         type: "bar",
         height: 450,
         stacked: true,
+        // sparkline: {
+        //   enabled: true
+        // }
       },
       plotOptions: {
         bar: {
@@ -311,6 +331,12 @@ export class TerminatedContractsVisualsComponent implements OnInit {
       yaxis: {
         title: {
           text: "Subjects of Procurement "
+        },
+        labels: {
+          show: true,
+          align: 'right',
+          minWidth: 0,
+          maxWidth:700
         }
       },
       fill: {
