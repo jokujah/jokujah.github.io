@@ -16,7 +16,7 @@ import {
   ApexNoData,
   ApexTitleSubtitle
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -133,7 +133,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data...'
+        text: visualisationMessages('loading')
       }
     })
 
@@ -152,7 +152,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data...'
+        text: visualisationMessages('loading')
       }
     })
 
@@ -208,7 +208,7 @@ export class ContractManagementVisualsComponent implements OnInit {
               },
               
               noData: {
-                text: 'No Results found,Try adjusting your search or filter to get results'
+                text: visualisationMessages('empty')
               }
             })
             // if((data.length <= 0)|| !data){
@@ -254,7 +254,7 @@ export class ContractManagementVisualsComponent implements OnInit {
                 }
               },
               noData: {
-                text: 'No Results found,Try adjusting your search or filter to get results'
+                text: visualisationMessages('empty')
               }
             })
             break;
@@ -276,7 +276,7 @@ export class ContractManagementVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text: visualisationMessages('error')
           }
         })
     
@@ -295,12 +295,12 @@ export class ContractManagementVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text: visualisationMessages('error')
           }
         })
 
         // this.chart.destroy()
-        this.chartProcurementMethod.destroy()
+        //this.chartProcurementMethod.destroy()
 
         console.log(error)
         throw error
@@ -380,7 +380,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'No Data Available ...'
+        text: visualisationMessages('loading')
       },
       title: {
         text: "Contract Managers with Highest Contract Values",
@@ -492,7 +492,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         ]
       },
       noData: {
-        text: 'Loading Data ...'
+        text: visualisationMessages('loading')
       }
     };
   }

@@ -44,7 +44,8 @@ export class GlobalErrorHandler implements ErrorHandler {
             else {
                 message = errorService.getServerMessage(error);
                 stackTrace = errorService.getServerStack(error);
-                notifier.showError(message);            
+                console.error(error)
+                //notifier.showError(message);            
             }
         } else if (error instanceof Error) {
             // Client Error

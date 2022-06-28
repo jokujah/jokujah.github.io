@@ -72,7 +72,6 @@ export class TerminatedContractsVisualsComponent implements OnInit {
 
 
   constructor(
-    private toastr: ToastrService,
     private _service: PlaningAndForecastingReportService
   ) {}
    
