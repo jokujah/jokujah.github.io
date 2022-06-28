@@ -6,7 +6,7 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString, capitalizeFirstLetter } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
 import html2canvas from 'html2canvas';
@@ -83,6 +83,10 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   isLoadingBidsSummary: boolean = false;
 
   private subscription: Subscription;
+  numberOfContracts = [];
+  totalValueofContracts = 0;
+  highestNumberOfPublishedBids = 0;
+  averageBidsByMethod = [];
 
   constructor(
     fb: FormBuilder,
@@ -111,11 +115,13 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   submit(data) {
     this.getSummaryStats('solicitation-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('avg-bids-by-method',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
      this.getSummaryStats('solicitation-summary',data?.selectedFinancialYear,data?.selectedPDE)
      this.getVisualisation('avg-bids-by-method',data?.selectedFinancialYear,data?.selectedPDE)
+     this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
 
@@ -145,32 +151,108 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoadingBidsSummary = true
 
-    this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response ) => {
+
+    this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
+      (response) => {
         this.isLoadingBidsSummary = false;
         let data = response.data;
-        this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avgBids ? data[0]?.avgBids : 0);
-        this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avgBids ? data[1]?.avgBids : 0);
-        this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avgBids ? data[2]?.avgBids : 0);
-        this.initAvgBidsChart4(data[3]?.procurementMethod ? data[3]?.procurementMethod : 'N/A', data[3]?.avgBids ? data[3]?.avgBids : 0);
-        this.initAvgBidsChart5(data[4]?.procurementMethod ? data[4]?.procurementMethod : 'N/A', data[4]?.avgBids ? data[4]?.avgBids : 0);
-        this.initAvgBidsChart6(data[5]?.procurementMethod ? data[5]?.procurementMethod : 'N/A', data[5]?.avgBids ? data[5]?.avgBids : 0);
-        this.initAvgBidsChart7(data[6]?.procurementMethod ? data[6]?.procurementMethod : 'N/A', data[6]?.avgBids ? data[6]?.avgBids : 0);
-        this.initAvgBidsChart8(data[7]?.procurementMethod ? data[7]?.procurementMethod : 'N/A', data[7]?.avgBids ? data[7]?.avgBids : 0);
-        this.initAvgBidsChart9(data[8]?.procurementMethod ? data[8]?.procurementMethod : 'N/A', data[8]?.avgBids ? data[8]?.avgBids : 0);
-        this.initAvgBidsChart10(data[9]?.procurementMethod ? data[9]?.procurementMethod : 'N/A', data[9]?.avgBids ? data[9]?.avgBids : 0);
-        this.initAvgBidsChart11(data[10]?.procurementMethod ? data[10]?.procurementMethod : 'N/A', data[10]?.avgBids ? data[10]?.avgBids : 0);
-        this.initAvgBidsChart12(data[11]?.procurementMethod ? data[11]?.procurementMethod : 'N/A', data[11]?.avgBids ? data[11]?.avgBids : 0);
-        this.initAvgBidsChart13(data[12]?.procurementMethod ? data[12]?.procurementMethod : 'N/A', data[12]?.avgBids ? data[12]?.avgBids : 0);
-        this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avgBids ? data[13]?.avgBids : 0);
-        this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avgBids ? data[14]?.avgBids : 0);
-        this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avgBids ? data[15]?.avgBids : 0);
+        let subjectOfProcurement = []
+        let contractValue = []
+        let actualAmount = []
+        let sortedData = []
+        
+        switch (reportName) {
+
+          case 'top-contracts-summary':
+            console.log("top-contracts-summary", data)
+
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.estimatedAmount.split(',')
+              var nameB = b?.estimatedAmount.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+
+            this.topTenHighestContracts = sortedData
+
+            this.highestNumberOfPublishedBids = 15
+
+
+            sortedData.forEach(element => {
+              var valueC = (element?.estimatedAmount) ? (element?.estimatedAmount.split(',')) : ['0'];
+              var valueD = parseInt(valueC.join(''))
+              var valueE = (element?.contractAmount) ? (element?.contractAmount.split(',')) : ['0'];
+              var valueF = parseInt(valueE.join(''))
+              subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
+              contractValue.push(valueD)
+              actualAmount.push(valueF)
+            });
+
+
+            this.numberOfContracts = this.topTenHighestContracts.length
+            this.totalValueofContracts = addArrayValues(actualAmount)
+
+            break;
+
+          case 'avg-bids-by-method':
+            console.log("avg-bids-by-method", data)
+            if (data.length > 0) {
+              sortedData = data.sort(function (a, b) {
+                var nameA = a?.numberOfPublishedBids.split(',')
+                var nameB = b?.numberOfPublishedBids.split(',')
+                var valueA = parseInt(nameA.join(''))
+                var valueB = parseInt(nameB.join(''))
+
+                if (valueA > valueB) {
+                  return -1;
+                }
+                if (valueA < valueB) {
+                  return 1;
+                }
+                return 0;
+              })
+
+              this.averageBidsByMethod = sortedData
+            }
+            this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avgBids ? data[0]?.avgBids : 0);
+            this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avgBids ? data[1]?.avgBids : 0);
+            this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avgBids ? data[2]?.avgBids : 0);
+            this.initAvgBidsChart4(data[3]?.procurementMethod ? data[3]?.procurementMethod : 'N/A', data[3]?.avgBids ? data[3]?.avgBids : 0);
+            this.initAvgBidsChart5(data[4]?.procurementMethod ? data[4]?.procurementMethod : 'N/A', data[4]?.avgBids ? data[4]?.avgBids : 0);
+            this.initAvgBidsChart6(data[5]?.procurementMethod ? data[5]?.procurementMethod : 'N/A', data[5]?.avgBids ? data[5]?.avgBids : 0);
+            this.initAvgBidsChart7(data[6]?.procurementMethod ? data[6]?.procurementMethod : 'N/A', data[6]?.avgBids ? data[6]?.avgBids : 0);
+            this.initAvgBidsChart8(data[7]?.procurementMethod ? data[7]?.procurementMethod : 'N/A', data[7]?.avgBids ? data[7]?.avgBids : 0);
+            this.initAvgBidsChart9(data[8]?.procurementMethod ? data[8]?.procurementMethod : 'N/A', data[8]?.avgBids ? data[8]?.avgBids : 0);
+            this.initAvgBidsChart10(data[9]?.procurementMethod ? data[9]?.procurementMethod : 'N/A', data[9]?.avgBids ? data[9]?.avgBids : 0);
+            this.initAvgBidsChart11(data[10]?.procurementMethod ? data[10]?.procurementMethod : 'N/A', data[10]?.avgBids ? data[10]?.avgBids : 0);
+            this.initAvgBidsChart12(data[11]?.procurementMethod ? data[11]?.procurementMethod : 'N/A', data[11]?.avgBids ? data[11]?.avgBids : 0);
+            this.initAvgBidsChart13(data[12]?.procurementMethod ? data[12]?.procurementMethod : 'N/A', data[12]?.avgBids ? data[12]?.avgBids : 0);
+            this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avgBids ? data[13]?.avgBids : 0);
+            this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avgBids ? data[14]?.avgBids : 0);
+            this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avgBids ? data[15]?.avgBids : 0);
+
+
+
+
+            break;
+        }
+
+        this.isLoading = false
       },
       (error) => {
         this.isLoadingBidsSummary = false;
         console.error(error);
       }
     )
+
   }
 
    getFontSize() {

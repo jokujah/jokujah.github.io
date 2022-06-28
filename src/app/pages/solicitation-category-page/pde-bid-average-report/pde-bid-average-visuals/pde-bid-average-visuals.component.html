@@ -5,7 +5,7 @@
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
-          <animated-digit [digit]="cardValue1"  [duration]="1000">
+          <animated-digit [digit]="cardValue1" [duration]="1000">
             {{ cardValue1 | numberSuffix: 1 }}
           </animated-digit>
         </span>
@@ -17,10 +17,10 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
-          <animated-digit [digit]="cardValue2"  [duration]="1000">
+          <animated-digit [digit]="cardValue2" [duration]="1000">
             {{ cardValue2 | numberSuffix: 1 }}
           </animated-digit>
-         </span>
+        </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
@@ -29,10 +29,10 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats flex flex-row">
-          <animated-digit [digit]="cardValue3"  [duration]="1000">
+          <animated-digit [digit]="cardValue3" [duration]="1000">
             {{ cardValue3 | numberSuffix }}
           </animated-digit>
-          </span>
+        </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
@@ -44,313 +44,291 @@
 
   <!-- Graphs -->
   <div>
-    <!-- Row 1 -->
-    <div class="my-4 ">
-      <!-- <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
+    <!-- <div>
+      <div class="mt-4 mb-4">
+        <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
+          <div class="md:w-3/4 w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
             <div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
-            <div>
-              <div>
-
+              <div class="font-bold mb-4">Top Contracts By Highest Published Bids</div>
+              <div *ngIf="!isLoading && topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">PDE Name
+                        </th>                      
+                        <th scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Bid Amount                           
+                          </span>
+                        </th>                                          
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr *ngFor="let item of topTenHighestContracts">
+                        <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                          <div class="flex flex-col items-left">
+                            <span class="text-xs font-medium text-gray-900">{{item?.pdeName ? item?.pdeName : 'Unknown'}}</span>
+                          </div>
+                        </td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.estimatedAmount}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
+            <span *ngIf="isLoading">
+              <app-loader></app-loader>
+            </span>
+            <span *ngIf="!isLoading &&(!topTenHighestContracts || topTenHighestContracts.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
+          </div>
+          
+          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div *ngIf="!isLoading && topTenHighestContracts.length > 0" class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Number of Published Bids</span>
+                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2"> {{ highestNumberOfPublishedBids }}</span>
+                <span class="text-sm  md:text-sm font-bold text-gray-600 text-center flex">{{ topTenHighestContracts[0]?.pdeName }}</span>
+              </div>
+              <span *ngIf="isLoading">
+                <app-loader></app-loader>
+              </span>  
+              <span *ngIf="!isLoading && ( !topTenHighestContracts || topTenHighestContracts.length <= 0  )">
+                <app-empty-state></app-empty-state>
+              </span>   
+            </div>
+            <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div  *ngIf="!isLoading && topTenHighestContracts.length > 0" class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Total Contract
+                  Value</span>
+                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                  highestAwardedContractValue | numberSuffix:1}}</span>
+                <span class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">
+                  {{
+                  (topTenHighestContracts[0]?.procurementMethod)
+                  ? (topTenHighestContracts[0]?.procurementMethod) : 'Unknown'
+                  }}</span>
+              </div>
+              <span *ngIf="isLoading">
+                <app-loader></app-loader>
+              </span> 
+              <span *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
+                <app-empty-state></app-empty-state>
+              </span> 
+            </div>
+                   
           </div>
         </div>
-      </div> -->
-
-      <div class="my-4">
+      </div>
+    </div> -->
+    <!-- Row 1 -->
+    <!-- <div class="mt-4 ">     
+      <div>
         <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div
-              *ngIf="!isLoadingBidsSummary"
-              class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]"
-            >
-              PDE Bid Average By Procurement Method
-            </div>
+          <div *ngIf="!isLoadingBidsSummary"
+            class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]">
+            PDE Bid Average By Procurement Method
+          </div>
           <div class="px-4 mt-8" *ngIf="!isLoadingBidsSummary">
-            <apx-chart
-              *ngIf="optionsProgress1?.series"
-              [series]="optionsProgress1.series"
-              [chart]="optionsProgress1.chart"
-              [dataLabels]="optionsProgress1.dataLabels"
-              [plotOptions]="optionsProgress1.plotOptions"
-              [yaxis]="optionsProgress1.yaxis"
-              [legend]="optionsProgress1.legend"
-              [fill]="optionsProgress1.fill"
-              [stroke]="optionsProgress1.stroke"
-              [tooltip]="optionsProgress1.tooltip"
-              [xaxis]="optionsProgress1.xaxis"
-              [title]="optionsProgress1.title"
-              [subtitle]="optionsProgress1.subtitle"
-              [noData]="optionsProgress1.noData"
-            >
+            <apx-chart *ngIf="optionsProgress1?.series" [series]="optionsProgress1.series"
+              [chart]="optionsProgress1.chart" [dataLabels]="optionsProgress1.dataLabels"
+              [plotOptions]="optionsProgress1.plotOptions" [yaxis]="optionsProgress1.yaxis"
+              [legend]="optionsProgress1.legend" [fill]="optionsProgress1.fill" [stroke]="optionsProgress1.stroke"
+              [tooltip]="optionsProgress1.tooltip" [xaxis]="optionsProgress1.xaxis" [title]="optionsProgress1.title"
+              [subtitle]="optionsProgress1.subtitle" [noData]="optionsProgress1.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress2?.series"
-              [series]="optionsProgress2.series"
-              [chart]="optionsProgress2.chart"
-              [dataLabels]="optionsProgress2.dataLabels"
-              [plotOptions]="optionsProgress2.plotOptions"
-              [yaxis]="optionsProgress2.yaxis"
-              [legend]="optionsProgress2.legend"
-              [fill]="optionsProgress2.fill"
-              [stroke]="optionsProgress2.stroke"
-              [tooltip]="optionsProgress2.tooltip"
-              [xaxis]="optionsProgress2.xaxis"
-              [title]="optionsProgress2.title"
-              [subtitle]="optionsProgress2.subtitle"
-              [noData]="optionsProgress2.noData"
-            >
+            <apx-chart *ngIf="optionsProgress2?.series" [series]="optionsProgress2.series"
+              [chart]="optionsProgress2.chart" [dataLabels]="optionsProgress2.dataLabels"
+              [plotOptions]="optionsProgress2.plotOptions" [yaxis]="optionsProgress2.yaxis"
+              [legend]="optionsProgress2.legend" [fill]="optionsProgress2.fill" [stroke]="optionsProgress2.stroke"
+              [tooltip]="optionsProgress2.tooltip" [xaxis]="optionsProgress2.xaxis" [title]="optionsProgress2.title"
+              [subtitle]="optionsProgress2.subtitle" [noData]="optionsProgress2.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress3?.series"
-              [series]="optionsProgress3.series"
-              [chart]="optionsProgress3.chart"
-              [dataLabels]="optionsProgress3.dataLabels"
-              [plotOptions]="optionsProgress3.plotOptions"
-              [yaxis]="optionsProgress3.yaxis"
-              [legend]="optionsProgress3.legend"
-              [fill]="optionsProgress3.fill"
-              [stroke]="optionsProgress3.stroke"
-              [tooltip]="optionsProgress3.tooltip"
-              [xaxis]="optionsProgress3.xaxis"
-              [title]="optionsProgress3.title"
-              [subtitle]="optionsProgress3.subtitle"
-              [noData]="optionsProgress3.noData"
-            >
+            <apx-chart *ngIf="optionsProgress3?.series" [series]="optionsProgress3.series"
+              [chart]="optionsProgress3.chart" [dataLabels]="optionsProgress3.dataLabels"
+              [plotOptions]="optionsProgress3.plotOptions" [yaxis]="optionsProgress3.yaxis"
+              [legend]="optionsProgress3.legend" [fill]="optionsProgress3.fill" [stroke]="optionsProgress3.stroke"
+              [tooltip]="optionsProgress3.tooltip" [xaxis]="optionsProgress3.xaxis" [title]="optionsProgress3.title"
+              [subtitle]="optionsProgress3.subtitle" [noData]="optionsProgress3.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress4?.series"
-              [series]="optionsProgress4.series"
-              [chart]="optionsProgress4.chart"
-              [dataLabels]="optionsProgress4.dataLabels"
-              [plotOptions]="optionsProgress4.plotOptions"
-              [yaxis]="optionsProgress4.yaxis"
-              [legend]="optionsProgress4.legend"
-              [fill]="optionsProgress4.fill"
-              [stroke]="optionsProgress4.stroke"
-              [tooltip]="optionsProgress4.tooltip"
-              [xaxis]="optionsProgress4.xaxis"
-              [title]="optionsProgress4.title"
-              [subtitle]="optionsProgress4.subtitle"
-              [noData]="optionsProgress4.noData"
-            >
+            <apx-chart *ngIf="optionsProgress4?.series" [series]="optionsProgress4.series"
+              [chart]="optionsProgress4.chart" [dataLabels]="optionsProgress4.dataLabels"
+              [plotOptions]="optionsProgress4.plotOptions" [yaxis]="optionsProgress4.yaxis"
+              [legend]="optionsProgress4.legend" [fill]="optionsProgress4.fill" [stroke]="optionsProgress4.stroke"
+              [tooltip]="optionsProgress4.tooltip" [xaxis]="optionsProgress4.xaxis" [title]="optionsProgress4.title"
+              [subtitle]="optionsProgress4.subtitle" [noData]="optionsProgress4.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress5?.series"
-              [series]="optionsProgress5.series"
-              [chart]="optionsProgress5.chart"
-              [dataLabels]="optionsProgress5.dataLabels"
-              [plotOptions]="optionsProgress5.plotOptions"
-              [yaxis]="optionsProgress5.yaxis"
-              [legend]="optionsProgress5.legend"
-              [fill]="optionsProgress5.fill"
-              [stroke]="optionsProgress5.stroke"
-              [tooltip]="optionsProgress5.tooltip"
-              [xaxis]="optionsProgress5.xaxis"
-              [title]="optionsProgress5.title"
-              [subtitle]="optionsProgress5.subtitle"
-              [noData]="optionsProgress5.noData"
-            >
+            <apx-chart *ngIf="optionsProgress5?.series" [series]="optionsProgress5.series"
+              [chart]="optionsProgress5.chart" [dataLabels]="optionsProgress5.dataLabels"
+              [plotOptions]="optionsProgress5.plotOptions" [yaxis]="optionsProgress5.yaxis"
+              [legend]="optionsProgress5.legend" [fill]="optionsProgress5.fill" [stroke]="optionsProgress5.stroke"
+              [tooltip]="optionsProgress5.tooltip" [xaxis]="optionsProgress5.xaxis" [title]="optionsProgress5.title"
+              [subtitle]="optionsProgress5.subtitle" [noData]="optionsProgress5.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress6?.series"
-              [series]="optionsProgress6.series"
-              [chart]="optionsProgress6.chart"
-              [dataLabels]="optionsProgress6.dataLabels"
-              [plotOptions]="optionsProgress6.plotOptions"
-              [yaxis]="optionsProgress6.yaxis"
-              [legend]="optionsProgress6.legend"
-              [fill]="optionsProgress6.fill"
-              [stroke]="optionsProgress6.stroke"
-              [tooltip]="optionsProgress6.tooltip"
-              [xaxis]="optionsProgress6.xaxis"
-              [title]="optionsProgress6.title"
-              [subtitle]="optionsProgress6.subtitle"
-              [noData]="optionsProgress6.noData"
-            >
+            <apx-chart *ngIf="optionsProgress6?.series" [series]="optionsProgress6.series"
+              [chart]="optionsProgress6.chart" [dataLabels]="optionsProgress6.dataLabels"
+              [plotOptions]="optionsProgress6.plotOptions" [yaxis]="optionsProgress6.yaxis"
+              [legend]="optionsProgress6.legend" [fill]="optionsProgress6.fill" [stroke]="optionsProgress6.stroke"
+              [tooltip]="optionsProgress6.tooltip" [xaxis]="optionsProgress6.xaxis" [title]="optionsProgress6.title"
+              [subtitle]="optionsProgress6.subtitle" [noData]="optionsProgress6.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress7?.series"
-              [series]="optionsProgress7.series"
-              [chart]="optionsProgress7.chart"
-              [dataLabels]="optionsProgress7.dataLabels"
-              [plotOptions]="optionsProgress7.plotOptions"
-              [yaxis]="optionsProgress7.yaxis"
-              [legend]="optionsProgress7.legend"
-              [fill]="optionsProgress7.fill"
-              [stroke]="optionsProgress7.stroke"
-              [tooltip]="optionsProgress7.tooltip"
-              [xaxis]="optionsProgress7.xaxis"
-              [title]="optionsProgress7.title"
-              [subtitle]="optionsProgress7.subtitle"
-              [noData]="optionsProgress7.noData"
-            >
+            <apx-chart *ngIf="optionsProgress7?.series" [series]="optionsProgress7.series"
+              [chart]="optionsProgress7.chart" [dataLabels]="optionsProgress7.dataLabels"
+              [plotOptions]="optionsProgress7.plotOptions" [yaxis]="optionsProgress7.yaxis"
+              [legend]="optionsProgress7.legend" [fill]="optionsProgress7.fill" [stroke]="optionsProgress7.stroke"
+              [tooltip]="optionsProgress7.tooltip" [xaxis]="optionsProgress7.xaxis" [title]="optionsProgress7.title"
+              [subtitle]="optionsProgress7.subtitle" [noData]="optionsProgress7.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress8?.series"
-              [series]="optionsProgress8.series"
-              [chart]="optionsProgress8.chart"
-              [dataLabels]="optionsProgress8.dataLabels"
-              [plotOptions]="optionsProgress8.plotOptions"
-              [yaxis]="optionsProgress8.yaxis"
-              [legend]="optionsProgress8.legend"
-              [fill]="optionsProgress8.fill"
-              [stroke]="optionsProgress8.stroke"
-              [tooltip]="optionsProgress8.tooltip"
-              [xaxis]="optionsProgress8.xaxis"
-              [title]="optionsProgress8.title"
-              [subtitle]="optionsProgress8.subtitle"
-              [noData]="optionsProgress8.noData"
-            >
+            <apx-chart *ngIf="optionsProgress8?.series" [series]="optionsProgress8.series"
+              [chart]="optionsProgress8.chart" [dataLabels]="optionsProgress8.dataLabels"
+              [plotOptions]="optionsProgress8.plotOptions" [yaxis]="optionsProgress8.yaxis"
+              [legend]="optionsProgress8.legend" [fill]="optionsProgress8.fill" [stroke]="optionsProgress8.stroke"
+              [tooltip]="optionsProgress8.tooltip" [xaxis]="optionsProgress8.xaxis" [title]="optionsProgress8.title"
+              [subtitle]="optionsProgress8.subtitle" [noData]="optionsProgress8.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress9?.series"
-              [series]="optionsProgress9.series"
-              [chart]="optionsProgress9.chart"
-              [dataLabels]="optionsProgress9.dataLabels"
-              [plotOptions]="optionsProgress9.plotOptions"
-              [yaxis]="optionsProgress9.yaxis"
-              [legend]="optionsProgress9.legend"
-              [fill]="optionsProgress9.fill"
-              [stroke]="optionsProgress9.stroke"
-              [tooltip]="optionsProgress9.tooltip"
-              [xaxis]="optionsProgress9.xaxis"
-              [title]="optionsProgress9.title"
-              [subtitle]="optionsProgress9.subtitle"
-              [noData]="optionsProgress9.noData"
-            >
+            <apx-chart *ngIf="optionsProgress9?.series" [series]="optionsProgress9.series"
+              [chart]="optionsProgress9.chart" [dataLabels]="optionsProgress9.dataLabels"
+              [plotOptions]="optionsProgress9.plotOptions" [yaxis]="optionsProgress9.yaxis"
+              [legend]="optionsProgress9.legend" [fill]="optionsProgress9.fill" [stroke]="optionsProgress9.stroke"
+              [tooltip]="optionsProgress9.tooltip" [xaxis]="optionsProgress9.xaxis" [title]="optionsProgress9.title"
+              [subtitle]="optionsProgress9.subtitle" [noData]="optionsProgress9.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress10?.series"
-              [series]="optionsProgress10.series"
-              [chart]="optionsProgress10.chart"
-              [dataLabels]="optionsProgress10.dataLabels"
-              [plotOptions]="optionsProgress10.plotOptions"
-              [yaxis]="optionsProgress10.yaxis"
-              [legend]="optionsProgress10.legend"
-              [fill]="optionsProgress10.fill"
-              [stroke]="optionsProgress10.stroke"
-              [tooltip]="optionsProgress10.tooltip"
-              [xaxis]="optionsProgress10.xaxis"
-              [title]="optionsProgress10.title"
-              [subtitle]="optionsProgress10.subtitle"
-              [noData]="optionsProgress10.noData"
-            >
+            <apx-chart *ngIf="optionsProgress10?.series" [series]="optionsProgress10.series"
+              [chart]="optionsProgress10.chart" [dataLabels]="optionsProgress10.dataLabels"
+              [plotOptions]="optionsProgress10.plotOptions" [yaxis]="optionsProgress10.yaxis"
+              [legend]="optionsProgress10.legend" [fill]="optionsProgress10.fill" [stroke]="optionsProgress10.stroke"
+              [tooltip]="optionsProgress10.tooltip" [xaxis]="optionsProgress10.xaxis" [title]="optionsProgress10.title"
+              [subtitle]="optionsProgress10.subtitle" [noData]="optionsProgress10.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress11?.series"
-              [series]="optionsProgress11.series"
-              [chart]="optionsProgress11.chart"
-              [dataLabels]="optionsProgress11.dataLabels"
-              [plotOptions]="optionsProgress11.plotOptions"
-              [yaxis]="optionsProgress11.yaxis"
-              [legend]="optionsProgress11.legend"
-              [fill]="optionsProgress11.fill"
-              [stroke]="optionsProgress11.stroke"
-              [tooltip]="optionsProgress11.tooltip"
-              [xaxis]="optionsProgress11.xaxis"
-              [title]="optionsProgress11.title"
-              [subtitle]="optionsProgress11.subtitle"
-              [noData]="optionsProgress11.noData"
-            >
+            <apx-chart *ngIf="optionsProgress11?.series" [series]="optionsProgress11.series"
+              [chart]="optionsProgress11.chart" [dataLabels]="optionsProgress11.dataLabels"
+              [plotOptions]="optionsProgress11.plotOptions" [yaxis]="optionsProgress11.yaxis"
+              [legend]="optionsProgress11.legend" [fill]="optionsProgress11.fill" [stroke]="optionsProgress11.stroke"
+              [tooltip]="optionsProgress11.tooltip" [xaxis]="optionsProgress11.xaxis" [title]="optionsProgress11.title"
+              [subtitle]="optionsProgress11.subtitle" [noData]="optionsProgress11.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress12?.series"
-              [series]="optionsProgress12.series"
-              [chart]="optionsProgress12.chart"
-              [dataLabels]="optionsProgress12.dataLabels"
-              [plotOptions]="optionsProgress12.plotOptions"
-              [yaxis]="optionsProgress12.yaxis"
-              [legend]="optionsProgress12.legend"
-              [fill]="optionsProgress12.fill"
-              [stroke]="optionsProgress12.stroke"
-              [tooltip]="optionsProgress12.tooltip"
-              [xaxis]="optionsProgress12.xaxis"
-              [title]="optionsProgress12.title"
-              [subtitle]="optionsProgress12.subtitle"
-              [noData]="optionsProgress12.noData"
-            >
+            <apx-chart *ngIf="optionsProgress12?.series" [series]="optionsProgress12.series"
+              [chart]="optionsProgress12.chart" [dataLabels]="optionsProgress12.dataLabels"
+              [plotOptions]="optionsProgress12.plotOptions" [yaxis]="optionsProgress12.yaxis"
+              [legend]="optionsProgress12.legend" [fill]="optionsProgress12.fill" [stroke]="optionsProgress12.stroke"
+              [tooltip]="optionsProgress12.tooltip" [xaxis]="optionsProgress12.xaxis" [title]="optionsProgress12.title"
+              [subtitle]="optionsProgress12.subtitle" [noData]="optionsProgress12.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress13?.series"
-              [series]="optionsProgress13.series"
-              [chart]="optionsProgress13.chart"
-              [dataLabels]="optionsProgress13.dataLabels"
-              [plotOptions]="optionsProgress13.plotOptions"
-              [yaxis]="optionsProgress13.yaxis"
-              [legend]="optionsProgress13.legend"
-              [fill]="optionsProgress13.fill"
-              [stroke]="optionsProgress13.stroke"
-              [tooltip]="optionsProgress13.tooltip"
-              [xaxis]="optionsProgress13.xaxis"
-              [title]="optionsProgress13.title"
-              [subtitle]="optionsProgress13.subtitle"
-              [noData]="optionsProgress13.noData"
-            >
+            <apx-chart *ngIf="optionsProgress13?.series" [series]="optionsProgress13.series"
+              [chart]="optionsProgress13.chart" [dataLabels]="optionsProgress13.dataLabels"
+              [plotOptions]="optionsProgress13.plotOptions" [yaxis]="optionsProgress13.yaxis"
+              [legend]="optionsProgress13.legend" [fill]="optionsProgress13.fill" [stroke]="optionsProgress13.stroke"
+              [tooltip]="optionsProgress13.tooltip" [xaxis]="optionsProgress13.xaxis" [title]="optionsProgress13.title"
+              [subtitle]="optionsProgress13.subtitle" [noData]="optionsProgress13.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress14?.series"
-              [series]="optionsProgress14.series"
-              [chart]="optionsProgress14.chart"
-              [dataLabels]="optionsProgress14.dataLabels"
-              [plotOptions]="optionsProgress14.plotOptions"
-              [yaxis]="optionsProgress14.yaxis"
-              [legend]="optionsProgress14.legend"
-              [fill]="optionsProgress14.fill"
-              [stroke]="optionsProgress14.stroke"
-              [tooltip]="optionsProgress14.tooltip"
-              [xaxis]="optionsProgress14.xaxis"
-              [title]="optionsProgress14.title"
-              [subtitle]="optionsProgress14.subtitle"
-              [noData]="optionsProgress14.noData"
-            >
+            <apx-chart *ngIf="optionsProgress14?.series" [series]="optionsProgress14.series"
+              [chart]="optionsProgress14.chart" [dataLabels]="optionsProgress14.dataLabels"
+              [plotOptions]="optionsProgress14.plotOptions" [yaxis]="optionsProgress14.yaxis"
+              [legend]="optionsProgress14.legend" [fill]="optionsProgress14.fill" [stroke]="optionsProgress14.stroke"
+              [tooltip]="optionsProgress14.tooltip" [xaxis]="optionsProgress14.xaxis" [title]="optionsProgress14.title"
+              [subtitle]="optionsProgress14.subtitle" [noData]="optionsProgress14.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress15?.series"
-              [series]="optionsProgress15.series"
-              [chart]="optionsProgress15.chart"
-              [dataLabels]="optionsProgress15.dataLabels"
-              [plotOptions]="optionsProgress15.plotOptions"
-              [yaxis]="optionsProgress15.yaxis"
-              [legend]="optionsProgress15.legend"
-              [fill]="optionsProgress15.fill"
-              [stroke]="optionsProgress15.stroke"
-              [tooltip]="optionsProgress15.tooltip"
-              [xaxis]="optionsProgress15.xaxis"
-              [title]="optionsProgress15.title"
-              [subtitle]="optionsProgress15.subtitle"
-              [noData]="optionsProgress15.noData"
-            >
+            <apx-chart *ngIf="optionsProgress15?.series" [series]="optionsProgress15.series"
+              [chart]="optionsProgress15.chart" [dataLabels]="optionsProgress15.dataLabels"
+              [plotOptions]="optionsProgress15.plotOptions" [yaxis]="optionsProgress15.yaxis"
+              [legend]="optionsProgress15.legend" [fill]="optionsProgress15.fill" [stroke]="optionsProgress15.stroke"
+              [tooltip]="optionsProgress15.tooltip" [xaxis]="optionsProgress15.xaxis" [title]="optionsProgress15.title"
+              [subtitle]="optionsProgress15.subtitle" [noData]="optionsProgress15.noData">
             </apx-chart>
-            <apx-chart
-              *ngIf="optionsProgress16?.series"
-              [series]="optionsProgress16.series"
-              [chart]="optionsProgress16.chart"
-              [dataLabels]="optionsProgress16.dataLabels"
-              [plotOptions]="optionsProgress16.plotOptions"
-              [yaxis]="optionsProgress16.yaxis"
-              [legend]="optionsProgress16.legend"
-              [fill]="optionsProgress16.fill"
-              [stroke]="optionsProgress16.stroke"
-              [tooltip]="optionsProgress16.tooltip"
-              [xaxis]="optionsProgress16.xaxis"
-              [title]="optionsProgress16.title"
-              [subtitle]="optionsProgress16.subtitle"
-              [noData]="optionsProgress16.noData"
-            >
+            <apx-chart *ngIf="optionsProgress16?.series" [series]="optionsProgress16.series"
+              [chart]="optionsProgress16.chart" [dataLabels]="optionsProgress16.dataLabels"
+              [plotOptions]="optionsProgress16.plotOptions" [yaxis]="optionsProgress16.yaxis"
+              [legend]="optionsProgress16.legend" [fill]="optionsProgress16.fill" [stroke]="optionsProgress16.stroke"
+              [tooltip]="optionsProgress16.tooltip" [xaxis]="optionsProgress16.xaxis" [title]="optionsProgress16.title"
+              [subtitle]="optionsProgress16.subtitle" [noData]="optionsProgress16.noData">
             </apx-chart>
           </div>
           <div *ngIf="isLoadingBidsSummary">
             <app-loader></app-loader>
           </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div>
+      <div class="mt-4 mb-4">
+        <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
+          <div class="md:w-3/4 w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
+            <div>
+              <div class="font-bold mb-4">Bids By Procurement Method</div>
+              <div *ngIf="!isLoading && averageBidsByMethod.length > 0" class="inline-block min-w-full align-middle ">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Procurement Method
+                        </th>                      
+                        <th scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Published Bids                          
+                          </span>
+                        </th>
+                        <th scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Bids Responded To                          
+                          </span>
+                        </th>                                          
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr *ngFor="let item of averageBidsByMethod">
+                        <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                          <div class="flex flex-col items-left">
+                            <span class="text-xs font-medium text-gray-900">{{item?.procurementMethod ? item?.procurementMethod : 'Unknown'}}</span>
+                          </div>
+                        </td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfPublishedBids}}</td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfBidsRespondedTo}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <span *ngIf="isLoading">
+              <app-loader></app-loader>
+            </span>
+            <span *ngIf="!isLoading &&(!averageBidsByMethod || averageBidsByMethod.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
+          </div>
+          
+          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+            <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div  *ngIf="!isLoading && averageBidsByMethod.length > 0" class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Number Of Published Bids</span>
+                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{averageBidsByMethod[0]?.numberOfPublishedBids}}</span>
+                <span class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">
+                  {{
+                  (averageBidsByMethod[0]?.procurementMethod)
+                  ? (averageBidsByMethod[0]?.procurementMethod) : 'Unknown'
+                  }}</span>
+              </div>
+              <span *ngIf="isLoading">
+                <app-loader></app-loader>
+              </span> 
+              <span *ngIf="!isLoading && (!averageBidsByMethod || averageBidsByMethod.length <= 0)">
+                <app-empty-state></app-empty-state>
+              </span> 
+            </div>                   
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+
+
+
 </div>

@@ -42,6 +42,7 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true 
     this.topTenHighestContracts = [] 
+    this.totalValueofContracts = 0
 
    
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -87,15 +88,6 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
             
             this.numberOfContracts = this.topTenHighestContracts.length
             this.totalValueofContracts = addArrayValues(actualAmount)
-
-            var map = sortedData.reduce(function(obj, b) {
-              obj[b] = ++obj[b] || 1;
-              return obj;
-            }, {});
-
-            console.log(map)
-
-
 
             break;
           }
