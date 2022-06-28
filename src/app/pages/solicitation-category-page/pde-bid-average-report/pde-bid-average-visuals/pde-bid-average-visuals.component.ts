@@ -206,7 +206,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
           case 'avg-bids-by-method':
             console.log("avg-bids-by-method", data)
-            this.averageBidsData = data
+            this.averageBidsData = response.data
             // if (data.length > 0) {
             //   sortedData = data.sort(function (a, b) {
             //     var nameA = a?.numberOfPublishedBids.split(',')
