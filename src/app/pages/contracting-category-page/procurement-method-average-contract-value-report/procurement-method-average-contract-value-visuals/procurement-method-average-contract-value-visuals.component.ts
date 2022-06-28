@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, capitalizeFirstLetter, sortTable } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, capitalizeFirstLetter, sortTable, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 
@@ -24,6 +24,12 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
   topTenHighestContracts
   isEmpty: boolean;
 
+  //KPIs
+  valueOfContracts;
+  highestAwardedContractValue;
+  highestNoOfConstracts;
+  averageValueOfContracts;
+
   constructor(
     private _service: PlaningAndForecastingReportService
     ) {}
@@ -31,13 +37,45 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
   ngOnInit(): void { }
 
   submit(data) {
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
    }
   
   reset(data) {
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
    }
 
+
+   getSummaryStats(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfContracts = 0
+    this.numberOfContracts = 0
+    this.isEmpty = false;
+
+    console.log(reportName)
+
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        console.log(response)
+        let data = response.data[0]
+        
+        if (response.data.length > 0) {
+          this.numberOfContracts = data?.numberOfContracts ? sanitizeCurrencyToString(data?.numberOfContracts) : 0
+          this.valueOfContracts = data?.valueOfContracts ? sanitizeCurrencyToString(data?.valueOfContracts) : 0
+          this.averageValueOfContracts =  (this.numberOfContracts > 0) ? this.valueOfContracts/this.numberOfContracts : 0
+        }else{
+          this.isEmpty = true;
+        }
+        this.isLoading = false
+        },
+      (error) => {
+        this.isLoading = false
+        console.log(error)
+        throw error
+      }
+    )
+  }
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true 

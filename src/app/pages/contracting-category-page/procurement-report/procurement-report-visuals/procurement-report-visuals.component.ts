@@ -91,8 +91,8 @@ export class ProcurementReportVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.valueOfContracts = 0
-    this.numberOfContracts = 0
+    //this.valueOfContracts = 0
+    //this.numberOfContracts = 0
     
 
     this.chartProcurementType?.updateOptions(emptyVisualisation('loading'))
@@ -199,8 +199,8 @@ export class ProcurementReportVisualsComponent implements OnInit {
             console.log('categorieValues',categorieValues)
             console.log('numOfBids',numOfBids)
 
-            this.valueOfContracts = addArrayValues(categorieValues)
-            this.numberOfContracts = addArrayValues(numOfBids)
+            //this.valueOfContracts = addArrayValues(categorieValues)
+            //this.numberOfContracts = addArrayValues(numOfBids)
 
             this.chartProcurementType.updateOptions({
                 series: numOfBids,

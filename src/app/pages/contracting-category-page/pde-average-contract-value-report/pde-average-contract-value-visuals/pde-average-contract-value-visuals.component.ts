@@ -39,6 +39,13 @@ export class PdeAverageContractValueVisualsComponent implements OnInit {
   cardValue3: number;
   cardValue4: number;
 
+  //KPIs
+  valueOfContracts;
+  numberOfContracts;
+  highestAwardedContractValue;
+  highestNoOfConstracts;
+  averageValueOfContracts;
+
   constructor(
     private _service: PlaningAndForecastingReportService) {
 
@@ -48,14 +55,46 @@ export class PdeAverageContractValueVisualsComponent implements OnInit {
   ngOnInit(): void { }
 
   submit(data) {
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('contracts-by-pde-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
   
   reset(data){
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('contracts-by-pde-summary',data?.selectedFinancialYear,data?.selectedPDE)
    } 
   
   
+   getSummaryStats(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfContracts = 0
+    this.numberOfContracts = 0
+    this.isEmpty = false;
+
+    console.log(reportName)
+
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        console.log(response)
+        let data = response.data[0]
+        
+        if (response.data.length > 0) {
+          this.numberOfContracts = data?.numberOfContracts ? sanitizeCurrencyToString(data?.numberOfContracts) : 0
+          this.valueOfContracts = data?.valueOfContracts ? sanitizeCurrencyToString(data?.valueOfContracts) : 0
+          this.averageValueOfContracts =  (this.numberOfContracts > 0) ? this.valueOfContracts/this.numberOfContracts : 0
+        }else{
+          this.isEmpty = true;
+        }
+        this.isLoading = false
+        },
+      (error) => {
+        this.isLoading = false
+        console.log(error)
+        throw error
+      }
+    )
+  }
+
   getVisualisation(reportName,financialYear,procuringEntity){
       this.isLoading=true
 
