@@ -16,7 +16,7 @@ import {
   ApexNoData,
   ApexTitleSubtitle
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -48,7 +48,11 @@ export class DisposalVisualsComponent implements OnInit {
   cardValue1;
   cardValue3;
 
-  topTenHighestContracts 
+  dir
+  sortTable = sortTable
+  highestReservePrice = 0
+
+  topTenHighestContracts  = []
   
 
 
@@ -121,6 +125,9 @@ export class DisposalVisualsComponent implements OnInit {
     // this.cardValue1 = 0
     // this.cardValue3 = 0
 
+    this.topTenHighestContracts=[]
+    this.highestReservePrice = 0
+
     this.chart?.updateOptions({
       series: [],
       xaxis: {
@@ -165,7 +172,13 @@ export class DisposalVisualsComponent implements OnInit {
             //   return 0;
             // })
 
+            
+
             if (data.length > 0) {
+
+              this.topTenHighestContracts = data.slice(0,10)
+              this.highestReservePrice = this.topTenHighestContracts[0]?.reservePrice ? sanitizeCurrencyToString(this.topTenHighestContracts[0]?.reservePrice):0
+              
               for (let i = 0; i < 9; i++) {
                 var valueC = data[i]?.reservePrice.split(',')
                 var valueD = parseInt(valueC.join(''))

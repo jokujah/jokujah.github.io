@@ -1,3 +1,4 @@
+import { visualisationMessages } from 'src/app/utils/helpers';
 import { ChartOptions } from './IChartOptions';
 import { NumberSuffix } from "./helpers";
 import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font-family';
@@ -26,18 +27,29 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
               show: true,
               name: {
                 show:true,
+                fontSize:'14px',
               },
               value: {
                 show: true,
+                fontSize:'14px',
                 formatter: function (val) {
                   return 'UGX'+NumberSuffix(val,1)
                 }
-              }
+              },
+              total:{
+                show:true,
+                label: 'Total',
+                fontSize: '14px'
             }
+            },
+            
           }
         }
       },
       labels: categories,
+      noData: {
+        text: visualisationMessages('loading')
+      },
       dataLabels:{
         enabled: true,
         formatter: function (val) {
@@ -112,11 +124,15 @@ export function actualRadialChart(series?, categories?, title?):Partial<ChartOpt
   title:{
     text:title
   },
+  noData: {
+    text: visualisationMessages('loading')
+  },
   stroke: {
     lineCap: 'round',
   },
    labels: categories,
   };
+  
 }
 
 
@@ -152,7 +168,7 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           },
           labels:{
              formatter: function(val) {
-              return "UGX " + NumberSuffix(val,1) ;
+              return  NumberSuffix(val,1) ;
             }
           }
         },
@@ -160,6 +176,10 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           title: {
             text: yAxisTitle
           },
+          labels:{
+            minWidth: 0,
+            maxWidth: 200,
+          }
           //showForNullSeries: false,
         },
         fill: {
@@ -173,7 +193,7 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           }
         },
         noData: {
-          text: 'Loading Data ...'
+          text: visualisationMessages('loading')
         },
         title: {
           text: title,
@@ -217,6 +237,9 @@ export function initRadarChart(series?,categories?,title?):Partial<ChartOptions>
     },
     xaxis: {
       categories: categories
+    },
+    noData:{
+      text:visualisationMessages('loading')
     }
   };
 }

@@ -2,124 +2,59 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div>
-    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
-        <app-stats-card 
-          [title]="'Procurements'" 
-          [isLoading]="isLoading" 
-          [value]="numberOfPlannedContracts"
-        ></app-stats-card>
+    <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">         
+       <app-stats-card 
+        [title]="'Contracts'" 
+        [isLoading]="isLoading" 
+        [value]="numberOfContracts"
+      ></app-stats-card>
 
-        <app-stats-card 
-          [title]="'Procurements Contract Value'" 
-          [isLoading]="isLoading" 
-          [value]="totalValueofPlannedContracts"
-          [prefix]="'UGX'"
-        ></app-stats-card>
-
+      <app-stats-card 
+        [title]="'Contract Value'" 
+        [isLoading]="isLoading" 
+        [value]="valueOfContracts"
+        [prefix]="'UGX'"
+      ></app-stats-card>
     </div>
+
+   
+
   </div>
 
-  <!-- Graphs -->
-  <div *ngIf="!isEmpty">
-    <!-- Row 1 -->
-    <div class="mt-4 ">
-      <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4 ">
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
-            <!-- <div *ngIf="!isLoading"> -->
-            <div id="chartBudgetStatus">
-              <apx-chart #chartBudgetStatus [series]="chartOptionsBudgetStatus.series"
-                [chart]="chartOptionsBudgetStatus.chart" [dataLabels]="chartOptionsBudgetStatus.dataLabels"
-                [plotOptions]="chartOptionsBudgetStatus.plotOptions" [title]="chartOptionsBudgetStatus.title"
-                [legend]="chartOptionsBudgetStatus.legend" [tooltip]="chartOptionsBudgetStatus.tooltip"
-                [noData]="chartOptionsBudgetStatus.noData"></apx-chart>
-            </div>
-            <!-- </div> -->
-            <!-- <div *ngIf="isLoading">
-                <div  class="relative top-0 left-0 z-50 block w-full h-full opacity-75">
-                  <div class="flex items-center justify-center h-80">
-                    <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                      </path>
-                    </svg>
-                  </div>
-                </div>
-              </div> -->
+  <div>
+    <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex ">
+        <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
+          <div  id="chartProcurementType"  class="w-full  ">
+            <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
+              [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
+              [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
+              [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData" [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
           </div>
-        </div>
-
-        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-          <div class="flex flex-col px-2 py-2">
-
-            <div>
-              <div id="chartProcurementTypes" *ngIf="chartOptionsProcurementTypes">
-                <apx-chart #chartProcurementTypes [series]="chartOptionsProcurementTypes.series"
-                  [chart]="chartOptionsProcurementTypes.chart" [dataLabels]="chartOptionsProcurementTypes.dataLabels"
-                  [plotOptions]="chartOptionsProcurementTypes.plotOptions" [yaxis]="chartOptionsProcurementTypes.yaxis"
-                  [legend]="chartOptionsProcurementTypes.legend" [fill]="chartOptionsProcurementTypes.fill"
-                  [stroke]="chartOptionsProcurementTypes.stroke" [tooltip]="chartOptionsProcurementTypes.tooltip"
-                  [xaxis]="chartOptionsProcurementTypes.xaxis" [title]="chartOptionsProcurementTypes.title"
-                  [theme]="chartOptionsProcurementTypes.theme" [noData]="chartOptionsProcurementTypes.noData">
-                </apx-chart>
-              </div>
-            </div>
-            <!-- <div>
-                <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading">
-                  <div class="flex items-center justify-center h-80">
-                    <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                      </path>
-                    </svg>
-                  </div>
-                </div>
-              </div> -->
-          </div>
+          <!-- <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && !chartOptionsProcurementType">
+            <app-empty-state></app-empty-state>
+          </span> -->
         </div>
       </div>
-
-
-
-      <div class="mt-4 mb-4">
-        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <!-- <div class="hidden text-base font-medium text-gray-500">Intersex Persons Education Status</div> -->
-          <div id="chartEducationStatus">
-            <apx-chart #chartEducationStatus [series]="chartOptionsEducationStatus.series"
-              [chart]="chartOptionsEducationStatus.chart" [dataLabels]="chartOptionsEducationStatus.dataLabels"
-              [plotOptions]="chartOptionsEducationStatus.plotOptions" [yaxis]="chartOptionsEducationStatus.yaxis"
-              [xaxis]="chartOptionsEducationStatus.xaxis" [legend]="chartOptionsEducationStatus.legend"
-              [colors]="chartOptionsEducationStatus.colors" [grid]="chartOptionsEducationStatus.grid"
-              [title]="chartOptionsEducationStatus.title" [tooltip]="chartOptionsEducationStatus.tooltip"
-              [noData]="chartOptionsEducationStatus.noData"></apx-chart>
+      <div class="flex ">
+        <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
+          <div  id="chartProcurementTypeValue"  class="w-full  ">
+            <apx-chart #chartProcurementTypeValue [series]="chartOptionsProcurementTypeValue.series" [chart]="chartOptionsProcurementTypeValue.chart" [yaxis]="chartOptionsProcurementTypeValue.yaxis"
+              [xaxis]="chartOptionsProcurementTypeValue.xaxis" [labels]="chartOptionsProcurementTypeValue.labels" [stroke]="chartOptionsProcurementTypeValue.stroke"
+              [title]="chartOptionsProcurementTypeValue.title" [dataLabels]="chartOptionsProcurementTypeValue.dataLabels" [fill]="chartOptionsProcurementTypeValue.fill"
+              [tooltip]="chartOptionsProcurementTypeValue.tooltip" [noData]="chartOptionsProcurementTypeValue.noData" [plotOptions]="chartOptionsProcurementTypeValue.plotOptions"></apx-chart>
           </div>
-          <!-- <div *ngIf="!chartOptionsEducationStatus">
-                <app-loading-pulse></app-loading-pulse>
-              </div> -->
-
-          <!-- <div class="relative top-0 left-0 z-50 block w-full h-full opacity-75" *ngIf="isLoading || !chartOptionsEducationStatus">
-               
-                <div class="flex items-center justify-center h-80">
-                  <svg fill="none" viewBox="0 0 24 24" class="w-8 h-8 text-sky-500 animate-spin">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                  </svg>
-                </div>
-              </div> -->
-
+          <!-- <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && !chartOptionsProcurementTypeValue">
+            <app-empty-state></app-empty-state>
+          </span> -->
         </div>
-
-
       </div>
     </div>
-  </div>
-
-   <!-- Empty State -->
-   <div *ngIf="isEmpty">
-    <app-empty-state></app-empty-state>
   </div>
 </div>

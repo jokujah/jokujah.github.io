@@ -253,13 +253,20 @@ function checkIfNumberAfterDecimalPointIsZero(numberToBeChanged , decimalPoints)
 
 export function visualisationMessages(type){
   let message 
+  let checkIfSuperAdmin = localStorage.getItem('isSuperAdmin');
+
+  let roles = checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
+
+  let checkIfPdeOrDept = (roles == 'super-admin') ? 'PDE' : 'Department'
+
+  let deptOrPde = checkIfPdeOrDept
 
   switch(type){
     case  'empty':
-      message = 'No Data For Financial Year '
+      message = `No Data Available For Selected Financial Year or ${deptOrPde}`
       break
     case  'error':
-        message = 'Error Loading Data , Refresh or Try changing the search or filter '
+        message = 'Error Loading Data , Refresh or Try changing the search filter '
         break
     case  'loading':
       message = 'Loading Data , Please Wait'
@@ -275,6 +282,22 @@ export function emptyVisualisation(type) {
     xaxis: {
       categories:[],
     },
+    // chart: {
+    //   type: "donut",
+    // },
+    noData:{
+      text:visualisationMessages(type)
+    }      
+  }
+}
+
+export function emptyVisualisationNonAxis(type) {
+  return {
+    series: [],
+    labels: [],
+    // chart: {
+    //   type: "donut",
+    // },
     noData:{
       text:visualisationMessages(type)
     }      

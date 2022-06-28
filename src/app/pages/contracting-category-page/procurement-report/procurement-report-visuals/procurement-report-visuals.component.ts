@@ -1,61 +1,14 @@
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
-import {
-  ApexChart,
-  ApexNonAxisChartSeries,
-  ApexResponsive
-} from "ng-apexcharts";
+import { initRadarChart, initColumnChart, initRadialChart } from 'src/app/utils/chartsApex';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, sortTable, visualisationMessages, emptyVisualisation, sanitizeCurrencyToString, capitalizeFirstLetter } from 'src/app/utils/helpers';
 
-import { ChartType } from 'angular-google-charts';
-import html2canvas from 'html2canvas';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
-import { ToastrService } from 'ngx-toastr';
+import { ChartComponent } from 'ng-apexcharts';
+import { ChartOptions } from 'src/app/utils/IChartOptions';
+import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
-export type ChartOptionsEducationStatus = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  xaxis: ApexXAxis;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-  tooltip: ApexTooltip;
-  fill: ApexFill;
-  legend: ApexLegend;
-  noData:ApexNoData
-};
 
-export type ChartOptionsBudgetStatus = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  title: ApexTitleSubtitle;
-  legend: ApexLegend;
-  tooltip: ApexTooltip;
-  noData:ApexNoData;
-};
 
-export type ChartOptionsProcurementTypes = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  title: ApexTitleSubtitle;
-  theme:ApexTheme;
-  noData:ApexNoData;
-};
 
 @Component({
   selector: 'app-procurement-report-visuals',
@@ -64,572 +17,265 @@ export type ChartOptionsProcurementTypes = {
 })
 export class ProcurementReportVisualsComponent implements OnInit {
 
-  @ViewChild("chartEducationStatus")
-  chartEducationStatus!: ChartComponent;
-  chartOptionsEducationStatus: Partial<ChartOptionsEducationStatus> | any;
+  @ViewChild("chartProcurementType") chartProcurementType: ChartComponent;
+  public chartOptionsProcurementType: Partial<ChartOptions>;
 
-  @ViewChild("chartBudgetStatus") chartBudgetStatus: ChartComponent;
-  public chartOptionsBudgetStatus: Partial<ChartOptionsBudgetStatus>;
+  @ViewChild("chartProcurementTypeValue") chartProcurementTypeValue: ChartComponent;
+  public chartOptionsProcurementTypeValue: Partial<ChartOptions>;
 
-  @ViewChild("chartProcurementTypes") chartProcurementTypes: ChartComponent;
-  public chartOptionsProcurementTypes: Partial<ChartOptionsProcurementTypes>;
 
-  pde = getsortedPDEList()
-  financialYears = getFinancialYears()
-  options: FormGroup;
-  pdeControl = new FormControl('');
-  financialYearControl = new FormControl(this.financialYears[0]);
-  downloading = false
+  dir
+  sortTable = sortTable
+
+  
   isLoading:boolean = false
-  registeredProviders
-
-  totalValueofPlannedContracts ;
-  numberOfPlannedContracts;
-  yearOfPlannedContracts ;
-  numberOfRegisteredEntities  ;
-  topTenHighestContracts
   isEmpty: boolean;
 
-  constructor(
-    fb: FormBuilder,
-    private toastr: ToastrService,
-    private _planingCategoryService: PlaningAndForecastingReportService) {
+  awardedContractsByProcurementMethod = []
+  awardedContractsByContractsNumber = []
+  awardedContractsByContractType = []
+  
+  //KPIs
+  valueOfContracts;
+  numberOfContracts;
+  highestAwardedContractValue;
+  highestNoOfConstracts;
+  averageValueOfContracts;
+  topTenHighestContracts
+  
 
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-
-    this.isEmpty= true
-  }
+  constructor( private _service: AwardedContractReportService) {  }
 
   ngOnInit(): void {
-    this.chartOptionsEducationStatus = {
-      series: [
-        {
-          name: "Planned Contract Value",
-          data: [],
-          fontSize: "12px"
-        }
-      ],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 'auto',
-        type: "bar",
-        events: {
-          click: function(chart, w, e) {
-            // console.log(chart, w, e)
-          }
-        },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 2000,
-          animateGradually: {
-              enabled: true,
-              delay: 150
-          },
-          dynamicAnimation: {
-              enabled: true,
-              speed: 450
-          }
-      }
-
-      },
-      colors: [
-        "#008FFB"
-      ],
-      plotOptions: {
-        bar: {
-          columnWidth: "35%",
-          distributed: false,
-          horizontal:true
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return NumberSuffix(val,2)
-      },
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        show: true
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      title: {
-        text: "Top 10 Highest PDE Plans By Value"
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
-          }
-        }
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
-
-    this.chartOptionsBudgetStatus  = {
-      series: [],
-
-      chart: {
-        height: 350,
-        fontFamily: 'Trebuchet MS',
-        type: "treemap"
-      },
-      title: {
-        text: "PDE Percentage of Budget Spent "
-      },
-      tooltip: {
-        y: {
-          formatter: function(value) {
-            return `${value}%`
-          }
-        }
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }      
-    };
-
-    this.chartOptionsProcurementTypes = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: 350,
-        fontFamily: 'Trebuchet MS',
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          columnWidth: "55%"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: [],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function (val) {
-            return NumberSuffix(val, 2)
-          }
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Value"
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "UGX " + NumberSuffix(val, 2);
-          }
-        }
-      },
-      title: {
-        text: "Budget Value by Procurement Types"
-      },
-      theme: {
-        mode: 'light',
-        palette: 'palette1',
-        monochrome: {
-          enabled: false,
-          color: '#255aee',
-          shadeTo: 'light',
-          shadeIntensity: 0.65
-        },
-      },
-      noData: {
-        text: 'No Data Available ...'
-      }
-    };
-
-    //for changing stats at the top and the highest procurement budgets down
-    //this.getSummaryStats('plan-summary',this.financialYears[0],'')
-
-    //for budget graph
-    //this.getSummaryStatsBudget('plan-budget-status',this.financialYears[0],'')
-
-    //procurement graph
-    //this.getSummaryStatsProcurementType('plan-by-procurement-type',this.financialYears[0],'')   
-    
-    //this.getSummaryStats('plan-by-funding-source',this.financialYears[0],'Ministry of Finance')
-    //this.getSummaryStats('plan-budget-status',this.financialYears[0],'Ministry of Finance')
+    this.initCharts()    
   }
 
   submit(data) {
-    console.log(data)
-    this.getSummaryStats('plan-summary',data?.selectedFinancialYear,'')
-    this.getSummaryStatsWithPDE('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getSummaryStatsProcurementType('plan-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE) 
-    //this.getSummaryStatsWithPDE('plan-by-funding-source',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getSummaryStatsWithPDE('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
   }
   
   reset(data){
-     //for changing stats at the top and the highest procurement budgets down
-     this.getSummaryStats('plan-summary',data?.selectedFinancialYear,data?.selectedPDE)
-
-     //for budget graph
-     this.getSummaryStatsBudget('plan-budget-status',data?.selectedFinancialYear,data?.selectedPDE)
- 
-     //procurement graph
-     this.getSummaryStatsProcurementType('plan-by-procurement-type',data?.selectedFinancialYear,data?.selectedPDE) 
+    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
   }
-
 
   getSummaryStats(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.numberOfPlannedContracts = 0
-    this.totalValueofPlannedContracts = 0
-    this.yearOfPlannedContracts = 0
-    this.numberOfRegisteredEntities = 0
+    this.valueOfContracts = 0
+    this.numberOfContracts = 0
 
-    this.chartEducationStatus?.updateOptions({
+    console.log(reportName)
 
-      series: [],
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
+        console.log(response)
+        let data = response.data[0]
+        
+        if (response.data.length > 0) {
+          this.numberOfContracts = data?.numberOfContracts ? sanitizeCurrencyToString(data?.numberOfContracts) : 0
+          this.valueOfContracts = data?.valueOfContracts ? sanitizeCurrencyToString(data?.valueOfContracts) : 0
+          this.averageValueOfContracts =  (this.numberOfContracts > 0) ? this.valueOfContracts/this.numberOfContracts : 0
+        }else{
+          this.isEmpty = true;
+        }
+        this.isLoading = false
+        },
+      (error) => {
+        this.isLoading = false
+        console.log(error)
+        throw error
+      }
+    )
+  }
 
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#D10CE8",
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
+  getVisualisation(reportName,financialYear,procuringEntity){
+    this.isLoading=true
+    this.valueOfContracts = 0
+    this.numberOfContracts = 0
+    
 
-    console.log(`getSummaryStats ${reportName} + ${financialYear} + ${procuringEntity}`,)
+    this.chartProcurementType?.updateOptions(emptyVisualisation('loading'))
+    this.chartProcurementTypeValue?.updateOptions(emptyVisualisation('loading'))
 
-    this._planingCategoryService.getSummaryStats(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
+    console.log(reportName)
+
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
+      (response )=>{ 
         let data = response.data
-        let  x = []
-        let  y = []
-        let  providersInSelectedYear = []
+        let categories = []
+        let categorieValues = []
+        let numOfBids = []
+        let sortedData = []
+        let sortedByContractNumber = []
 
-        console.log('getSummaryStats' ,data ,)
-        var e =( data.length > 0)
-        console.log('getSummaryStats' ,e)
-        if (data.length > 0) {
-          data.forEach(element => {
-            if (element.financialYear == financialYear) {
-              x.push(element?.numberOfPlans)
-              var e = element?.estimatedAmount.split(',')
-              y.push(parseInt(e.join('')))
-              providersInSelectedYear.push(element?.pdeName)
-            }
-          });
+        switch (reportName) {
+          // case 'contracts-by-contract-type':           
+          //   console.log("contracts-by-contract-type", data)
 
-          this.topTenHighestContracts = data.sort(function (a, b) {
-            var nameA = a?.estimatedAmount.split(',')
-            var nameB = b?.estimatedAmount.split(',')
-            var valueA = parseInt(nameA.join(''))
-            var valueB = parseInt(nameB.join(''))
+          //   sortedData = data.sort(function (a, b) {
+          //     var nameA = a?.contractValue.split(',')
+          //     var nameB = b?.contractValue.split(',')
+          //     var valueA = parseInt(nameA.join(''))
+          //     var valueB = parseInt(nameB.join(''))
 
-            if (valueA > valueB) {
-              return -1;
-            }
-            if (valueA < valueB) {
-              return 1;
-            }
-            return 0;
-          })
+          //     if (valueA > valueB) {
+          //       return -1;
+          //     }
+          //     if (valueA < valueB) {
+          //       return 1;
+          //     }
+          //     return 0;
+          //   })
 
-          let categories = []
-          let categoryValues = []
+          //   this.awardedContractsByContractType = sortedData
+            
+          //   sortedData.forEach(element => {
+          //     var valueC = element?.contractValue.split(',')
+          //     var valueD = parseInt(valueC.join(''))
+          //     categories.push(capitalizeFirstLetter(element.contractType))
+          //     categorieValues.push(valueD)
+          //     numOfBids.push(parseInt(element?.numberOfContracts))
+          //   });
 
+          //   this.initRadialChart(categorieValues,categories)
 
-          this.topTenHighestContracts.slice(0, 10).forEach(element => {
+           
 
-            var valueC = element?.estimatedAmount.split(',')
-            var valueD = parseInt(valueC.join(''))
-            categories.push(element.pdeName)
-            categoryValues.push(valueD)
-          });
+          //   break;
+          // case 'contracts-by-procurement-method':           
+           
+          //   console.log("contracts-by-procurement-method", data)
+          //   sortedData = []
+          //   sortedData  = data.sort(function (a, b) {
+          //     var nameA = a?.contractValue.split(',')
+          //     var nameB = b?.contractValue.split(',')
+          //     var valueA = parseInt(nameA.join(''))
+          //     var valueB = parseInt(nameB.join(''))
 
+          //     if (valueA > valueB) {
+          //       return -1;
+          //     }
+          //     if (valueA < valueB) {
+          //       return 1;
+          //     }
+          //     return 0;
+          //   })
 
+          //   this.awardedContractsByProcurementMethod = sortedData
+          //   this.highestAwardedContractValue = (this.awardedContractsByProcurementMethod[0]?.contractValue)?sanitizeCurrencyToString(this.awardedContractsByProcurementMethod[0]?.contractValue):0
+           
+           
+          //   break;
+          
+            case 'contracts-by-procurement-type':           
+           console.log("contracts-by-procurement-type", data)
+            if(data.length > 0){           
 
-          this.chartEducationStatus?.updateOptions({
+            sortedData = data.sort(function (a, b) {
+              var nameA = a?.contractValue.split(',')
+              var nameB = b?.contractValue.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
 
-            series: [{
-              name: "PDEs",
-              data: categoryValues
-            }],
-
-            xaxis: {
-              categories: categories,
-              labels: {
-                style: {
-                  colors: [
-                    "#008FFB",
-                    "#D10CE8",
-                  ],
-                  fontSize: "12px"
-                },
-                formatter: function (val) {
-                  return NumberSuffix(val, 2)
-                }
+              if (valueA > valueB) {
+                return -1;
               }
-            },
-          })
-          
-          this.numberOfPlannedContracts = addArrayValues(x)
-          this.totalValueofPlannedContracts = addArrayValues(y)
-          this.yearOfPlannedContracts = financialYear
-          this.numberOfRegisteredEntities = data[0].numberOfRegisteredPdes
-          this.isLoading = false
-        }
-        else{
-          this.numberOfPlannedContracts = 0
-          this.totalValueofPlannedContracts = 0
-          this.yearOfPlannedContracts = 0
-          this.numberOfRegisteredEntities = 0
-          this.isLoading = false
-        }
-        },
-      (error) => {
-        console.log(error)
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        this.isLoading = false
-        throw error
-      }
-    )
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            sortedData.forEach(element => {
+              var valueC = element?.contractValue.split(',')
+              var valueD = parseInt(valueC.join(''))
+              categories.push(capitalizeFirstLetter(element.procurementType))
+              categorieValues.push(valueD)
+              numOfBids.push(parseInt(element?.numberOfContracts.split(',').join('')))
+            });
 
-  }
+            console.log('categories',categories)
+            console.log('categorieValues',categorieValues)
+            console.log('numOfBids',numOfBids)
 
-  getSummaryStatsWithPDE(reportName,financialYear,procuringEntity){
-    this.isLoading=true
+            this.valueOfContracts = addArrayValues(categorieValues)
+            this.numberOfContracts = addArrayValues(numOfBids)
 
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
-
-        console.log(data)
-
-          this.isLoading = false
-        },
-      (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        this.isLoading = false
-        throw error
-      }
-    )
-  }
-
-  getSummaryStatsBudget(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-
-
-    this.chartBudgetStatus?.updateOptions({
-      series: [],
-    })
-
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
-        let  seriesData = []
-        let  seriesObject = []
-
-        console.log("BUDGET",data)
-        
-        data.forEach(element => {
-          
-            x.push(element?.numberOfPlans)
-
-            var planned = element?.budgetPlannedAmount.split(',')
-
-            var totalplanned = element?.totalBudgetPlannedAmount.split(',')
-
-            var spent = element?.spentAmount.split(',')
-
-            var percentage = parseInt(spent.join(''))/parseInt(planned.join('')) *100
-
-            var percentagePlanned = parseInt(planned.join(''))/parseInt(totalplanned.join('')) *100
-
-            var oneSerieData = [(parseInt(spent.join(''))/1000000000000),(parseInt(planned.join(''))/1000000000000),percentage]
-
-            var oneSerieObject = {
-              x:element?.pdeName,
-              // "budgetSpent":spent,
-              // "planned":planned,
-              y:Math.round(percentage),
-              
-            }
-            seriesData.push(oneSerieData)
-            seriesObject.push(oneSerieObject)
-          
-        });
-        
-        this.chartBudgetStatus?.updateSeries([{
-          data:seriesObject
-        }]  
-        )
-        
-          this.isLoading = false
-        },
-      (error) => {
-        // this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        this.isLoading = false
-      }
-    )
-  }
-
-  getSummaryStatsProcurementType(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-
-    this.chartProcurementTypes?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB"
-            ],
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-    })
-
-    
-    this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
-        let data = response.data
-        let  x = []
-        let  y = []
-        var sortedTypes
-
-        console.log("Procurment Types",data)
-
-        sortedTypes = data.sort(function(a, b) {
-          var nameA = a?.marketPrice.split(',')
-          var nameB = b?.marketPrice.split(',')
-          var valueA = parseInt(nameA.join(''))
-          var valueB = parseInt(nameB.join(''))
-
-          if (valueA >  valueB) {
-            return -1;
-          }
-          if (valueA < valueB) {
-            return 1;
-          }
-          return 0;
-        })
-
-
-        let categories=[]
-        let categoryValues=[]
-
-
-        sortedTypes.forEach(element => {
-
-          var valueC = element?.marketPrice.split(',')
-          var valueD = parseInt(valueC.join(''))
-          categories.push(element.procurementType)
-          categoryValues.push(valueD)
-        });
-
-        this.chartProcurementTypes?.updateOptions({
-
-          series: [{
-            name: "Values",
-            data: categoryValues
-          }],
-    
-          xaxis: {
-            categories:categories,
-            labels: {
-              style: {
-                colors: [
-                  "#008FFB"
-                ],
-                fontSize: "12px"
+            this.chartProcurementType.updateOptions({
+                series: numOfBids,
+                labels:categories,
+                plotOptions: {
+                  pie: {
+                    expandOnClick: true,
+                    customScale: 1,
+                    donut: {
+                      labels: {
+                        show: true,
+                        name: {
+                          show:true,
+                          fontSize:'8px',
+                        },
+                        value: {
+                          show: true,
+                          fontSize:'14px',
+                          formatter: function (val) {
+                            return val
+                          }
+                        },
+                        total:{
+                          show: true,
+                          label:'Total',
+                          fontSize:'14px',
+                        }
+                      }
+                    }
+                  }
+                },
+                noData: {
+                  text: visualisationMessages('empty')
+                }
+            })    
+            
+            this.chartProcurementTypeValue.updateOptions({
+              series:[
+                {
+                  name:'Value Of Contracts',
+                  data: categorieValues
+                }
+              ],
+              xaxis: {
+                categories: categories,
               },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }            
-          },
-        })
-       
+              noData:{
+                text:visualisationMessages('empty')
+              }
+            })  
+          }else{
+            this.chartProcurementType.updateOptions(emptyVisualisation('empty'))
+            this.chartProcurementTypeValue.updateOptions(emptyVisualisation('empty'))
+          }  
+            break;
+
+        }
+         
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        this.isLoading = false
+        this.isLoading = false      
+       
+        this.chartProcurementType?.updateOptions(emptyVisualisation('error'))
+        this.chartProcurementTypeValue?.updateOptions(emptyVisualisation('error'))
         console.log(error)
         throw error
       }
     )
   }
 
-   getFontSize() {
-    return Math.max(10, 12);
+  initCharts(){
+    this.chartOptionsProcurementType = initRadialChart([],[],'Number of Contracts by Procurement Type')
+    this.chartOptionsProcurementTypeValue = initColumnChart([
+    ],[],'Value of Contracts by Procurement Type','Value of Contracts(UGX)','Procurement Types')
   }
+
 }
