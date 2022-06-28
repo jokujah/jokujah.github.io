@@ -1,27 +1,27 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+    <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
     
       <app-stats-card 
       [title]="'Total Number Of Contracts'" 
       [isLoading]="isLoading" 
-      [value]="cardValue1"
+      [value]="numberOfContracts"
     ></app-stats-card>
 
     <app-stats-card 
       [title]="'Total Contract Value'" 
       [isLoading]="isLoading" 
-      [value]="cardValue2"
+      [value]="valueOfContracts"
       [prefix]="'UGX'"
     ></app-stats-card>
 
-    <app-stats-card 
+    <!-- <app-stats-card 
     [title]="'Average Contract Value'" 
     [isLoading]="isLoading" 
     [value]="cardValue4"
     [prefix]="'UGX'"
-  ></app-stats-card>
+  ></app-stats-card> -->
 
 
     </div>

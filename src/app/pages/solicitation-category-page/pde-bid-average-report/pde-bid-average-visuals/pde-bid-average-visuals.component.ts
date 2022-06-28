@@ -71,7 +71,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   numberOfPlannedContracts;
   yearOfPlannedContracts ;
   numberOfRegisteredEntities  ;
-  topTenHighestContracts
+  topTenHighestContracts = []
 
   cardValue1: number;
   cardValue2;
@@ -87,6 +87,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   totalValueofContracts = 0;
   highestNumberOfPublishedBids = 0;
   averageBidsByMethod = [];
+  averageBidsData = [];
 
   constructor(
     fb: FormBuilder,
@@ -115,13 +116,13 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   submit(data) {
     this.getSummaryStats('solicitation-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('avg-bids-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('bids-by-entity-list',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
      this.getSummaryStats('solicitation-summary',data?.selectedFinancialYear,data?.selectedPDE)
      this.getVisualisation('avg-bids-by-method',data?.selectedFinancialYear,data?.selectedPDE)
-     this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+     this.getVisualisation('bids-by-entity-list',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
 
@@ -150,7 +151,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoadingBidsSummary = true
-
+    this.averageBidsData = []
+    this.topTenHighestContracts = []
 
     this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
@@ -163,12 +165,12 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         
         switch (reportName) {
 
-          case 'top-contracts-summary':
-            console.log("top-contracts-summary", data)
+          case 'bids-by-entity-list':
+            console.log("bids-by-entity-list", data)
 
             sortedData = data.sort(function (a, b) {
-              var nameA = a?.estimatedAmount.split(',')
-              var nameB = b?.estimatedAmount.split(',')
+              var nameA = a?.numberOfBids.split(',')
+              var nameB = b?.numberOfBids.split(',')
               var valueA = parseInt(nameA.join(''))
               var valueB = parseInt(nameB.join(''))
 
@@ -183,45 +185,46 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
             this.topTenHighestContracts = sortedData
 
-            this.highestNumberOfPublishedBids = 15
+            this.highestNumberOfPublishedBids = this.topTenHighestContracts[0]?.numberOfBids
 
 
-            sortedData.forEach(element => {
-              var valueC = (element?.estimatedAmount) ? (element?.estimatedAmount.split(',')) : ['0'];
-              var valueD = parseInt(valueC.join(''))
-              var valueE = (element?.contractAmount) ? (element?.contractAmount.split(',')) : ['0'];
-              var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
-              contractValue.push(valueD)
-              actualAmount.push(valueF)
-            });
+            // sortedData.forEach(element => {
+            //   var valueC = (element?.estimatedAmount) ? (element?.estimatedAmount.split(',')) : ['0'];
+            //   var valueD = parseInt(valueC.join(''))
+            //   var valueE = (element?.contractAmount) ? (element?.contractAmount.split(',')) : ['0'];
+            //   var valueF = parseInt(valueE.join(''))
+            //   subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
+            //   contractValue.push(valueD)
+            //   actualAmount.push(valueF)
+            // });
 
 
-            this.numberOfContracts = this.topTenHighestContracts.length
-            this.totalValueofContracts = addArrayValues(actualAmount)
+            //this.numberOfContracts = this.topTenHighestContracts.length
+            //this.totalValueofContracts = addArrayValues(actualAmount)
 
             break;
 
           case 'avg-bids-by-method':
             console.log("avg-bids-by-method", data)
-            if (data.length > 0) {
-              sortedData = data.sort(function (a, b) {
-                var nameA = a?.numberOfPublishedBids.split(',')
-                var nameB = b?.numberOfPublishedBids.split(',')
-                var valueA = parseInt(nameA.join(''))
-                var valueB = parseInt(nameB.join(''))
+            this.averageBidsData = data
+            // if (data.length > 0) {
+            //   sortedData = data.sort(function (a, b) {
+            //     var nameA = a?.numberOfPublishedBids.split(',')
+            //     var nameB = b?.numberOfPublishedBids.split(',')
+            //     var valueA = parseInt(nameA.join(''))
+            //     var valueB = parseInt(nameB.join(''))
 
-                if (valueA > valueB) {
-                  return -1;
-                }
-                if (valueA < valueB) {
-                  return 1;
-                }
-                return 0;
-              })
+            //     if (valueA > valueB) {
+            //       return -1;
+            //     }
+            //     if (valueA < valueB) {
+            //       return 1;
+            //     }
+            //     return 0;
+            //   })
 
-              this.averageBidsByMethod = sortedData
-            }
+            //   this.averageBidsByMethod = sortedData
+            // }
             this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avgBids ? data[0]?.avgBids : 0);
             this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avgBids ? data[1]?.avgBids : 0);
             this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avgBids ? data[2]?.avgBids : 0);

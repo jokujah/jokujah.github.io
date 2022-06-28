@@ -56,6 +56,7 @@ export class ReportsComponent implements OnInit {
 
   subscription: Subscription
   filterControlName: string;
+  isSuspendedProvidersReport: boolean = false;
   
   
 
@@ -86,6 +87,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.isSuspendedProvidersReport  = (this.reportName === 'suspended-providers')?true:false
     this.fullReportName = this.createfullReportName(this.reportName)
   }
 
