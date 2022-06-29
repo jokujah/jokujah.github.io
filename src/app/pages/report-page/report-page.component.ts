@@ -22,7 +22,7 @@ export class ReportPageComponent implements OnInit {
     })
 
     this.reportName = this.route.snapshot.paramMap.get('reportURL')?this.route.snapshot.paramMap.get('reportURL'):this.reportName2;
-
+    console.log(this.reportName)
     console.log(this.route.snapshot.paramMap.get('reportURL'))
     console.log(this.reportName2)
   }

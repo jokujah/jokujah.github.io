@@ -1,5 +1,5 @@
 <div class="max-w-full mx-auto">
-  <!-- <app-filter *ngIf="isSuspendedProvidersReport"  (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter> -->
+  <!-- <app-filter *ngIf="reportName !== 'suspended-providers'"  (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter> -->
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div class="mt-4">
     <mat-progress-bar *ngIf="downloadData"
@@ -32,7 +32,7 @@
       </div>
 
       <div *ngIf="!searchedPDE || (searchedPDE?.length <= 0) ">
-        <app-empty-state-detailed-report></app-empty-state-detailed-report>
+        <app-empty-state></app-empty-state>
       </div>
 
     </div>

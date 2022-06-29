@@ -53,6 +53,7 @@ export class RevenueVisualsComponent implements OnInit {
   topTenHighestContracts 
   
 
+  isEmpty:boolean = true
 
   options: FormGroup;
   pdeControl = new FormControl('');
@@ -86,16 +87,16 @@ export class RevenueVisualsComponent implements OnInit {
     //   'selectedPDE': form.controls.pde.value,
     //   'selectedFinancialYear': form.controls.financialYear.value,
     // }
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
     // this.options.get('pde')?.setValue('');
     // this.options.get('financialYear')?.setValue(this.financialYears[0]);
 
-    this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getSummaryStats('signed-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('high-value-contracts',data?.selectedFinancialYear,data?.selectedPDE)
 
   }
 

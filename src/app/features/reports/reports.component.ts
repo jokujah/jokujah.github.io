@@ -1,7 +1,7 @@
 import { Download } from './../../utils/download';
 import { saveAs } from 'file-saver';
 import  PDE  from 'src/assets/PDE.json';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
@@ -19,7 +19,7 @@ export class ReportsComponent implements OnInit {
 
 
   @Input() 
-  reportName:string = ''
+  reportName:string 
 
   fullReportName 
 
@@ -56,7 +56,7 @@ export class ReportsComponent implements OnInit {
 
   subscription: Subscription
   filterControlName: string;
-  isSuspendedProvidersReport: boolean = false;
+  isSuspendedProvidersReport: boolean ;
   
   
 
@@ -66,6 +66,8 @@ export class ReportsComponent implements OnInit {
     fb: FormBuilder,
     private toastr : ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) { 
+       slowLoader()
+    //this.isSuspendedProvidersReport  = (this.reportName === 'suspended-providers')?true:false
     this.options = fb.group({
       financialYear: this.financialYearControl,
       pde:this.pdeControl
@@ -84,10 +86,32 @@ export class ReportsComponent implements OnInit {
     }else{
       this.filterControlName = "Departments"
     }
+    
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   // console.log(changes?.reportName.currentValue)
+  //   // this.isSuspendedProvidersReport  = (changes?.reportName.currentValue === 'suspended-providers')?true:false
+  //   for (const propName in changes) {
+  //     const chng = changes[propName];
+  //     const cur = JSON.stringify(chng.currentValue);
+  //     const prev = JSON.stringify(chng.previousValue);
+  //     console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+  //   }
+  // }
+
   ngOnInit(): void {
-    //this.isSuspendedProvidersReport  = (this.reportName === 'suspended-providers')?true:false
+    // console.log(this.reportName)
+    // console.log('this.reportName === suspended-providers',this.reportName === 'suspended-providers')
+    // this.isSuspendedProvidersReport  = (this.reportName === 'suspended-providers')?true:false
+
+    // if(this.reportName === 'suspended-providers'){
+    //   let data: any = {
+    //     'selectedPDE': '',
+    //     'selectedFinancialYear': '',
+    //   }
+    //   this.submit(data)
+    // }
     this.fullReportName = this.createfullReportName(this.reportName)
   }
 

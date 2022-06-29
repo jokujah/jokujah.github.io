@@ -75,7 +75,7 @@ export class DisposalVisualsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initCharts()    
+    //this.initCharts()    
   }
 
 
@@ -125,8 +125,7 @@ export class DisposalVisualsComponent implements OnInit {
     // this.cardValue1 = 0
     // this.cardValue3 = 0
 
-    this.topTenHighestContracts=[]
-    this.highestReservePrice = 0
+   
 
     this.chart?.updateOptions({
       series: [],
@@ -152,7 +151,8 @@ export class DisposalVisualsComponent implements OnInit {
         let reservePrice = []
         let contractAmount = []
         let sortedData = []
-
+        this.topTenHighestContracts=[]
+        this.highestReservePrice = 0
         switch (reportName) {
           case 'top-disposal-contract-list-summary':           
             console.log("top-disposal-contract-list-summary", data)
@@ -174,7 +174,7 @@ export class DisposalVisualsComponent implements OnInit {
 
             
 
-            if (data.length > 0) {
+            if (response.data.length > 0) {
 
               this.topTenHighestContracts = data.slice(0,10)
               this.highestReservePrice = this.topTenHighestContracts[0]?.reservePrice ? sanitizeCurrencyToString(this.topTenHighestContracts[0]?.reservePrice):0
