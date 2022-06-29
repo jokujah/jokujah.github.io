@@ -368,7 +368,7 @@ export class AwardedContractVisualsComponent implements OnInit {
           }
         },
         noData:{
-          text:visualisationMessages('empty')
+          text:visualisationMessages('loading')
         }
       };
     }
@@ -458,7 +458,7 @@ export class AwardedContractVisualsComponent implements OnInit {
       //   }
       // },
       noData: {
-        text: 'Loading Data ...'
+        text: visualisationMessages('loading')
       }
     };
   }

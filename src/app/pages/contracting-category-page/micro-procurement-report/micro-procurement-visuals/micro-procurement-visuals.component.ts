@@ -16,7 +16,7 @@ import {
   ApexNoData,
   ApexTitleSubtitle
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable, sortArrayBy } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -55,6 +55,9 @@ export class MicroProcurementVisualsComponent implements OnInit {
   highestContractValue = 0;
   highestProcurement = 'N/A';
   entityWithHighestProcurement = 'N/A';
+
+  dir
+  sortTable=sortTable
   
 
 
@@ -152,25 +155,11 @@ export class MicroProcurementVisualsComponent implements OnInit {
 
             if (data.length > 0) {
               this.isEmpty = false
-              sortedData = data.sort(function (a, b) {
-                var nameA = a?.contractAmount ? a?.contractAmount.split(',') : ['0']
-                var nameB = b?.contractAmount ? b?.contractAmount.split(',') : ['0']
-                var valueA = parseInt(nameA.join(''))
-                var valueB = parseInt(nameB.join(''))
-
-                if (valueA > valueB) {
-                  return -1;
-                }
-                if (valueA < valueB) {
-                  return 1;
-                }
-                return 0;
-              })
+              sortedData = sortArrayBy(data,'contractAmount')
 
               this.topTenHighestContracts = sortedData
 
               sortedData.forEach(element => {
-                console.log(element)
                 if (element?.estimatedAmount == null) return;
                 if (element?.contractAmount == null) return;
                 if (element?.subjectOfProcurement == null) return;
@@ -201,47 +190,28 @@ export class MicroProcurementVisualsComponent implements OnInit {
 
               });
 
-              
-
               this.entityWithHighestProcurement = pdeName[0] ? pdeName[0] : 'Not Available'
               this.highestProcurement = subjectOfProcurement[0] ? subjectOfProcurement[0] : 'Not Available'
-              this.highestContractValue = actualAmount[0] ? actualAmount[0] : 0
+              this.highestContractValue = actualAmount[0] ? actualAmount[0] : 0       
 
-              console.log(subjectOfProcurement)
-              console.log(estimatedAmount)
-              console.log(actualAmount)
-
-              console.log(markerObject)
               // let series = [
               //   {
-              //     name: "Actual Amount",
-              //     data: actualAmount
-              //   },
-              //   {
-              //     name: "Estimated Amount",
-              //     data: estimatedAmount
+              //     name : "Actual Amount",
+              //     data : markerObject
               //   }
+               
               // ]
 
-              let series = [
-                {
-                  name : "Actual Amount",
-                  data : markerObject
-                }
-               
-              ]
-
-           
-              this.chartOptions = this.initCharts(series,[])
+              // this.chartOptions = this.initCharts(series,[])
 
             }else{
-              let series = [
-                {
-                  name: "Contract Value",
-                  data: []
-                }
-              ]
-              this.chartOptions = this.initCharts(series,[])
+              // let series = [
+              //   {
+              //     name: "Contract Value",
+              //     data: []
+              //   }
+              // ]
+              // this.chartOptions = this.initCharts(series,[])
           
               this.isEmpty = true
             }
@@ -253,18 +223,13 @@ export class MicroProcurementVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        let series = [
-          {
-            name: "Contract Value",
-            data: []
-          }
-        ]
-        this.chartOptions = this.initCharts(series,[])
+        // let series = [
+        //   {
+        //     name: "Contract Value",
+        //     data: []
+        //   }
+        // ]
+        // this.chartOptions = this.initCharts(series,[])
 
         this.isLoading = false
       
@@ -384,8 +349,5 @@ export class MicroProcurementVisualsComponent implements OnInit {
       }
     };
   }
-
-
-  
 
 }

@@ -224,10 +224,17 @@ export function sortTable(n,tableName) {
 export function getDays(dateOne , dateTwo){
   var date1 = new Date(dateOne);
   var date2 = new Date(dateTwo);
+
+
+  var a =  (date1.getUTCMonth()+1) + '/' + date1.getUTCDate() +  '/' + date1.getUTCFullYear()
+  var b =  (date2.getUTCMonth()+1) + '/' + date2.getUTCDate() + '/' + date2.getUTCFullYear()
+  
+  // console.log(` date1 ${dateOne}    date1   ${new Date(dateOne)} a dd/mm/yyyy ${a}   a ${new Date(a)}`)
+  // console.log(` date2 ${dateTwo}    date2   ${new Date(dateTwo)} b dd/mm/yyyy ${b}   b ${new Date(b)}`)
   
 // To calculate the time difference of two dates
-var Difference_In_Time = date1.getTime() - date2.getTime();
-  
+var Difference_In_Time = new Date(a).getTime() - new Date(b).getTime();
+
 // To calculate the no. of days between two dates
 var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
@@ -313,6 +320,40 @@ export function groupBy(objectArray, property) {
     acc[key].push(obj)
     return acc
   }, {})
+}
+
+
+export function sortArrayBy(objectArray, property){
+  return objectArray.sort(function (a, b) {
+    var nameA = a[property].split(',')
+    var nameB = b[property].split(',')
+    var valueA = parseInt(nameA.join(''))
+    var valueB = parseInt(nameB.join(''))
+
+    if (valueA > valueB) {
+      return -1;
+    }
+    if (valueA < valueB) {
+      return 1;
+    }
+    return 0;
+  }
+  )
+}
+
+export function getObjectTotal(objectGroup){
+
+  let arrayToReceive = []
+  for (const prop in objectGroup) {
+    let objectProcurementMethod = {
+      procurementMethod : prop,
+      numberOfDisposals : objectGroup[prop].length
+    }
+    arrayToReceive.push(objectProcurementMethod)
+  }
+
+  return arrayToReceive
+
 }
 
 

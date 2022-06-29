@@ -2,9 +2,10 @@ import { ToastrService } from 'ngx-toastr';
 import { DueDeligenceReportService } from './../../../../services/EvaluationCategory/due-deligence-report.service';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { addArrayValues, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { addArrayValues, capitalizeFirstLetter, convertNumbersWithCommas, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortArrayBy } from 'src/app/utils/helpers';
 
 import {ApexChart, ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, ApexNoData } from 'ng-apexcharts';
+import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -42,7 +43,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
   yearOfBids;
   allEvaluatedBidders;
 
-  topTenHighestContracts 
+  topTenHighestContracts = []
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
@@ -53,39 +54,21 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
   isEmpty=true
 
-
-  
- 
   constructor(
-    fb: FormBuilder,
-    private toastr:ToastrService,
-    private _dueDeligenceReportService: DueDeligenceReportService) {
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-  }
+    private _service: PlaningAndForecastingReportService
+  ){}
 
-  ngOnInit(): void {
-    this.initCharts()
-  }
-
- 
+  ngOnInit(): void {}
 
   submit(data) {
-    // this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getBidsByFinancialYear('bids-by-financial-year',data?.selectedFinancialYear,data?.selectedPDE)
+     this.getSummaryStats('due-diligence-summary',data?.selectedFinancialYear,data?.selectedPDE)
+     this.getVisualisation('due-diligence-list-summary',data?.selectedFinancialYear,data?.selectedPDE)    
   }
 
 
   reset(data){
-    // this.getSummaryStats('evaluation-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getSummaryStats('bids-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    // this.getVisualisation('bids-by-provider',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getBidsByFinancialYear('bids-by-financial-year',data?.selectedFinancialYear,data?.selectedPDE)
-
+    this.getSummaryStats('due-diligence-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('due-diligence-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   getSummaryStats(reportName,financialYear,procuringEntity){
@@ -98,23 +81,18 @@ export class DueDeligenceVisualsComponent implements OnInit {
 
     console.log(reportName)
 
-    this._dueDeligenceReportService.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         console.log("Due Deligence Reports",response)
         let data = response.data[0]
         
-        this.successfullEvaluatedBidders = data.successfulEvaluatedBidders?sanitizeCurrencyToString(data.successfulEvaluatedBidders):0
-        this.valueOfBids = data.totalBidEstimateValue?sanitizeCurrencyToString(data.totalBidEstimateValue):0
-        this.allEvaluatedBidders =  data.totalEvaluatedBidders?sanitizeCurrencyToString(data.totalEvaluatedBidders):0
+        this.successfullEvaluatedBidders = data.numberOfProcurementsUnderPostQualification?data.numberOfProcurementsUnderPostQualification:0
+        this.valueOfBids = data.estimateValue?sanitizeCurrencyToString(data.estimateValue):0
+        //this.allEvaluatedBidders =  data.totalEvaluatedBidders?sanitizeCurrencyToString(data.totalEvaluatedBidders):0
 
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -123,319 +101,49 @@ export class DueDeligenceVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    this.valueOfBids = 0
-    this.successfullEvaluatedBidders = 0
-    this.yearOfBids = 0
+    this.isLoading=true  
+    this.topTenHighestContracts = []   
 
-    console.log(reportName)
-
-    this.chart?.updateOptions({
-      series: [],
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      noData:{
-        text:"Loading Data ...."
-      }
-    })
-
-    this._dueDeligenceReportService.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
+    this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
+
         let data = response.data
-        let  x = []
-        let  y = []
 
-        let categories=[]
-        let categorieValues=[]
-        let numOfBids=[]
+        switch (reportName) {
+        case 'due-diligence-list-summary':           
+            console.log("due-diligence-list-summary", data)
+            if (response.data.length > 0) {
+              this.topTenHighestContracts = data.sort(function (a, b) {
+                var valueA = a.estimated_amount
+                var valueB = b.estimated_amount
+            
+                if (valueA > valueB) {
+                  return -1;
+                }
+                if (valueA < valueB) {
+                  return 1;
+                }
+                return 0;
+              })
+              .map((element)=>{
+                return {
+                  ...element,
+                  estimated_amount:convertNumbersWithCommas(element?.estimated_amount)
+                }
+              })
 
-        console.log("BIDS",data)
-
-         this.topTenHighestContracts = data.sort(function(a, b) {
-          var nameA = a?.totalEstimatedValue.split(',') 
-          var nameB = b?.totalEstimatedValue.split(',') 
-          var valueA = parseInt(nameA.join(''))
-          var valueB = parseInt(nameB.join(''))
-          
-          if (valueA >  valueB) {
-            return -1;
-          }
-          if (valueA < valueB) {
-            return 1;
-          }
-          return 0;
-        })
-
-        console.log(this.topTenHighestContracts)
-        console.log(x)
-        console.log(y)
-
-       
-
-
-        this.topTenHighestContracts.forEach(element => {
-            //if(element?.provider =='none') {categories.push('N/A')}             
-
-          var valueC = element?.totalEstimatedValue.split(',')
-          var valueD = parseInt(valueC.join(''))
-        
-          categories.push(element.provider)
-          categorieValues.push(valueD)
-          numOfBids.push(parseInt(element?.numberOfBidsSubmitted))
-        });
-
-        console.log(categories)
-        console.log(categorieValues)
-        console.log(financialYear)
-        if (financialYear == '2021-2022') {
-          categorieValues = [450000000000, 300000000000, 250000000000, 210000000000, 190000000000, 174000000000, 150000000000]
-          numOfBids = [3000, 800, 2000, 1000, 1500, 200, 900]
-          categories = ["A and B Traders", "Masaka SACCO", "Atala Co", "Mujim and Sons", "Alabama Contracts", "Elohim Tailors"]
-        }
-        if (financialYear == '2020-2019') {
-          categorieValues = [650000000000, 400000000000, 350000000000, 270000000000, 200000000000, 194000000000, 180000000000]
-          numOfBids = [10000, 2000, 6000, 5000, 3500, 2000, 1900]
-          categories = ["Mujim and Sons", "Alabama Contracts", "Atala Co", "A and B Traders", "Masaka SACCO", "Elohim Tailors"]
-        }
-        if (financialYear == '2020-2021') {
-          categorieValues = [450000000000, 300000000000, 250000000000, 210000000000, 190000000000, 174000000000, 150000000000]
-          numOfBids = [3000, 800, 2000, 1000, 1500, 200, 900]
-          categories = ["A and B Traders", "Masaka SACCO", "Atala Co", "Mujim and Sons", "Alabama Contracts", "Elohim Tailors"]
-        }
-        this.chart?.updateOptions({
-          series: [
-            {
-              name: "Estimated Value",
-              type: "column",
-              data: categorieValues
-            },
-            {
-              name: "Bid Submited",
-              type: "column",
-              data: numOfBids
+              console.log(this.topTenHighestContracts)
+            }else{
+              this.topTenHighestContracts = []
             }
-          ],
-          xaxis: {
-            categories: categories,
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function (val) {
-                return NumberSuffix(val, 2)
-              }
-            }
-          },
-        })
-        
+            break;
+          }       
           this.isLoading = false
         },
       (error) => {
         this.isLoading = false;
-        this.chart?.updateOptions({
-          series: [],
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }            
-          },
-          noData:{
-            text:"No Data ...."
-          }
-        })
         throw error
       }      
     )
   }
-
-  // getBidsByFinancialYear(reportName,financialYear,procuringEntity){
-  //   this.isLoading=true
-  //   this._dueDeligenceReportService.getEvaluationBids(reportName,financialYear,procuringEntity).subscribe(
-  //     (response )=>{ 
-  //       console.log(`${reportName}`,response)
-  //       this.isLoading = false
-  //       },
-  //     (error) => {
-  //       this.isLoading = false;
-  //       this.toastr.error("Something Went Wrong", '', {
-  //         progressBar: true,
-  //         positionClass: 'toast-top-right'
-  //       });
-  //       this.isLoading = false
-  //       console.log(error)
-  //     }
-  //   )
-  // }
-
-  
-
-  
-
-  initCharts(){
-    this.chartOptions = {
-      series: [ ],
-      chart: {
-        type: "bar",
-        height: '500px'
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          borderRadius: 2
-        }
-      },
-      dataLabels: {
-        enabled: false,
-        enabledOnSeries: [1]
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        curve:'smooth'
-        
-      },
-      xaxis: {
-        categories: []
-      },    
-
-      yaxis: [{
-        title: {
-          text: '(UGX) Estimated Value',
-        },
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        } 
-      
-      }, {
-        opposite: true,
-        title: {
-          text: 'Number of Bids Submitted'
-        }
-      }],
-
-      fill: {
-        opacity: 1
-      },
-      // tooltip: {
-      //   y: {
-      //     formatter: function(val) {
-      //       return "UGX " + NumberSuffix(val,2) ;
-      //     }
-      //   }
-      // },
-      noData: {
-        text: 'No Data Available...'
-      },
-      title: {
-        text: "Evaluated Providers by Highest Bid Values"
-      },
-    };
-
-    // this.chartOptionsBidsByFinancialYear ={
-    //   series: [
-    //     {
-    //       name: "Bid Value",
-    //       type: "column",
-    //       data: []
-    //     },
-    //     {
-    //       name: "Number of Bids",
-    //       type: "line",
-    //       data: []
-    //     }
-    //   ],
-    //   chart: {
-    //     height: 350,
-    //     type: "bar"
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       horizontal: false,
-    //       columnWidth: "55%",
-    //       borderRadius: 2
-    //     }
-    //   },
-    //   stroke: {
-    //     show: true,
-    //     width: 2,
-    //     colors: ["transparent"]
-    //   },
-    //   title: {
-    //     text: "Awarded Contract Procurement Type"
-    //   },
-    //   dataLabels: {
-    //     enabled: false,
-    //     enabledOnSeries: [1]
-    //   },
-
-    //   xaxis: {
-    //     categories: [],
-    //     labels: {
-    //       style: {
-    //         fontSize: "12px"
-    //       }
-    //     }
-    //   },
-    //   yaxis: [
-    //     {
-    //       title: {
-    //         text: "Bid Value"
-    //       },
-    //       labels: {
-    //         style: {
-    //           colors: [
-    //             "#008FFB",
-    //           ],
-    //           fontSize: "12px"
-    //         },
-    //         formatter: function (val) {
-    //           return NumberSuffix(val, 2)
-    //         }
-    //       }
-    //     },
-    //     {
-    //       opposite: true,
-    //       title: {
-    //         text: "Number of Bids"
-    //       }
-    //     }
-    //   ],
-    //   fill: {
-    //     opacity: 1
-    //   },
-    //   // tooltip: {
-    //   //   y: {
-    //   //     formatter: function(val) {
-    //   //       return "UGX " + NumberSuffix(val,2) ;
-    //   //     }
-    //   //   }
-    //   // },
-    //   noData: {
-    //     text: 'No Data Available'
-    //   }
-    // };
-  }
-
-  getFontSize() {
-    return Math.max(10, 12);
-  }
-
 }

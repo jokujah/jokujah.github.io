@@ -35,30 +35,24 @@
       </div>
     </div>
     
-      <!-- Graphs -->
-      <!-- <div>
-        <div class="mt-4 mb-4 md:grid md:grid-cols-1 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-          <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-            <div id="chart">
-              <apx-chart #chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [dataLabels]="chartOptions.dataLabels"
-                [plotOptions]="chartOptions.plotOptions"
-                [yaxis]="chartOptions.yaxis"
-                [legend]="chartOptions.legend"
-                [fill]="chartOptions.fill"
-                [stroke]="chartOptions.stroke"
-                [tooltip]="chartOptions.tooltip"
-                [xaxis]="chartOptions.xaxis"
-                [title]="chartOptions.title"
-                [noData]="chartOptions.noData"
-              ></apx-chart>
-            </div>
+    <!-- <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex ">
+        <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
+          <div  id="chart"  class="w-full  ">
+            <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
+              [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
+              [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+              [tooltip]="chartOptions.tooltip" [noData]="chartOptions.noData" [plotOptions]="chartOptions.plotOptions"></apx-chart>
           </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && !chartOptions">
+            <app-empty-state></app-empty-state>
+          </span>
         </div>
-        
-      </div> -->
+      </div>
+    </div> -->
 
       <div class="mt-4 mb-4">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
