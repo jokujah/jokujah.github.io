@@ -151,6 +151,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoadingBidsSummary = true
+    this.averageBidsByMethod = []
+
     this.averageBidsData = []
     this.topTenHighestContracts = []
 
