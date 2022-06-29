@@ -124,8 +124,8 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
             });
 
             
-            this.numberOfContracts = this.topTenHighestContracts.length
-            this.totalValueofContracts = addArrayValues(actualAmount)
+            //this.numberOfContracts = this.topTenHighestContracts.length
+            //this.totalValueofContracts = addArrayValues(actualAmount)
 
             break;
           }
