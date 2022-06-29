@@ -6,7 +6,7 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sortTable } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sortTable, visualisationMessages } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
 import html2canvas from 'html2canvas';
@@ -56,7 +56,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
   cardValue2 ;
   cardValue3 ;
   suspendedProviders: any;
-  percentageOfSuspendedProviders: number;
+  percentageOfSuspendedProviders: any;
 
   constructor(
     fb: FormBuilder,
@@ -97,7 +97,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
           this.cardValue2 = data.numberOfSuspendedProviders?parseInt(data.numberOfSuspendedProviders):0  
           this.cardValue3 = 97   
 
-          this.percentageOfSuspendedProviders = Math.floor((this.cardValue2/(this.cardValue1+this.cardValue2))*100 ) 
+          this.percentageOfSuspendedProviders = ((this.cardValue2/(this.cardValue1+this.cardValue2))*100).toFixed(2) 
 
         }
 
@@ -136,7 +136,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data ...'
+        text: visualisationMessages('loading')
       } 
     })
 
@@ -172,7 +172,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
                   categories:providers,                            
                 },
                 noData: {
-                  text: 'No Data Available...'
+                  text: visualisationMessages('empty')
                 } 
               })
             break;
@@ -198,7 +198,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data ...'
+            text: visualisationMessages('error')
           } 
         })
         this.isLoading = false
@@ -369,7 +369,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'Loading Data ...'
+        text: visualisationMessages('loading')
       }
     };
 
