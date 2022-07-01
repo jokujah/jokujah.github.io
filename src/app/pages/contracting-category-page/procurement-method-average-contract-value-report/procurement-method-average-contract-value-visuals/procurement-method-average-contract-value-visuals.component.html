@@ -2,7 +2,7 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div>
-    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       
 
       <app-stats-card 
@@ -18,18 +18,17 @@
           [prefix]="'UGX'"
         ></app-stats-card>
 
-      <!-- <div class="statsCard">
-        <span *ngIf="!isLoading" class="mt-1 text-3xl font-medium text-gray-500">{{numberOfRegisteredEntities}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="py-1 text-sm font-medium text-gray-500 truncate ">Bids Responded To</span>
-      </div> -->
+        <app-stats-card 
+        [title]="'Average Contract Value'" 
+        [isLoading]="isLoading" 
+        [value]="averageValueOfContracts"
+        [prefix]="'UGX'"
+      ></app-stats-card>
 
     </div>
   </div>
 
-  <div>
+  <!-- <div>
     <div class="mt-4 mb-4">
       <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
         <div class=" w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
@@ -58,9 +57,7 @@
                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                         <span class="group inline-flex">
                           Estimated Amount(UGX)
-                          <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
                           <span class="ml-2 flex-none rounded text-gray-400 ">
-                            <!-- Heroicon name: solid/chevron-down -->
                             <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
                               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                               <path fill-rule="evenodd"
@@ -79,10 +76,8 @@
                       <th (click)="sortTable(4,'myTable2')" scope="col"
                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                         <span class="group inline-flex">
-                          Contract Amount(UGX)
-                          <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
+                          Contract Amount(UGX)                          
                           <span class="ml-2 flex-none rounded text-gray-400 ">
-                            <!-- Heroicon name: solid/chevron-down -->
                             <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
                               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                               <path fill-rule="evenodd"
@@ -101,7 +96,6 @@
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
-                    <!-- Odd row -->
                     <tr *ngFor="let item of topTenHighestContracts">
                       <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                         <div class="flex flex-col items-left">
@@ -114,9 +108,7 @@
                       <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.procurementType}}</td>
                       <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.estimatedAmount}}</td>
                       <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.contractAmount}}</td>
-                    </tr>
-        
-                    <!-- More people... -->
+                    </tr>                    
                   </tbody>
                 </table>
               </div>
@@ -128,44 +120,107 @@
           <span *ngIf="!isLoading &&(!topTenHighestContracts || topTenHighestContracts.length <= 0)">
             <app-empty-state></app-empty-state>
           </span>
+        </div>        
+      </div>
+    </div>
+  </div> -->
+
+
+  <div>
+    <div class="mt-4 mb-4">
+      <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
+        <div class=" w-full md:w-1/2  p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div>
+            <div class="font-bold mb-4">Procurement Methods by Contract Value</div>
+            <div *ngIf="!isLoading && topTenHighestContractsPM.length > 0" class="inline-block min-w-full align-middle ">
+              <div class="overflow-hidden   ">
+                <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                  <thead class="bg-gray-50">
+                    <tr class="divide-x divide-gray-200">
+                      <th scope="col " class="w-1/2 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Procurement Method
+                      </th>
+                      <th scope="col"
+                        class="w-1/2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                        <span class="group inline-flex">
+                          Contract Amount(UGX)                          
+                          </span>
+                      </th>                                          
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="divide-x divide-gray-200 h-1" *ngFor="let item of topTenHighestContractsPM">
+                      <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <div class="flex flex-col items-left">
+                          <span class="text-xs font-medium text-gray-900">{{item?.procurement_method ? item?.procurement_method : 'Unknown'}}</span>
+                        </div>
+                      </td>
+                      <td  class="whitespace-normal"><app-progress-bar-graph
+                          [series]=item?.contract_value
+                          [seriesName]=item?.procurement_method
+                          [categories]="'Amount'"
+                          [maxYAxisValue]=totalValueofContractsPM
+
+                        ></app-progress-bar-graph></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading &&(!topTenHighestContractsPM || topTenHighestContractsPM.length <= 0)">
+            <app-empty-state></app-empty-state>
+          </span>
         </div>
+
+        <div class=" w-full md:w-1/2  p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div>
+            <div class="font-bold mb-4">Procurement Methods by Number of Contracts</div>
+            <div *ngIf="!isLoading && topTenHighestNumberOfContractsPM.length > 0" class="inline-block min-w-full align-middle ">
+              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                  <thead class="bg-gray-50">
+                    <tr class="divide-x divide-gray-200">
+                      <th scope="col " class="w-1/2 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Procurement Method
+                      </th>
+                      <th scope="col"
+                        class="w-1/2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                        <span class="group inline-flex">
+                          Number of Contracts                          
+                          </span>
+                      </th>                                          
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="divide-x divide-gray-200 h-1" *ngFor="let item of topTenHighestNumberOfContractsPM">
+                      <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <div class="flex flex-col items-left">
+                          <span class="text-xs font-medium text-gray-900">{{item?.procurement_method ? item?.procurement_method : 'Unknown'}}</span>
+                        </div>
+                      </td>
+                      <td  class="whitespace-normal"><app-progress-bar-graph
+                          [series]=item?.number_of_contracts
+                          [seriesName]=item?.procurement_method
+                          [categories]="'Number Of Contracts'"
+                          [maxYAxisValue]=totalNumberofContractsPM
+
+                        ></app-progress-bar-graph></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading &&(!topTenHighestNumberOfContractsPM || topTenHighestNumberOfContractsPM.length <= 0)">
+            <app-empty-state></app-empty-state>
+          </span>
+        </div>      
         
-        <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
-          <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div *ngIf="!isLoading && topTenHighestContracts > 0" class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Awarded Contract
-                Value</span>
-              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{ averageValueOfContracts |
-                numberSuffix:1}}</span>
-            </div>
-            <span *ngIf="isLoading">
-              <app-loader></app-loader>
-            </span>  
-            <span *ngIf="!isLoading && ( !topTenHighestContracts || topTenHighestContracts <= 0  )">
-              <app-empty-state></app-empty-state>
-            </span>   
-          </div>
-          <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div  *ngIf="!isLoading && topTenHighestContracts.length > 0" class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Total Contract
-                Value</span>
-              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
-                highestAwardedContractValue | numberSuffix:1}}</span>
-              <span class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">
-                {{
-                (topTenHighestContracts[0]?.procurementMethod)
-                ? (topTenHighestContracts[0]?.procurementMethod) : 'Unknown'
-                }}</span>
-            </div>
-            <span *ngIf="isLoading">
-              <app-loader></app-loader>
-            </span> 
-            <span *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
-              <app-empty-state></app-empty-state>
-            </span> 
-          </div>
-                 
-        </div> -->
       </div>
     </div>
   </div>

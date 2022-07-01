@@ -51,7 +51,8 @@ export class GlobalErrorHandler implements ErrorHandler {
             // Client Error
             message = errorService.getClientMessage(error);
             stackTrace = errorService.getClientStack(error);
-            notifier.showWarning(message);
+            //notifier.showWarning(message);
+            console.error(error)
         }
 
         // Always log errors

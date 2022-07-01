@@ -37,7 +37,7 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
                 }
               },
               total:{
-                show:true,
+                show:false,
                 label: 'Total',
                 fontSize: '14px'
             }

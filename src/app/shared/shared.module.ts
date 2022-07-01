@@ -1,3 +1,4 @@
+import { ProgressBarGraphModule } from './progress-bar-graph/progress-bar-graph.module';
 import { AnimatedDigitModule } from './animated-digit/animated-digit.module';
 // Import FusionCharts library and chart modules
 import * as FusionCharts from "fusioncharts";
@@ -69,7 +70,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     EmptyStateDetailedReportComponent,
     MatSnackBarModule,
     StatsCardModule,
-    AnimatedDigitModule
+    AnimatedDigitModule,
+    ProgressBarGraphModule
   ]
 })
 export class SharedModule { }

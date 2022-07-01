@@ -144,9 +144,9 @@ export function addArrayValues(data) {
   }
 
 
-export function capitalizeFirstLetter(string) {
-  if(string !== null){
-     return string[0].toUpperCase() + string.slice(1);
+export function capitalizeFirstLetter(stringToCheck) {  
+  if(stringToCheck !== null && stringToCheck !== ''){
+     return stringToCheck[0].toUpperCase() + stringToCheck.slice(1);
   }else{
     return "Unknown"
   }

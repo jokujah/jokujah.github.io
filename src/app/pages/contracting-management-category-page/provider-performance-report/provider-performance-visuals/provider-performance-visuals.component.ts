@@ -90,14 +90,14 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
 
   submit(data) {
     this.getSummaryStats('provider-performance-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
+   // this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getVisualisation('provider-performance-contracts-by-type-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('provider-performance-contracts-by-method-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }
 
   reset(data){
     this.getSummaryStats('provider-performance-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    //this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
+   // this.getVisualisation('provider-performance-contracts-list-summary',data?.selectedFinancialYear,data?.selectedPDE)
     //this.getVisualisation('provider-performance-contracts-by-type-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('provider-performance-contracts-by-method-summary',data?.selectedFinancialYear,data?.selectedPDE)
   }

@@ -17,7 +17,7 @@ import {
   ApexTitleSubtitle,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable, visualisationMessages } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { initRadarChart, initRadialChart } from 'src/app/utils/chartsApex';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
@@ -129,17 +129,12 @@ export class CompletedContractsVisualsComponent implements OnInit {
           this.cardValue2 = data.totalActualCost ? sanitizeCurrencyToString(data.totalActualCost) : 0
           this.cardValue3 = data.noOfCompletedContracts ? sanitizeCurrencyToString(data.noOfCompletedContracts) : 0
           this.cardValue4 = data.totalValueOfCompletedContracts ? sanitizeCurrencyToString(data.totalValueOfCompletedContracts) : 0
-          this.averageValueOfContracts = sanitizeCurrencyToString(data.totalValueOfCompletedContracts)/data.noOfCompletedContracts
+          this.averageValueOfContracts = (data.noOfCompletedContracts > 0)?sanitizeCurrencyToString(data.totalValueOfCompletedContracts)/data.noOfCompletedContracts:0
         }
 
         this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         console.log(error)
         throw error
@@ -163,7 +158,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data...'
+        text: visualisationMessages('loading')
       }
     })
 
@@ -182,7 +177,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data...'
+        text:  visualisationMessages('loading')
       }
     })
 
@@ -201,7 +196,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         }            
       },
       noData: {
-        text: 'Loading Data...'
+        text:  visualisationMessages('loading')
       }
     })
 
@@ -362,13 +357,13 @@ export class CompletedContractsVisualsComponent implements OnInit {
             data.forEach(element => {
               var valueC = (element?.total_value_of_completed_contracts)?element?.total_value_of_completed_contracts.split(','):['0']              
               var valueD = parseInt(valueC.join(''))
-              var valueE = element?.number_of_contracts
+              var valueE = element?.no_of_completed_contracts
               // var valueF = parseInt(valueE.join(''))
 
               subjectOfProcurement.push(capitalizeFirstLetter(element.contract_type))
               estimatedAmount.push(valueD)
               actualAmount.push(parseInt(valueE))
-              percentage.push(parseInt(element?.no_of_completed_contracts)/element?.number_of_contracts)
+              percentage.push(parseInt(element?.no_of_completed_contracts)/element?.no_of_completed_contracts)
             });
 
 
@@ -379,12 +374,12 @@ export class CompletedContractsVisualsComponent implements OnInit {
             this.chartProcurementType?.updateOptions({
               series: [
                 {
-                  name: "Contracts",
+                  name: "Completed Contracts Value",
                   type: "column",
                   data: estimatedAmount
                 },
                 {
-                  name: "Number Of Contracts",
+                  name: "Completed Contracts",
                   type: "area",
                   data: actualAmount
                 }
@@ -398,7 +393,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
                 }
               },
               noData: {
-                text: 'No Data Available...'
+                text:  visualisationMessages('empty')
               }
             })}
             break;
@@ -407,11 +402,6 @@ export class CompletedContractsVisualsComponent implements OnInit {
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
         this.isLoading = false
         this.chart?.updateOptions({
           series: [],
@@ -426,7 +416,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text:  visualisationMessages('error')
           }
         })
     
@@ -445,7 +435,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text: visualisationMessages('error')
           }
         })
         this.chartProcurementType?.updateOptions({
@@ -463,7 +453,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
             }            
           },
           noData: {
-            text: 'Error Loading Data...'
+            text:  visualisationMessages('error')
           }
         })
         console.log(error)
@@ -520,7 +510,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         }
       },
       noData: {
-        text: 'Loading Data ...'
+        text:  visualisationMessages('loading')
       },
       title: {
         text: "Completed Contracts by Highest Contract Values"
@@ -534,7 +524,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         type: "donut"
       },      
       noData: {
-        text: 'Loading Data ...'
+        text:  visualisationMessages('loading')
       }
     };
 
@@ -587,14 +577,14 @@ export class CompletedContractsVisualsComponent implements OnInit {
               return NumberSuffix(val, 0)
             }
           },
-          showForNullSeries: false,
+          //showForNullSeries: false,
         },
         {
           opposite: true,
           title: {
             text: "Number of Contracts"
           },
-          showForNullSeries: false,
+          //showForNullSeries: false,
         }
       ],
       fill: {
@@ -624,7 +614,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
         ]
       },
       noData: {
-        text: 'Loading Data ...'
+        text:  visualisationMessages('loading')
       }
     };
   }

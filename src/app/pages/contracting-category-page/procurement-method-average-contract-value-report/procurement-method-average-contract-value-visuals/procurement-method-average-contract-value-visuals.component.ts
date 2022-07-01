@@ -29,6 +29,10 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
   highestAwardedContractValue;
   highestNoOfConstracts;
   averageValueOfContracts;
+  totalValueofContractsPM: any = 0;
+  topTenHighestContractsPM: any = [];
+  topTenHighestNumberOfContractsPM: any = [];
+  totalNumberofContractsPM: any = 0;
 
   constructor(
     private _service: PlaningAndForecastingReportService
@@ -38,12 +42,14 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
 
   submit(data) {
     this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('number-value-by-method',data?.selectedFinancialYear,data?.selectedPDE)
    }
   
   reset(data) {
     this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    //this.getVisualisation('top-contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getVisualisation('number-value-by-method',data?.selectedFinancialYear,data?.selectedPDE)
    }
 
 
@@ -125,7 +131,68 @@ export class ProcurementMethodAverageContractValueVisualsComponent implements On
 
             
             //this.numberOfContracts = this.topTenHighestContracts.length
-            //this.totalValueofContracts = addArrayValues(actualAmount)
+            this.totalValueofContracts = addArrayValues(contractValue)
+
+            console.log(this.totalValueofContracts)
+
+            break;
+          case 'number-value-by-method':           
+            console.log("number-value-by-method", data)
+
+            this.topTenHighestContractsPM = data.sort(function (a, b) {
+              var nameA = a?.contract_value.split(',')
+              var nameB = b?.contract_value.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            this.topTenHighestContractsPM.forEach(element => {
+              var valueC = (element?.contract_value)?(element?.contract_value.split(',')):['0'];
+              var valueD = parseInt(valueC.join(''))
+              //subjectOfProcurement.push(capitalizeFirstLetter(element?.procurement_method))
+              contractValue.push(valueD)
+            });
+
+            this.topTenHighestNumberOfContractsPM = response.data.map((element)=>element).sort(function (a, b) {
+              var nameA = a?.number_of_contracts.split(',')
+              var nameB = b?.number_of_contracts.split(',')
+              var valueA = parseInt(nameA.join(''))
+              var valueB = parseInt(nameB.join(''))
+
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            })
+            
+            this.topTenHighestNumberOfContractsPM.forEach(element => {
+              var valueC = (element?.number_of_contracts)?(element?.number_of_contracts.split(',')):['0'];
+              var valueD = parseInt(valueC.join(''))
+              //subjectOfProcurement.push(capitalizeFirstLetter(element?.procurement_method))
+              actualAmount.push(valueD)
+            });
+
+            console.log('this.topTenHighestContractsPM',this.topTenHighestContractsPM)
+            console.log('this.topTenHighestNumberOfContractsPM',this.topTenHighestNumberOfContractsPM)
+
+            
+            //this.numberOfContracts = this.topTenHighestContracts.length
+            this.totalValueofContractsPM = addArrayValues(contractValue)
+            this.totalNumberofContractsPM = addArrayValues(actualAmount)
+
+            console.log(this.totalValueofContractsPM)
+            console.log(this.totalNumberofContractsPM)
 
             break;
           }

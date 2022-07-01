@@ -10,6 +10,7 @@ export type ChartOptions = {
   grid: ApexGrid;
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
+  subtitle:ApexTitleSubtitle;
   fill: ApexFill,
   markers: ApexMarkers;
   yaxis: ApexYAxis | ApexYAxis[];
