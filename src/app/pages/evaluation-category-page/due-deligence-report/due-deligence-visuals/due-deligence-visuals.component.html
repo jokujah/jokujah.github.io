@@ -10,7 +10,7 @@
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Bids Under Evaluation</span>
+          <span class="statsText">Bids Under Post Qualification</span>
         </div>
 
         <div class="statsCard">
@@ -31,7 +31,7 @@
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">
           <div class=" w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
             <div>
-              <div class="font-bold mb-4">Bids Under Evaluation</div>
+              <div class="font-bold mb-4">Bids Under Post Qualification</div>
               <div *ngIf="!isLoading && topTenHighestContracts.length > 0"
                 class="inline-block min-w-full align-middle ">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -47,7 +47,7 @@
                             PDE Name
                           </span>
                         </th>
-                        <th scope="col"
+                        <!-- <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Provider
@@ -58,7 +58,7 @@
                           <span class="group inline-flex">
                             Estimated Amount
                           </span>
-                        </th>
+                        </th> -->
                         <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
@@ -68,13 +68,13 @@
                         <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
-                            Carried Out By
+                            Evaluation By
                           </span>
                         </th>
                         <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
-                            Date
+                            Evaluation Date
                           </span>
                         </th>
                       </tr>
@@ -88,14 +88,14 @@
                               item?.subject_of_procurement : 'Unknown'}}</span>
                             <span class="text-xs font-medium text-gray-600">{{item?.procurement_reference_number ?
                               item?.procurement_reference_number : 'Unknown'}}</span>
-                            <span class="text-xs font-medium text-gray-600">{{item?.financial_year ?
+                            <!-- <span class="text-xs font-medium text-gray-600">{{item?.financial_year ?
                               item?.financial_year
-                              : 'Unknown'}}</span>
+                              : 'Unknown'}}</span> -->
                           </div>
                         </td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.pde_name}}</td>
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.name_of_provider}}</td>
-                        <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.estimated_amount}}</td>
+                        <!-- <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.name_of_provider}}</td>
+                        <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.estimated_amount}}</td> -->
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.bidder_performance}}</td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.team_that_carried_out_dd}}
                         </td>

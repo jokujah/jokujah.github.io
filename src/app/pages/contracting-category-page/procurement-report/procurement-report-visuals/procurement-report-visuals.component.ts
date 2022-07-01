@@ -51,12 +51,12 @@ export class ProcurementReportVisualsComponent implements OnInit {
   }
 
   submit(data) {
-    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('procurement-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
   }
   
   reset(data){
-    this.getSummaryStats('contracts-summary',data?.selectedFinancialYear,data?.selectedPDE)
+    this.getSummaryStats('procurement-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('contracts-by-procurement-type', data?.selectedFinancialYear,data?.selectedPDE)
   }
 
