@@ -15,6 +15,10 @@ export class ReportPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) {
+    
+  }
+
+  ngOnInit(): void {
     this.reportName = this.route.snapshot.paramMap.get('reportURL');
 
     this.route.data.subscribe(data => {
@@ -26,7 +30,5 @@ export class ReportPageComponent implements OnInit {
     console.log(this.route.snapshot.paramMap.get('reportURL'))
     console.log(this.reportName2)
   }
-
-  ngOnInit(): void {}
 
 }

@@ -101,17 +101,17 @@ export class ReportsComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    // console.log(this.reportName)
+     console.log(this.reportName)
     // console.log('this.reportName === suspended-providers',this.reportName === 'suspended-providers')
     // this.isSuspendedProvidersReport  = (this.reportName === 'suspended-providers')?true:false
 
-    // if(this.reportName === 'suspended-providers'){
-    //   let data: any = {
-    //     'selectedPDE': '',
-    //     'selectedFinancialYear': '',
-    //   }
-    //   this.submit(data)
-    // }
+    if(this.reportName === 'suspended-providers'){
+      let data: any = {
+        'selectedPDE': '',
+        'selectedFinancialYear': '',
+      }
+      this.submit(data)
+    }
     this.fullReportName = this.createfullReportName(this.reportName)
   }
 
@@ -172,7 +172,11 @@ export class ReportsComponent implements OnInit {
       //   this.searchedPDE = []
       // }
       if(this.selectedPDE ==''){
-        this.searchedPDE.push(`All ${this.filterControlName}`)
+        if(this.reportName == 'suspended-providers'){
+          this.searchedPDE.push(`All Suspended Providers`)
+        }else{
+          this.searchedPDE.push(`All ${this.filterControlName}`)
+        }
       }
       this.isLoading = false      
   }

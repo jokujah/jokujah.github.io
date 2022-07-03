@@ -1,6 +1,6 @@
 <div class="max-w-full mx-auto">
-  <!-- <app-filter *ngIf="reportName !== 'suspended-providers'"  (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter> -->
-  <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
+  <app-filter *ngIf="reportName !== 'suspended-providers'"  (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
+  <!-- <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter> -->
   <div class="mt-4">
     <mat-progress-bar *ngIf="downloadData"
       [mode]="downloadData.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="downloadData.progress">

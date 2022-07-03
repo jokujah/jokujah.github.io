@@ -236,10 +236,12 @@ export function getDays(dateOne , dateTwo){
 var Difference_In_Time = new Date(a).getTime() - new Date(b).getTime();
 
 // To calculate the no. of days between two dates
-var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
 return Difference_In_Days
 }
+
+
 
 
 function checkIfNumberAfterDecimalPointIsZero(numberToBeChanged , decimalPoints){
