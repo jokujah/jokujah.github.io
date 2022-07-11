@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
@@ -22,7 +22,11 @@ export class FilterComponent implements OnInit {
   pde: any[] = []
 
   @Output() filterEvent = new EventEmitter<any>();
-  @Output() resetEvent = new EventEmitter<string>();
+  @Output() resetEvent = new EventEmitter<any>();
+
+  @Input() isSuspendedProvidersReport:boolean = false
+
+
   isLoading: boolean;
   allPDEs: any;
   allPDEDepartments: any;
@@ -32,6 +36,7 @@ export class FilterComponent implements OnInit {
   selectedFinancialYear: any;
 
   filterControlName:any;
+  filterControlBadge:any;
   isSearching: boolean;
 
   options: FormGroup;
@@ -44,7 +49,6 @@ export class FilterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _utilsService: UtilsService,
-    private toastr : ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +63,7 @@ export class FilterComponent implements OnInit {
 
     if(checkIfPdeOrDept == 'pde'){
       this.filterControlName = "Search for Procuring and Disposal Entities"
+      this.filterControlBadge= "Procuring and Disposal Entities"
       this.pdeControl.valueChanges.pipe(
         startWith(''),
         switchMap((value) => {
@@ -72,6 +77,7 @@ export class FilterComponent implements OnInit {
       });
     } else {
       this.filterControlName = "Select Department"
+      this.filterControlBadge= "Departments"
       this.pdeControl.valueChanges.pipe(
         startWith(''),
         switchMap(value => this._utilsService.getUtil('pde-departments',value)),
@@ -151,7 +157,8 @@ export class FilterComponent implements OnInit {
 
   onClearSearchField(event: any) {
     this.options.get('pde').setValue('');
-    this.pdeAutoComplete.openPanel();
+    this.selectedPDE = ''
+    this.pdeAutoComplete.closePanel()
     event.stopPropagation();
   }
 

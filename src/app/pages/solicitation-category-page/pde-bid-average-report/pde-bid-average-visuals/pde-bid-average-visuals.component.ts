@@ -1,17 +1,11 @@
-import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
-  ApexNonAxisChartSeries,
-  ApexResponsive
 } from "ng-apexcharts";
-import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString, capitalizeFirstLetter } from 'src/app/utils/helpers';
-
-import { ChartType } from 'angular-google-charts';
-import html2canvas from 'html2canvas';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
-import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 
 export type ChartOptions = {
@@ -90,15 +84,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   averageBidsData = [];
 
   constructor(
-    fb: FormBuilder,
-    private toastr: ToastrService,
-    private _planingCategoryService: PlaningAndForecastingReportService) {
-
-    this.options = fb.group({
-      financialYear: this.financialYearControl,
-      pde:this.pdeControl
-    });
-
+    private _planingCategoryService: PlaningAndForecastingReportService
+    ) {
     (window as any).Apex = {
       theme: {
         palette: 'palette4',
@@ -126,27 +113,23 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   }
 
 
-  getSummaryStats(reportName,financialYear,procuringEntity){
-    this.isLoading=true
+  getSummaryStats(reportName, financialYear, procuringEntity) {
+    this.isLoading = true
 
-    this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
-      (response )=>{
+    this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
+      (response) => {
         this.isLoading = false;
         let data = response.data[0];
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfBids ? sanitizeCurrencyToString(data.numberOfBids) : 0;
-          this.cardValue2 = data.numberOfBidsRespondedTo ?sanitizeCurrencyToString(data.numberOfBidsRespondedTo) : 0
+          this.cardValue2 = data.numberOfBidsRespondedTo ? sanitizeCurrencyToString(data.numberOfBidsRespondedTo) : 0
           this.cardValue3 = data.numberOfProvidersThatResponded ? parseInt(data.numberOfProvidersThatResponded) : 0
-          // this.cardValue3 = '2,000,000,000'
         }
-
-        },
+      },
       (error) => {
         this.isLoading = false;
-        console.error(error);
       }
     )
-
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
@@ -160,16 +143,10 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       (response) => {
         this.isLoadingBidsSummary = false;
         let data = response.data;
-        let subjectOfProcurement = []
-        let contractValue = []
-        let actualAmount = []
         let sortedData = []
         
         switch (reportName) {
-
           case 'bids-by-entity-list':
-            console.log("bids-by-entity-list", data)
-
             sortedData = data.sort(function (a, b) {
               var nameA = a?.numberOfBids.split(',')
               var nameB = b?.numberOfBids.split(',')
@@ -184,49 +161,13 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
               }
               return 0;
             })
-
             this.topTenHighestContracts = sortedData
-
             this.highestNumberOfPublishedBids = this.topTenHighestContracts[0]?.numberOfBids
-
-
-            // sortedData.forEach(element => {
-            //   var valueC = (element?.estimatedAmount) ? (element?.estimatedAmount.split(',')) : ['0'];
-            //   var valueD = parseInt(valueC.join(''))
-            //   var valueE = (element?.contractAmount) ? (element?.contractAmount.split(',')) : ['0'];
-            //   var valueF = parseInt(valueE.join(''))
-            //   subjectOfProcurement.push(capitalizeFirstLetter(element.subjectOfProcurement))
-            //   contractValue.push(valueD)
-            //   actualAmount.push(valueF)
-            // });
-
-
-            //this.numberOfContracts = this.topTenHighestContracts.length
-            //this.totalValueofContracts = addArrayValues(actualAmount)
-
             break;
 
           case 'avg-bids-by-method':
             console.log("avg-bids-by-method", data)
             this.averageBidsData = response.data
-            // if (data.length > 0) {
-            //   sortedData = data.sort(function (a, b) {
-            //     var nameA = a?.numberOfPublishedBids.split(',')
-            //     var nameB = b?.numberOfPublishedBids.split(',')
-            //     var valueA = parseInt(nameA.join(''))
-            //     var valueB = parseInt(nameB.join(''))
-
-            //     if (valueA > valueB) {
-            //       return -1;
-            //     }
-            //     if (valueA < valueB) {
-            //       return 1;
-            //     }
-            //     return 0;
-            //   })
-
-            //   this.averageBidsByMethod = sortedData
-            // }
             this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avgBids ? data[0]?.avgBids : 0);
             this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avgBids ? data[1]?.avgBids : 0);
             this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avgBids ? data[2]?.avgBids : 0);
@@ -243,26 +184,17 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
             this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avgBids ? data[13]?.avgBids : 0);
             this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avgBids ? data[14]?.avgBids : 0);
             this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avgBids ? data[15]?.avgBids : 0);
-
-
-
-
             break;
         }
-
         this.isLoading = false
       },
       (error) => {
         this.isLoadingBidsSummary = false;
-        console.error(error);
       }
     )
-
   }
 
-   getFontSize() {
-    return Math.max(10, 12);
-  }
+  
 
   public initAvgBidsChart1(title?: string, percentage?: number)
   {

@@ -56,7 +56,7 @@ export class ReportsComponent implements OnInit {
 
   subscription: Subscription
   filterControlName: string;
-  isSuspendedProvidersReport: boolean ;
+  isSuspendedProvidersReport: boolean  ;
   
   
 
@@ -89,28 +89,15 @@ export class ReportsComponent implements OnInit {
     
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   // console.log(changes?.reportName.currentValue)
-  //   // this.isSuspendedProvidersReport  = (changes?.reportName.currentValue === 'suspended-providers')?true:false
-  //   for (const propName in changes) {
-  //     const chng = changes[propName];
-  //     const cur = JSON.stringify(chng.currentValue);
-  //     const prev = JSON.stringify(chng.previousValue);
-  //     console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
-  //   }
-  // }
-
   ngOnInit(): void {
      console.log(this.reportName)
-    // console.log('this.reportName === suspended-providers',this.reportName === 'suspended-providers')
-    // this.isSuspendedProvidersReport  = (this.reportName === 'suspended-providers')?true:false
-
     if(this.reportName === 'suspended-providers'){
-      let data: any = {
-        'selectedPDE': '',
-        'selectedFinancialYear': '',
-      }
-      this.submit(data)
+      this.isSuspendedProvidersReport = true
+      // let data: any = {
+      //   'selectedPDE': '',
+      //   'selectedFinancialYear': '',
+      // }
+      // this.submit(data)
     }
     this.fullReportName = this.createfullReportName(this.reportName)
   }
@@ -119,26 +106,6 @@ export class ReportsComponent implements OnInit {
     return Math.max(10, 12);
   }
 
-
-  // download(fileName,filePath,pde){
-
-  //   this.isLoading = true;
-  //   this._planingCategoryService.downloadReport(filePath,pde).subscribe(
-  //     (blob )=>{ 
-  //        console.log(blob)
-  //        saveAs(blob, fileName)
-  //        this.isLoading = false;
-  //       },
-  //     (error) => {
-  //        this.isLoading = false;
-  //       this.toastr.error("Something Went Wrong", '', {
-  //         progressBar: true,
-  //         positionClass: 'toast-top-right'
-  //       });
-  //       console.log(error)
-  //     }
-  //   )
-  // }
 
   download(fileName,filePath,pde) {   
     //this.download$ = this.downloadService.download(fileName,filePath,pde,this.selectedFinancialYear)
@@ -184,10 +151,21 @@ export class ReportsComponent implements OnInit {
   async reset(data){
     this.isLoading = true
     this.downloadData = null
+    this.searchedPDE = []
     await slowLoader()
     this.options.get('pde')?.setValue(data?.selectedPDE);
     this.options.get('financialYear')?.setValue(data?.selectedFinancialYear);
-    this.searchedPDE = [] 
+    this.selectedPDE = data?.selectedPDE
+    this.selectedFinancialYear = 'All Financial Years'
+    if(this.selectedPDE ==''){
+      if(this.reportName == 'suspended-providers'){
+        this.searchedPDE.push(`All Suspended Providers`)
+      }else{
+        this.searchedPDE.push(`All ${this.filterControlName}`)
+      }
+    }
+
+   
     this.isLoading = false
   }  
 
