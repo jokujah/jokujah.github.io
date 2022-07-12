@@ -60,13 +60,11 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
 
   constructor(
     fb: FormBuilder,
-    private toastr: ToastrService,
     private _planingCategoryService: PlaningAndForecastingReportService) {
 
   }
 
   ngOnInit(): void {
-    this.initCharts()
     this.getSummaryStats('suspended-providers-summary',null,null)
     this.getVisualisation('suspended-suppliers-list-summary',null,null) 
   }
@@ -90,24 +88,12 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
     this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
         let data = response.data[0]
-        console.log(data)
-
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfProvidersNotSuspended?parseInt(data.numberOfProvidersNotSuspended):0
           this.cardValue2 = data.numberOfSuspendedProviders?parseInt(data.numberOfSuspendedProviders):0  
-          this.cardValue3 = 97   
 
           this.percentageOfSuspendedProviders = ((this.cardValue2/(this.cardValue1+this.cardValue2))*100).toFixed(2) 
-
-        }
-
-        var suspendedValues = [this.cardValue2 ,this.cardValue1]
-
-        // this.chartPercentageSuspended.updateOptions({
-        //   series: suspendedValues,          
-        //   //labels: ["Suspended","Not Suspended"],          
-        // })
-        
+        }        
         this.isLoading = false;
       },
       (error) => {
@@ -119,288 +105,24 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true    
-
-    this.chartSuspendedProviders?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      noData: {
-        text: visualisationMessages('loading')
-      } 
-    })
-
-    console.log(`Visualistion ${reportName} + ${financialYear} + ${procuringEntity}`,)
+    this.isLoading=true   
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
           switch (reportName) {
             case'suspended-suppliers-list-summary':
-              console.log(`Report Name ${reportName}`)
-              console.log('Report Data',data)
-              let providers = []
-              let suspensionDaysLeft = []
-
-              this.suspendedProviders = data
-              data.forEach(element => {
-                providers.push(element?.providerName)
-                //calculate days here
-                //suspensionDaysLeft.push(suspensionEndDate - suspensionStartDate)
-                
-              });
-              this.chartSuspendedProviders?.updateOptions({
-
-                series: [
-                  {
-                    name: "Days of Suspension Left",
-                    data: [100, 250]
-                  }
-                ],
-          
-                xaxis: {
-                  categories:providers,                            
-                },
-                noData: {
-                  text: visualisationMessages('empty')
-                } 
-              })
+              this.suspendedProviders = data  
             break;
           }
 
         this.isLoading = false
         },
       (error) => {
-        console.log(error)
-        this.isLoading = false;
-        this.chartSuspendedProviders?.updateOptions({
-    
-          series: [],
-    
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }            
-          },
-          noData: {
-            text: visualisationMessages('error')
-          } 
-        })
-        this.isLoading = false
+        this.isLoading = false;        
         throw error
       }
     )
-
   } 
 
-   getFontSize() {
-    return Math.max(10, 12);
-  }
-
-  initCharts(){
-    // this.chartOptionsSuspendedProviders = {
-    //   series: [
-    //     {
-    //       name: "Contract Award Value",
-    //       type: "column",
-    //       data: []
-    //     }
-    //   ],
-    //   chart: {
-    //     fontFamily: 'Trebuchet MS',
-    //     height: 350,
-    //     type: "bar"
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       horizontal: true,
-    //       columnWidth: "35%",
-    //       borderRadius: 2
-    //     }
-    //   },
-    //   stroke: {
-    //     show: true,
-    //     width: 2,
-    //     colors: ["transparent"]
-    //   },
-    //   title: {
-    //     text: "Suspended Suppliers by Period of Suspension",
-    //     style: {
-    //       fontSize:  '14px',
-    //       fontWeight:  'bold',
-    //       color:  '#263238'
-    //     },
-    //   },
-    //   dataLabels: {
-    //     enabled: true,
-    //     enabledOnSeries: [1]
-    //   },
-
-    //   xaxis: {
-    //     categories: [],
-    //     labels: {
-    //       style: {
-    //         fontSize: "12px"
-    //       }
-    //     }
-    //   },
-    //   yaxis: [
-    //     {
-    //       title: {
-    //         text: "Procurement Method"
-    //       },
-    //       labels: {
-    //         style: {             
-    //           fontSize: "12px"
-    //         },
-    //         formatter: function (val) {
-    //           return NumberSuffix(val, 2)
-    //         }
-    //       }
-    //     }
-    //   ],
-    //   noData: {
-    //     text: 'Loading Data...'
-    //   }
-    // };
-
-    this.chartOptionsSuspendedProviders = {
-      series: [],
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        type: "bar",
-        height: 350,
-      },
-      title: {
-        text: "Suspended Suppliers by Period of Suspension Left",
-        style: {
-          fontSize: '16px',
-          fontWeight: 'bold',
-          color: '#1286f3'
-        },
-      },
-      annotations: {
-        xaxis: [
-          {
-            x: 500,
-            borderColor: "#00E396",
-            label: {
-              borderColor: "#00E396",
-              style: {
-                color: "#fff",
-                background: "#00E396"
-              },
-              text: "X annotation"
-            }
-          }
-        ],
-        yaxis: [
-          {
-            y: "July",
-            y2: "September",
-            label: {
-              text: "Y annotation"
-            }
-          }
-        ]
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          borderRadius: 2,
-          // columnWidth: '10%',
-          barHeight: '35%',
-          dataLabels: {
-            position: 'bottom'
-          }
-        }
-      },
-    //   dataLabels: {
-    //     position: 'top',
-    //     maxItems: 100,
-    //     hideOverflowingLabels: true,
-    //     orientation: horizontal
-    // }
-    //   dataLabels: {
-    //     enabled: true
-    //   },
-    dataLabels: {
-      enabled: true,
-      style: {
-          colors: ['#333']
-      },
-      offsetX: -30
-    },
-      xaxis: {
-        title:{
-          text:'Days of Suspension Left'
-        },
-        categories: []
-      },
-      grid: {
-        xaxis: {
-          lines: {
-            show: true
-          }
-        }
-      },
-      yaxis: {
-        reversed: true,
-        axisTicks: {
-          show: true
-        },
-        title:{
-          text:'Suppliers'
-        }
-      },
-      noData: {
-        text: visualisationMessages('loading')
-      }
-    };
-
-    this.chartOptionsPercentageSuspended = {
-      series: [],
-      title: {
-        text: "% of Suspended Suppliers ",
-        style: {
-          fontSize: '16px',
-          fontWeight: 'bold',
-          color: '#1286f3'
-        },
-      },
-      chart: {
-        type: "donut",
-        height: 350,
-      },
-      labels: ["Suspended","Not Suspended"],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ]
-    };
-  }
 }

@@ -1,19 +1,11 @@
 import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
-  ApexChart,
-  ApexNonAxisChartSeries,
-  ApexResponsive
+  ApexChart
 } from "ng-apexcharts";
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sanitizeCurrencyToString, convertNumbersWithCommas } from 'src/app/utils/helpers';
-
-import { ChartType } from 'angular-google-charts';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { sanitizeCurrencyToString, convertNumbersWithCommas, visualisationMessages } from 'src/app/utils/helpers';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
-import { ToastrService } from 'ngx-toastr';
-import html2canvas from 'html2canvas';
 import { Subscription } from 'rxjs';
-import { title } from 'process';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -83,7 +75,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  breakdownIndicators;
+  breakdownIndicators = [];
   breakdowns: any;
   topLateInitiations: any = [];
 
@@ -118,6 +110,11 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   getSummaryStats(reportName, financialYear, procuringEntity) {
     this.isLoadingSummary = true
+    this.marketPrice = 0 
+    this.numberOfRequisitions= 0
+    this.numberOfCancelledRequisitions= 0
+    this.requisitionEstimatedAmount= 0
+    this.cancelledRequisitionEstimatedAmount= 0
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
@@ -189,7 +186,11 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
+        
         this.isLoadingPercentageSummary = false;
+        this.initPercentageInitiationChart([]);
+
+          this.initPlannedVsActualInitiationChart([]);
         console.error(error);
       }
     );
@@ -232,10 +233,6 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
     return this.breakdownIndicators;
   }
 
-  getFontSize() {
-    return Math.max(10, 12);
-  }
-
   public initPercentageInitiationChart(percentageData?: Array<string | number>)
   {
     this.chartOptionsPercentageLateInitiation = {
@@ -269,7 +266,18 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           fontFamily: 'Trebuchet MS',
         },
       },
-      labels: ["% of Late Initiations"]
+      labels: ["% of Late Initiations"],
+      noData: {
+        text: visualisationMessages('empty'),
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
     };
   }
 
@@ -439,7 +447,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
       ],
       noData: {
-        text: 'No Data Available',
+        text: visualisationMessages('empty'),
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,

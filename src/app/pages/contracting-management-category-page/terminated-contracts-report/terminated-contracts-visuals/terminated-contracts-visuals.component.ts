@@ -20,7 +20,7 @@ import {
   ApexResponsive,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation, sortTable } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation, sortTable, emptyVisualisationNonAxis } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -80,11 +80,6 @@ export class TerminatedContractsVisualsComponent implements OnInit {
     this.initCharts();
   }
 
-  getFontSize() {
-    return Math.max(10, 12);
-  }
-
-
   submit(data) {
     this.getSummaryStats('terminated-contract-summary',data?.selectedFinancialYear,data?.selectedPDE)
     this.getVisualisation('top-terminated-contracts',data?.selectedFinancialYear,data?.selectedPDE)
@@ -99,63 +94,30 @@ export class TerminatedContractsVisualsComponent implements OnInit {
     this.isLoading=true
     this.cardValue2 = 0
     this.cardValue1 = 0
+    this.cardValue3 = 0
     this.averageCostResultingFromTermination = 0
-    
-
-    console.log(reportName)
-
-    this.chartTerminated?.updateOptions({
-      series:[],
-      labels: [],
-      noData:{
-        text:visualisationMessages('loading')
-      }
-    })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
-        console.log("Terminated",response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.noOfTerminatedContracts?sanitizeCurrencyToString(data.noOfTerminatedContracts):0
-          this.cardValue2 = data.contractValue?sanitizeCurrencyToString(data.contractValue):0
-          this.cardValue3 = data.costResultingFromTermination?sanitizeCurrencyToString(data.costResultingFromTermination):0
-          if((this.cardValue2 <=0) && (this.cardValue3 <=0))
-          {
-            this.chartTerminated.updateOptions(emptyVisualisation('empty'))
-          }else{
-            this.averageCostResultingFromTermination = (this.cardValue1 > 0) ? this.cardValue3/this.cardValue1 : 0
-          this.chartTerminated?.updateOptions({
-            series:[this.cardValue2,this.cardValue3],
-            labels: ['Contract Value','Termination Cost'],
-            noData:{
-              text:visualisationMessages('empty')
-            }
-          })}
-
-        }else{
-
-        this.chartTerminated?.updateOptions({
-          series:[],
-          labels: [],
-          noData:{
-            text:visualisationMessages('empty')
+          this.cardValue1 = data.noOfTerminatedContracts ? sanitizeCurrencyToString(data.noOfTerminatedContracts) : 0
+          this.cardValue2 = data.contractValue ? sanitizeCurrencyToString(data.contractValue) : 0
+          this.cardValue3 = data.costResultingFromTermination ? sanitizeCurrencyToString(data.costResultingFromTermination) : 0
+          if ((this.cardValue2 <= 0) && (this.cardValue3 <= 0)) {
+            this.initChartTerminated([],[])
+          } else {
+            this.averageCostResultingFromTermination = (this.cardValue1 > 0) ? this.cardValue3 / this.cardValue1 : 0
+            this.initChartTerminated([this.cardValue2, this.cardValue3],['Contract Value', 'Termination Cost'])
           }
-        })}
-        
-
+        } else {
+          this.initChartTerminated([],[])
+        }
         this.isLoading = false
         },
       (error) => {
-        this.chartTerminated?.updateOptions({
-          series: [],
-          labels: [],
-          noData:{
-            text:visualisationMessages('error')
-          }
-        })
+        this.initChartTerminated([],[])
         this.isLoading = false
-        console.log(error)
         throw error
       }
     )
@@ -192,9 +154,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         let sortedData = []
 
         switch (reportName) {
-          case 'top-terminated-contracts':           
-            console.log("top-terminated-contracts", data)
-
+          case 'top-terminated-contracts':
             sortedData = data.sort(function (a, b) {
               var nameA = a?.costResultingFromTermination.split(',')
               var nameB = b?.costResultingFromTermination.split(',')
@@ -221,12 +181,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
               contractValue.push(valueD)
               actualAmount.push(valueF)
             });
-
-            //this.topTenHighestContracts = sortedData
-            
             this.highestCostResultingFromTermination = this.topTenHighestContracts[0]?.costResultingFromTermination ? sanitizeCurrencyToString(this.topTenHighestContracts[0]?.costResultingFromTermination):0
-
-
             this.chart?.updateOptions({
               series: [
                 {
@@ -254,10 +209,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
                 text: visualisationMessages('empty')
               },
             })
-
-           
-            break;
-          
+            break;  
           }
          
           this.isLoading = false
@@ -280,18 +232,17 @@ export class TerminatedContractsVisualsComponent implements OnInit {
             text: visualisationMessages('error')
           },
         })
-        console.log(error)
         throw error
       }
     )
   }
 
 
-  initCharts(){
+  initCharts() {
     this.chartOptions = {
       series: [],
       chart: {
-        fontFamily:'Trebuchet Ms',
+        fontFamily: 'Trebuchet Ms',
         type: "bar",
         height: 450,
         stacked: true,
@@ -311,15 +262,15 @@ export class TerminatedContractsVisualsComponent implements OnInit {
       },
       dataLabels: {
         enabled: true,
-        enabledOnSeries:[0,1],
-       
+        enabledOnSeries: [0, 1],
+
         style: {
           colors: ['#fff'],
-          fontWeight:'bold',
-          fontSize:'12px'
+          fontWeight: 'bold',
+          fontSize: '12px'
         },
-        formatter:function(val){
-          return NumberSuffix(val,2)
+        formatter: function (val) {
+          return NumberSuffix(val, 2)
         }
       },
       stroke: {
@@ -327,7 +278,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         width: 2,
         colors: ["transparent"]
       },
-      xaxis: {       
+      xaxis: {
         categories: []
       },
       yaxis: {
@@ -338,19 +289,19 @@ export class TerminatedContractsVisualsComponent implements OnInit {
           show: true,
           align: 'right',
           minWidth: 0,
-          maxWidth:700
+          maxWidth: 700
         }
       },
       fill: {
         opacity: 1
       },
       tooltip: {
-        enabled:true,
-        shared:true,
+        enabled: true,
+        shared: true,
         intersect: false,
         y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
+          formatter: function (val) {
+            return "UGX " + NumberSuffix(val, 2);
           }
         }
       },
@@ -366,9 +317,12 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         },
       },
     };
+  }
 
+
+  initChartTerminated(series?:any,labels?:any){
     this.chartOptionsTerminated = {
-      series: [],
+      series: series,
       title: {
         text: "% Value of Terminated Contracts",
         style: {
@@ -381,7 +335,20 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         type: "donut",
         fontFamily:'Trebuchet Ms',
         width:'100%',
-        height: 350
+        height: 350,
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 350
+          }
+      }
       },
       plotOptions: {
         pie: {
@@ -391,7 +358,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
             labels: {
               show: true,
               name: {
-                show:false,
+                show:true,
               },
               value: {
                 show: true,
@@ -403,7 +370,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
           }
         }
       },
-      labels: [],
+      labels: labels,
       dataLabels:{
         enabled: true,
         formatter: function (val) {
@@ -432,7 +399,7 @@ export class TerminatedContractsVisualsComponent implements OnInit {
         }
       ],
       noData:{
-        text:visualisationMessages('loading')
+        text:visualisationMessages('empty')
       },
       toolbar: {
         show: true,

@@ -1,6 +1,4 @@
 <div class="max-w-full mx-auto">
-  <!-- <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter> -->
-
   <div>
     <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
       <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hiddsen">
@@ -22,17 +20,6 @@
         </span>
         <span class="statsText">Suspended Suppliers</span>
       </div>
-
-      <!-- <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">
-        <span *ngIf="!isLoading" class="stats">UGX {{marketPrice |
-          numberSuffix:
-          2}}</span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Market Price</span>
-      </div> -->
-
     </div>
   </div>
 
@@ -86,8 +73,8 @@
                 </table>
               </div>
             </div>
-            <span *ngIf="!suspendedProviders || suspendedProviders.length<=0">
-              <app-empty-page></app-empty-page>
+            <span *ngIf="!suspendedProviders || suspendedProviders.length <= 0">
+              <app-empty-state></app-empty-state>
             </span>
           </div>
           <span *ngIf="isLoading">
@@ -96,42 +83,18 @@
         </div>
         <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
           <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div *ngIf="!isLoading" class="flex flex-col items-center">
+            <div *ngIf="!isLoading && percentageOfSuspendedProviders" class="flex flex-col items-center">
               <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">% of Suspended Suppliers</span>
               <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{ percentageOfSuspendedProviders}} %</span>
             </div>
             <span *ngIf="isLoading">
               <app-loader></app-loader>
-            </span>   
-          </div>
-          <!-- <div  class="overflow-hidden p-5 bg-white rounded-lg shadow">
-            <div *ngIf="!isLoading" class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Total Contract
-                Value</span>
-              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
-                highestAwardedContractValue | numberSuffix:1}}</span>
-              <span
-                class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{awardedContractsByProcurementMethod[0]?.procurementMethod
-                ? awardedContractsByProcurementMethod[0]?.procurementMethod : 'Unknown'}}</span>
-            </div>
-            <span *ngIf="isLoading">
-              <app-loading-pulse></app-loading-pulse>
+            </span> 
+            <span *ngIf="!isLoading && !percentageOfSuspendedProviders">
+              <app-empty-state></app-empty-state>
             </span>  
-          </div> -->
-                 
-        </div>
-        <!-- <div class="col-span-1 flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          
-          <div id="chartPercentageSuspended">
-            <apx-chart #chartPercentageSuspended
-              [series]="chartOptionsPercentageSuspended.series"
-              [chart]="chartOptionsPercentageSuspended.chart"
-              [labels]="chartOptionsPercentageSuspended.labels"
-              [title]="chartOptionsPercentageSuspended.title"
-              
-            ></apx-chart>
-          </div>
-        </div> -->
+          </div>                 
+        </div>        
       </div>
     </div>
   </div>

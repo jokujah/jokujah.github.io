@@ -33,12 +33,29 @@
       <div class="mt-4 mb-4 ">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full ">
           <div  class="w-full md:w-3/4 bg-white shadow rounded-lg overflow-hidden">          
-            <div id="chartTerminated" *ngIf="chartOptionsTerminated"  class="w-full  p-5">
-              <apx-chart #chartTerminated [series]="chartOptionsTerminated.series" [chart]="chartOptionsTerminated.chart" [yaxis]="chartOptionsTerminated.yaxis"
-                [xaxis]="chartOptionsTerminated.xaxis" [labels]="chartOptionsTerminated.labels" [stroke]="chartOptionsTerminated.stroke"
-                [title]="chartOptionsTerminated.title" [dataLabels]="chartOptionsTerminated.dataLabels" [fill]="chartOptionsTerminated.fill"
-                [tooltip]="chartOptionsTerminated.tooltip" [noData]="chartOptionsTerminated.noData" [plotOptions]="chartOptionsTerminated.plotOptions"></apx-chart>
+            <div id="chartTerminated"   class="w-full  p-5">
+              <apx-chart #chartTerminated  *ngIf="!isLoading && chartOptionsTerminated?.series" 
+                [series]="chartOptionsTerminated.series" 
+                [chart]="chartOptionsTerminated.chart" 
+                [yaxis]="chartOptionsTerminated.yaxis"
+                [xaxis]="chartOptionsTerminated.xaxis" 
+                [labels]="chartOptionsTerminated.labels" 
+                [stroke]="chartOptionsTerminated.stroke"
+                [title]="chartOptionsTerminated.title" 
+                [dataLabels]="chartOptionsTerminated.dataLabels"
+                [fill]="chartOptionsTerminated.fill"
+                [tooltip]="chartOptionsTerminated.tooltip" 
+                [noData]="chartOptionsTerminated.noData" 
+                [plotOptions]="chartOptionsTerminated.plotOptions">
+              </apx-chart>
+            <div *ngIf="isLoading">
+              <app-loader></app-loader>
             </div>
+            <div *ngIf="!isLoading && !chartOptionsTerminated?.series" >
+              <app-empty-state></app-empty-state>
+            </div>
+            </div>
+
           </div>
           <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">            
             <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
@@ -87,7 +104,7 @@
                     <thead class="bg-gray-50">
                       <tr>
                         <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                          PDE Name
+                          PDE
                         </th>
                         <th (click)="sortTable(1,'myTable2')" scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
