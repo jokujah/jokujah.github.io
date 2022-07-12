@@ -288,11 +288,11 @@ export class ContractManagementVisualsComponent implements OnInit {
           floating:labels.length > 0 ? false:true,
           axisTicks: {
             show: labels.length > 0 ? true:false,
-            color: '#940033',
+            //color: '#940033',
           },
           axisBorder: {
             show: labels.length > 0 ? true:false,
-            color: '#940033',
+            //color: '#940033',
           },
           labels: {
             show: labels.length > 0 ? true:false,
@@ -313,11 +313,11 @@ export class ContractManagementVisualsComponent implements OnInit {
           floating:labels.length > 0 ? false:true,
           axisTicks: {
             show: labels.length > 0 ? true:false,
-            color: '#ff9600',
+            //color: '#ff9600',
           },
           axisBorder: {
             show: labels.length > 0 ? true:false,
-            color: '#ff9600',
+            //color: '#ff9600',
           },
           labels: {
             show: labels.length > 0 ? true:false,
@@ -349,6 +349,19 @@ export class ContractManagementVisualsComponent implements OnInit {
       },
       noData: {
         text: noDataMessage?noDataMessage:visualisationMessages('empty')
+      },
+      grid: {
+        show: labels.length > 0 ? true : false,
+        xaxis: {
+          lines: {
+            show:  false,
+          }
+        },
+        yaxis: {
+          lines: {
+            show: labels.length > 0 ? true : false,
+          }
+        }
       }
     };
   }
@@ -455,15 +468,15 @@ export class ContractManagementVisualsComponent implements OnInit {
           },
       },
       grid: {
-        // show: labels.length > 0 ? true : false,
+        show: labels.length > 0 ? true : false,
         xaxis: {
           lines: {
-            show: true
+            show:  false,
           }
         },
         yaxis: {
           lines: {
-            show: true
+            show: labels.length > 0 ? true : false,
           }
         }
       }
