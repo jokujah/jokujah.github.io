@@ -14,9 +14,10 @@ import {
   ApexFill,
   ApexTooltip,
   ApexNoData,
-  ApexTitleSubtitle
+  ApexTitleSubtitle,
+  ApexGrid
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, sortArrayBy } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -33,6 +34,7 @@ export type ChartOptions = {
   title: ApexTitleSubtitle,
   noData:ApexNoData,
   labels: string[];
+  grid:ApexGrid
 };
 
 
@@ -62,13 +64,10 @@ export class ContractManagementVisualsComponent implements OnInit {
 
 
   constructor(
-    private toastr: ToastrService,
     private _service: AwardedContractReportService
     ) {  }
 
-  ngOnInit(): void {
-    this.initCharts()
-  }
+  ngOnInit(): void {}
 
 
 
@@ -89,29 +88,18 @@ export class ContractManagementVisualsComponent implements OnInit {
     this.isLoading=true
     this.cardValue1 = 0
     this.cardValue2 = 0
-    
-
-    console.log(reportName)
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
-        console.log(response)
         let data = response.data[0]
         
         this.cardValue1 = data.numberOfContracts?sanitizeCurrencyToString(data.numberOfContracts):0
         this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
-        //this.allEvavluatedBidders = data.total_evaluated_bidders
-
+       
         this.isLoading = false
         },
       (error) => {
         this.isLoading = false;
-        // this.toastr.error("Something Went Wrong", '', {
-        //   progressBar: true,
-        //   positionClass: 'toast-top-right'
-        // });
-        this.isLoading = false
-        console.log(error)
         throw error
       }
     )
@@ -119,310 +107,145 @@ export class ContractManagementVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
+    this.highestContractValue = 0
+    this.contractManagerOfHighestContractValue=''
 
-    this.chart?.updateOptions({
-      series: [],
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      noData: {
-        text: visualisationMessages('loading')
-      }
-    })
-
-    this.chartProcurementMethod?.updateOptions({
-
-      series: [],
-
-      xaxis: {
-        categories:[],
-        labels: {
-          style: {
-            fontSize: "12px"
-          },
-          formatter: function(val) {
-            return NumberSuffix(val,2)}
-        }            
-      },
-      noData: {
-        text: visualisationMessages('loading')
-      }
-    })
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
         let subjectOfProcurement = []
         let estimatedAmount = []
-        let actualAmount = []
-        let sortedData = []
-        let categories = []
-        let categorieValues = []
-        let numOfBids = []
+        let actualAmount = []       
 
         switch (reportName) {
           case 'top-contracts-at-management-list-summary':
             console.log("top-contracts-at-management-list-summary", data)
-            data.forEach(element => {
-              var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']
-              var valueD = parseInt(valueC.join(''))
-              // var valueE = element?.actualCost.split(',')
-              // var valueF = parseInt(valueE.join(''))
-              subjectOfProcurement.push(capitalizeFirstLetter(element.contractManager))
-              estimatedAmount.push(valueD)
-              // actualAmount.push(valueF)
-            });
+            if (response.data.length > 0) {
+              data.forEach(element => {
+                var valueC = (element?.contractAmount) ? element?.contractAmount.split(',') : ['0']
+                var valueD = parseInt(valueC.join(''))
+                subjectOfProcurement.push(capitalizeFirstLetter(element.contractManager))
+                estimatedAmount.push(valueD)
+              });
 
-            this.highestContractValue = estimatedAmount[0]
-            this.contractManagerOfHighestContractValue = subjectOfProcurement[0]
+              this.highestContractValue = estimatedAmount[0]
+              this.contractManagerOfHighestContractValue = subjectOfProcurement[0]
 
-            this.chart?.updateOptions({
-              series: [
-                {
-                  name: "Estimated Amount",
-                  data: estimatedAmount
-                },
-                // {
-                //   name: "Actual Amount",
-                //   type: "line",
-                //   data: actualAmount
-                // }
-              ],
-              xaxis: {
-                categories: subjectOfProcurement,
-                labels: {
-                  style: {
-                    fontSize: "12px"
-                  },
-                  formatter: function (val) {
-                    return NumberSuffix(val, 0)
+              this.initChartContractManagers(
+                [
+                  {
+                    name: "Estimated Amount",
+                    data: estimatedAmount
                   }
-                }
-              },
-              
-              noData: {
-                text: visualisationMessages('empty')
-              }
-            })
-            // if((data.length <= 0)|| !data){
-            //   this.chart.destroy()
-            // }
+                ],
+                subjectOfProcurement
+              )
+            }else{
+              this.initChartContractManagers([],[])
+            }
             break;
           case 'contract-management-by-procurement-method':
             console.log("contract-management-by-procurement-method", data)
-            data.forEach(element => {
-              var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']              
-              var valueD = parseInt(valueC.join(''))
-              var valueE = element?.numberOfContracts
-              // var valueF = parseInt(valueE.join(''))
+            if (response.data.length > 0) {
+              let sortedArray = sortArrayBy(data, 'contractAmount')
+              sortedArray.forEach(element => {
+                var valueC = (element?.contractAmount) ? element?.contractAmount.split(',') : ['0']
+                var valueD = parseInt(valueC.join(''))
+                var valueE = element?.numberOfContracts
+                subjectOfProcurement.push(capitalizeFirstLetter(element.procurementMethod))
+                estimatedAmount.push(valueD)
+                actualAmount.push(parseInt(valueE))
+              });
 
-              subjectOfProcurement.push(capitalizeFirstLetter(element.procurementMethod))
-              estimatedAmount.push(valueD)
-              actualAmount.push(parseInt(valueE))
-            });
+              this.highestContractValueByMethod = estimatedAmount[0]
+              this.procurementMethodOfHighestContractValue = subjectOfProcurement[0]
 
-            this.highestContractValueByMethod = estimatedAmount[0]
-            this.procurementMethodOfHighestContractValue = subjectOfProcurement[0]
-
-
-            this.chartProcurementMethod?.updateOptions({
-              series: [
-                {
-                  name: "Contract Value",
-                  type: "column",
-                  data: estimatedAmount
-                },
-                {
-                  name: "Number Of Contracts",
-                  type: "area",
-                  data: actualAmount
-                }
-              ],
-              xaxis: {
-                categories: subjectOfProcurement,
-                labels: {
-                  formatter: function (val) {
-                    return NumberSuffix(val, 2)
+              this.initChartProcurementMethod(
+                [
+                  {
+                    name: "Contract Value",
+                    type: "column",
+                    data: estimatedAmount
+                  },
+                  {
+                    name: "Number Of Contracts",
+                    type: "area",
+                    data: actualAmount
                   }
-                }
-              },
-              noData: {
-                text: visualisationMessages('empty')
-              }
-            })
+                ],
+                subjectOfProcurement
+              )
+
+              // this.chartProcurementMethod?.updateOptions({
+              //   series: [
+              //     {
+              //       name: "Contract Value",
+              //       type: "column",
+              //       data: estimatedAmount
+              //     },
+              //     {
+              //       name: "Number Of Contracts",
+              //       type: "area",
+              //       data: actualAmount
+              //     }
+              //   ],
+              //   xaxis: {
+              //     categories: subjectOfProcurement,
+              //     labels: {
+              //       formatter: function (val) {
+              //         return NumberSuffix(val, 2)
+              //       }
+              //     }
+              //   },
+              //   noData: {
+              //     text: visualisationMessages('empty')
+              //   }
+              // })
+            } else {
+              this.initChartProcurementMethod([], [])
+            }
             break;
           }         
           this.isLoading = false
         },
       (error) => {
-        this.isLoading = false
-        this.chart?.updateOptions({
-          series: [],
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }            
-          },
-          noData: {
-            text: visualisationMessages('error')
-          }
-        })
+        this.initChartContractManagers([],[]) 
+        this.initChartProcurementMethod([],[])       
+        // this.chartProcurementMethod?.updateOptions({
     
-        this.chartProcurementMethod?.updateOptions({
+        //   series: [],
     
-          series: [],
-    
-          xaxis: {
-            categories:[],
-            labels: {
-              style: {
-                fontSize: "12px"
-              },
-              formatter: function(val) {
-                return NumberSuffix(val,2)}
-            }            
-          },
-          noData: {
-            text: visualisationMessages('error')
-          }
-        })
-
-        // this.chart.destroy()
-        //this.chartProcurementMethod.destroy()
-
-        console.log(error)
+        //   xaxis: {
+        //     categories:[],
+        //     labels: {
+        //       style: {
+        //         fontSize: "12px"
+        //       },
+        //       formatter: function(val) {
+        //         return NumberSuffix(val,2)}
+        //     }            
+        //   },
+        //   noData: {
+        //     text: visualisationMessages('error')
+        //   }
+        // })
+        this.isLoading = false    
         throw error
       }
     )
   }
 
-  getFontSize() {
-    return Math.max(10, 12);
-  }
+ 
 
-  initCharts(){
-    this.chartOptions = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: '350px',
-        fontFamily:'Trebuchet Ms'
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          columnWidth: "55%",
-          borderRadius: 2,
-          dataLabels: {
-            position: 'top'
-          }
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        style: {
-          colors: ['#333'],
-          fontWeight:'bold',
-          fontSize:'12px'
-        },
-        offsetX:60,
-        formatter:function(val){
-          return NumberSuffix(val,0)
-        }
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: [],
-        title:{
-          text:'Contract Manager'
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Contract Value "
-        },
-        //showForNullSeries:false,
-        labels: {
-          style: {             
-            fontSize: "12px"
-          },
-          minWidth: 0,
-          maxWidth: 700,
-          formatter: function (val) {
-            return NumberSuffix(val, 0)
-          }
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return "UGX " + NumberSuffix(val,0) ;
-          }
-        }
-      },
-      noData: {
-        text: visualisationMessages('loading')
-      },
-      title: {
-        text: "Contract Managers with Highest Contract Values",
-          style: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            //color: '#1286f3'
-          },
-      },
-    };
-
+  initChartProcurementMethod(series?:any,labels?:any,noDataMessage?:any){
     this.chartOptionsProcurementMethod = {
-      series: [
-        {
-          name: "Contract Award Value",
-          type: "column",
-          data: []
-        },
-        {
-          name: "Number of Contracts",
-          type: "line",
-          data: []
-        }
-      ],
+      series: series,
       chart: {
         fontFamily:'Trebuchet Ms',
-        height: 350,
+        height: 450,
         type: "line"
       },
-      // plotOptions: {
-      //   bar: {
-      //     horizontal: false,
-      //     columnWidth: "35%",
-      //     borderRadius: 2
-      //   }
-      // },
-
-
-      // stroke: {
-      //   show: true,
-      //   width: 2,
-      // },
       stroke: {
         width: [0, 4],
         curve:'smooth'
@@ -432,7 +255,6 @@ export class ContractManagementVisualsComponent implements OnInit {
           style: {
             fontSize: '16px',
             fontWeight: 'bold',
-            //color: '#1286f3'
           },
       },
       dataLabels: {
@@ -440,8 +262,18 @@ export class ContractManagementVisualsComponent implements OnInit {
         enabledOnSeries: [1]
       },
       xaxis: {
-        categories: [],
+        floating:labels.length > 0 ? false:true,
+        axisTicks: {
+          show: labels.length > 0 ? true:false,
+          // color: '#940033',
+        },
+        axisBorder: {
+          show: labels.length > 0 ? true:false,
+          //color: '#940033',
+        },
+        categories: labels,
         labels: {
+          show: labels.length > 0 ? true:false,
           style: {
             fontSize: "12px"
           }
@@ -452,7 +284,18 @@ export class ContractManagementVisualsComponent implements OnInit {
           title: {
             text: "Contract Value"
           },
+          show:labels.length > 0 ? true:false,
+          floating:labels.length > 0 ? false:true,
+          axisTicks: {
+            show: labels.length > 0 ? true:false,
+            color: '#940033',
+          },
+          axisBorder: {
+            show: labels.length > 0 ? true:false,
+            color: '#940033',
+          },
           labels: {
+            show: labels.length > 0 ? true:false,
             style: {             
               fontSize: "12px"
             },
@@ -465,7 +308,20 @@ export class ContractManagementVisualsComponent implements OnInit {
           opposite: true,
           title: {
             text: "Number of Contracts"
-          }
+          },
+          show:labels.length > 0 ? true:false,
+          floating:labels.length > 0 ? false:true,
+          axisTicks: {
+            show: labels.length > 0 ? true:false,
+            color: '#ff9600',
+          },
+          axisBorder: {
+            show: labels.length > 0 ? true:false,
+            color: '#ff9600',
+          },
+          labels: {
+            show: labels.length > 0 ? true:false,
+          }          
         }
       ],
       tooltip: {
@@ -492,7 +348,124 @@ export class ContractManagementVisualsComponent implements OnInit {
         ]
       },
       noData: {
-        text: visualisationMessages('loading')
+        text: noDataMessage?noDataMessage:visualisationMessages('empty')
+      }
+    };
+  }
+
+  initChartContractManagers(series?:any,labels?:any,noDataMessage?:any){
+    this.chartOptions = {
+      series: series,
+      chart: {
+        type: "bar",
+        height: '450px',
+        fontFamily:'Trebuchet Ms'
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: "95%",
+          borderRadius: 2,
+          dataLabels: {
+            position: 'top'
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['#333'],
+          fontWeight:'bold',
+          fontSize:'12px'
+        },
+        offsetX:60,
+        formatter:function(val){
+          return NumberSuffix(val,0)
+        }
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        floating:labels.length > 0 ? false:true,
+        axisTicks: {
+          show: labels.length > 0 ? true:false
+        },
+        axisBorder: {
+          show: labels.length > 0 ? true:false
+        },
+        categories: labels,
+        title: {
+          text: 'Contract Value(UGX)'
+        },
+        labels: {
+          show: labels.length > 0 ? true:false,
+          style: {
+            fontSize: "12px"
+          },
+          formatter: function (val) {
+            return NumberSuffix(val, 0)
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Contract Manager "
+        },
+        floating:labels.length > 0 ? false:true,
+        axisTicks: {
+          show: labels.length > 0 ? true:false
+        },
+        axisBorder: {
+          show: labels.length > 0 ? true:false
+        },
+        labels: {
+          show: labels.length > 0 ? true:false,
+          style: {             
+            fontSize: "12px"
+          },
+          minWidth: 0,
+          maxWidth: 700,
+          formatter: function (val) {
+            return NumberSuffix(val, 0)
+          }
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return "UGX " + NumberSuffix(val,0) ;
+          }
+        }
+      },
+      noData: {
+        text: noDataMessage?noDataMessage:visualisationMessages('empty')
+      },
+      title: {
+        text: "Contract Managers with Highest Contract Values",
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            //color: '#1286f3'
+          },
+      },
+      grid: {
+        // show: labels.length > 0 ? true : false,
+        xaxis: {
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          }
+        }
       }
     };
   }

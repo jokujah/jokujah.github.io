@@ -88,10 +88,14 @@
                 [plotOptions]="chartOptionsPercentageLateInitiation.plotOptions"
                 [labels]="chartOptionsPercentageLateInitiation.labels"
                 [title]="chartOptionsPercentageLateInitiation.title"
+                [noData]="chartOptionsPercentageLateInitiation.noData"
               ></apx-chart>
             </div>
             <div *ngIf="isLoadingPercentageSummary">
               <app-loader></app-loader>
+            </div>
+            <div *ngIf="!isLoading && !chartOptionsPercentageLateInitiation?.series" >
+              <app-empty-state></app-empty-state>
             </div>
           </div>
         </div>
@@ -124,6 +128,9 @@
               <div *ngIf="isLoadingPercentageSummary">
                 <app-loader></app-loader>
               </div>
+              <div *ngIf="!isLoading && !chartOptionsPlannedVsActualLateInitiation?.series" >
+                <app-empty-state></app-empty-state>
+              </div>
             </div>
           </div>
         </div>
@@ -148,7 +155,7 @@
             >
               Breakdown of Initiations
             </div>
-            <div class="px-4 mt-8" *ngIf="!isLoadingPercentageSummary">
+            <div class="px-4 mt-8" *ngIf="!isLoadingPercentageSummary && breakdownIndicators.length > 0">
               <apx-chart
                 *ngIf="optionsProgressBreakdown1?.series"
                 [series]="optionsProgressBreakdown1.series"
@@ -237,6 +244,9 @@
             </div>
             <div *ngIf="isLoadingPercentageSummary">
               <app-loader></app-loader>
+            </div>
+            <div *ngIf="!isLoadingPercentageSummary && (!breakdownIndicators || breakdownIndicators.length <= 0)">
+              <app-empty-state></app-empty-state>
             </div>
           </div>
         </div>
