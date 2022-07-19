@@ -65,7 +65,8 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
 
   isLoading:boolean = false 
   cardValue1;
-  cardValue2
+  cardValue2;
+  cardValue3;
   dir=''
   sortTable = sortTable
   
@@ -107,6 +108,7 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
     this.isLoading=true
     this.cardValue2 = 0
     this.cardValue1 = 0
+    this.cardValue3 = 0
     
 
     console.log(reportName)
@@ -116,8 +118,9 @@ export class ProviderPerformanceVisualsComponent implements OnInit {
         console.log(response)
         let data = response.data[0]
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfContracts ? sanitizeCurrencyToString(data.numberOfContracts) : 0
-          this.cardValue2 = data.contractAmount ? sanitizeCurrencyToString(data.contractAmount) : 0
+          this.cardValue1 = data.noOfProviders ? sanitizeCurrencyToString(data.noOfProviders) : 0
+          this.cardValue2 = data.noOfAmmendmentsMade ? sanitizeCurrencyToString(data.noOfAmmendmentsMade) : 0
+          this.cardValue3 = data.noOfChangeOfOrdersMade ? sanitizeCurrencyToString(data.noOfChangeOfOrdersMade) : 0
           //this.allEvavluatedBidders = data.total_evaluated_bidders
         }
         this.isLoading = false
