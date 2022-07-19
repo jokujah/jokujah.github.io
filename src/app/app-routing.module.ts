@@ -638,41 +638,41 @@ const routes: Routes = [
         ]      
       }, 
 
-      {
-        path: 'revenue-sources',
-        component:RevenueSourcesCategoryPageComponent,
-        children: [
-          {
-            path: 'revenue-sources-report-list',
-            component:RevenueSourcesReportsListComponent,
-          },
-          {
-            path: '',
-            redirectTo: 'revenue-sources-report-list',
-            pathMatch: 'full',
-          },
-          {
-            path: 'revenue-report',
-            component:RevenueReportComponent,
-            children: [
-              {
-                path: 'visuals',
-                component:RevenueVisualsComponent,
-              },
-              {
-                path: '',
-                 redirectTo: 'reports',
-                pathMatch: 'full',
-              },
-              {
-                path: 'reports',
-                component:ReportPageComponent,
+      // {
+      //   path: 'revenue-sources',
+      //   component:RevenueSourcesCategoryPageComponent,
+      //   children: [
+      //     {
+      //       path: 'revenue-sources-report-list',
+      //       component:RevenueSourcesReportsListComponent,
+      //     },
+      //     {
+      //       path: '',
+      //       redirectTo: 'revenue-sources-report-list',
+      //       pathMatch: 'full',
+      //     },
+      //     {
+      //       path: 'revenue-report',
+      //       component:RevenueReportComponent,
+      //       children: [
+      //         {
+      //           path: 'visuals',
+      //           component:RevenueVisualsComponent,
+      //         },
+      //         {
+      //           path: '',
+      //            redirectTo: 'reports',
+      //           pathMatch: 'full',
+      //         },
+      //         {
+      //           path: 'reports',
+      //           component:ReportPageComponent,
                 
-              },
-            ]
-          },
-        ]       
-      },
+      //         },
+      //       ]
+      //     },
+      //   ]       
+      // },
      
       {
         path: 'disposal',

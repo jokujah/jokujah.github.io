@@ -1,24 +1,24 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+    <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
     <app-stats-card 
-      [title]="'Provider Contracts'" 
+      [title]="'Providers'" 
       [isLoading]="isLoading" 
       [value]="cardValue1"
     ></app-stats-card>
 
     <app-stats-card 
-      [title]="'Contract Value'" 
+      [title]="'Ammendments'" 
       [isLoading]="isLoading" 
       [value]="cardValue2"
-      [prefix]="'UGX'"
     ></app-stats-card>
-      <!--   
-        <div class="statsCard">
-          <span class="stats"> {{allEvavluatedBidders }}</span>
-          <span class="statsText">All Evaluated Bidders </span>
-        </div> -->
+        
+    <app-stats-card 
+    [title]="'Change Of Orders Made'" 
+    [isLoading]="isLoading" 
+    [value]="cardValue3"
+  ></app-stats-card>
 
     </div>
   </div>
@@ -38,7 +38,7 @@
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                      Subject of Procurement
+                      Procurement Method
                     </th>
                     <th (click)="sortTable(1,'myTable2')" scope="col"
                       class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
