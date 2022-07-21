@@ -1,9 +1,9 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+    <div class=" mt-4 grid grid-cols-2 space-x-4">
       
-      <app-stats-card 
+      <!-- <app-stats-card 
           [title]="'Contracts'" 
           [isLoading]="isLoading" 
           [value]="cardValue1"
@@ -14,7 +14,7 @@
           [isLoading]="isLoading" 
           [value]="cardValue2"
           [prefix]="'UGX'"
-        ></app-stats-card>
+        ></app-stats-card> -->
 
         <app-stats-card 
           [title]="'Completed Contracts'" 
@@ -162,7 +162,7 @@
 
     <div class="mt-4 mb-4 ">
       <div class="flex flex-row md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full ">
-        <div class="w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+        <div class="w-full p-5 bg-white shadow rounded-lg overflow-hidden">
           <div *ngIf="!isLoading && topTenHighestContracts.length > 0" class="w-full">
             <div class="font-bold mb-4">Top Completed Contracts</div>
             <div class="inline-block min-w-full align-middle ">
@@ -224,8 +224,8 @@
           </span>
         </div>
     
-        <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
-          <!-- <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
+        <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+          <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
             <div *ngIf="!isLoading" class="flex flex-col items-center">
               <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Value of Completed Contracts</span>
               <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{ (averageValueOfContracts ? averageValueOfContracts : 0) |
@@ -234,7 +234,7 @@
             <span *ngIf="isLoading">
               <app-loader></app-loader>
             </span>   
-          </div> -->
+          </div>
           <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
             <div *ngIf="!isLoading && topTenHighestContracts" class="flex flex-col items-center">
               <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Completed Contract
@@ -253,7 +253,7 @@
             </span>
           </div>
                  
-        </div>
+        </div> -->
       </div>
     </div>
     

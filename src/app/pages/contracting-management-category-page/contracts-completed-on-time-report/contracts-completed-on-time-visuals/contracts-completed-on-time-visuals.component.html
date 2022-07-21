@@ -1,8 +1,8 @@
 <div class="max-w-full">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
-  <div>
-    <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
-        <app-stats-card 
+  <div class="mt-4">
+    <div class="hidden md:grid md:grid-cols-4 md:space-y-0 md:space-x-4">
+      <app-stats-card 
           [title]="'Late Contracts'" 
           [isLoading]="isLoading" 
           [value]="cardValue1"
@@ -27,12 +27,38 @@
           [value]="cardValue4"
           [prefix]="'UGX'"
         ></app-stats-card>
-      <!--   
-        <div class="statsCard">
-          <span class="stats"> {{allEvavluatedBidders }}</span>
-          <span class="statsText">All Evaluated Bidders </span>
-        </div> -->
+    </div>
 
+    <!-- Mobile -->
+    <div class="md:hidden flex flex-col my-2 space-y-4">
+      <div class="grid grid-cols-2 space-x-4">
+        <app-stats-card 
+          [title]="'Late Contracts'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue1"
+        ></app-stats-card>
+
+        <app-stats-card 
+          [title]="'Late Contract Value'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue2"
+          [prefix]="'UGX'"
+        ></app-stats-card>
+      </div>
+      <div class="grid grid-cols-2 space-x-4">
+        <app-stats-card 
+          [title]="'Completed On Time'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue3"
+        ></app-stats-card>
+
+        <app-stats-card 
+          [title]="'Contract Value Completed On Time'" 
+          [isLoading]="isLoading" 
+          [value]="cardValue4"
+          [prefix]="'UGX'"
+        ></app-stats-card>
+      </div>
     </div>
   </div>
 
@@ -78,7 +104,7 @@
 
   <div class="mt-4 mb-4">
     <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full">
-      <div class="md:w-3/4 flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
+      <div class=" flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
         <div class="w-full">
           <div class="font-bold mb-4">Top Completed Contracts on Time</div>
           <div *ngIf="!isLoading && completedOnTime.length > 0" class="inline-block min-w-full align-middle ">
@@ -97,7 +123,7 @@
                     <th (click)="sortTable(2,'myTable1')" scope="col"
                       class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                       <span class="group inline-flex">
-                        Days Before Planned Completion
+                        Days Ahead of Schedule
                         <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
                         <span class="ml-2 flex-none rounded text-gray-400 ">
                           <!-- Heroicon name: solid/chevron-down -->
@@ -139,7 +165,7 @@
         </div>       
       </div>
 
-      <div
+      <!-- <div
         class="md:w-1/4 flex flex-row sm:place-content-between space-x-4 md:space-x-0  md:grid md:grid-cols-1 md:content-between ">
         <div class=" overflow-hidden p-5 bg-white rounded-lg shadow w-full">
           <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Earliest Completed Contract</span>
@@ -157,7 +183,7 @@
             <app-empty-state></app-empty-state>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>  
   </div>
 </div>

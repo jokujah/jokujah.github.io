@@ -115,6 +115,10 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
   getSummaryStats(reportName, financialYear, procuringEntity) {
     this.isLoading = true
+    this.cardValue1 = 0
+    this.cardValue2 = 0
+    this.cardValue3 = 0
+    this.cardValue4 = 0
 
     this.subscription = this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
@@ -123,7 +127,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfBids ? sanitizeCurrencyToString(data.numberOfBids) : 0;
           this.cardValue2 = data.numberOfBidsRespondedTo ? sanitizeCurrencyToString(data.numberOfBidsRespondedTo) : 0
-          this.cardValue3 = data.numberOfProvidersThatResponded ? parseInt(data.numberOfProvidersThatResponded) : 0
+          this.cardValue3 = data.numberOfProvidersThatResponded ? sanitizeCurrencyToString(data.numberOfProvidersThatResponded) : 0
+          this.cardValue4 = data.noOfNoticeResponses ? sanitizeCurrencyToString(data.noOfNoticeResponses) : 0
         }
       },
       (error) => {

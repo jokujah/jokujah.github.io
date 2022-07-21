@@ -45,7 +45,7 @@
 
       <div class="mt-4 mb-4">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
-          <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div class=" w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
             <div *ngIf="!isLoading && topTenHighestContracts.length > 0">
               <div class="font-bold mb-4">Top Signed Contracts by Contract Value</div>
               <div class="inline-block min-w-full align-middle ">
@@ -78,7 +78,7 @@
                           </span>
                         </th>
                         <th (click)="sortTable(2,'myTable2')" scope="col"
-                          class="hidden md:table-column px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          class="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Estimated Cost
                             <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
@@ -126,7 +126,7 @@
             </span>
           </div>
           
-          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-0 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">            
+          <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-0 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">            
             <div class="overflow-hidden p-5 bg-white rounded-lg shadow hidden">
               <div *ngIf="!isLoading" class="flex flex-col items-center">
                 <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Value Signed Contract
@@ -156,7 +156,7 @@
               </span>  
             </div>
                    
-          </div>
+          </div> -->
         </div>
       </div>
 

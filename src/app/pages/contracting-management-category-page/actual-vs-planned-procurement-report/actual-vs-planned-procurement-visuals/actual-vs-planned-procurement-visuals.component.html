@@ -1,7 +1,7 @@
 <div class="max-w-full mx-auto">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
-    <div>
-      <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+    <div class="mt-4">
+      <div class="hidden md:grid md:grid-cols-4 md:space-y-0 md:space-x-4">
         <app-stats-card 
         [title]="'Planned Procurements'" 
         [isLoading]="isLoading" 
@@ -27,8 +27,38 @@
           [value]="actualValueOfContracts"
           [prefix]="'UGX'"
         ></app-stats-card>
-
+      </div>
   
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col my-2 space-y-4">
+        <div class="grid grid-cols-2 space-x-4">
+          <app-stats-card 
+        [title]="'Planned Procurements'" 
+        [isLoading]="isLoading" 
+        [value]="plannedNumberOfContracts"
+      ></app-stats-card>
+
+      <app-stats-card 
+        [title]="'Planned Procurements Value'" 
+        [isLoading]="isLoading" 
+        [value]="plannedValueOfContracts"
+        [prefix]="'UGX'"
+      ></app-stats-card>
+        </div>
+        <div class="grid grid-cols-2 space-x-4">
+          <app-stats-card 
+          [title]="'Actual Procurements'" 
+          [isLoading]="isLoading" 
+          [value]="actualNumberOfContracts"
+        ></app-stats-card>
+
+        <app-stats-card 
+          [title]="'Actual Procurements Value '" 
+          [isLoading]="isLoading" 
+          [value]="actualValueOfContracts"
+          [prefix]="'UGX'"
+        ></app-stats-card>
+        </div>
       </div>
     </div>
     

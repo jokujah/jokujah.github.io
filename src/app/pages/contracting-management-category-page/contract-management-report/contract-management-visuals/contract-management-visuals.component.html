@@ -1,7 +1,7 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+    <div class=" mt-4 grid grid-cols-2 space-x-4">
       <app-stats-card 
           [title]="'Contracts'" 
           [isLoading]="isLoading" 
@@ -22,50 +22,54 @@
     <!-- Row 1 -->
     <div class="mt-4 ">
       <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">
-        <div class="md:w-3/4 flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chart">
-            <apx-chart #chart *ngIf="!isLoading && chartOptions?.series"
-              [series]="chartOptions.series" 
-              [chart]="chartOptions.chart" 
-              [dataLabels]="chartOptions.dataLabels"
-              [plotOptions]="chartOptions.plotOptions" 
-              [yaxis]="chartOptions.yaxis" 
-              [legend]="chartOptions.legend"
-              [fill]="chartOptions.fill" 
-              [stroke]="chartOptions.stroke" 
-              [tooltip]="chartOptions.tooltip"
-              [xaxis]="chartOptions.xaxis" 
-              [title]="chartOptions.title" 
-              [noData]="chartOptions.noData"
-              [grid]="chartOptions.grid">
-            </apx-chart>
-          </div>
-          <div *ngIf="isLoading">
-            <app-loader></app-loader>
-          </div>
-          <div *ngIf="!isLoading && !chartOptions?.series">
-            <app-empty-state></app-empty-state>
+        <div class="hidden md:flex md:w-full">
+          <div class=" flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+            <div id="chart">
+              <apx-chart #chart *ngIf="!isLoading && chartOptions?.series"
+                [series]="chartOptions.series" 
+                [chart]="chartOptions.chart" 
+                [dataLabels]="chartOptions.dataLabels"
+                [plotOptions]="chartOptions.plotOptions" 
+                [yaxis]="chartOptions.yaxis" 
+                [legend]="chartOptions.legend"
+                [fill]="chartOptions.fill" 
+                [stroke]="chartOptions.stroke" 
+                [tooltip]="chartOptions.tooltip"
+                [xaxis]="chartOptions.xaxis" 
+                [title]="chartOptions.title" 
+                [noData]="chartOptions.noData"
+                [grid]="chartOptions.grid">
+              </apx-chart>
+            </div>
+            <div *ngIf="isLoading">
+              <app-loader></app-loader>
+            </div>
+            <div *ngIf="!isLoading && !chartOptions?.series">
+              <app-empty-state></app-empty-state>
+            </div>
           </div>
         </div>
-        <div
-          class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
-          <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-semibold text-slate-500 text-center flex mb-8">Contract Manager with Highest Contract Value</span>  
-              <div *ngIf="!isLoading && topTenHighestContracts?.length > 0" class="flex flex-col items-center">
-                <span class="text-2xl md:text-4xl text-slate-700 font-normal text-center flex mb-2">UGX {{
-                  topTenHighestContracts[0]?.contractAmount |
-                  numberSuffix:1}}</span>
-                <span
-                  class="text-sm  md:text-sm font-bold text-slate-400  text-center flex">{{topTenHighestContracts[0]?.contractManager?topTenHighestContracts[0]?.contractManager:'Unknown'}}</span>
+        <div class="md:hidden">
+          <div
+            class="flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
+            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-semibold text-slate-500 text-center flex mb-8">Contract Manager with Highest Contract Value</span>  
+                <div *ngIf="!isLoading && topTenHighestContracts?.length > 0" class="flex flex-col items-center">
+                  <span class="text-2xl md:text-4xl text-slate-700 font-normal text-center flex mb-2">UGX {{
+                    topTenHighestContracts[0]?.contractAmount |
+                    numberSuffix:1}}</span>
                   <span
-                  class="text-xs  md:text-xs font-bold text-slate-400  text-center flex">{{topTenHighestContracts[0]?.pdeName?topTenHighestContracts[0]?.pdeName:'Unknown'}}</span>
-              </div>            
-              <span *ngIf="isLoading">
-                <app-loader></app-loader>
-              </span>
-              <div *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts?.length <= 0)">
-                <app-empty-state></app-empty-state>
+                    class="text-sm  md:text-sm font-bold text-slate-400  text-center flex">{{topTenHighestContracts[0]?.contractManager?topTenHighestContracts[0]?.contractManager:'Unknown'}}</span>
+                    <span
+                    class="text-xs  md:text-xs font-bold text-slate-400  text-center flex">{{topTenHighestContracts[0]?.pdeName?topTenHighestContracts[0]?.pdeName:'Unknown'}}</span>
+                </div>            
+                <span *ngIf="isLoading">
+                  <app-loader></app-loader>
+                </span>
+                <div *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts?.length <= 0)">
+                  <app-empty-state></app-empty-state>
+                </div>
               </div>
             </div>
           </div>
@@ -75,49 +79,46 @@
 
     <div class="mt-4 mb-4">
       <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">
-        <div class="md:w-3/4 flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div id="chartProcurementMethod" >
-            <apx-chart #chartProcurementMethod  *ngIf="!isLoading && chartOptionsProcurementMethod?.series"
-              [series]="chartOptionsProcurementMethod.series"
-              [chart]="chartOptionsProcurementMethod.chart" 
-              [yaxis]="chartOptionsProcurementMethod.yaxis"
-              [xaxis]="chartOptionsProcurementMethod.xaxis" 
-              [labels]="chartOptionsProcurementMethod.labels"
-              [stroke]="chartOptionsProcurementMethod.stroke" 
-              [title]="chartOptionsProcurementMethod.title"
-              [dataLabels]="chartOptionsProcurementMethod.dataLabels" 
-              [fill]="chartOptionsProcurementMethod.fill"
-              [tooltip]="chartOptionsProcurementMethod.tooltip" 
-              [noData]="chartOptionsProcurementMethod.noData"
-              [grid]="chartOptionsProcurementMethod.grid"
-              >
-            </apx-chart>
-          </div>
-          <div *ngIf="isLoading">
-            <app-loader></app-loader>
-          </div>
-          <div *ngIf="!isLoading && !chartOptionsProcurementMethod?.series">
-            <app-empty-state></app-empty-state>
+        <div class="hidden md:flex md:w-full">
+          <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+            <div id="chartProcurementMethod">
+              <apx-chart #chartProcurementMethod *ngIf="!isLoading && chartOptionsProcurementMethod?.series"
+                [series]="chartOptionsProcurementMethod.series" [chart]="chartOptionsProcurementMethod.chart"
+                [yaxis]="chartOptionsProcurementMethod.yaxis" [xaxis]="chartOptionsProcurementMethod.xaxis"
+                [labels]="chartOptionsProcurementMethod.labels" [stroke]="chartOptionsProcurementMethod.stroke"
+                [title]="chartOptionsProcurementMethod.title" [dataLabels]="chartOptionsProcurementMethod.dataLabels"
+                [fill]="chartOptionsProcurementMethod.fill" [tooltip]="chartOptionsProcurementMethod.tooltip"
+                [noData]="chartOptionsProcurementMethod.noData" [grid]="chartOptionsProcurementMethod.grid">
+              </apx-chart>
+            </div>
+            <div *ngIf="isLoading">
+              <app-loader></app-loader>
+            </div>
+            <div *ngIf="!isLoading && !chartOptionsProcurementMethod?.series">
+              <app-empty-state></app-empty-state>
+            </div>
           </div>
         </div>
-        <div
-          class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
-          <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Procurement Method with
-                highest contract Value</span>            
-              <div *ngIf="!isLoading && highestContractValue" class="flex flex-col items-center">
-                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
-                  highestContractValueByMethod |
-                  numberSuffix:1}}</span>
-                <span
-                  class="text-sm  md:text-sm font-bold text-gray-400 text-center flex">{{procurementMethodOfHighestContractValue}}</span>
-              </div>
-              <div *ngIf="isLoading">
-                <app-loader></app-loader>
-              </div>
-              <div *ngIf="!isLoading && !highestContractValue">
-                <app-empty-state></app-empty-state>
+        <div class="md:hidden">
+          <div
+            class="flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
+            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Procurement Method with
+                  highest contract Value</span>
+                <div *ngIf="!isLoading && highestContractValue" class="flex flex-col items-center">
+                  <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
+                    highestContractValueByMethod |
+                    numberSuffix:1}}</span>
+                  <span
+                    class="text-sm  md:text-sm font-bold text-gray-400 text-center flex">{{procurementMethodOfHighestContractValue}}</span>
+                </div>
+                <div *ngIf="isLoading">
+                  <app-loader></app-loader>
+                </div>
+                <div *ngIf="!isLoading && !highestContractValue">
+                  <app-empty-state></app-empty-state>
+                </div>
               </div>
             </div>
           </div>

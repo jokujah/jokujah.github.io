@@ -5,7 +5,7 @@
   ></app-filter>
 
   <div class="mt-4">
-    <div class="hidden md:grid md:grid-cols-4 md:space-y-0 md:space-x-4">
+    <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoadingSummary" class="stats">
           <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
@@ -33,7 +33,7 @@
         <span class="statsText">Initiated Amount</span>
       </div>
 
-      <div class="statsCard">
+      <!-- <div class="statsCard">
         <span *ngIf="!isLoadingSummary" class="stats">
           <animated-digit
             [digit]="numberOfCancelledRequisitions"
@@ -61,7 +61,7 @@
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="statsText">Cancelled Amount</span>
-      </div>
+      </div> -->
     </div>
 
     <!-- Mobile -->
@@ -94,7 +94,7 @@
           <span class="statsText">Initiated Amount</span>
         </div>
       </div>
-      <div class="grid grid-cols-2 space-x-4">
+      <!-- <div class="grid grid-cols-2 space-x-4">
         <div class="statsCard">
           <span *ngIf="!isLoadingSummary" class="stats">
             <animated-digit
@@ -124,7 +124,7 @@
           </span>
           <span class="statsText">Cancelled Amount</span>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
