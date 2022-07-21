@@ -1,7 +1,7 @@
 <div class="max-w-full mx-auto">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+      <div class=" mt-4 grid grid-cols-2 space-x-4">
        <app-stats-card 
         [title]="'Contracts'" 
         [isLoading]="isLoading" 
@@ -50,7 +50,7 @@
 
       <div class="mt-4 mb-4">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">
-          <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div class=" w-full p-5 bg-white shadow rounded-lg overflow-hidden">
             <div *ngIf="!isLoading">
               <div class="font-bold mb-4">Top Value Procurements Awarded to Suspended Providers</div>
               <div *ngIf="topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
@@ -121,7 +121,7 @@
             </span>
           </div>
     
-          <div
+          <!-- <div
             class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0  space-y-0  md:grid md:grid-cols-1 md:content-start ">
             <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
               <div *ngIf="!isLoading && (topTenHighestContracts && topTenHighestContracts.length > 0)" class="flex flex-col items-center">
@@ -140,7 +140,7 @@
                 <app-empty-state></app-empty-state>
               </span>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <div class="max-w-full mx-auto">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">    
+      <div class=" mt-4 grid grid-cols-2 space-x-4">    
 
         <app-stats-card 
           [title]="'Micro Procurements'" 
@@ -56,7 +56,7 @@
                           </span>
                         </th>
                         <th (click)="sortTable(2,'myTable2')" scope="col"
-                          class="hidden md:table-col px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          class="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Estimated Amount(UGX)
                             <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
@@ -103,7 +103,7 @@
               <app-empty-state></app-empty-state>
             </span>
           </div>
-          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">           
+          <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">           
             <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
               <div *ngIf="!isLoading" class="flex flex-col items-center">
                 <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Contract Amount
@@ -117,7 +117,7 @@
                 <app-loader></app-loader>
               </span>   
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
