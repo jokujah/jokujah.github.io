@@ -1203,7 +1203,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       //   },
       // ],
       noData: {
-        text: 'No Data Available',
+        text: visualisationMessages('empty'),
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,

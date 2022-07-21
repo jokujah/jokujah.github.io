@@ -17,12 +17,19 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
       chart: {
         type: "donut",
         fontFamily:'Trebuchet Ms',
+        width: '100%',
+        height: 350,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
       },
       plotOptions: {
         pie: {
           expandOnClick: true,
-          customScale: 1,
+          // customScale: 1,
           donut: {
+            size: '65%',
             labels: {
               show: true,
               name: {
@@ -44,7 +51,18 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
             },
             
           }
-        }
+        },
+        
+      },
+      legend: {
+        show: true,
+        offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
       },
       labels: categories,
       noData: {
@@ -63,25 +81,25 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
         // },
       },
       
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ],
+      // responsive: [
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 200
+      //       },
+      //       legend: {
+      //         position: "bottom"
+      //       }
+      //     }
+      //   }
+      // ],
       toolbar: {
         show: true,
         tools: {
           download: true,
         }
-      }
+      },
     };
 }
 

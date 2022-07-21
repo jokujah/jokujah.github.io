@@ -64,11 +64,11 @@ html {
 
 
   .stats{
-    @apply mt-1 text-3xl font-medium text-gray-600
+    @apply mt-1 text-xl md:text-3xl font-medium text-gray-600
   }
 
   .statsText{
-    @apply text-sm font-medium text-gray-500 truncate
+    @apply text-xs md:text-sm font-medium text-gray-500 truncate
   }
 
   .statsCard{

@@ -368,84 +368,84 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
       },
       labels: ['Initiated', 'Initiated Late'],
-      responsive: [
-        {
-          breakpoint: 320,
-          options: {
-            chart: {
-              width: 260,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 280,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '12px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 640,
-          options: {
-            chart: {
-              width: 360,
-            },
-            legend: {
-              position: 'bottom',
-            },
-            title: {
-              style: {
-                fontSize: '15px',
-              },
-            },
-          },
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              width: 380,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1024,
-          options: {
-            chart: {
-              width: 400,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-        {
-          breakpoint: 1280,
-          options: {
-            chart: {
-              width: 480,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+      // responsive: [
+      //   {
+      //     breakpoint: 320,
+      //     options: {
+      //       chart: {
+      //         width: 260,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 280,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '12px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 640,
+      //     options: {
+      //       chart: {
+      //         width: 360,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '15px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 768,
+      //     options: {
+      //       chart: {
+      //         width: 380,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1024,
+      //     options: {
+      //       chart: {
+      //         width: 400,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1280,
+      //     options: {
+      //       chart: {
+      //         width: 480,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      // ],
       noData: {
         text: visualisationMessages('empty'),
         align: 'center',

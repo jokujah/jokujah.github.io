@@ -223,7 +223,7 @@ export function sortTable(n,tableName) {
 
 export function getDays(dateOne , dateTwo){
   var date1 = new Date(dateOne);
-  var date2 = new Date(dateTwo);
+  var date2 = dateTwo? new Date(dateTwo) : new Date(Date.now());
 
 
   var a =  (date1.getUTCMonth()+1) + '/' + date1.getUTCDate() +  '/' + date1.getUTCFullYear()
@@ -245,7 +245,7 @@ return Difference_In_Days
 
 
 function checkIfNumberAfterDecimalPointIsZero(numberToBeChanged , decimalPoints){
-  if(decimalPoints > 0 && decimalPoints < 2){
+  if(decimalPoints > 0 && decimalPoints < 3){
     var splitNumber = numberToBeChanged.split('.')
     var numbersAfterDecimal = splitNumber[1]
 

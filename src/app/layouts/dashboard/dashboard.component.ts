@@ -16,6 +16,9 @@ import { ToastrService } from 'ngx-toastr';
 import { DOCUMENT } from '@angular/common';
 import { Console } from 'console';
 import { UtilsService } from 'src/app/services/Utils/utils.service';
+import { getEGPCategories } from 'src/app/utils/EGP_REPORTS_CATEGORIES';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -132,6 +135,8 @@ export class DashboardComponent implements OnInit {
   currentRoute: string = '';
   pageHeading: string = '';
   reportName: string = ''
+
+  egpCategories = getEGPCategories()
 
   pageHeadingDisplay: string = '';
   reportNameDisplay: string = ''

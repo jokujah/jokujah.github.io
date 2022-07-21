@@ -22,26 +22,6 @@ import {
 import { capitalizeFirstLetter, getDays, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
 
-
-// export type ChartOptions = {
-//   series: ApexAxisChartSeries;
-//   chart: ApexChart;
-//   dataLabels: ApexDataLabels;
-//   markers: ApexMarkers;
-//   title: ApexTitleSubtitle;
-//   fill: ApexFill;
-//   yaxis: ApexYAxis;
-//   xaxis: ApexXAxis;
-//   tooltip: ApexTooltip;
-//   stroke: ApexStroke;
-//   grid: ApexGrid;
-//   colors: any;
-//   toolbar: any;  
-//   plotOptions: ApexPlotOptions;  
-//   legend: ApexLegend;
-//   noData:ApexNoData
-// };
-
 @Component({
   selector: 'app-contracts-completed-on-time-visuals',
   templateUrl: './contracts-completed-on-time-visuals.component.html',
@@ -58,8 +38,8 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
   isLoading:boolean = false 
   cardValue2;
   cardValue1;
-  cardValue3: any;
-  cardValue4: number;
+  cardValue3;
+  cardValue4;
 
   dir
   sortTable = sortTable
@@ -96,6 +76,8 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
     this.isLoading=true
     this.cardValue2 = 0
     this.cardValue1 = 0
+    this.cardValue3 = 0
+    this.cardValue4 = 0
     
 
     console.log(reportName)
@@ -103,12 +85,15 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         console.log(response)
+        // Late
         let data = response.data[0]
+        // On Time
+        let data2 = response.data[1]
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfContracts?sanitizeCurrencyToString(data.numberOfContracts):0
-          this.cardValue2 = data.contractAmount?sanitizeCurrencyToString(data.contractAmount):0
-          this.cardValue3 = data.numberOfContractsCompletedOnTime?sanitizeCurrencyToString(data.numberOfContractsCompletedOnTime):0
-          this.cardValue4 = data.valueOfContractsCompletedOnTime?sanitizeCurrencyToString(data.valueOfContractsCompletedOnTime):0
+          this.cardValue2 = data.totalActualContractValue?sanitizeCurrencyToString(data.totalActualContractValue):0
+          this.cardValue3 = data2.numberOfContracts?sanitizeCurrencyToString(data2.numberOfContracts):0
+          this.cardValue4 = data2.totalActualContractValue?sanitizeCurrencyToString(data2.totalActualContractValue):0
 
           let series =[this.cardValue4,this.cardValue2]
           let categories = ['Completed On Time','Other Contracts']
@@ -175,7 +160,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
             //   return 0;
             // })
             
-            data.forEach(element => {
+           if(response.data.length>0){ data.forEach(element => {
               console.log(element)
               var valueC = (element?.contractAmount)?(element?.contractAmount.split(',')):['0'];
               var valueD = parseInt(valueC.join(''))
@@ -188,7 +173,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
 
             this.completedOnTime = data.map((element)=>{
               if (element.subjectOfProcurement) {
-                if (element?.plannedCompletionDate && element?.plannedCompletionDate) {
+                if (element?.plannedCompletionDate && element?.actualEndDate) {
                   return {
                     ...element,
                     daysLeft: getDays(element?.plannedCompletionDate, element?.actualEndDate)
@@ -196,13 +181,18 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
                 } else {
                   return {
                     ...element,
-                    daysLeft: null
+                    daysLeft: getDays(element?.plannedCompletionDate, element?.actualEndDate)
                   }
                 }
               }
             }).sort(function (a, b) {
                 var valueA = a?.daysLeft
-                var valueB = b?.daysLeft  
+                var valueB = b?.daysLeft
+                let ds = {
+                  A:valueA,
+                  B:valueB
+                }
+                console.log(ds)
                 if (valueA > valueB) {
                   return -1;
                 }
@@ -210,7 +200,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
                   return 1;
                 }
                 return 0;
-              })
+              }).filter((element)=>{return element.daysLeft >= 0})
 
             console.log(this.completedOnTime)
             this.chart?.updateOptions({
@@ -239,7 +229,7 @@ export class ContractsCompletedOnTimeVisualsComponent implements OnInit {
               noData: {
                 text: 'No Data Available...'
               },
-            })
+            })}
 
             break;
           

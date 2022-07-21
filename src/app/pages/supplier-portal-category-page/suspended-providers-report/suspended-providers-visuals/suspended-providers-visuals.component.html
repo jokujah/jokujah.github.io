@@ -1,6 +1,6 @@
 <div class="max-w-full mx-auto">
   <div>
-    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+    <div class="grid grid-cols-2 space-x-4 my-2">
       <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hiddsen">
         <span *ngIf="!isLoading" class="stats">        
           <animated-digit [digit]="cardValue1"  [duration]="1000"></animated-digit>
@@ -28,7 +28,7 @@
     <!-- Row 1 -->
     <div class="mt-4 mb-4">
       <div class="flex flex-col md:space-x-4 sm:space-y-4 md:space-y-0 md:flex-row w-full">
-        <div class=" w-full md:w-3/4 p-5 bg-white shadow rounded-lg overflow-hidden">
+        <div class=" w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
           <div *ngIf="!isLoading">
             <div class="font-bold mb-4">Suspended Suppliers </div>
             <div *ngIf="suspendedProviders && suspendedProviders.length>0" class="inline-block min-w-full align-middle ">
@@ -81,20 +81,25 @@
             <app-loader></app-loader>
           </span>
         </div>
-        <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
-          <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div *ngIf="!isLoading && percentageOfSuspendedProviders" class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">% of Suspended Suppliers</span>
-              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{ percentageOfSuspendedProviders}} %</span>
+        <div class="hidden">
+          <div
+            class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
+            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
+              <div *ngIf="!isLoading && percentageOfSuspendedProviders" class="flex flex-col items-center">
+                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">% of Suspended
+                  Suppliers</span>
+                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{
+                  percentageOfSuspendedProviders}} %</span>
+              </div>
+              <span *ngIf="isLoading">
+                <app-loader></app-loader>
+              </span>
+              <span *ngIf="!isLoading && !percentageOfSuspendedProviders">
+                <app-empty-state></app-empty-state>
+              </span>
             </div>
-            <span *ngIf="isLoading">
-              <app-loader></app-loader>
-            </span> 
-            <span *ngIf="!isLoading && !percentageOfSuspendedProviders">
-              <app-empty-state></app-empty-state>
-            </span>  
-          </div>                 
-        </div>        
+          </div>
+        </div>
       </div>
     </div>
   </div>
