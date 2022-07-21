@@ -1,7 +1,7 @@
 <div class="max-w-full mx-auto">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">     
+      <div class=" mt-4 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">    
 
         <app-stats-card 
           [title]="'Micro Procurements'" 
@@ -56,7 +56,7 @@
                           </span>
                         </th>
                         <th (click)="sortTable(2,'myTable2')" scope="col"
-                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          class="hidden md:table-col px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Estimated Amount(UGX)
                             <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
@@ -89,7 +89,7 @@
                           </div>
                         </td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.contractAmount}}</td>
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.estimatedAmount}}</td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500 hidden md:table-cell">{{item?.estimatedAmount}}</td>
                       </tr>
                     </tbody>
                   </table>

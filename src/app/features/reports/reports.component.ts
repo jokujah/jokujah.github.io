@@ -93,10 +93,13 @@ export class ReportsComponent implements OnInit {
     this.downloadData = null
     this.searchedPDE = []
     await slowLoader()
-    this.options.get('pde')?.setValue(data?.selectedPDE);
-    this.options.get('financialYear')?.setValue(data?.selectedFinancialYear);
+
+    // this.options.get('pde')?.setValue(data?.selectedPDE);
+    // this.options.get('financialYear')?.setValue(data?.selectedFinancialYear);
+
     this.selectedPDE = data?.selectedPDE
     this.selectedFinancialYear = 'All Financial Years'
+    
     if(this.selectedPDE ==''){
       if(this.reportName == 'suspended-providers'){
         this.searchedPDE.push(`All Suspended Providers`)

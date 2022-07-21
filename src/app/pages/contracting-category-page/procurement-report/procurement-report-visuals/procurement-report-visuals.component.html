@@ -2,7 +2,7 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div>
-    <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">         
+    <div class=" mt-4 grid grid-cols-2 space-x-4">         
        <app-stats-card 
         [title]="'Contracts'" 
         [isLoading]="isLoading" 
@@ -15,9 +15,7 @@
         [value]="valueOfContracts"
         [prefix]="'UGX'"
       ></app-stats-card>
-    </div>
-
-   
+    </div>  
 
   </div>
 
@@ -29,7 +27,7 @@
             <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
               [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
               [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
-              [tooltip]="chartOptionsProcurementType.tooltip" [noData]="chartOptionsProcurementType.noData" [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
+              [tooltip]="chartOptionsProcurementType.tooltip" [legend]="chartOptionsProcurementType.legend" [noData]="chartOptionsProcurementType.noData" [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
           </div>
           <!-- <span *ngIf="isLoading">
             <app-loader></app-loader>

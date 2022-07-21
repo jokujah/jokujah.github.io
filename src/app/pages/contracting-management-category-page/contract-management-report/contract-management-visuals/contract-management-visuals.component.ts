@@ -55,7 +55,7 @@ export class ContractManagementVisualsComponent implements OnInit {
   cardValue2
   
 
-  topTenHighestContracts 
+  topTenHighestContracts = []
   highestContractValue: any;
   contractManagerOfHighestContractValue: any;
   highestContractValueByMethod: any;
@@ -109,6 +109,7 @@ export class ContractManagementVisualsComponent implements OnInit {
     this.isLoading=true
     this.highestContractValue = 0
     this.contractManagerOfHighestContractValue=''
+    this.topTenHighestContracts = []
 
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
@@ -129,6 +130,14 @@ export class ContractManagementVisualsComponent implements OnInit {
                 estimatedAmount.push(valueD)
               });
 
+              this.topTenHighestContracts = data.map((element)=>{
+                let valueC = (element?.contractAmount) ? element?.contractAmount.split(',') : ['0']
+                let valueD = parseInt(valueC.join(''))
+                return {
+                  ...element,
+                  contractAmount:valueD
+                }
+              })
               this.highestContractValue = estimatedAmount[0]
               this.contractManagerOfHighestContractValue = subjectOfProcurement[0]
 
@@ -176,32 +185,6 @@ export class ContractManagementVisualsComponent implements OnInit {
                 ],
                 subjectOfProcurement
               )
-
-              // this.chartProcurementMethod?.updateOptions({
-              //   series: [
-              //     {
-              //       name: "Contract Value",
-              //       type: "column",
-              //       data: estimatedAmount
-              //     },
-              //     {
-              //       name: "Number Of Contracts",
-              //       type: "area",
-              //       data: actualAmount
-              //     }
-              //   ],
-              //   xaxis: {
-              //     categories: subjectOfProcurement,
-              //     labels: {
-              //       formatter: function (val) {
-              //         return NumberSuffix(val, 2)
-              //       }
-              //     }
-              //   },
-              //   noData: {
-              //     text: visualisationMessages('empty')
-              //   }
-              // })
             } else {
               this.initChartProcurementMethod([], [])
             }
@@ -211,25 +194,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         },
       (error) => {
         this.initChartContractManagers([],[]) 
-        this.initChartProcurementMethod([],[])       
-        // this.chartProcurementMethod?.updateOptions({
-    
-        //   series: [],
-    
-        //   xaxis: {
-        //     categories:[],
-        //     labels: {
-        //       style: {
-        //         fontSize: "12px"
-        //       },
-        //       formatter: function(val) {
-        //         return NumberSuffix(val,2)}
-        //     }            
-        //   },
-        //   noData: {
-        //     text: visualisationMessages('error')
-        //   }
-        // })
+        this.initChartProcurementMethod([],[])
         this.isLoading = false    
         throw error
       }

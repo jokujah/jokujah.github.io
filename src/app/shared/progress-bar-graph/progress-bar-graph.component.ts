@@ -46,7 +46,7 @@ export class ProgressBarGraphComponent implements OnInit {
       chart: {
         height: 40,
         type: 'bar',
-        stacked: true,
+        stacked: false,
         sparkline: {
           enabled: true
         }
@@ -161,7 +161,7 @@ export class ProgressBarGraphComponent implements OnInit {
       },
      dataLabels: {
        enabled: true,
-       enabledOnSeries: [0],
+      //  enabledOnSeries: [0],
        formatter: function (val, opts) {
          return NumberSuffix(val, 0)
        },
@@ -170,7 +170,8 @@ export class ProgressBarGraphComponent implements OnInit {
         fontWeight:'bold',
         fontSize:'12px'
       },
-      offsetX:40,
+      offsetY:-5,offsetX:40,
+      distributed:true
      }
     }
   }

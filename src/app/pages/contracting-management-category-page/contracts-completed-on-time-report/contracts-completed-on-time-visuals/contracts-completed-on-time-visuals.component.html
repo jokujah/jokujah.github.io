@@ -3,13 +3,13 @@
   <div>
     <div class=" mt-4 md:grid md:grid-cols-4  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
         <app-stats-card 
-          [title]="'Contracts'" 
+          [title]="'Late Contracts'" 
           [isLoading]="isLoading" 
           [value]="cardValue1"
         ></app-stats-card>
 
         <app-stats-card 
-          [title]="'Contract Value'" 
+          [title]="'Late Contract Value'" 
           [isLoading]="isLoading" 
           [value]="cardValue2"
           [prefix]="'UGX'"
@@ -79,9 +79,9 @@
   <div class="mt-4 mb-4">
     <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full">
       <div class="md:w-3/4 flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
-        <div *ngIf="!isLoading && completedOnTime.length > 0" class="w-full">
+        <div class="w-full">
           <div class="font-bold mb-4">Top Completed Contracts on Time</div>
-          <div class="inline-block min-w-full align-middle ">
+          <div *ngIf="!isLoading && completedOnTime.length > 0" class="inline-block min-w-full align-middle ">
             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
               <table #myTable1 id="myTable1" class="min-w-full divide-y divide-gray-300 table-auto">
                 <thead class="bg-gray-50">
@@ -107,7 +107,7 @@
                               d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                               clip-rule="evenodd" />
                           </svg>
-  
+        
                           <svg *ngIf="dir === 'desc'" xmlns="http://www.w3.org/2000/svg"
                             class="ml-2 h-5 w-5 flex-none rounded text-gray-400" fill="currentColor" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
@@ -130,20 +130,20 @@
               </table>
             </div>
           </div>
-        </div>
-        <span *ngIf="isLoading">
-          <app-loader></app-loader>
-        </span>
-        <span *ngIf="!isLoading && (!completedOnTime || completedOnTime.length <= 0)">
-          <app-empty-state></app-empty-state>
-        </span>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && (!completedOnTime || completedOnTime.length <= 0)">
+            <app-empty-state></app-empty-state>
+          </span>
+        </div>       
       </div>
 
       <div
         class="md:w-1/4 flex flex-row sm:place-content-between space-x-4 md:space-x-0  md:grid md:grid-cols-1 md:content-between ">
         <div class=" overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-          <div *ngIf="!isLoading && completedOnTime.length > 0" class="flex flex-col items-center">
-            <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Earliest Completed Contract</span>
+          <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Earliest Completed Contract</span>
+          <div *ngIf="!isLoading && completedOnTime.length > 0" class="flex flex-col items-center">            
             <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{completedOnTime[0]?.daysLeft}} Days</span>
             <span
               class="text-sm  md:text-sm font-bold text-gray-500 text-center flex">{{completedOnTime[0]?.subjectOfProcurement}}</span>

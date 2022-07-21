@@ -2,7 +2,7 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">         
+      <div class=" mt-4 grid grid-cols-2 space-x-4">         
          <app-stats-card 
           [title]="'Awarded Contracts'" 
           [isLoading]="isLoading" 
@@ -131,8 +131,8 @@
                             </span>
                           </span>
                         </th>
-                        <th (click)="sortTable(2,'myTable2')" scope="col"
-                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                        <th  (click)="sortTable(2,'myTable2')" scope="col"
+                          class="hidden md:table-column px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Contracts
                             <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
@@ -162,7 +162,7 @@
                         <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                           {{item?.procurementMethod?item?.procurementMethod:'Unknown'}}</td>
                         <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.contractValue}}</td>
-                        <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.numberOfContracts}}</td>
+                        <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 hidden md:table-cell">{{item?.numberOfContracts}}</td>
                         <!-- <td class="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{{((item?.contractValue)/(item?.numberOfContracts)) *100}}</td>                                           -->
                       </tr>
           

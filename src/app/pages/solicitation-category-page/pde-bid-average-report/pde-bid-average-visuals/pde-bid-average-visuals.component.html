@@ -1,8 +1,8 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
-  <div>
-    <div class="flex flex-col my-2 space-y-2 md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
+  <div class="mt-4">
+    <div class="grid grid-cols-2 space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="cardValue1" [duration]="1000">
@@ -14,7 +14,6 @@
         </span>
         <span class="statsText">Bids</span>
       </div>
-
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="cardValue2" [duration]="1000">
@@ -24,21 +23,8 @@
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
         </span>
-        <span class="statsText">Bids Responded To</span>
+        <span class="statsText">Bid Responses</span>
       </div>
-
-      <div class="statsCard">
-        <span *ngIf="!isLoading" class="stats flex flex-row">
-          <animated-digit [digit]="cardValue3" [duration]="1000">
-            {{ cardValue3 | numberSuffix }}
-          </animated-digit>
-        </span>
-        <span *ngIf="isLoading">
-          <app-loading-pulse></app-loading-pulse>
-        </span>
-        <span class="statsText">Providers who Responded to Bids</span>
-      </div>
-
     </div>
   </div>
 
@@ -47,7 +33,7 @@
     <div>
       <div class="mt-4 mb-4">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
-          <div class="md:w-3/4 w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div class=" w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
             <div>
               <div class="font-bold mb-4">PDE By Number Of Published Bids</div>
               <div *ngIf="!isLoading && topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
@@ -55,24 +41,24 @@
                   <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
                     <thead class="bg-gray-50">
                       <tr>
-                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">PDE Name
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">PDE
                         </th>                      
                         <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
-                            Number of Bids                           
+                            Bids                           
                           </span>
                         </th> 
-                        <th scope="col"
+                        <!-- <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Number of Bids Responded To                           
                           </span>
-                        </th> 
+                        </th>  -->
                         <th scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
-                            Number Of Providers That Responded                      
+                            Responding Providers                      
                           </span>
                         </th>                                         
                       </tr>
@@ -85,7 +71,7 @@
                           </div>
                         </td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfBids}}</td>
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfBidsRespondedTo}}</td>
+                        <!-- <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfBidsRespondedTo}}</td> -->
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.numberOfProvidersThatResponded}}</td>
                       </tr>
                     </tbody>
@@ -101,7 +87,7 @@
             </span>
           </div>
           
-          <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
+          <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
             <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
               <div *ngIf="!isLoading && topTenHighestContracts.length > 0" class="flex flex-col items-center">
                 <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Number of Published Bids</span>
@@ -115,7 +101,7 @@
                 <app-empty-state></app-empty-state>
               </span>   
             </div>                
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

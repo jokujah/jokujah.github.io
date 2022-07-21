@@ -1,7 +1,8 @@
 <div class="max-w-full mx-auto">
     <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
+
     <div>
-      <div class=" mt-4 md:grid md:grid-cols-3  md:space-y-0 md:space-x-4   flex flex-col space-y-2">
+      <div class="hidden md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats">        
             <animated-digit [digit]="cardValue1"  [duration]="1000"></animated-digit>
@@ -11,8 +12,7 @@
           </span>
           <span class="statsText">Disposals</span>
   
-        </div>
-  
+        </div>  
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats flex flex-row">        
              UGX &nbsp;<animated-digit [digit]="cardValue2"  [duration]="1000"></animated-digit>
@@ -23,15 +23,50 @@
           <span class="statsText">Reserve Price</span>
         </div> 
         <div class="statsCard">
+          <span *ngIf="!isLoading" class="stats flex flex-row">
+            <span>UGX</span>&nbsp;<animated-digit [digit]="cardValue3" [duration]="1000"></animated-digit>
+          </span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Contract Price</span>
+        </div>  
+      </div>
+  
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col my-2 space-y-4">
+        <div class="grid grid-cols-2 space-x-4">
+          <div class="statsCard">
+            <span *ngIf="!isLoading" class="stats">        
+              <animated-digit [digit]="cardValue1"  [duration]="1000"></animated-digit>
+            </span>
+            <span *ngIf="isLoading">
+              <app-loading-pulse></app-loading-pulse>
+            </span>
+            <span class="statsText">Disposals</span>
+    
+          </div>  
+          <div class="statsCard">
             <span *ngIf="!isLoading" class="stats flex flex-row">        
-                UGX &nbsp;<animated-digit [digit]="cardValue3"  [duration]="1000"></animated-digit>
+               UGX &nbsp;<animated-digit [digit]="cardValue2"  [duration]="1000"></animated-digit>
+            </span>
+            <span *ngIf="isLoading">
+              <app-loading-pulse></app-loading-pulse>
+            </span>
+            <span class="statsText">Reserve Price</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1">
+          <div class="statsCard">
+            <span *ngIf="!isLoading" class="stats flex flex-row">
+              UGX &nbsp;<animated-digit [digit]="cardValue3" [duration]="1000"></animated-digit>
             </span>
             <span *ngIf="isLoading">
               <app-loading-pulse></app-loading-pulse>
             </span>
             <span class="statsText">Contract Price</span>
           </div>
-  
+        </div>
       </div>
     </div>
     

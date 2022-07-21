@@ -4,10 +4,8 @@
     (resetEvent)="reset($event)"
   ></app-filter>
 
-  <div>
-    <div
-      class="mt-4 md:grid md:grid-cols-4 md:space-y-0 md:space-x-4 flex flex-col space-y-2"
-    >
+  <div class="mt-4">
+    <div class="hidden md:grid md:grid-cols-4 md:space-y-0 md:space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoadingSummary" class="stats">
           <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
@@ -63,6 +61,69 @@
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="statsText">Cancelled Amount</span>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="md:hidden flex flex-col my-2 space-y-4">
+      <div class="grid grid-cols-2 space-x-4">
+        <div class="statsCard">
+          <span *ngIf="!isLoadingSummary" class="stats">
+            <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
+              {{ numberOfRequisitions | numberSuffix: 1 }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoadingSummary">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Late Initiations</span>
+        </div>
+  
+        <div class="statsCard">
+          <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
+            <span>UGX</span>&nbsp;<animated-digit
+              [digit]="requisitionEstimatedAmount"
+              [duration]="1000"
+            >
+              {{ requisitionEstimatedAmount | numberSuffix: 2 }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoadingSummary">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Initiated Amount</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 space-x-4">
+        <div class="statsCard">
+          <span *ngIf="!isLoadingSummary" class="stats">
+            <animated-digit
+              [digit]="numberOfCancelledRequisitions"
+              [duration]="1000"
+            >
+              {{ numberOfCancelledRequisitions | numberSuffix: 1 }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoadingSummary">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Cancelled</span>
+        </div>
+  
+        <div class="statsCard">
+          <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
+            UGX &nbsp;<animated-digit
+              [digit]="cancelledRequisitionEstimatedAmount"
+              [duration]="1000"
+            >
+              UGX {{ cancelledRequisitionEstimatedAmount | numberSuffix: 2 }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoadingSummary">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Cancelled Amount</span>
+        </div>
       </div>
     </div>
   </div>

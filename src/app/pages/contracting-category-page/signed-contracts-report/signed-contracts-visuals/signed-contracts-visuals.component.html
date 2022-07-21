@@ -1,7 +1,7 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div class=" mt-4 md:grid md:grid-cols-2  md:space-y-0 md:space-x-4   flex flex-col space-y-2">     
+    <div class=" mt-4 grid grid-cols-2 space-x-4">     
        <app-stats-card 
           [title]="'Signed Contracts'" 
           [isLoading]="isLoading" 
@@ -9,7 +9,7 @@
         ></app-stats-card>
 
         <app-stats-card 
-          [title]="'Total Cost of Top Signed Contracts'" 
+          [title]="'Total Top Signed Contract Value'" 
           [isLoading]="isLoading" 
           [value]="valueOfContracts"
           [prefix]="'UGX'"
@@ -78,7 +78,7 @@
                           </span>
                         </th>
                         <th (click)="sortTable(2,'myTable2')" scope="col"
-                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          class="hidden md:table-column px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
                             Estimated Cost
                             <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
@@ -108,7 +108,7 @@
                         <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                           {{item?.subjectOfProcurement?item?.subjectOfProcurement:'Unknown'}}</td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.actualCost}}</td>
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.estimatedAmount}}</td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500 hidden md:table-cell">{{item?.estimatedAmount}}</td>
                         <!-- <td class="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{{((item?.contractValue)/(item?.numberOfContracts)) *100}}</td>                                           -->
                       </tr>
           
