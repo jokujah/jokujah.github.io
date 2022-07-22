@@ -156,6 +156,14 @@ export function convertNumbersWithCommas(number: number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+export function convertNumberSuffixWithCommas(numberWithSuffix) {
+
+  let splitNumber = numberWithSuffix.split('.')
+  let numberWithCommas = splitNumber[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  let fullNumberWithSuffixAndCommas = numberWithCommas +  (splitNumber[1]?('.' +splitNumber[1]):'')
+  return fullNumberWithSuffixAndCommas;
+}
+
 
 
 

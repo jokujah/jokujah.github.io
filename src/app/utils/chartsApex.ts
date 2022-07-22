@@ -1,4 +1,4 @@
-import { visualisationMessages } from 'src/app/utils/helpers';
+import { convertNumberSuffixWithCommas, visualisationMessages } from 'src/app/utils/helpers';
 import { ChartOptions } from './IChartOptions';
 import { NumberSuffix } from "./helpers";
 import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font-family';
@@ -153,10 +153,8 @@ export function actualRadialChart(series?, categories?, title?):Partial<ChartOpt
   
 }
 
-
 export function initColumnChart(series?: Array<any>, categories?: Array<any>, title?,xAxisTitle?,yAxisTitle?):Partial<ChartOptions>{
-    console.log(series)
-    console.log(categories)
+   
     return {
         series: series,
         chart: {
@@ -259,6 +257,89 @@ export function initRadarChart(series?,categories?,title?):Partial<ChartOptions>
     noData:{
       text:visualisationMessages('loading')
     }
+  };
+}
+
+export function initPolarChart(series?,categories?,title?):Partial<ChartOptions>{
+ 
+  return {
+    series:series,
+    tooltip: {
+      style: {
+        fontSize: '12px',
+        fontFamily: 'Trebuchet MS',
+      },
+      y: {
+        formatter: function (val) {
+          return val;
+        },
+      },
+    },
+    chart: {
+      type: "polarArea",
+      width: '100%',
+        height: 350,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
+    },
+    title: {
+      text: title,
+      align: 'center',
+      margin: 2,
+      offsetX: 0,
+      offsetY: 0,
+      floating: false,
+      style: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+        fontFamily: 'Trebuchet MS',
+      },
+    },
+    stroke: {
+      colors: ["#fff"]
+    },
+    fill: {
+      opacity: 0.9
+    },
+    dataLabels:{},
+    labels: categories,
+    noData: {
+      text: visualisationMessages('empty'),
+      align: 'center',
+      verticalAlign: 'middle',
+      offsetX: 0,
+      offsetY: 0,
+      style: {
+        fontSize: '12px',
+        fontFamily: 'Trebuchet MS',
+      },
+    },
+    legend: {
+      show: true,
+      offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
+    },
+    
+    // responsive: [
+    //   {
+    //     breakpoint: 480,
+    //     options: {
+    //       chart: {
+    //         width: 200
+    //       },
+    //       legend: {
+    //         position: "bottom"
+    //       }
+    //     }
+    //   }
+    // ]
   };
 }
 
