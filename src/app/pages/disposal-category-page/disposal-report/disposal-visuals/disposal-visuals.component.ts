@@ -95,7 +95,7 @@ export class DisposalVisualsComponent implements OnInit {
         if (response.data.length > 0) {
           this.cardValue1 = data.numberOfDisposals ? sanitizeCurrencyToString(data.numberOfDisposals) : 0
           this.cardValue2 = data.totalReservePrice ? sanitizeCurrencyToString(data.totalReservePrice) : 0
-          this.cardValue3 = data.totalContractAmount ? data.totalContractAmount : 0
+          this.cardValue3 = data.totalContractAmount ? sanitizeCurrencyToString(data.totalContractAmount) : 0
         }
         this.isLoading = false
         },

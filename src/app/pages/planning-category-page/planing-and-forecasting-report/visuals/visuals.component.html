@@ -82,8 +82,9 @@
 
   <!-- Graphs -->
   <div>
-    <div>
-      <!-- Row 1 -->
+    <!-- Row 1 -->
+    <!-- <div>
+      
       <div class="mt-4">
         <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
@@ -105,7 +106,7 @@
           </div>
   
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
-            <!-- Bar -->
+           
             <div class="flex flex-col px-2 py-2">
               <div>
                 <apx-chart *ngIf="chartOptionsPlannedVsSpent?.series && !isLoadingBudgetSummary"
@@ -126,7 +127,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex ">
         <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
@@ -134,7 +135,8 @@
             <apx-chart #chartFunding [series]="chartFundingOptions.series" [chart]="chartFundingOptions.chart" [yaxis]="chartFundingOptions.yaxis"
               [xaxis]="chartFundingOptions.xaxis" [labels]="chartFundingOptions.labels" [stroke]="chartFundingOptions.stroke"
               [title]="chartFundingOptions.title" [dataLabels]="chartFundingOptions.dataLabels" [fill]="chartFundingOptions.fill"
-              [tooltip]="chartFundingOptions.tooltip" [noData]="chartFundingOptions.noData" [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
+              [tooltip]="chartFundingOptions.tooltip"
+              [legend]="chartFundingOptions.legend" [noData]="chartFundingOptions.noData" [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
           </div>
           <span *ngIf="isLoading">
             <app-loader></app-loader>
@@ -146,9 +148,9 @@
       </div>
       <div class="flex">
         <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-          <div *ngIf="!isLoading && (plansByFundingSource.length > 0)" class="w-full">
-            <div class="font-bold mb-4">Number of  Plans By Funding Source</div>
-            <div class="inline-block min-w-full align-middle ">
+          <div  class="w-full">
+            <div  class="font-bold mb-4">Number of  Planned Procurements By Funding Source</div>
+            <div *ngIf="!isLoading && (plansByFundingSource.length > 0)" class="inline-block min-w-full align-middle ">
               <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                 <table #myTable1 id="myTable1" class="min-w-full divide-y divide-gray-300 table-auto">
                   <thead class="bg-gray-50">
@@ -188,18 +190,19 @@
                 </table>
               </div>
             </div>
-          </div>
-          <span *ngIf="isLoading">
-            <app-loader></app-loader>
-          </span>
-          <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
-            <app-empty-state></app-empty-state>
-          </span>
+            <span *ngIf="isLoading">
+              <app-loader></app-loader>
+            </span>
+            <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
+          </div>         
+
         </div>
       </div>
     </div>
     <div>
-      <!-- Row 2 -->
+      <!-- Row 3 -->
       <div class="mt-4">
         <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
           <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
@@ -224,17 +227,122 @@
                 [title]="chartOptionsMethod.title"
                 [responsive]="chartOptionsMethod.responsive"
                 [tooltip]="chartOptionsMethod.tooltip"
-                [noData]="chartOptionsMethod.noData"></apx-chart>
+                [noData]="chartOptionsMethod.noData"
+                [labels]="chartOptionsMethod.labels"
+                [fill]="chartOptionsMethod.fill"
+                [stroke]="chartOptionsMethod.stroke"
+                [legend]="chartOptionsMethod.legend"
+                ></apx-chart>
               <div *ngIf="isLoadingMethodSummary">
                 <app-loader></app-loader>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
-    <!-- Row 3 -->
-    <div class="mt-4 mb-4">
+    <!-- Row 4 -->
+    <div>
+      <div class="mt-4 mb-4">
+        <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
+          <div class=" w-full md:w-1/2  p-5 bg-white shadow rounded-lg overflow-hidden">
+            <div>
+              <div class="font-bold mb-4">Procurement Methods by Contract Value</div>
+              <div *ngIf="!isLoading && topTenHighestContractsPM.length > 0" class="inline-block min-w-full align-middle ">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                    <thead class="bg-gray-50">
+                      <tr class="divide-x divide-gray-200">
+                        <th scope="col " class="w-1/2 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Procurement Method
+                        </th>
+                        <th scope="col"
+                          class="w-1/2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Estimated Amount(UGX)                          
+                            </span>
+                        </th>                                          
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr class="divide-x divide-gray-200 h-1" *ngFor="let item of topTenHighestContractsPM">
+                        <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                          <div class="flex flex-col items-left">
+                            <span class="text-xs font-medium text-gray-900">{{item?.procurementMethod ? item?.procurementMethod : 'Unknown'}}</span>
+                          </div>
+                        </td>
+                        <td  class="whitespace-normal"><app-progress-bar-graph
+                            [series]=item?.marketPrice
+                            [seriesName]=item?.procurementMethod
+                            [categories]="'Estimated Amount'"
+                            [maxYAxisValue]=totalValueofContractsPM
+  
+                          ></app-progress-bar-graph></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <span *ngIf="isLoading">
+              <app-loader></app-loader>
+            </span>
+            <span *ngIf="!isLoading &&(!topTenHighestContractsPM || topTenHighestContractsPM.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
+          </div>
+  
+          <div class=" w-full md:w-1/2  p-5 bg-white shadow rounded-lg overflow-hidden">
+            <div>
+              <div class="font-bold mb-4">Procurement Methods by Number of Contracts</div>
+              <div *ngIf="!isLoading && topTenHighestNumberOfContractsPM.length > 0" class="inline-block min-w-full align-middle ">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                    <thead class="bg-gray-50">
+                      <tr class="divide-x divide-gray-200">
+                        <th scope="col " class="w-1/2 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Procurement Method
+                        </th>
+                        <th scope="col"
+                          class="w-1/2 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          <span class="group inline-flex">
+                            Planned Procurements                          
+                            </span>
+                        </th>                                          
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr class="divide-x divide-gray-200 h-1" *ngFor="let item of topTenHighestNumberOfContractsPM">
+                        <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                          <div class="flex flex-col items-left">
+                            <span class="text-xs font-medium text-gray-900">{{item?.procurementMethod ? item?.procurementMethod : 'Unknown'}}</span>
+                          </div>
+                        </td>
+                        <td  class="whitespace-normal"><app-progress-bar-graph
+                            [series]=item?.noOfPlanItems
+                            [seriesName]=item?.procurementMethod
+                            [categories]="'Number Of Planned Procurements'"
+                            [maxYAxisValue]=totalNumberofContractsPM
+  
+                          ></app-progress-bar-graph></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <span *ngIf="isLoading">
+              <app-loader></app-loader>
+            </span>
+            <span *ngIf="!isLoading &&(!topTenHighestNumberOfContractsPM || topTenHighestNumberOfContractsPM.length <= 0)">
+              <app-empty-state></app-empty-state>
+            </span>
+          </div>      
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="mt-4 mb-4">
       <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4 ">
         <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 w-full ">
           <div id="chartBudgetStatus" class="md:w-3/4 w-full p-5 overflow-hidden bg-white rounded-lg shadow hidden md:block">
@@ -293,6 +401,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

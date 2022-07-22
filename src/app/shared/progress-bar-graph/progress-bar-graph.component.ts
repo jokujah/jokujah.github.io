@@ -34,10 +34,8 @@ export class ProgressBarGraphComponent implements OnInit {
         name:this.seriesName,
         data:[dataVal] 
       })
-    } 
-    
-    console.log(seriesArray)
-
+    }     
+   
     this.initChart(seriesArray,categoriesArray,this.maxYAxisValue)
   }
 
@@ -87,7 +85,7 @@ export class ProgressBarGraphComponent implements OnInit {
         enabled: true,
         label:{
           formatter:function(val){
-            return NumberSuffix(val,0)
+            return NumberSuffix(val,2)
           }
         }
       },
@@ -138,7 +136,7 @@ export class ProgressBarGraphComponent implements OnInit {
        max: maxYAxisValue,
        labels: {
          formatter: (val) => {
-           return NumberSuffix(val, 1)
+           return NumberSuffix(val, 2)
          }
        },
        crosshairs: {
@@ -163,7 +161,7 @@ export class ProgressBarGraphComponent implements OnInit {
        enabled: true,
       //  enabledOnSeries: [0],
        formatter: function (val, opts) {
-         return NumberSuffix(val, 0)
+         return NumberSuffix(val, 2)
        },
        style: {
         colors: ['#333'],

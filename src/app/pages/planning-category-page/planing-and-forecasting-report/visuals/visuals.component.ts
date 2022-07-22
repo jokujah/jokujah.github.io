@@ -30,6 +30,8 @@ import {
   addArrayValues,
   visualisationMessages,
   sortTable,
+  convertNumberSuffixWithCommas,
+  sortArrayBy,
 } from 'src/app/utils/helpers';
 
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
@@ -37,6 +39,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { ToastrService } from 'ngx-toastr';
 import { convertNumbersWithCommas } from '../../../../utils/helpers';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
+import { initPolarChart } from 'src/app/utils/chartsApex';
 
 export type ChartOptionsBudgetStatus = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -108,6 +111,11 @@ export class VisualsComponent implements OnInit, OnDestroy {
   numberOfRegisteredEntities;
   topTenHighestContracts;
 
+  totalValueofContractsPM: any = 0;
+  topTenHighestContractsPM: any = [];
+  topTenHighestNumberOfContractsPM: any = [];
+  totalNumberofContractsPM: any = 0;
+
   highestContractValue = 0;
   highestPercentage = 0;
   entityWithHighestProcurement = 'N/A';
@@ -123,6 +131,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
     roles = this.checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
   
     entityOrDept = this.roles == 'super-admin'?'Entities':'Departments' 
+  totalValueofContracts: number;
+    
     
 
   
@@ -283,7 +293,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1
-              : data[0].noOfRegisteredPdes;
+              :( data[0]?.noOfRegisteredPdes ? data[0]?.noOfRegisteredPdes: data[0]?.noOfPdeDepartments);
             this.isLoading = false;
           } else {
             this.numberOfPlannedContracts = 0;
@@ -296,6 +306,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         (error) => {
           this.isLoading = false;
           console.log('Error ', error);
+          throw error
         }
       );
   }
@@ -751,14 +762,19 @@ export class VisualsComponent implements OnInit, OnDestroy {
           });
 
           const categories = [];
+          const planItems = [];
           const categoryValues = [];
 
           sortedTypes.forEach((element) => {
             let marketPrice = parseInt(
               element?.marketPrice.split(',').join('')
             );
+            let noOfPlanItems = parseInt(
+              element?.noOfPlanItems.split(',').join('')
+            );
             categories.push(element.procurementType);
             categoryValues.push(marketPrice);
+            planItems.push(noOfPlanItems);
           });
 
           this.chartProcurementTypes?.updateOptions({
@@ -786,6 +802,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           });
 
           this.initDonutChart(categoryValues, categories);
+          this.chartOptionsMethod = initPolarChart(planItems,categories,'Number of Planned Procurements  by Type')
         },
         (error) => {
           this.isLoadingTypeSummary = false;
@@ -800,30 +817,87 @@ export class VisualsComponent implements OnInit, OnDestroy {
     procuringEntity
   ) {
     this.isLoadingMethodSummary = true;
+    this.topTenHighestContracts = [] 
+    this.totalValueofContracts = 0
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
         (res) => {
           this.isLoadingMethodSummary = false;
           let procurementsByMethod = res.data;
+          let contractValue = []
+          let actualAmount = []
 
           const planAmounts = [];
           const planMethods = [];
 
-          procurementsByMethod.forEach((method: any) => {
-            if (method.procurementMethod != null) {
-              const amount = parseInt(method?.marketPrice.split(',').join(''));
-              planAmounts.push((amount / 1000000000000).toFixed(2));
-              planMethods.push({
-                x: method?.procurementMethod,
-                y: amount,
-              });
+          this.topTenHighestContractsPM = procurementsByMethod.filter((element)=> element?.procurementMethod != null).sort(function (a, b) {
+            var nameA = a?.marketPrice.split(',')
+            var nameB = b?.marketPrice.split(',')
+            var valueA = parseInt(nameA.join(''))
+            var valueB = parseInt(nameB.join(''))
+
+            if (valueA > valueB) {
+              return -1;
             }
+            if (valueA < valueB) {
+              return 1;
+            }
+            return 0;
+          })
+
+          this.topTenHighestContractsPM.forEach(element => {
+            var valueC = (element?.marketPrice)?(element?.marketPrice.split(',')):['0'];
+            var valueD = parseInt(valueC.join(''))
+            contractValue.push(valueD)
           });
 
-          if (planAmounts && planMethods) {
-            this.initTreeMapChartMethod(planAmounts, planMethods);
-          }
+          this.topTenHighestNumberOfContractsPM = res.data.filter((element)=>element?.procurementMethod != null).sort(function (a, b) {
+            var nameA = a?.noOfPlanItems.split(',')
+            var nameB = b?.noOfPlanItems.split(',')
+            var valueA = parseInt(nameA.join(''))
+            var valueB = parseInt(nameB.join(''))
+
+            if (valueA > valueB) {
+              return -1;
+            }
+            if (valueA < valueB) {
+              return 1;
+            }
+            return 0;
+          })
+
+          this.topTenHighestNumberOfContractsPM.forEach(element => {
+            var valueC = (element?.noOfPlanItems)?(element?.noOfPlanItems.split(',')):['0'];
+            var valueD = parseInt(valueC.join(''))
+            //subjectOfProcurement.push(capitalizeFirstLetter(element?.procurement_method))
+            actualAmount.push(valueD)
+          });
+
+          this.totalValueofContractsPM = addArrayValues(contractValue)
+          this.totalNumberofContractsPM = addArrayValues(actualAmount)
+
+
+          // procurementsByMethod.forEach((method: any) => {
+          //   if (method.procurementMethod != null) {
+          //     const amount = parseInt(method?.marketPrice.split(',').join(''));
+          //     planAmounts.push(amount);
+          //     // planMethods.push({
+          //     //   x: method?.procurementMethod,
+          //     //   y: amount,
+          //     // });
+
+          //     planMethods.push(method?.procurementMethod);
+          //   }
+          // });
+
+          // if (planAmounts && planMethods) {
+          //   //this.initTreeMapChartMethod(planAmounts, planMethods);
+
+          //   this.chartOptionsMethod = initPolarChart(planAmounts,planMethods,'Planned Procurements by Method')
+
+
+          // }
         },
         (error) => {
           this.isLoadingMethodSummary = false;
@@ -839,7 +913,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           let plansByFundingSource = res.data;
 
-          this.plansByFundingSource = plansByFundingSource
+          this.plansByFundingSource = sortArrayBy(plansByFundingSource,'noOfPlanItems') 
+
+          
 
           console.log("Funding Source",res.data)
 
@@ -857,6 +933,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoading = false;
+          throw error
         }
       );
   }
@@ -912,14 +989,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoadingBudgetSummary = false;
+          throw error
         }
       );
   }
 
-  getFontSize() {
-    return Math.max(10, 12);
-  }
-
+  
   initCharts() {
     this.initChartBudgetStatus();
   }
@@ -1061,7 +1136,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         y: {
           formatter: function (val) {
-            return 'UGX ' + convertNumbersWithCommas(val);
+            return 'UGX ' + convertNumberSuffixWithCommas(NumberSuffix(val,2));
           },
         },
       },
@@ -1082,7 +1157,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         fontFamily: 'Trebuchet MS',
         type: 'donut',
         width: '100%',
-        height: 480,
+        height: 350,
         toolbar: {
           show: true,
           offsetY: 20,
@@ -1091,33 +1166,33 @@ export class VisualsComponent implements OnInit, OnDestroy {
       plotOptions: {
         pie: {
           offsetX: 0,
-          offsetY: 30,
+          offsetY: 0,
           donut: {
             size: '65%',
             labels: {
               show: true,
               name: {
-                fontSize: '10px',
+                fontSize: '12px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: 'bold',
               },
               value: {
-                fontSize: '9px',
+                fontSize: '12px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
-                formatter: (val) => `UGX ${convertNumbersWithCommas(val)}`,
+                formatter: (val) => `UGX ${convertNumberSuffixWithCommas(NumberSuffix(val,2))}`,
               },
               total: {
                 show: true,
-                fontSize: '9px',
+                fontSize: '12px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
                 formatter: function (w) {
-                  return `UGX ${convertNumbersWithCommas(
+                  return `UGX ${convertNumberSuffixWithCommas(NumberSuffix(
                     w.globals.seriesTotals.reduce((a, b) => {
                       return a + b;
-                    }, 0)
-                  )}`;
+                    }, 0),2
+                  ))}`;
                 },
               },
             },
@@ -1137,85 +1212,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           vertical: 10,
         },
       },
-      labels: types,
-      // responsive: [
-      //   {
-      //     breakpoint: 320,
-      //     options: {
-      //       chart: {
-      //         width: 260,
-      //       },
-      //       legend: {
-      //         position: 'bottom',
-      //       },
-      //     },
-      //   },
-      //   {
-      //     breakpoint: 480,
-      //     options: {
-      //       chart: {
-      //         width: 280,
-      //       },
-      //       legend: {
-      //         position: 'bottom',
-      //       },
-      //       title: {
-      //         style: {
-      //           fontSize: '12px',
-      //         },
-      //       },
-      //     },
-      //   },
-      //   {
-      //     breakpoint: 640,
-      //     options: {
-      //       chart: {
-      //         width: 360,
-      //       },
-      //       legend: {
-      //         position: 'bottom',
-      //       },
-      //       title: {
-      //         style: {
-      //           fontSize: '15px',
-      //         },
-      //       },
-      //     },
-      //   },
-      //   {
-      //     breakpoint: 768,
-      //     options: {
-      //       chart: {
-      //         width: 380,
-      //       },
-      //       legend: {
-      //         position: 'bottom',
-      //       },
-      //     },
-      //   },
-      //   {
-      //     breakpoint: 1024,
-      //     options: {
-      //       chart: {
-      //         width: 400,
-      //       },
-      //       legend: {
-      //         position: 'bottom',
-      //       },
-      //     },
-      //   },
-      //   {
-      //     breakpoint: 1280,
-      //     options: {
-      //       chart: {
-      //         width: 480,
-      //       },
-      //       legend: {
-      //         position: 'bottom',
-      //       },
-      //     },
-      //   },
-      // ],
+      labels: types,      
       noData: {
         text: visualisationMessages('empty'),
         align: 'center',
@@ -1702,37 +1699,85 @@ export class VisualsComponent implements OnInit, OnDestroy {
   initRadialChart(series?, categories?) {
     this.chartFundingOptions = {
       series: series,
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+        y: {
+          formatter: function (val) {
+            return 'UGX ' + convertNumberSuffixWithCommas(NumberSuffix(val,2));
+          },
+        },
+      },
       title: {
-        text: "Plans By Funding Source ",
+        text: "Planned Procurements By Funding Source ",
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          //color: '#1286f3'
+          fontFamily: 'Trebuchet MS',
         },
       },
       chart: {
-        type: "donut",
-        fontFamily:'Trebuchet Ms',
+        fontFamily: 'Trebuchet MS',
+        type: 'donut',
+        width: '100%',
+        height: 350,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
       },
       plotOptions: {
         pie: {
-          expandOnClick: true,
-          customScale: 1,
+          offsetX: 0,
+          offsetY: 30,
           donut: {
+            size: '65%',
             labels: {
               show: true,
               name: {
-                show:true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold',
               },
               value: {
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: (val) => `UGX ${convertNumberSuffixWithCommas(NumberSuffix(val,2))}`,
+              },
+              total: {
                 show: true,
-                formatter: function (val) {
-                  return 'UGX'+NumberSuffix(val,1)
-                }
-              }
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `UGX ${convertNumberSuffixWithCommas(NumberSuffix(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0),2
+                  ))}`;
+                },
+              },
             }
           }
         }
+      },
+      legend: {
+        show: true,
+        offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
       },
       labels: categories,
       dataLabels:{
@@ -1740,38 +1785,27 @@ export class VisualsComponent implements OnInit, OnDestroy {
         formatter: function (val) {
           return val.toFixed(1) + "%"
         },
-      },
-      tooltip: {
-        enabled: false,
-        // formatter: function (val) {
-        //   return val + "%"
-        // },
-      },
-      
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ],
+      },    
+     
       toolbar: {
         show: true,
         tools: {
           download: true,
         }
       },
-      noData:{
-        text:visualisationMessages('loading')
+      noData: {
+        text: visualisationMessages('empty'),
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
       }
     };
-  }
-
-  
+  }  
 }
+
+
