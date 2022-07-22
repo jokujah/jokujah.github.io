@@ -29,6 +29,7 @@ import {
   NumberSuffix,
   addArrayValues,
   visualisationMessages,
+  sortTable,
 } from 'src/app/utils/helpers';
 
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
@@ -90,6 +91,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
   public chartOptionsFinancialYearBudget: Partial<ChartOptions> | any;
   public chartOptionsPlannedVsSpent: Partial<ChartOptions> | any;
 
+  @ViewChild("chartFunding") chartFunding: ChartComponent;
+  public chartFundingOptions: Partial<ChartOptions>;
+
+  dir
+  sortTable = sortTable 
+
   numbersuffixVal = '1';
 
   isLoading: boolean = false;
@@ -109,13 +116,14 @@ export class VisualsComponent implements OnInit, OnDestroy {
   isLoadingBudgetSummary: boolean = false;
   isLoadingTypeSummary: boolean = false;
   isLoadingMethodSummary: boolean = false;
-
+  plansByFundingSource = []
 
   checkIfSuperAdmin = localStorage.getItem('isSuperAdmin');
 
     roles = this.checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
   
     entityOrDept = this.roles == 'super-admin'?'Entities':'Departments' 
+    
 
   
 
@@ -831,6 +839,10 @@ export class VisualsComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           let plansByFundingSource = res.data;
 
+          this.plansByFundingSource = plansByFundingSource
+
+          console.log("Funding Source",res.data)
+
           const fundingSourceData = [];
           const fundingSources = [];
 
@@ -840,6 +852,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
             );
             fundingSources.push(item?.fundingSource);
           });
+
+          this.initRadialChart(fundingSourceData,fundingSources)
         },
         (error) => {
           this.isLoading = false;
@@ -1682,6 +1696,80 @@ export class VisualsComponent implements OnInit, OnDestroy {
       // fill: {
       //   opacity: 1
       // }
+    };
+  }
+
+  initRadialChart(series?, categories?) {
+    this.chartFundingOptions = {
+      series: series,
+      title: {
+        text: "Plans By Funding Source ",
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          //color: '#1286f3'
+        },
+      },
+      chart: {
+        type: "donut",
+        fontFamily:'Trebuchet Ms',
+      },
+      plotOptions: {
+        pie: {
+          expandOnClick: true,
+          customScale: 1,
+          donut: {
+            labels: {
+              show: true,
+              name: {
+                show:true,
+              },
+              value: {
+                show: true,
+                formatter: function (val) {
+                  return 'UGX'+NumberSuffix(val,1)
+                }
+              }
+            }
+          }
+        }
+      },
+      labels: categories,
+      dataLabels:{
+        enabled: true,
+        formatter: function (val) {
+          return val.toFixed(1) + "%"
+        },
+      },
+      tooltip: {
+        enabled: false,
+        // formatter: function (val) {
+        //   return val + "%"
+        // },
+      },
+      
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ],
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+        }
+      },
+      noData:{
+        text:visualisationMessages('loading')
+      }
     };
   }
 

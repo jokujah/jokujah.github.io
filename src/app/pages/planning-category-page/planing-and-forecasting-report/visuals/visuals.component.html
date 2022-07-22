@@ -127,6 +127,77 @@
         </div>
       </div>
     </div>
+    <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+      <div class="flex ">
+        <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
+          <div *ngIf="!isLoading && chartFundingOptions" id="chart"  class="w-full  ">
+            <apx-chart #chartFunding [series]="chartFundingOptions.series" [chart]="chartFundingOptions.chart" [yaxis]="chartFundingOptions.yaxis"
+              [xaxis]="chartFundingOptions.xaxis" [labels]="chartFundingOptions.labels" [stroke]="chartFundingOptions.stroke"
+              [title]="chartFundingOptions.title" [dataLabels]="chartFundingOptions.dataLabels" [fill]="chartFundingOptions.fill"
+              [tooltip]="chartFundingOptions.tooltip" [noData]="chartFundingOptions.noData" [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
+          </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && !chartFundingOptions">
+            <app-empty-state></app-empty-state>
+          </span>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div *ngIf="!isLoading && (plansByFundingSource.length > 0)" class="w-full">
+            <div class="font-bold mb-4">Number of  Plans By Funding Source</div>
+            <div class="inline-block min-w-full align-middle ">
+              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table #myTable1 id="myTable1" class="min-w-full divide-y divide-gray-300 table-auto">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Funding Source
+                      </th>
+                      <th (click)="sortTable(1,'myTable1')" scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                        <span class="group inline-flex">
+                          Plans
+                          <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
+                          <span class="ml-2 flex-none rounded text-gray-400 ">
+                            <!-- Heroicon name: solid/chevron-down -->
+                            <svg *ngIf="dir === 'asc'" class="ml-2 h-5 w-5 flex-none rounded text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                            </svg>
+          
+                            <svg *ngIf="dir === 'desc'" xmlns="http://www.w3.org/2000/svg"
+                              class="ml-2 h-5 w-5 flex-none rounded text-gray-400" fill="currentColor" viewBox="0 0 24 24"
+                              stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngFor="let item of plansByFundingSource">
+                      <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        {{item?.fundingSource}}</td>
+                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.noOfPlanItems}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
+            <app-empty-state></app-empty-state>
+          </span>
+        </div>
+      </div>
+    </div>
     <div>
       <!-- Row 2 -->
       <div class="mt-4">
