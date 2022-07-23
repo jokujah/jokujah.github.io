@@ -1,8 +1,9 @@
 import { ChartOptions } from 'src/app/utils/IChartOptions';
-import { initRadialChart } from 'src/app/utils/chartsApex';
+import { initColumnChart, initRadialChart } from 'src/app/utils/chartsApex';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -18,7 +19,7 @@ import {
   ApexNoData,
   ApexTitleSubtitle
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getObjectTotal, getsortedPDEList, groupBy, NumberSuffix, sanitizeCurrencyToString, sortArrayBy, sortTable, visualisationMessages, emptyVisualisation, emptyVisualisationNonAxis } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getObjectTotal, getsortedPDEList, groupBy, NumberSuffix, sanitizeCurrencyToString, sortArrayBy, sortTable, visualisationMessages, emptyVisualisation, emptyVisualisationNonAxis, removeDuplicates, sortArrayByNumber } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 
@@ -30,6 +31,9 @@ import { AwardedContractReportService } from 'src/app/services/ContractCategory/
 export class DisposalVisualsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions> 
+
+  @ViewChild("chartReservePriceByProcurementType") chartReservePriceByProcurementType: ChartComponent;
+  public chartOptionsReservePriceByProcurementType: Partial<ChartOptions> 
 
   isLoading:boolean = false 
   cardValue2;
@@ -50,6 +54,7 @@ export class DisposalVisualsComponent implements OnInit {
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
+  isLoadingDisposals: boolean = false ;
 
   constructor(
     fb: FormBuilder,
@@ -62,9 +67,7 @@ export class DisposalVisualsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.initCharts()    
-  }
+  ngOnInit(): void { }
 
 
 
@@ -108,14 +111,7 @@ export class DisposalVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true
-    // this.chart?.updateOptions({
-    //   series:[],
-    //   labels:[],
-    //   noData:{
-    //     text:visualisationMessages('loading')
-    //   }
-    // })
+    this.isLoadingDisposals=true    
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
         let data = response.data
@@ -127,87 +123,64 @@ export class DisposalVisualsComponent implements OnInit {
         let sortedData = []
         this.topTenHighestContracts=[]
         this.highestReservePrice = 0
+
         switch (reportName) {
           case 'top-disposal-contract-list-summary':           
             console.log("top-disposal-contract-list-summary", data)
-
-            // sortedData = sortArrayBy(data,reservePrice)   
 
             if (response.data.length > 0) {
 
               this.topTenHighestContracts = data.slice(0,10)
               this.highestReservePrice = this.topTenHighestContracts[0]?.reservePrice ? sanitizeCurrencyToString(this.topTenHighestContracts[0]?.reservePrice):0
              
-              let groupedByProcurementMethod = groupBy(data,'procurementMethod')
-              let groupdeByProcurementType = groupBy(data,'procurementType')
+              let groupedByProcurementMethod = groupBy(
+                removeDuplicates(data.map((element)=>element),'procurementReferenceNumber'),
+                'procurementMethod'
+                )
+              let groupdeByProcurementType = groupBy(
+                removeDuplicates(data.map((element)=>element),'procurementReferenceNumber'),
+                'procurementType'
+                )
              
               let disposalsByMethod = getObjectTotal(groupedByProcurementMethod)
               let disposalsByType = getObjectTotal(groupdeByProcurementType)           
 
-              disposalsByType.forEach(element => {
+              disposalsByType.map(element=>element).forEach(element => {
                 nameOfType.push(capitalizeFirstLetter(element.procurementMethod))
                 numberOfDisposals.push(element.numberOfDisposals)
-              });             
+              }); 
 
-              // this.chart.updateOptions({
-              //   series : numberOfDisposals,
-              //   labels : nameOfType,
-              //   plotOptions: {
-              //     pie: {
-              //       expandOnClick: true,
-              //       customScale: 1,
-              //       donut: {
-              //         labels: {
-              //           show: true,
-              //           name: {
-              //             show:true,
-              //             fontSize:'14px',
-              //           },
-              //           value: {
-              //             show: true,
-              //             fontSize:'14px',
-              //             formatter: function (val) {
-              //               return val
-              //             }
-              //           },
-              //           total:{
-              //             show:true,
-              //             label: 'Total',
-              //             fontSize: '14px'
-              //         }
-              //         },                      
-              //       }
-              //     }
-              //   },
-              // })
-
-
+              let nameOfTypeReservePrice = []
+              sortArrayByNumber(disposalsByType.map(element=>element),'totalReservePrice')
+              .forEach(element => {
+                nameOfTypeReservePrice.push(capitalizeFirstLetter(element.procurementMethod))
+                reservePrice.push(element?.totalReservePrice)
+              });
               
+              this.initReservePriceForProcurementTypes([
+                {
+                  name:'Reserve Price',
+                  data: reservePrice
+                }
+              ],nameOfTypeReservePrice)
+
+              this.initCharts(numberOfDisposals,nameOfType)
+             
             }else{
-              // this.chart.updateOptions({
-              //   series : [],
-              //   labels : [],
-              //   noData : {
-              //     text: visualisationMessages('empty')
-              //   }
-              // })    
+              this.initCharts([],[])
+              this.initReservePriceForProcurementTypes([],[])  
               this.topTenHighestContracts = []          
             }
             break;
           
           }
          
-          this.isLoading = false
+          this.isLoadingDisposals = false
         },
-      (error) => {
-        // this.chart.updateOptions({
-        //   series : [],
-        //   labels : [],
-        //   noData : {
-        //     text: visualisationMessages('error')
-        //   }
-        // })  
-        this.isLoading = false
+      (error) => {        
+        this.initCharts([],[])
+        this.initReservePriceForProcurementTypes([],[])  
+        this.isLoadingDisposals = false
         console.log(error)
         throw error
       }
@@ -219,8 +192,22 @@ export class DisposalVisualsComponent implements OnInit {
   }
 
  
-  initCharts(){
-    this.chartOptions = initRadialChart([],[],'Number of Disposals By Procurement Type')
+  initCharts(series?, categories?){
+    this.chartOptions = initRadialChart(
+      series,
+      categories,
+      'Number of Disposals By Procurement Type'
+      )
+  }
+
+  initReservePriceForProcurementTypes(series?, categories?){
+    this.chartOptionsReservePriceByProcurementType = initColumnChart(
+      series,
+      categories,
+      'Reserve Price of Disposals By Procurement Type',
+      'Reserve Price(UGX)',
+      'Procurement Types'
+      )
   }
 
 }

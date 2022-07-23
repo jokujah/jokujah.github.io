@@ -230,11 +230,9 @@ export class ContractManagementVisualsComponent implements OnInit {
         floating:labels.length > 0 ? false:true,
         axisTicks: {
           show: labels.length > 0 ? true:false,
-          // color: '#940033',
         },
         axisBorder: {
           show: labels.length > 0 ? true:false,
-          //color: '#940033',
         },
         categories: labels,
         labels: {
@@ -253,11 +251,9 @@ export class ContractManagementVisualsComponent implements OnInit {
           floating:labels.length > 0 ? false:true,
           axisTicks: {
             show: labels.length > 0 ? true:false,
-            //color: '#940033',
           },
           axisBorder: {
             show: labels.length > 0 ? true:false,
-            //color: '#940033',
           },
           labels: {
             show: labels.length > 0 ? true:false,
@@ -265,7 +261,7 @@ export class ContractManagementVisualsComponent implements OnInit {
               fontSize: "12px"
             },
             formatter: function (val) {
-              return NumberSuffix(val, 0)
+              return NumberSuffix(val, 2)
             }
           }
         },
@@ -384,7 +380,7 @@ export class ContractManagementVisualsComponent implements OnInit {
             fontSize: "12px"
           },
           formatter: function (val) {
-            return NumberSuffix(val, 0)
+            return NumberSuffix(val, 2)
           }
         }
       },

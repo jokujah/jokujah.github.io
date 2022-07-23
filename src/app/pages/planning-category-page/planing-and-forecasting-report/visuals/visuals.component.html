@@ -132,11 +132,20 @@
       <div class="flex ">
         <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
           <div *ngIf="!isLoading && chartFundingOptions" id="chart"  class="w-full  ">
-            <apx-chart #chartFunding [series]="chartFundingOptions.series" [chart]="chartFundingOptions.chart" [yaxis]="chartFundingOptions.yaxis"
-              [xaxis]="chartFundingOptions.xaxis" [labels]="chartFundingOptions.labels" [stroke]="chartFundingOptions.stroke"
-              [title]="chartFundingOptions.title" [dataLabels]="chartFundingOptions.dataLabels" [fill]="chartFundingOptions.fill"
-              [tooltip]="chartFundingOptions.tooltip"
-              [legend]="chartFundingOptions.legend" [noData]="chartFundingOptions.noData" [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
+            <apx-chart #chartFunding 
+            [series]="chartFundingOptions.series" 
+            [chart]="chartFundingOptions.chart" 
+            [yaxis]="chartFundingOptions.yaxis"
+            [xaxis]="chartFundingOptions.xaxis" 
+            [labels]="chartFundingOptions.labels" 
+            [stroke]="chartFundingOptions.stroke"
+            [title]="chartFundingOptions.title" 
+            [dataLabels]="chartFundingOptions.dataLabels" 
+            [fill]="chartFundingOptions.fill"
+            [tooltip]="chartFundingOptions.tooltip"
+            [legend]="chartFundingOptions.legend" 
+            [noData]="chartFundingOptions.noData" 
+            [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
           </div>
           <span *ngIf="isLoading">
             <app-loader></app-loader>
