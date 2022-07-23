@@ -70,29 +70,68 @@
       </div>
     </div>
     
-    <!-- <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
+    <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
       <div class="flex ">
         <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
           <div  id="chart"  class="w-full  ">
-            <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [yaxis]="chartOptions.yaxis"
-              [xaxis]="chartOptions.xaxis" [labels]="chartOptions.labels" [stroke]="chartOptions.stroke"
-              [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
-              [tooltip]="chartOptions.tooltip" [noData]="chartOptions.noData" [plotOptions]="chartOptions.plotOptions"></apx-chart>
+            <apx-chart  *ngIf="!isLoadingDisposals && chartOptions?.series"
+              #chart 
+              [series]="chartOptions.series" 
+              [chart]="chartOptions.chart" 
+              [yaxis]="chartOptions.yaxis"
+              [xaxis]="chartOptions.xaxis" 
+              [labels]="chartOptions.labels" 
+              [stroke]="chartOptions.stroke"
+              [title]="chartOptions.title" 
+              [dataLabels]="chartOptions.dataLabels" 
+              [fill]="chartOptions.fill"
+              [tooltip]="chartOptions.tooltip"
+              [legend]="chartOptions.legend" 
+              [noData]="chartOptions.noData" 
+              [plotOptions]="chartOptions.plotOptions">
+            </apx-chart>
+            <span *ngIf="isLoadingDisposals">
+              <app-loader></app-loader>
+            </span>
+            <span *ngIf="!isLoadingDisposals && !chartOptions?.series">
+              <app-empty-state></app-empty-state>
+            </span>
+          </div>          
+        </div>
+      </div>
+      <div class="flex ">
+        <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
+          <div   id="chartReservePriceByProcurementType"  class="w-full  ">
+            <apx-chart  *ngIf="!isLoading && chartOptionsReservePriceByProcurementType?.series"
+              #chartReservePriceByProcurementType 
+              [series]="chartOptionsReservePriceByProcurementType.series" 
+              [chart]="chartOptionsReservePriceByProcurementType.chart" 
+              [yaxis]="chartOptionsReservePriceByProcurementType.yaxis"
+              [xaxis]="chartOptionsReservePriceByProcurementType.xaxis" 
+              [labels]="chartOptionsReservePriceByProcurementType.labels" 
+              [stroke]="chartOptionsReservePriceByProcurementType.stroke"
+              [title]="chartOptionsReservePriceByProcurementType.title" 
+              [dataLabels]="chartOptionsReservePriceByProcurementType.dataLabels" 
+              [fill]="chartOptionsReservePriceByProcurementType.fill"
+              [tooltip]="chartOptionsReservePriceByProcurementType.tooltip" 
+              [noData]="chartOptionsReservePriceByProcurementType.noData" 
+              [plotOptions]="chartOptionsReservePriceByProcurementType.plotOptions"
+              [grid]="chartOptionsReservePriceByProcurementType.grid"></apx-chart>
           </div>
-          <span *ngIf="isLoading">
+          <span *ngIf="isLoadingDisposals">
             <app-loader></app-loader>
           </span>
-          <span *ngIf="!isLoading && !chartOptions">
+          <span *ngIf="!isLoadingDisposals && !chartOptionsReservePriceByProcurementType?.series">
             <app-empty-state></app-empty-state>
           </span>
         </div>
       </div>
-    </div> -->
+    </div>
 
       <div class="mt-4 mb-4">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
           <div class=" w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-            <div *ngIf="!isLoading">
+            <div *ngIf="!isLoadingDisposals">
               <div class="font-bold mb-4">Top Disposal Contracts by Reserve Price</div>
               <div *ngIf="topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -132,6 +171,7 @@
                         <td class="whitespace-normal py-2 pl-4 pr-3   sm:pl-6">
                           <div class="flex flex-col items-left">
                             <span class="text-sm font-medium text-gray-900">{{item?.subjectOfProcurement ? item?.subjectOfProcurement : 'Unknown'}}</span>
+                            <span class="text-xs font-medium text-gray-600">{{item?.procurementReferenceNumber ? item?.procurementReferenceNumber : 'Unknown'}}</span>
                             
                           </div>
                         </td>
@@ -147,7 +187,7 @@
                 <app-empty-state></app-empty-state>
               </div>
             </div>
-            <span *ngIf="isLoading">
+            <span *ngIf="isLoadingDisposals">
               <app-loader></app-loader>
             </span>
           </div>

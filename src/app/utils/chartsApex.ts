@@ -6,6 +6,17 @@ import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font
 export function initRadialChart(series?, categories?, title?):Partial<ChartOptions> {
     return    {
       series: series,
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+        y: {
+          formatter: function (val) {
+            return val;
+          },
+        },
+      },
       title: {
         text: title,
         style: {
@@ -26,33 +37,41 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
       },
       plotOptions: {
         pie: {
-          expandOnClick: true,
-          // customScale: 1,
+          offsetX: 0,
+          offsetY: 30,
           donut: {
             size: '65%',
             labels: {
               show: true,
               name: {
-                show:true,
-                fontSize:'14px',
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold',
               },
               value: {
                 show: true,
-                fontSize:'14px',
-                formatter: function (val) {
-                  return 'UGX'+NumberSuffix(val,1)
-                }
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: (val) => val,
               },
-              total:{
-                show:false,
-                label: 'Total',
-                fontSize: '14px'
+              total: {
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `${convertNumberSuffixWithCommas(NumberSuffix(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0),2
+                  ))}`;
+                },
+              },
             }
-            },
-            
           }
-        },
-        
+        }
       },
       legend: {
         show: true,
@@ -65,41 +84,30 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
         },
       },
       labels: categories,
-      noData: {
-        text: visualisationMessages('loading')
-      },
       dataLabels:{
         enabled: true,
         formatter: function (val) {
           return val.toFixed(1) + "%"
         },
       },
-      tooltip: {
-        enabled: false,
-        // formatter: function (val) {
-        //   return val + "%"
-        // },
-      },
-      
-      // responsive: [
-      //   {
-      //     breakpoint: 480,
-      //     options: {
-      //       chart: {
-      //         width: 200
-      //       },
-      //       legend: {
-      //         position: "bottom"
-      //       }
-      //     }
-      //   }
-      // ],
       toolbar: {
         show: true,
         tools: {
           download: true,
         }
       },
+      noData: {
+        text: visualisationMessages('empty'),
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+      },     
+      
     };
 }
 
@@ -153,13 +161,13 @@ export function actualRadialChart(series?, categories?, title?):Partial<ChartOpt
   
 }
 
-export function initColumnChart(series?: Array<any>, categories?: Array<any>, title?,xAxisTitle?,yAxisTitle?):Partial<ChartOptions>{
+export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?,xAxisTitle?,yAxisTitle?):Partial<ChartOptions>{
    
     return {
         series: series,
         chart: {
           type: "bar",
-          height: '350',
+          height: 350,
           fontFamily:'Trebuchet Ms'
         },
         plotOptions: {
@@ -178,13 +186,24 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           colors: ["transparent"]
         },
         xaxis: {
-          categories: categories,
+          floating:labels.length > 0 ? false:true,
+          axisTicks: {
+            show: labels.length > 0 ? true:false,
+          },
+          axisBorder: {
+            show: labels.length > 0 ? true:false,
+          },
+          categories: labels,
           title: {
             text: xAxisTitle
           },
           labels:{
+            show: labels.length > 0 ? true:false,
+            style: {
+              fontSize: "12px"
+            },
              formatter: function(val) {
-              return  NumberSuffix(val,1) ;
+              return  NumberSuffix(val,2) ;
             }
           }
         },
@@ -192,11 +211,22 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           title: {
             text: yAxisTitle
           },
+          floating:labels.length > 0 ? false:true,
+          axisTicks: {
+            show: labels.length > 0 ? true:false,
+          },
+          axisBorder: {
+            show: labels.length > 0 ? true:false,
+          },
           labels:{
+            show: labels.length > 0 ? true:false,
+            style: {             
+              fontSize: "12px"
+            },
             minWidth: 0,
             maxWidth: 200,
           }
-          //showForNullSeries: false,
+          
         },
         fill: {
           opacity: 1
@@ -204,12 +234,12 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
         tooltip: {
           y: {
             formatter: function(val) {
-              return "UGX " + NumberSuffix(val,1) ;
+              return "UGX " + NumberSuffix(val,2) ;
             }
           }
         },
         noData: {
-          text: visualisationMessages('loading')
+          text: visualisationMessages('empty')
         },
         title: {
           text: title,
@@ -228,9 +258,22 @@ export function initColumnChart(series?: Array<any>, categories?: Array<any>, ti
           },
           offsetX:60,
           formatter:function(val){
-            return NumberSuffix(val,1)
+            return NumberSuffix(val,2)
           }
         },
+        grid: {
+          show: labels.length > 0 ? true : false,
+          xaxis: {
+            lines: {
+              show:  false,
+            }
+          },
+          yaxis: {
+            lines: {
+              show: labels.length > 0 ? true : false,
+            }
+          }
+        }
       };
 
 }

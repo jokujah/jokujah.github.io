@@ -1,4 +1,5 @@
 import  PDE  from 'src/assets/PDE.json';
+import * as _ from 'lodash';
 
 export function getsortedPDEList(){
 return PDE.sort(function(a, b) {
@@ -332,6 +333,10 @@ export function groupBy(objectArray, property) {
   }, {})
 }
 
+export function removeDuplicates(objectArray,primaryKey){
+  return _.uniqBy(objectArray,primaryKey)
+}
+
 
 export function sortArrayBy(objectArray, property){
   return objectArray.sort(function (a, b) {
@@ -351,13 +356,35 @@ export function sortArrayBy(objectArray, property){
   )
 }
 
+export function sortArrayByNumber(objectArray, property){
+  return objectArray.sort(function (a, b) {
+    var valueA = a[property]
+    var valueB = b[property]  
+
+    if (valueA > valueB) {
+      return -1;
+    }
+    if (valueA < valueB) {
+      return 1;
+    }
+    return 0;
+  }
+  )
+}
+
 export function getObjectTotal(objectGroup){
 
   let arrayToReceive = []
   for (const prop in objectGroup) {
+    let reservePrice = []
+    objectGroup[prop].forEach(element => {
+      reservePrice.push(parseInt(
+        element?.reservePrice ? element?.reservePrice.split(',').join('') : 0))
+    });
     let objectProcurementMethod = {
       procurementMethod : prop,
-      numberOfDisposals : objectGroup[prop].length
+      numberOfDisposals : objectGroup[prop].length,
+      totalReservePrice : addArrayValues(reservePrice)
     }
     arrayToReceive.push(objectProcurementMethod)
   }

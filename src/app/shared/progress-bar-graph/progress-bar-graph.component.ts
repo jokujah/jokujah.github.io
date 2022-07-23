@@ -54,8 +54,8 @@ export class ProgressBarGraphComponent implements OnInit {
           horizontal: true,
           barHeight: '100%',
           // colors: {
-          //   backgroundBarColors: ['#40475D']
-          // }
+          //   backgroundBarColors: ['#efeff5']
+          // },
 
           dataLabels: {
             position: 'top'
@@ -168,7 +168,7 @@ export class ProgressBarGraphComponent implements OnInit {
         fontWeight:'bold',
         fontSize:'12px'
       },
-      offsetY:-5,offsetX:40,
+      offsetY:-5,offsetX:60,
       distributed:true
      }
     }
