@@ -32,6 +32,7 @@ import {
   sortTable,
   convertNumberSuffixWithCommas,
   sortArrayBy,
+  sanitizeCurrencyToString,
 } from 'src/app/utils/helpers';
 
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
@@ -116,6 +117,8 @@ export class VisualsComponent implements OnInit, OnDestroy {
   topTenHighestNumberOfContractsPM: any = [];
   totalNumberofContractsPM: any = 0;
 
+  consolidatedPlanSummary: any = [];
+
   highestContractValue = 0;
   highestPercentage = 0;
   entityWithHighestProcurement = 'N/A';
@@ -130,7 +133,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
     roles = this.checkIfSuperAdmin == 'true' ? 'super-admin' : 'pde-admin'
   
-    entityOrDept = this.roles == 'super-admin'?'Entities':'Departments' 
+    entityOrDept = (this.roles == 'super-admin')?'Entities':'Departments' 
   totalValueofContracts: number;
     
     
@@ -196,6 +199,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
+
+    this.getConsolidatedPlanSummary( 
+      'consolidated-plan-summary',
+      data?.selectedFinancialYear,
+      data?.selectedPDE
+    );
   }
 
   reset(data) {
@@ -236,6 +245,12 @@ export class VisualsComponent implements OnInit, OnDestroy {
       data?.selectedFinancialYear,
       data?.selectedPDE
     );
+
+    this.getConsolidatedPlanSummary( 
+      'consolidated-plan-summary',
+      data?.selectedFinancialYear,
+      data?.selectedPDE
+    );
   }
 
   getSummaryStatsWithPDE(reportName, financialYear, procuringEntity) {
@@ -256,44 +271,44 @@ export class VisualsComponent implements OnInit, OnDestroy {
           let providersInSelectedYear = [];
           let e = data.length > 0;
           if (data.length > 0) {
-            data.forEach((element) => {
-              x.push(parseInt(element?.noOfPlanItems));
-              let e = element?.estimatedAmount.split(',');
-              y.push(parseInt(e.join('')));
-              providersInSelectedYear.push(element?.pdeName);
-            });
+            // data.forEach((element) => {
+            //   x.push(parseInt(element?.noOfPlanItems));
+            //   let e = element?.estimatedAmount.split(',');
+            //   y.push(parseInt(e.join('')));
+            //   providersInSelectedYear.push(element?.pdeName);
+            // });
 
-            this.topTenHighestContracts = data.sort(function (a, b) {
-              let nameA = a?.estimatedAmount.split(',');
-              let nameB = b?.estimatedAmount.split(',');
-              let valueA = parseInt(nameA.join(''));
-              let valueB = parseInt(nameB.join(''));
+            // this.topTenHighestContracts = data.sort(function (a, b) {
+            //   let nameA = a?.estimatedAmount.split(',');
+            //   let nameB = b?.estimatedAmount.split(',');
+            //   let valueA = parseInt(nameA.join(''));
+            //   let valueB = parseInt(nameB.join(''));
 
-              if (valueA > valueB) {
-                return -1;
-              }
-              if (valueA < valueB) {
-                return 1;
-              }
-              return 0;
-            });
+            //   if (valueA > valueB) {
+            //     return -1;
+            //   }
+            //   if (valueA < valueB) {
+            //     return 1;
+            //   }
+            //   return 0;
+            // });
 
-            let categories = [];
-            let categoryValues = [];
+            // let categories = [];
+            // let categoryValues = [];
 
-            this.topTenHighestContracts.slice(0, 10).forEach((element) => {
-              let valueC = element?.estimatedAmount.split(',');
-              let valueD = parseInt(valueC.join(''));
-              categories.push(element.pdeName);
-              categoryValues.push(valueD);
-            });
+            // this.topTenHighestContracts.slice(0, 10).forEach((element) => {
+            //   let valueC = element?.estimatedAmount.split(',');
+            //   let valueD = parseInt(valueC.join(''));
+            //   categories.push(element.pdeName);
+            //   categoryValues.push(valueD);
+            // });
 
-            this.numberOfPlannedContracts = addArrayValues(x);
-            this.totalValueofPlannedContracts = addArrayValues(y);
+            this.numberOfPlannedContracts = data[0]?.noOfPlanItems ? sanitizeCurrencyToString(data[0]?.noOfPlanItems) : 0;
+            this.totalValueofPlannedContracts = data[0]?.estimatedAmount ? sanitizeCurrencyToString(data[0]?.estimatedAmount) : 0;
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1
-              :( data[0]?.noOfRegisteredPdes ? data[0]?.noOfRegisteredPdes: data[0]?.noOfPdeDepartments);
+              :( data[0]?.noOfRegisteredPdes ? parseInt(data[0]?.noOfRegisteredPdes): parseInt(data[0]?.noOfPdeDepartments));
             this.isLoading = false;
           } else {
             this.numberOfPlannedContracts = 0;
@@ -926,7 +941,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
             fundingSourceData.push(
               parseInt(item?.marketPrice.split(',').join(''))
             );
-            fundingSources.push(item?.fundingSource);
+            fundingSources.push(item?.fundingSource?item?.fundingSource:'Unknown');
           });
 
           this.initRadialChart(fundingSourceData,fundingSources)
@@ -989,6 +1004,30 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.isLoadingBudgetSummary = false;
+          throw error
+        }
+      );
+  }
+
+
+  getConsolidatedPlanSummary(reportName, financialYear, procuringEntity) {
+    this.isLoading = true;
+    this.consolidatedPlanSummary = []
+
+    this.subscription = this._planingCategoryService
+      .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
+      .subscribe(
+        (response) => {
+          let data = response.data;
+          console.log("CONSOLE",data)
+         
+          if (data.length > 0) { 
+            this.consolidatedPlanSummary = data
+          } 
+        },
+        (error) => {
+          this.isLoading = false;
+          console.log('Error ', error);
           throw error
         }
       );

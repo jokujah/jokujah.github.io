@@ -186,19 +186,19 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
           colors: ["transparent"]
         },
         xaxis: {
-          floating:labels.length > 0 ? false:true,
-          axisTicks: {
-            show: labels.length > 0 ? true:false,
-          },
-          axisBorder: {
-            show: labels.length > 0 ? true:false,
-          },
-          categories: labels,
+          // floating:labels.length > 0 ? false:true,
+          // axisTicks: {
+          //   show: labels.length > 0 ? true:false,
+          // },
+          // axisBorder: {
+          //   show: labels.length > 0 ? true:false,
+          // },
+          // categories: labels,
           title: {
             text: xAxisTitle
           },
           labels:{
-            show: labels.length > 0 ? true:false,
+            // show: labels.length > 0 ? true:false,
             style: {
               fontSize: "12px"
             },
@@ -211,15 +211,15 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
           title: {
             text: yAxisTitle
           },
-          floating:labels.length > 0 ? false:true,
-          axisTicks: {
-            show: labels.length > 0 ? true:false,
-          },
-          axisBorder: {
-            show: labels.length > 0 ? true:false,
-          },
+          // floating:labels.length > 0 ? false:true,
+          // axisTicks: {
+          //   show: labels.length > 0 ? true:false,
+          // },
+          // axisBorder: {
+          //   show: labels.length > 0 ? true:false,
+          // },
           labels:{
-            show: labels.length > 0 ? true:false,
+            //show: labels.length > 0 ? true:false,
             style: {             
               fontSize: "12px"
             },
@@ -275,6 +275,123 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
           }
         }
       };
+
+}
+
+export function initColumnChart2(series?: Array<any>, labels?: Array<any>, title?,xAxisTitle?,yAxisTitle?):Partial<ChartOptions>{
+   
+  return {
+      series: series,
+      chart: {
+        type: "bar",
+        height: 350,
+        fontFamily:'Trebuchet Ms'
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: "35%",
+          borderRadius: 2,
+          dataLabels: {
+            position: 'top'
+          }
+        }
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        floating:labels.length > 0 ? false:true,
+        axisTicks: {
+          show: labels.length > 0 ? true:false,
+        },
+        axisBorder: {
+          show: labels.length > 0 ? true:false,
+        },
+        categories: labels,
+        title: {
+          text: xAxisTitle
+        },
+        labels:{
+          show: labels.length > 0 ? true:false,
+          style: {
+            fontSize: "12px"
+          },
+           formatter: function(val) {
+            return  NumberSuffix(val,2) ;
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: yAxisTitle
+        },
+        floating:labels.length > 0 ? false:true,
+        axisTicks: {
+          show: labels.length > 0 ? true:false,
+        },
+        axisBorder: {
+          show: labels.length > 0 ? true:false,
+        },
+        labels:{
+          show: labels.length > 0 ? true:false,
+          style: {             
+            fontSize: "12px"
+          },
+          minWidth: 0,
+          maxWidth: 200,
+        }
+        
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return "UGX " + NumberSuffix(val,2) ;
+          }
+        }
+      },
+      noData: {
+        text: visualisationMessages('empty')
+      },
+      title: {
+        text: title,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          // color: '#1286f3'
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['#333'],
+          fontWeight:'bold',
+          fontSize:'12px'
+        },
+        offsetX:60,
+        formatter:function(val){
+          return NumberSuffix(val,2)
+        }
+      },
+      grid: {
+        show: labels.length > 0 ? true : false,
+        xaxis: {
+          lines: {
+            show:  false,
+          }
+        },
+        yaxis: {
+          lines: {
+            show: labels.length > 0 ? true : false,
+          }
+        }
+      }
+    };
 
 }
 

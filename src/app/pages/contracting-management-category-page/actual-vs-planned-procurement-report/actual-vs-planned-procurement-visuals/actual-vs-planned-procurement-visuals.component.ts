@@ -18,7 +18,7 @@ import {
 } from "ng-apexcharts";
 import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
-import { initColumnChart, initRadialChart } from 'src/app/utils/chartsApex';
+import { initColumnChart, initColumnChart2, initRadialChart } from 'src/app/utils/chartsApex';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
 
 // export type ChartOptions = {
@@ -128,7 +128,7 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
 
         let seriesCategories = ['Actual Value','Planned Value']
        
-        this.chartOptions = initColumnChart(
+        this.chartOptions = initColumnChart2(
             series,
             seriesCategories,
             'Actual Vs Planned by Contract Value',
