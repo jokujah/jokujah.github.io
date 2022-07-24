@@ -1,4 +1,4 @@
-import { NumberSuffix } from 'src/app/utils/helpers';
+import { NumberSuffix, convertNumbersWithCommas } from 'src/app/utils/helpers';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
@@ -31,7 +31,7 @@ export class ProgressBarGraphComponent implements OnInit {
     if(this.series != ''){
       let dataVal = (this.series) ? parseInt(this.series.split(',').join('')) : 0
       seriesArray.push({
-        name:this.seriesName,
+        name:this.seriesName?this.seriesName:'Unknown',
         data:[dataVal] 
       })
     }     
@@ -85,7 +85,7 @@ export class ProgressBarGraphComponent implements OnInit {
         enabled: true,
         label:{
           formatter:function(val){
-            return NumberSuffix(val,2)
+            return convertNumbersWithCommas(val)
           }
         }
       },
@@ -136,7 +136,7 @@ export class ProgressBarGraphComponent implements OnInit {
        max: maxYAxisValue,
        labels: {
          formatter: (val) => {
-           return NumberSuffix(val, 2)
+           return convertNumbersWithCommas( val)
          }
        },
        crosshairs: {
@@ -168,7 +168,7 @@ export class ProgressBarGraphComponent implements OnInit {
         fontWeight:'bold',
         fontSize:'12px'
       },
-      offsetY:-5,offsetX:60,
+      offsetY:-5,offsetX:80,
       distributed:true
      }
     }
