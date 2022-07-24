@@ -1,5 +1,5 @@
 import { ChartOptions } from 'src/app/utils/IChartOptions';
-import { initColumnChart, initRadialChart } from 'src/app/utils/chartsApex';
+import { initColumnChart, initColumnChart2, initRadialChart } from 'src/app/utils/chartsApex';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -201,7 +201,7 @@ export class DisposalVisualsComponent implements OnInit {
   }
 
   initReservePriceForProcurementTypes(series?, categories?){
-    this.chartOptionsReservePriceByProcurementType = initColumnChart(
+    this.chartOptionsReservePriceByProcurementType = initColumnChart2(
       series,
       categories,
       'Reserve Price of Disposals By Procurement Type',

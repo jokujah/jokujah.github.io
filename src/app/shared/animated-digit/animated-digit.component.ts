@@ -7,7 +7,7 @@ import {
   OnChanges,
   SimpleChanges
 } from "@angular/core";
-import { convertNumberSuffixWithCommas, NumberSuffix } from "src/app/utils/helpers";
+import { NumberSuffix } from "src/app/utils/helpers";
 
 @Component({
   selector: "animated-digit",
