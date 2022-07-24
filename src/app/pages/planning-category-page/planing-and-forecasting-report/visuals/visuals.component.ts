@@ -817,7 +817,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           });
 
           this.initDonutChart(categoryValues, categories);
-          this.chartOptionsMethod = initPolarChart(planItems,categories,'Number of Planned Procurements  by Type')
+          this.chartOptionsMethod = initPolarChart(planItems,categories,'Planned Items  by Procurement Type')
         },
         (error) => {
           this.isLoadingTypeSummary = false;
@@ -846,7 +846,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           const planAmounts = [];
           const planMethods = [];
 
-          this.topTenHighestContractsPM = procurementsByMethod.filter((element)=> element?.procurementMethod != null).sort(function (a, b) {
+          this.topTenHighestContractsPM = procurementsByMethod.sort(function (a, b) {
             var nameA = a?.marketPrice.split(',')
             var nameB = b?.marketPrice.split(',')
             var valueA = parseInt(nameA.join(''))
@@ -867,7 +867,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
             contractValue.push(valueD)
           });
 
-          this.topTenHighestNumberOfContractsPM = res.data.filter((element)=>element?.procurementMethod != null).sort(function (a, b) {
+          this.topTenHighestNumberOfContractsPM = res.data.map((element)=>element).sort(function (a, b) {
             var nameA = a?.noOfPlanItems.split(',')
             var nameB = b?.noOfPlanItems.split(',')
             var valueA = parseInt(nameA.join(''))
@@ -891,28 +891,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
           this.totalValueofContractsPM = addArrayValues(contractValue)
           this.totalNumberofContractsPM = addArrayValues(actualAmount)
-
-
-          // procurementsByMethod.forEach((method: any) => {
-          //   if (method.procurementMethod != null) {
-          //     const amount = parseInt(method?.marketPrice.split(',').join(''));
-          //     planAmounts.push(amount);
-          //     // planMethods.push({
-          //     //   x: method?.procurementMethod,
-          //     //   y: amount,
-          //     // });
-
-          //     planMethods.push(method?.procurementMethod);
-          //   }
-          // });
-
-          // if (planAmounts && planMethods) {
-          //   //this.initTreeMapChartMethod(planAmounts, planMethods);
-
-          //   this.chartOptionsMethod = initPolarChart(planAmounts,planMethods,'Planned Procurements by Method')
-
-
-          // }
         },
         (error) => {
           this.isLoadingMethodSummary = false;
@@ -1180,7 +1158,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       },
       title: {
-        text: 'Planned Procurements by Type',
+        text: 'Estimated Amount by Procurement Type',
         align: 'center',
         margin: 2,
         offsetX: 0,
@@ -1750,7 +1728,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         },
       },
       title: {
-        text: "Planned Procurements By Funding Source ",
+        text: "Estimated Amount By Funding Source ",
         align: 'center',
         margin: 2,
         offsetX: 0,
