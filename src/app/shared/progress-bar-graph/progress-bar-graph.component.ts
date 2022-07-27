@@ -17,6 +17,7 @@ export class ProgressBarGraphComponent implements OnInit {
   @Input() seriesName :any;
   @Input() categories :any;
   @Input() maxYAxisValue :any;
+  @Input() chartId :any;
 
   constructor() { }
 
@@ -36,15 +37,17 @@ export class ProgressBarGraphComponent implements OnInit {
       })
     }     
    
-    this.initChart(seriesArray,categoriesArray,this.maxYAxisValue)
+    this.initChart(seriesArray,categoriesArray,this.maxYAxisValue,this.chartId)
   }
 
-  initChart(series?,categories?,maxYAxisValue?){
+  initChart(series?,categories?,maxYAxisValue?,chartId?){
    this.chartOptions = {
       chart: {
         height: 40,
         type: 'bar',
         stacked: false,
+        id:chartId,
+        group: 'egp',
         sparkline: {
           enabled: true
         }

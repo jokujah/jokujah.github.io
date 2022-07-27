@@ -133,32 +133,64 @@
       </div>
     </div> -->
     <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex ">
-        <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
-          <div *ngIf="!isLoading && chartFundingOptions" id="chart"  class="w-full  ">
-            <apx-chart #chartFunding 
-            [series]="chartFundingOptions.series" 
-            [chart]="chartFundingOptions.chart" 
-            [yaxis]="chartFundingOptions.yaxis"
-            [xaxis]="chartFundingOptions.xaxis" 
-            [labels]="chartFundingOptions.labels" 
-            [stroke]="chartFundingOptions.stroke"
-            [title]="chartFundingOptions.title" 
-            [dataLabels]="chartFundingOptions.dataLabels" 
-            [fill]="chartFundingOptions.fill"
-            [tooltip]="chartFundingOptions.tooltip"
-            [legend]="chartFundingOptions.legend" 
-            [noData]="chartFundingOptions.noData" 
-            [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
+      <div class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
+        <div *ngIf="!isLoading && plansByFundingSource.length > 0">
+          <div *ngIf="plansByFundingSource.length <= 7" class="flex ">            
+              <div *ngIf="!isLoading && chartFundingOptions" id="chart" class="w-full  ">
+                <apx-chart #chartFunding [series]="chartFundingOptions.series" [chart]="chartFundingOptions.chart"
+                  [yaxis]="chartFundingOptions.yaxis" [xaxis]="chartFundingOptions.xaxis"
+                  [labels]="chartFundingOptions.labels" [stroke]="chartFundingOptions.stroke"
+                  [title]="chartFundingOptions.title" [dataLabels]="chartFundingOptions.dataLabels"
+                  [fill]="chartFundingOptions.fill" [tooltip]="chartFundingOptions.tooltip"
+                  [legend]="chartFundingOptions.legend" [noData]="chartFundingOptions.noData"
+                  [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
+              </div>            
           </div>
-          <span *ngIf="isLoading">
-            <app-loader></app-loader>
-          </span>
-          <span *ngIf="!isLoading && !chartFundingOptions">
-            <app-empty-state></app-empty-state>
-          </span>
+          <div *ngIf="plansByFundingSource.length > 7" class="flex">           
+              <div class="w-full">
+                <div *ngIf="!isLoading">
+                  <div class="font-bold mb-4 text-center">Estimated Amount By Funding Source</div>
+                  <div class="inline-block min-w-full align-middle ">
+                    <div *ngIf="plansByFundingSource.length > 0"
+                      class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                      <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
+                        <thead class="bg-gray-50">
+                          <tr>
+                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                              Funding Source
+                            </th>
+                            <th (click)="sortTable(1,'myTable2')" scope="col"
+                              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                              <span class="group inline-flex">
+                                Estimated Amount
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                          <tr *ngFor="let item of plansByFundingSource">
+                            <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {{item?.fundingSource ? item?.fundingSource:'Unknown'}}</td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.marketPrice ?
+                              item?.marketPrice : 0}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>            
+          </div>
         </div>
+        <span *ngIf="isLoading">
+          <app-loader></app-loader>
+        </span>
+        <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
+          <div class="font-bold mb-4 text-center">Estimated Amount By Funding Source</div>
+          <app-empty-state></app-empty-state>
+        </span>
       </div>
+
       <div class="flex">
         <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
           <div  class="w-full">

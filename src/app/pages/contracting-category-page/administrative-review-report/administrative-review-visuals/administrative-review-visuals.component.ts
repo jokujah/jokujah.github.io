@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { emptyVisualisation, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages } from 'src/app/utils/helpers';
+import { addArrayValues, emptyVisualisation, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages } from 'src/app/utils/helpers';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexMarkers, ApexNoData, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
@@ -48,6 +48,11 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
   methodWithHighestContractUnderReview: any = 0;
   highestContractUnderReview: any = 0;
   isEmpty: boolean = false;
+
+  totalValueofContractsPM: any = 0;
+  topTenHighestContractsPM: any = [];
+  topTenHighestNumberOfContractsPM: any = [];
+  totalNumberofContractsPM: any = 0;
 
   constructor(
     private toastr:ToastrService,
@@ -113,35 +118,21 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
 
   getVisualisation(reportName,financialYear,procuringEntity){
     this.isLoading=true
-    this.topTenHighestContracts = []
-    this.methodWithHighestContractUnderReview = null
-    this.highestContractUnderReview = null
-
-    this.chart?.updateOptions({
-      series: [],
-      xaxis: {
-        categories:[],
-      },
-      noData:{
-        text:'Loading Data ...'
-      }
-    })
+    this.totalValueofContractsPM = 0; 
+    this.topTenHighestContractsPM = [];
+    this.topTenHighestNumberOfContractsPM = [];
+    this.totalNumberofContractsPM = 0;
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response) => {
         let data = response.data
-        let x = []
-        let y = []
-
-        let categories = []
-        let categoryValues = []
-        let numOfContracts = []
+        let valueOfItems = []
+        let numberOfItems = []
 
         if (data.length > 0) {
-
-          this.topTenHighestContracts = data.sort(function (a, b) {
-            var nameA = a?.totalAmountUnderReview.split(',')
-            var nameB = b?.totalAmountUnderReview.split(',')
+          this.topTenHighestContractsPM = data.map(element=>element).sort(function (a, b) {
+            var nameA = a?.totalAmountUnderReview ? a?.totalAmountUnderReview.split(','):['0']
+            var nameB = b?.totalAmountUnderReview ? b?.totalAmountUnderReview.split(','):['0']
             var valueA = parseInt(nameA.join(''))
             var valueB = parseInt(nameB.join(''))
 
@@ -153,56 +144,41 @@ export class AdministrativeReviewVisualsComponent implements OnInit {
             }
             return 0;
           })
-
-          this.topTenHighestContracts.forEach(element => {
-            if (element.procurementMethod == null) return
-            if (element.totalAmountUnderReview == null) return
-            if (element.totalNoUnderReview == null) return
-            var valueC = element?.totalAmountUnderReview.split(',')
+          
+          this.topTenHighestContractsPM.forEach(element => {
+            var valueC = (element?.totalAmountUnderReview)?(element?.totalAmountUnderReview.split(',')):['0'];
             var valueD = parseInt(valueC.join(''))
-            //var valueE = element.procurementMethod.split(' ')
-            categories.push(element.procurementMethod)
-            categoryValues.push(valueD)
-            numOfContracts.push(parseInt(element?.totalNoUnderReview))
+            valueOfItems.push(valueD)
           });
 
-          this.methodWithHighestContractUnderReview = categories[0]?categories[0]:null
-          this.highestContractUnderReview = categoryValues[0]?categoryValues[0]:null
 
+          this.topTenHighestNumberOfContractsPM = data.map((element)=>element).sort(function (a, b) {
+            var nameA = a?.totalNoUnderReview ? a?.totalNoUnderReview.split(','):['0']
+            var nameB = b?.totalNoUnderReview ? b?.totalNoUnderReview.split(','):['0']
+            var valueA = parseInt(nameA.join(''))
+            var valueB = parseInt(nameB.join(''))
 
-          this.chart?.updateOptions({
-            series: [
-              {
-                name: "Contract Value",
-                type: "column",
-                data: categoryValues
-              },
-              {
-                name: "Number of Contracts",
-                type: "column",
-                data: numOfContracts
-              }
-            ],
-
-            xaxis: {
-              categories: categories,
-              labels: {
-                style: {
-                  fontSize: "12px"
-                },
-              }
-            },
-            noData:{
-              text:'No Results found , Try changing the search ...'
+            if (valueA > valueB) {
+              return -1;
             }
+            if (valueA < valueB) {
+              return 1;
+            }
+            return 0;
           })
-        }else{
-          this.chart.updateOptions(emptyVisualisation('empty'))
+          
+          this.topTenHighestNumberOfContractsPM.forEach(element => {
+            var valueC = (element?.totalNoUnderReview)?(element?.totalNoUnderReview.split(',')):['0'];
+            var valueD = parseInt(valueC.join(''))
+            numberOfItems.push(valueD)
+          });
+
+          this.totalValueofContractsPM = addArrayValues(valueOfItems)
+          this.totalNumberofContractsPM = addArrayValues(numberOfItems)          
         }
         this.isLoading = false
       },
-      (error) => {       
-        this.chart.updateOptions(emptyVisualisation('error'))
+      (error) => {
         this.isLoading = false
         throw error
       }
