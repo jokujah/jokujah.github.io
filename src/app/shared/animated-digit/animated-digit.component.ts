@@ -20,6 +20,7 @@ export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
   @Input() steps: number;
   @ViewChild("animatedDigit", {static: true}) animatedDigit: ElementRef;
 
+
   animateCount() {
     if (!this.duration) {
       this.duration = 1000;
@@ -31,26 +32,54 @@ export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
   }
 
   counterFunc(endValue, durationMs, element) {
+    let isDone = false
+
     if (!this.steps) {
-      this.steps = 12;
+      this.steps = 10;
     }
 
     const stepCount = Math.abs(durationMs / this.steps);
     const valueIncrement = (endValue - 0) / stepCount;
+    const valueIncrement2 = (endValue - 0) / stepCount;
+
+
     const sinValueIncrement = Math.PI / stepCount;
+
+
+    let currentValue2 = 0;
 
     let currentValue = 0;
     let currentSinValue = 0;
 
     function step() {
-      currentSinValue += sinValueIncrement;
-      currentValue += valueIncrement * Math.sin(currentSinValue) ** 2 * 2;
+      
+      // element.nativeElement.textContent = NumberSuffix(Math.abs(Math.floor(currentValue)),2);
+      
+      // if(currentValue >= endValue){
+      //   isDone = true
+      // }      
+      // else if (currentValue < endValue) {
+      //   currentValue += valueIncrement
+      //   window.requestAnimationFrame(step);
+      // }
 
-      element.nativeElement.textContent = NumberSuffix(Math.abs(Math.floor(currentValue)),2);
+      
 
-      if (currentSinValue < Math.PI) {
-        window.requestAnimationFrame(step);
-      }
+
+      // currentValue2 += valueIncrement2
+
+      // currentSinValue += sinValueIncrement;
+      // currentValue += valueIncrement * Math.sin(currentSinValue) ** 2 * 2;
+
+      // element.nativeElement.textContent = NumberSuffix(Math.abs(Math.floor(currentValue)),2);
+
+      // if (currentSinValue < Math.PI) {
+      //   window.requestAnimationFrame(step);
+      // }
+
+
+
+
     }
 
     step();

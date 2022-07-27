@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import {
   ApexAxisChartSeries,
   ApexDataLabels,
@@ -40,7 +41,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { ToastrService } from 'ngx-toastr';
 import { convertNumbersWithCommas } from '../../../../utils/helpers';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
-import { initPolarChart } from 'src/app/utils/chartsApex';
+import { initPolarChart, initColumnChart } from 'src/app/utils/chartsApex';
 
 export type ChartOptionsBudgetStatus = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -135,6 +136,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   
     entityOrDept = (this.roles == 'super-admin')?'Entities':'Departments' 
   totalValueofContracts: number;
+  totalFundingSourceValue: any;
     
     
 
@@ -148,7 +150,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
       theme: {
         palette: 'palette4',
       },
-      colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800'],
+      colors: ['#01529d', '#775DD0', '#69D2E7', '#FF9800','#5d62b5'],
     };
     
 
@@ -817,7 +819,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           });
 
           this.initDonutChart(categoryValues, categories);
-          this.chartOptionsMethod = initPolarChart(planItems,categories,'Planned Items  by Procurement Type')
+          this.chartOptionsMethod = initPolarChart(planItems,categories,'Plan Items  by Procurement Type')
         },
         (error) => {
           this.isLoadingTypeSummary = false;
@@ -899,6 +901,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   }
   getSummaryStatsByFundingSource(reportName, financialYear, procuringEntity) {
     this.isLoading = true;
+    this.totalFundingSourceValue = 0
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
       .subscribe(
@@ -921,8 +924,25 @@ export class VisualsComponent implements OnInit, OnDestroy {
             );
             fundingSources.push(item?.fundingSource?item?.fundingSource:'Unknown');
           });
-
           this.initRadialChart(fundingSourceData,fundingSources)
+
+          if(plansByFundingSource > 7){
+            this.plansByFundingSource = plansByFundingSource.sort(function (a, b) {
+                let nameA = a?.marketPrice.split(',');
+                let nameB = b?.marketPrice.split(',');
+                let valueA = parseInt(nameA.join(''));
+                let valueB = parseInt(nameB.join(''));
+  
+                if (valueA > valueB) {
+                  return -1;
+                }
+                if (valueA < valueB) {
+                  return 1;
+                }
+                return 0;
+              });
+          }
+          
         },
         (error) => {
           this.isLoading = false;
@@ -1201,15 +1221,15 @@ export class VisualsComponent implements OnInit, OnDestroy {
               },
               total: {
                 show: true,
-                fontSize: '12px',
+                fontSize: '10px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
                 formatter: function (w) {
-                  return `UGX ${convertNumberSuffixWithCommas(NumberSuffix(
+                  return `UGX ${convertNumbersWithCommas (
                     w.globals.seriesTotals.reduce((a, b) => {
                       return a + b;
-                    }, 0),2
-                  ))}`;
+                    }, 0)
+                  )}`;
                 },
               },
             },
@@ -1759,11 +1779,13 @@ export class VisualsComponent implements OnInit, OnDestroy {
             labels: {
               show: true,
               name: {
+                show: true,
                 fontSize: '12px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: 'bold',
               },
               value: {
+                show: true,
                 fontSize: '12px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
@@ -1775,11 +1797,11 @@ export class VisualsComponent implements OnInit, OnDestroy {
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
                 formatter: function (w) {
-                  return `UGX ${convertNumberSuffixWithCommas(NumberSuffix(
+                  return `UGX ${convertNumbersWithCommas(
                     w.globals.seriesTotals.reduce((a, b) => {
                       return a + b;
-                    }, 0),2
-                  ))}`;
+                    }, 0)
+                  )}`;
                 },
               },
             }

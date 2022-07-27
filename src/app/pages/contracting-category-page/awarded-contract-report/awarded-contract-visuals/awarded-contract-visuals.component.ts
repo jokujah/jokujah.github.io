@@ -1,29 +1,14 @@
+import { ChartOptions } from './../../../../utils/IChartOptions';
 import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexResponsive, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { DueDeligenceReportService } from 'src/app/services/EvaluationCategory/due-deligence-report.service';
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, emptyVisualisation, visualisationMessages } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, emptyVisualisation, visualisationMessages, convertNumberSuffixWithCommas } from 'src/app/utils/helpers';
 import ROP from './../../../../../assets/ROP.json'
 import { Toast, ToastrService } from 'ngx-toastr';
+import { initRadialChart } from 'src/app/utils/chartsApex';
 
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis | ApexYAxis[];
-  title: ApexTitleSubtitle;
-  labels: string[];
-  stroke: any; // ApexStroke;
-  dataLabels: any; // ApexDataLabels;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  noData:ApexNoData;
-  plotOptions: ApexPlotOptions;
-  responsive: ApexResponsive[];
-  toolbar:any
-};
 
 @Component({
   selector: 'app-awarded-contract-visuals',
@@ -178,7 +163,7 @@ export class AwardedContractVisualsComponent implements OnInit {
               numOfBids.push(parseInt(element?.numberOfContracts))
             });
 
-            this.initRadialChart(categorieValues,categories)
+            this.initRadialChart(categorieValues,categories,'Awarded Contract Values by Contract Type')
 
            
 
@@ -299,79 +284,116 @@ export class AwardedContractVisualsComponent implements OnInit {
 
    
 
-  initRadialChart(series?, categories?) {
-      this.chartOptions = {
-        series: series,
-        title: {
-          text: "% of Awarded Contracts Value by Contract Type ",
-          style: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            //color: '#1286f3'
-          },
+  initRadialChart(series?, categories?,title?) {
+    this.chartOptions = {
+      series: series,
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
         },
-        chart: {
-          type: "donut",
-          fontFamily:'Trebuchet Ms',
-        },
-        plotOptions: {
-          pie: {
-            expandOnClick: true,
-            customScale: 1,
-            donut: {
-              labels: {
-                show: true,
-                name: {
-                  show:true,
-                },
-                value: {
-                  show: true,
-                  formatter: function (val) {
-                    return 'UGX'+NumberSuffix(val,1)
-                  }
-                }
-              }
-            }
-          }
-        },
-        labels: categories,
-        dataLabels:{
-          enabled: true,
+        y: {
           formatter: function (val) {
-            return val.toFixed(1) + "%"
+            return 'UGX ' + convertNumberSuffixWithCommas(NumberSuffix(val,2));
           },
         },
-        tooltip: {
-          enabled: false,
-          // formatter: function (val) {
-          //   return val + "%"
-          // },
+      },
+      title: {
+        text: title,
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
         },
-        
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200
-              },
-              legend: {
-                position: "bottom"
-              }
-            }
-          }
-        ],
+      },
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        type: 'donut',
+        width: '100%',
+        height: 350,
         toolbar: {
           show: true,
-          tools: {
-            download: true,
-          }
+          offsetY: 20,
         },
-        noData:{
-          text:visualisationMessages('loading')
+      },
+      plotOptions: {
+        pie: {
+          offsetX: 0,
+          offsetY: 30,
+          donut: {
+            size: '65%',
+            labels: {
+              show: true,
+              name: {
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold',
+              },
+              value: {
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: (val) => `UGX ${convertNumberSuffixWithCommas(NumberSuffix(val,2))}`,
+              },
+              total: {
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `UGX ${convertNumberSuffixWithCommas(NumberSuffix(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0),2
+                  ))}`;
+                },
+              },
+            }
+          }
         }
-      };
-    }
+      },
+      legend: {
+        show: true,
+        offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
+      },
+      labels: categories,
+      dataLabels:{
+        enabled: true,
+        formatter: function (val) {
+          return val.toFixed(1) + "%"
+        },
+      },    
+     
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+        }
+      },
+      noData: {
+        text: visualisationMessages('empty'),
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+      }
+    };
+  } 
   initCharts(){   
 
     this.chartOptionsProcurementType = {
