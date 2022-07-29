@@ -1,26 +1,27 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div class=" mt-4 grid grid-cols-2 space-x-4">
+    <div class=" mt-4 grid grid-cols-3 space-x-4">
       
       <app-stats-card 
-      [title]="'Top Frame Work Contracts'" 
+      [title]="'Frame Work Contracts'" 
       [isLoading]="isLoading" 
       [value]="cardValue1"
     ></app-stats-card>
 
     <app-stats-card 
-      [title]="'Total Contract Value'" 
+      [title]="'Call Off Orders'" 
       [isLoading]="isLoading" 
-      [value]="cardValue2"
-      [prefix]="'UGX'"
+      [value]="20"
+      [info]="'(Static)'"
     ></app-stats-card>
 
-      <!--   
-        <div class="statsCard">
-          <span class="stats"> {{allEvavluatedBidders }}</span>
-          <span class="statsText">All Evaluated Bidders </span>
-        </div> -->
+    <app-stats-card 
+    [title]="'Total Value Of Call Off Orders'" 
+    [isLoading]="isLoading" 
+    [value]="cardValue2"
+    [prefix]="'UGX'"
+  ></app-stats-card>
 
     </div>
   </div>
