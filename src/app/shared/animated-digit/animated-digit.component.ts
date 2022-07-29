@@ -68,14 +68,14 @@ export class AnimatedDigitComponent implements AfterViewInit, OnChanges {
 
       // currentValue2 += valueIncrement2
 
-      // currentSinValue += sinValueIncrement;
-      // currentValue += valueIncrement * Math.sin(currentSinValue) ** 2 * 2;
+      currentSinValue += sinValueIncrement;
+      currentValue += valueIncrement * Math.sin(currentSinValue) ** 2 * 2;
 
-      // element.nativeElement.textContent = NumberSuffix(Math.abs(Math.floor(currentValue)),2);
+      element.nativeElement.textContent = NumberSuffix(Math.abs(Math.floor(currentValue)),2);
 
-      // if (currentSinValue < Math.PI) {
-      //   window.requestAnimationFrame(step);
-      // }
+      if (currentSinValue < Math.PI) {
+        window.requestAnimationFrame(step);
+      }
 
 
 

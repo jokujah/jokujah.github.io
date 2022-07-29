@@ -108,6 +108,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   registeredProviders;
 
   totalValueofPlannedContracts;
+  totalValueofPlannedContractsTable
   numberOfPlannedContracts;
   yearOfPlannedContracts;
   numberOfRegisteredEntities;
@@ -259,6 +260,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.numberOfPlannedContracts = 0;
     this.totalValueofPlannedContracts = 0;
+    this.totalValueofPlannedContractsTable = 0;
     this.yearOfPlannedContracts = 0;
     this.numberOfRegisteredEntities = 0;
     
@@ -307,6 +309,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
 
             this.numberOfPlannedContracts = data[0]?.noOfPlanItems ? sanitizeCurrencyToString(data[0]?.noOfPlanItems) : 0;
             this.totalValueofPlannedContracts = data[0]?.estimatedAmount ? sanitizeCurrencyToString(data[0]?.estimatedAmount) : 0;
+            this.totalValueofPlannedContractsTable = convertNumbersWithCommas(this.totalValueofPlannedContracts)
             this.yearOfPlannedContracts = financialYear;
             this.numberOfRegisteredEntities = procuringEntity
               ? 1

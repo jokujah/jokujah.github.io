@@ -12,6 +12,7 @@ export class StatsCardComponent implements OnInit {
   @Input() value:number = 0
   @Input() isLoading:boolean = false
   @Input() prefix:string = ''
+  @Input() info:string = ''
 
   constructor() {
     console.log('App stats card',this.value)
