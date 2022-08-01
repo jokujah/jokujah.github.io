@@ -37,7 +37,8 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js"             
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "src/assets/bubble-chart.js"             
             ],
             "vendorChunk": true,
             "extractLicenses": false,

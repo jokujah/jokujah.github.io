@@ -110,6 +110,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   totalValueofPlannedContracts;
   totalValueofPlannedContractsTable
   numberOfPlannedContracts;
+  noOfPlanCategories;
   yearOfPlannedContracts;
   numberOfRegisteredEntities;
   topTenHighestContracts;
@@ -138,6 +139,21 @@ export class VisualsComponent implements OnInit, OnDestroy {
     entityOrDept = (this.roles == 'super-admin')?'Entities':'Departments' 
   totalValueofContracts: number;
   totalFundingSourceValue: any;
+
+  data = [
+    {id: "flare.analytics.cluster.AgglomerativeCluster", value: 3938},
+    {id: "flare.analytics.cluster.CommunityStructure", value: 3812},
+    {id: "flare.analytics.cluster.HierarchicalCluster", value: 6714},
+    {id: "flare.analytics.cluster.MergeEdge", value: 743},
+    {id: "flare.analytics.graph.BetweennessCentrality", value: 3534},
+    {id: "flare.analytics.graph.LinkDistance", value: 5731},
+    {id: "flare.analytics.graph.MaxFlowMinCut", value: 7840},
+    {id: "flare.analytics.graph.ShortestPaths", value: 5914},
+    {id: "flare.analytics.graph.SpanningTree", value: 3416},
+    {id: "flare.analytics.optimization.AspectRatioBanker", value: 7074},
+    {id: "flare.animate.Easing", value: 17010},
+    {id: "flare.animate.FunctionSequence", value: 5842}
+  ]
     
     
 
@@ -259,6 +275,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   getSummaryStatsWithPDE(reportName, financialYear, procuringEntity) {
     this.isLoading = true;
     this.numberOfPlannedContracts = 0;
+    this.noOfPlanCategories = 0;
     this.totalValueofPlannedContracts = 0;
     this.totalValueofPlannedContractsTable = 0;
     this.yearOfPlannedContracts = 0;
@@ -305,9 +322,10 @@ export class VisualsComponent implements OnInit, OnDestroy {
             //   let valueD = parseInt(valueC.join(''));
             //   categories.push(element.pdeName);
             //   categoryValues.push(valueD);
-            // });
+            // }); noOfPlanCategories: "1,800"
 
             this.numberOfPlannedContracts = data[0]?.noOfPlanItems ? sanitizeCurrencyToString(data[0]?.noOfPlanItems) : 0;
+            this.noOfPlanCategories = data[0]?.noOfPlanCategories ? sanitizeCurrencyToString(data[0]?.noOfPlanCategories) : 0;
             this.totalValueofPlannedContracts = data[0]?.estimatedAmount ? sanitizeCurrencyToString(data[0]?.estimatedAmount) : 0;
             this.totalValueofPlannedContractsTable = convertNumbersWithCommas(this.totalValueofPlannedContracts)
             this.yearOfPlannedContracts = financialYear;
@@ -320,6 +338,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
             this.totalValueofPlannedContracts = 0;
             this.yearOfPlannedContracts = 0;
             this.numberOfRegisteredEntities = 0;
+            this.noOfPlanCategories = 0;
             this.isLoading = false;
           }
         },
