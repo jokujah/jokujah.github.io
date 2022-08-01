@@ -90,6 +90,11 @@ export class ActualVsPlannedProcurementVisualsComponent implements OnInit {
     this.valueOfContracts = 0
     this.numberOfContracts = 0
     this.yearOfBids = financialYear
+
+    this.actualNumberOfContracts =  0
+    this.actualValueOfContracts =  0
+    this.plannedNumberOfContracts = 0
+    this.plannedValueOfContracts = 0
     
 
     console.log(reportName)

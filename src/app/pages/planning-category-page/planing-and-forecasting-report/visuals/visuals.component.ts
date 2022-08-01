@@ -762,69 +762,74 @@ export class VisualsComponent implements OnInit, OnDestroy {
           this.isLoadingTypeSummary = false;
 
           let data = response.data;
-          let x = [];
-          let y = [];
-          let sortedTypes;
+          if (response.data.length > 0) {
+            let sortedTypes;
 
-          sortedTypes = data.sort(function (a, b) {
-            let nameA = a?.marketPrice.split(',');
-            let nameB = b?.marketPrice.split(',');
-            let valueA = parseInt(nameA.join(''));
-            let valueB = parseInt(nameB.join(''));
+            sortedTypes = data.sort(function (a, b) {
+              let nameA = a?.marketPrice.split(',');
+              let nameB = b?.marketPrice.split(',');
+              let valueA = parseInt(nameA.join(''));
+              let valueB = parseInt(nameB.join(''));
 
-            if (valueA > valueB) {
-              return -1;
-            }
-            if (valueA < valueB) {
-              return 1;
-            }
-            return 0;
-          });
+              if (valueA > valueB) {
+                return -1;
+              }
+              if (valueA < valueB) {
+                return 1;
+              }
+              return 0;
+            });
 
-          const categories = [];
-          const planItems = [];
-          const categoryValues = [];
+            const categories = [];
+            const planItems = [];
+            const categoryValues = [];
 
-          sortedTypes.forEach((element) => {
-            let marketPrice = parseInt(
-              element?.marketPrice.split(',').join('')
-            );
-            let noOfPlanItems = parseInt(
-              element?.noOfPlanItems.split(',').join('')
-            );
-            categories.push(element.procurementType);
-            categoryValues.push(marketPrice);
-            planItems.push(noOfPlanItems);
-          });
+            sortedTypes.forEach((element) => {
+              let marketPrice = parseInt(
+                element?.marketPrice.split(',').join('')
+              );
+              let noOfPlanItems = parseInt(
+                element?.noOfPlanItems.split(',').join('')
+              );
+              categories.push(element.procurementType);
+              categoryValues.push(marketPrice);
+              planItems.push(noOfPlanItems);
+            });
 
-          this.chartProcurementTypes?.updateOptions({
-            series: [
-              {
-                name: 'Values',
-                data: categoryValues,
-              },
-            ],
-
-            xaxis: {
-              categories: categories,
-              labels: {
-                style: {
-                  fontSize: '12px',
+            this.chartProcurementTypes?.updateOptions({
+              series: [
+                {
+                  name: 'Values',
+                  data: categoryValues,
                 },
-                formatter: function (val) {
-                  return NumberSuffix(val, 2);
+              ],
+
+              xaxis: {
+                categories: categories,
+                labels: {
+                  style: {
+                    fontSize: '12px',
+                  },
+                  formatter: function (val) {
+                    return NumberSuffix(val, 2);
+                  },
                 },
               },
-            },
-            noData: {
-              text: 'No Data Available',
-            },
-          });
+              noData: {
+                text: 'No Data Available',
+              },
+            });
 
-          this.initDonutChart(categoryValues, categories);
-          this.chartOptionsMethod = initPolarChart(planItems,categories,'Plan Items  by Procurement Type')
+            this.initDonutChart(categoryValues, categories);
+            this.chartOptionsMethod = initPolarChart(planItems, categories, 'Plan Items  by Procurement Type')
+          } else {
+            this.initDonutChart([], []);
+            this.chartOptionsMethod = initPolarChart([], [], 'Plan Items  by Procurement Type')
+          }
         },
         (error) => {
+          this.initDonutChart([], []);
+          this.chartOptionsMethod = initPolarChart([],[],'Plan Items  by Procurement Type')
           this.isLoadingTypeSummary = false;
           throw error
         }
