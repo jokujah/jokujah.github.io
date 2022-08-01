@@ -1,3 +1,4 @@
+
 function BubbleChart(data, {
     name = ([x]) => x, // alias for label
     label = name, // given d in data, returns text to display on the bubble
@@ -22,6 +23,7 @@ function BubbleChart(data, {
     strokeWidth, // the stroke width around the bubbles, if any
     strokeOpacity, // the stroke opacity around the bubbles, if any
   } = {}) {
+    //d3 = require("d3@6");
     // Compute the values.
     const D = d3.map(data, d => d);
     const V = d3.map(data, value);
@@ -95,4 +97,9 @@ function BubbleChart(data, {
     }
   
     return Object.assign(svg.node(), {scales: {color}});
-  }
+}
+
+function getBubbleChart(dGraph,data,config){
+  d3 = dGraph
+  return BubbleChart(data,config)
+}

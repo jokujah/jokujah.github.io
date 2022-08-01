@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3'
-import { BubbleChart } from 'src/app/utils/bubble-chart';
 
-//declare function BubbleChart(data:any):any
+declare function getBubbleChart(dGraph?:any,data?:any,config?:any):any
 
 @Component({
   selector: 'app-bubble-chart',
@@ -10,70 +9,116 @@ import { BubbleChart } from 'src/app/utils/bubble-chart';
   styleUrls: ['./bubble-chart.component.scss']
 })
 export class BubbleChartComponent implements OnInit {
+  @Input() public data: any[];
 
-  @ViewChild('bubbleChart') bubbleChart: ElementRef;
-  svg
+  @ViewChild('bubbleChart') bubbleChartElement: ElementRef;
 
-  constructor() { }
+  private width = 700;
+  private height = 700;
+  private margin = 50;
 
-  ngOnInit(): void {
-    this.svg = BubbleChart();
-    
+  public svg;
+  public svgInner;
+  public yScale;
+  public xScale;
+  public xAxis;
+  public yAxis;
+  public lineGroup;
+
+  bubble
+
+  constructor(
+    // public chartElem: ElementRef
+    ) {
   }
 
-  files = [
-     {id: "flare.analytics.cluster.AgglomerativeCluster", value: 3938},
-     {id: "flare.analytics.cluster.CommunityStructure", value: 3812},
-     {id: "flare.analytics.cluster.HierarchicalCluster", value: 6714},
-     {id: "flare.analytics.cluster.MergeEdge", value: 743},
-     {id: "flare.analytics.graph.BetweennessCentrality", value: 3534},
-     {id: "flare.analytics.graph.LinkDistance", value: 5731},
-     {id: "flare.analytics.graph.MaxFlowMinCut", value: 7840},
-     {id: "flare.analytics.graph.ShortestPaths", value: 5914},
-     {id: "flare.analytics.graph.SpanningTree", value: 3416},
-     {id: "flare.analytics.optimization.AspectRatioBanker", value: 7074},
-     {id: "flare.animate.Easing", value: 17010},
-     {id: "flare.animate.FunctionSequence", value: 5842},
-     {id: "flare.animate.interpolate.ArrayInterpolator", value: 1983},
-     {id: "flare.animate.interpolate.ColorInterpolator", value: 2047},
-     {id: "flare.animate.interpolate.DateInterpolator", value: 1375},
-     {id: "flare.animate.interpolate.Interpolator", value: 8746},
-     {id: "flare.animate.interpolate.MatrixInterpolator", value: 2202},
-     {id: "flare.animate.interpolate.NumberInterpolator", value: 1382},
-     {id: "flare.animate.interpolate.ObjectInterpolator", value: 1629},
-     {id: "flare.animate.interpolate.PointInterpolator", value: 1675},
-     {id: "flare.animate.interpolate.RectangleInterpolator", value: 2042},
-     {id: "flare.animate.ISchedulable", value: 1041},
-     {id: "flare.animate.Parallel", value: 5176},
-     {id: "flare.animate.Pause", value: 449},
-     {id: "flare.animate.Scheduler", value: 5593},
-     {id: "flare.animate.Sequence", value: 5534},
-     {id: "flare.animate.Transition", value: 9201},
-     {id: "flare.animate.Transitioner", value: 19975},
-     {id: "flare.animate.TransitionEvent", value: 1116},
-     {id: "flare.animate.Tween", value: 6006},
-     {id: "flare.data.converters.Converters", value: 721},
-     {id: "flare.data.converters.DelimitedTextConverter", value: 4294},
-     {id: "flare.data.converters.GraphMLConverter", value: 9800},
-     {id: "flare.data.converters.IDataConverter", value: 1314},
-     {id: "flare.data.converters.JSONConverter", value: 2220},
-     {id: "flare.data.DataField", value: 1759},
-     {id: "flare.data.DataSchema", value: 2165},
-     {id: "flare.data.DataSet", value: 586},
-     {id: "flare.data.DataSource", value: 3331},
-     {id: "flare.data.DataTable", value: 772},
-     {id: "flare.data.DataUtil", value: 3322},
-     {id: "flare.display.DirtySprite", value: 8833},
-     {id: "flare.display.LineSprite", value: 1732},
-     {id: "flare.display.RectSprite", value: 3623},
-     {id: "flare.display.TextSprite", value: 10066},
-     {id: "flare.flex.FlareVis", value: 4116},
-     {id: "flare.physics.DragForce", value: 1082},
-     {id: "flare.physics.GravityForce", value: 1336},
-     {id: "flare.physics.IForce", value: 319},
-     {id: "flare.physics.NBodyForce", value: 10498},
-     {id: "flare.physics.Particle", value: 2822}
-  ]
+  ngOnInit(){
+    this.bubble = getBubbleChart(d3,this.data,{
+      label: d => [...d.id.split(".").pop().split(/(?=[A-Z][a-z])/g), d.value.toLocaleString("en")].join("\n"),
+      value: d => d.value,
+      group: d => d.id.split(".")[1],
+      title: d => `${d.id}\n${d.value.toLocaleString("en")}`,
+      link: d => `https://github.com/prefuse/Flare/blob/master/flare/src/${d.id.replace(/\./g, "/")}.as`,
+      width: 1152
+    })
+
+    console.log(this.bubble)
+
+    var tag = document.createElement("p");
+    var text = document.createTextNode("Tutorix is the best e-learning platform");
+    tag.appendChild(text);
+    var element = document.getElementById("new");
+    element.appendChild(tag);
+
+    //document.querySelector('svg').appendChild(this.bubble)
+
+    //this.bubbleChartElement.nativeElement.innerHTML = this.bubble;
+
+  }
+
+  // public ngOnChanges(changes): void {
+  //   if (changes.hasOwnProperty('data') && this.data) {
+  //     console.log(this.data)
+  //     this.initializeChart();
+  //     //this.drawChart();
+
+  //     //window.addEventListener('resize', () => this.drawChart());
+  //   }
+  // }
+
+  // private initializeChart(): void {
+
+
+  //   let bubble = getBubbleChart(d3,this.data,{
+  //     label: d => [...d.id.split(".").pop().split(/(?=[A-Z][a-z])/g), d.value.toLocaleString("en")].join("\n"),
+  //     value: d => d.value,
+  //     group: d => d.id.split(".")[1],
+  //     title: d => `${d.id}\n${d.value.toLocaleString("en")}`,
+  //     link: d => `https://github.com/prefuse/Flare/blob/master/flare/src/${d.id.replace(/\./g, "/")}.as`,
+  //     width: 1152
+  //   })
+
+  //   console.log(bubble)
+
+  //   this.bubbleChartElement.nativeElement.innerHTML = bubble;
+
+  //   // this.svg = d3
+  //   // .select(this.chartElem.nativeElement)
+  //   // .select('.linechart')
+  //   // .append(bubble)
+  // }
+
+  // private drawChart(): void {
+  //   this.width = this.chartElem.nativeElement.getBoundingClientRect().width;
+  //   this.svg.attr('width', this.width);
+
+  //   this.xScale.range([this.margin, this.width - 2 * this.margin]);
+
+  //   const xAxis = d3
+  //     .axisBottom(this.xScale)
+  //     .ticks(10)
+  //     .tickFormat(d3.timeFormat('%m / %Y'));
+
+  //   this.xAxis.call(xAxis);
+
+  //   const yAxis = d3
+  //     .axisLeft(this.yScale);
+
+  //   this.yAxis.call(yAxis);
+
+  //   const line = d3
+  //     .line()
+  //     .x(d => d[0])
+  //     .y(d => d[1])
+  //     .curve(d3.curveMonotoneX);
+
+  //   const points: [number, number][] = this.data.map(d => [
+  //     this.xScale(new Date(d.date)),
+  //     this.yScale(d.value),
+  //   ]);
+
+  //   this.lineGroup.attr('d', line(points));
+  // }
 
   
 }
