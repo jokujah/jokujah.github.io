@@ -1,8 +1,5 @@
 <div class="max-w-full mx-auto mb-4">
-  <app-filter
-    (filterEvent)="submit($event)"
-    (resetEvent)="reset($event)"
-  ></app-filter>
+  <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div class="mt-4">
     <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
@@ -20,10 +17,7 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
-          UGX &nbsp;<animated-digit
-            [digit]="requisitionEstimatedAmount"
-            [duration]="1000"
-          >
+          UGX &nbsp;<animated-digit [digit]="requisitionEstimatedAmount" [duration]="1000">
             {{ requisitionEstimatedAmount | numberSuffix: 2 }}
           </animated-digit>
         </span>
@@ -78,13 +72,10 @@
           </span>
           <span class="statsText">Late Initiations</span>
         </div>
-  
+
         <div class="statsCard">
           <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
-            <span>UGX</span>&nbsp;<animated-digit
-              [digit]="requisitionEstimatedAmount"
-              [duration]="1000"
-            >
+            <span>UGX</span>&nbsp;<animated-digit [digit]="requisitionEstimatedAmount" [duration]="1000">
               {{ requisitionEstimatedAmount | numberSuffix: 2 }}
             </animated-digit>
           </span>
@@ -131,65 +122,49 @@
   <div>
     <!-- Row 1 -->
     <div class="mt-4">
-      <div
-        class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4"
-      >
-        <div
-          class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2"
-        >
+      <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
           <div class="flex flex-col px-2 py-2">
             <div>
-              <apx-chart
-                *ngIf="
-                  chartOptionsPercentageLateInitiation?.series &&
-                  !isLoadingPercentageSummary
-                "
+              <apx-chart *ngIf="chartOptionsPercentageLateInitiation?.series && !isLoadingPercentageSummary"                 
                 [series]="chartOptionsPercentageLateInitiation.series"
                 [chart]="chartOptionsPercentageLateInitiation.chart"
-                [plotOptions]="chartOptionsPercentageLateInitiation.plotOptions"
-                [labels]="chartOptionsPercentageLateInitiation.labels"
-                [title]="chartOptionsPercentageLateInitiation.title"
+                [labels]="chartOptionsPercentageLateInitiation.labels" 
+                [responsive]="chartOptionsPercentageLateInitiation.responsive" 
+                [title]="chartOptionsPercentageLateInitiation.title" 
+                [plotOptions]="chartOptionsPercentageLateInitiation.plotOptions" 
+                [tooltip]="chartOptionsPercentageLateInitiation.tooltip"
+                [legend]="chartOptionsPercentageLateInitiation.legend"
                 [noData]="chartOptionsPercentageLateInitiation.noData"
-              ></apx-chart>
+                ></apx-chart>
             </div>
             <div *ngIf="isLoadingPercentageSummary">
               <app-loader></app-loader>
             </div>
-            <div *ngIf="!isLoading && !chartOptionsPercentageLateInitiation?.series" >
+            <div *ngIf="!isLoading && !chartOptionsPercentageLateInitiation?.series">
               <app-empty-state></app-empty-state>
             </div>
           </div>
         </div>
 
-        <div
-          class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2"
-        >
+        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
           <div class="flex flex-col px-2 py-2">
             <div>
-              <apx-chart
-                *ngIf="
-                  chartOptionsPlannedVsActualLateInitiation?.series &&
-                  !isLoadingPercentageSummary
-                "
+              <apx-chart *ngIf="chartOptionsPlannedVsActualLateInitiation?.series && !isLoadingPercentageSummary" 
                 [series]="chartOptionsPlannedVsActualLateInitiation.series"
                 [chart]="chartOptionsPlannedVsActualLateInitiation.chart"
-                [labels]="chartOptionsPlannedVsActualLateInitiation.labels"
-                [responsive]="
-                  chartOptionsPlannedVsActualLateInitiation.responsive
-                "
-                [title]="chartOptionsPlannedVsActualLateInitiation.title"
-                [plotOptions]="
-                  chartOptionsPlannedVsActualLateInitiation.plotOptions
-                "
+                [labels]="chartOptionsPlannedVsActualLateInitiation.labels" 
+                [responsive]="chartOptionsPlannedVsActualLateInitiation.responsive" 
+                [title]="chartOptionsPlannedVsActualLateInitiation.title" 
+                [plotOptions]="chartOptionsPlannedVsActualLateInitiation.plotOptions" 
                 [tooltip]="chartOptionsPlannedVsActualLateInitiation.tooltip"
                 [legend]="chartOptionsPlannedVsActualLateInitiation.legend"
-                [noData]="chartOptionsPlannedVsActualLateInitiation.noData"
-              >
+                [noData]="chartOptionsPlannedVsActualLateInitiation.noData">
               </apx-chart>
               <div *ngIf="isLoadingPercentageSummary">
                 <app-loader></app-loader>
               </div>
-              <div *ngIf="!isLoading && !chartOptionsPlannedVsActualLateInitiation?.series" >
+              <div *ngIf="!isLoading && !chartOptionsPlannedVsActualLateInitiation?.series">
                 <app-empty-state></app-empty-state>
               </div>
             </div>
@@ -203,104 +178,53 @@
   <div>
     <!-- Row 2 -->
     <div class="mt-4">
-      <div
-        class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:space-y-0 md:space-x-4"
-      >
-        <div
-          class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2"
-        >
+      <div class="flex flex-col space-y-4 md:grid md:grid-cols-1 md:space-y-0 md:space-x-4">
+        <!-- <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
           <div class="flex flex-col px-2 py-2">
-            <div
-              *ngIf="!isLoadingPercentageSummary"
-              class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]"
-            >
+            <div *ngIf="!isLoadingPercentageSummary"
+              class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]">
               Breakdown of Initiations
             </div>
             <div class="px-4 mt-8" *ngIf="!isLoadingPercentageSummary && breakdownIndicators.length > 0">
-              <apx-chart
-                *ngIf="optionsProgressBreakdown1?.series"
-                [series]="optionsProgressBreakdown1.series"
-                [chart]="optionsProgressBreakdown1.chart"
-                [dataLabels]="optionsProgressBreakdown1.dataLabels"
-                [plotOptions]="optionsProgressBreakdown1.plotOptions"
-                [yaxis]="optionsProgressBreakdown1.yaxis"
-                [legend]="optionsProgressBreakdown1.legend"
-                [fill]="optionsProgressBreakdown1.fill"
-                [stroke]="optionsProgressBreakdown1.stroke"
-                [tooltip]="optionsProgressBreakdown1.tooltip"
-                [xaxis]="optionsProgressBreakdown1.xaxis"
-                [title]="optionsProgressBreakdown1.title"
-                [subtitle]="optionsProgressBreakdown1.subtitle"
-                [noData]="optionsProgressBreakdown1.noData"
-              >
+              <apx-chart *ngIf="optionsProgressBreakdown1?.series" [series]="optionsProgressBreakdown1.series"
+                [chart]="optionsProgressBreakdown1.chart" [dataLabels]="optionsProgressBreakdown1.dataLabels"
+                [plotOptions]="optionsProgressBreakdown1.plotOptions" [yaxis]="optionsProgressBreakdown1.yaxis"
+                [legend]="optionsProgressBreakdown1.legend" [fill]="optionsProgressBreakdown1.fill"
+                [stroke]="optionsProgressBreakdown1.stroke" [tooltip]="optionsProgressBreakdown1.tooltip"
+                [xaxis]="optionsProgressBreakdown1.xaxis" [title]="optionsProgressBreakdown1.title"
+                [subtitle]="optionsProgressBreakdown1.subtitle" [noData]="optionsProgressBreakdown1.noData">
               </apx-chart>
-              <apx-chart
-                *ngIf="optionsProgressBreakdown2?.series"
-                [series]="optionsProgressBreakdown2.series"
-                [chart]="optionsProgressBreakdown2.chart"
-                [dataLabels]="optionsProgressBreakdown2.dataLabels"
-                [plotOptions]="optionsProgressBreakdown2.plotOptions"
-                [yaxis]="optionsProgressBreakdown2.yaxis"
-                [legend]="optionsProgressBreakdown2.legend"
-                [fill]="optionsProgressBreakdown2.fill"
-                [stroke]="optionsProgressBreakdown2.stroke"
-                [tooltip]="optionsProgressBreakdown2.tooltip"
-                [xaxis]="optionsProgressBreakdown2.xaxis"
-                [title]="optionsProgressBreakdown2.title"
-                [subtitle]="optionsProgressBreakdown2.subtitle"
-                [noData]="optionsProgressBreakdown2.noData"
-              >
+              <apx-chart *ngIf="optionsProgressBreakdown2?.series" [series]="optionsProgressBreakdown2.series"
+                [chart]="optionsProgressBreakdown2.chart" [dataLabels]="optionsProgressBreakdown2.dataLabels"
+                [plotOptions]="optionsProgressBreakdown2.plotOptions" [yaxis]="optionsProgressBreakdown2.yaxis"
+                [legend]="optionsProgressBreakdown2.legend" [fill]="optionsProgressBreakdown2.fill"
+                [stroke]="optionsProgressBreakdown2.stroke" [tooltip]="optionsProgressBreakdown2.tooltip"
+                [xaxis]="optionsProgressBreakdown2.xaxis" [title]="optionsProgressBreakdown2.title"
+                [subtitle]="optionsProgressBreakdown2.subtitle" [noData]="optionsProgressBreakdown2.noData">
               </apx-chart>
-              <apx-chart
-                *ngIf="optionsProgressBreakdown3?.series"
-                [series]="optionsProgressBreakdown3.series"
-                [chart]="optionsProgressBreakdown3.chart"
-                [dataLabels]="optionsProgressBreakdown3.dataLabels"
-                [plotOptions]="optionsProgressBreakdown3.plotOptions"
-                [yaxis]="optionsProgressBreakdown3.yaxis"
-                [legend]="optionsProgressBreakdown3.legend"
-                [fill]="optionsProgressBreakdown3.fill"
-                [stroke]="optionsProgressBreakdown3.stroke"
-                [tooltip]="optionsProgressBreakdown3.tooltip"
-                [xaxis]="optionsProgressBreakdown3.xaxis"
-                [title]="optionsProgressBreakdown3.title"
-                [subtitle]="optionsProgressBreakdown3.subtitle"
-                [noData]="optionsProgressBreakdown3.noData"
-              >
+              <apx-chart *ngIf="optionsProgressBreakdown3?.series" [series]="optionsProgressBreakdown3.series"
+                [chart]="optionsProgressBreakdown3.chart" [dataLabels]="optionsProgressBreakdown3.dataLabels"
+                [plotOptions]="optionsProgressBreakdown3.plotOptions" [yaxis]="optionsProgressBreakdown3.yaxis"
+                [legend]="optionsProgressBreakdown3.legend" [fill]="optionsProgressBreakdown3.fill"
+                [stroke]="optionsProgressBreakdown3.stroke" [tooltip]="optionsProgressBreakdown3.tooltip"
+                [xaxis]="optionsProgressBreakdown3.xaxis" [title]="optionsProgressBreakdown3.title"
+                [subtitle]="optionsProgressBreakdown3.subtitle" [noData]="optionsProgressBreakdown3.noData">
               </apx-chart>
-              <apx-chart
-                *ngIf="optionsProgressBreakdown4?.series"
-                [series]="optionsProgressBreakdown4.series"
-                [chart]="optionsProgressBreakdown4.chart"
-                [dataLabels]="optionsProgressBreakdown4.dataLabels"
-                [plotOptions]="optionsProgressBreakdown4.plotOptions"
-                [yaxis]="optionsProgressBreakdown4.yaxis"
-                [legend]="optionsProgressBreakdown4.legend"
-                [fill]="optionsProgressBreakdown4.fill"
-                [stroke]="optionsProgressBreakdown4.stroke"
-                [tooltip]="optionsProgressBreakdown4.tooltip"
-                [xaxis]="optionsProgressBreakdown4.xaxis"
-                [title]="optionsProgressBreakdown4.title"
-                [subtitle]="optionsProgressBreakdown4.subtitle"
-                [noData]="optionsProgressBreakdown4.noData"
-              >
+              <apx-chart *ngIf="optionsProgressBreakdown4?.series" [series]="optionsProgressBreakdown4.series"
+                [chart]="optionsProgressBreakdown4.chart" [dataLabels]="optionsProgressBreakdown4.dataLabels"
+                [plotOptions]="optionsProgressBreakdown4.plotOptions" [yaxis]="optionsProgressBreakdown4.yaxis"
+                [legend]="optionsProgressBreakdown4.legend" [fill]="optionsProgressBreakdown4.fill"
+                [stroke]="optionsProgressBreakdown4.stroke" [tooltip]="optionsProgressBreakdown4.tooltip"
+                [xaxis]="optionsProgressBreakdown4.xaxis" [title]="optionsProgressBreakdown4.title"
+                [subtitle]="optionsProgressBreakdown4.subtitle" [noData]="optionsProgressBreakdown4.noData">
               </apx-chart>
-              <apx-chart
-                *ngIf="optionsProgressBreakdown5?.series"
-                [series]="optionsProgressBreakdown5.series"
-                [chart]="optionsProgressBreakdown5.chart"
-                [dataLabels]="optionsProgressBreakdown5.dataLabels"
-                [plotOptions]="optionsProgressBreakdown5.plotOptions"
-                [yaxis]="optionsProgressBreakdown5.yaxis"
-                [legend]="optionsProgressBreakdown5.legend"
-                [fill]="optionsProgressBreakdown5.fill"
-                [stroke]="optionsProgressBreakdown5.stroke"
-                [tooltip]="optionsProgressBreakdown5.tooltip"
-                [xaxis]="optionsProgressBreakdown5.xaxis"
-                [title]="optionsProgressBreakdown5.title"
-                [subtitle]="optionsProgressBreakdown5.subtitle"
-                [noData]="optionsProgressBreakdown5.noData"
-              >
+              <apx-chart *ngIf="optionsProgressBreakdown5?.series" [series]="optionsProgressBreakdown5.series"
+                [chart]="optionsProgressBreakdown5.chart" [dataLabels]="optionsProgressBreakdown5.dataLabels"
+                [plotOptions]="optionsProgressBreakdown5.plotOptions" [yaxis]="optionsProgressBreakdown5.yaxis"
+                [legend]="optionsProgressBreakdown5.legend" [fill]="optionsProgressBreakdown5.fill"
+                [stroke]="optionsProgressBreakdown5.stroke" [tooltip]="optionsProgressBreakdown5.tooltip"
+                [xaxis]="optionsProgressBreakdown5.xaxis" [title]="optionsProgressBreakdown5.title"
+                [subtitle]="optionsProgressBreakdown5.subtitle" [noData]="optionsProgressBreakdown5.noData">
               </apx-chart>
             </div>
             <div *ngIf="isLoadingPercentageSummary">
@@ -310,49 +234,37 @@
               <app-empty-state></app-empty-state>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div
-          class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2"
-        >
+        <div class="flex-1 overflow-hidden overflow-y-hidden bg-white rounded-md shadow min-w-1/2">
           <div class="flex flex-col px-2 py-2">
-            <div  *ngIf="!isLoading">
-              <div
-                class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]">High Value Late Initiations
+            <div *ngIf="!isLoading">
+              <div class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]">High Value Late
+                Initiations
               </div>
-              <div *ngIf="topLateInitiations?.length"
-                class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-                <table
-                  class="w-full text-xs text-left text-gray-500"
-                >
-                  <thead
-                    class="text-xs text-gray-700 uppercase bg-gray-100"
-                  >
+              <div *ngIf="topLateInitiations?.length" class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+                <table class="w-full text-xs text-left text-gray-500">
+                  <thead class="text-xs text-gray-700  bg-gray-100">
                     <tr>
                       <th scope="col" class="px-6 py-3">Subject Of Procurement</th>
-                      <th scope="col" class="px-6 py-3">PDE</th>
                       <th scope="col" class="px-6 py-3">Initiation Amount</th>
-                      <th scope="col" class="px-6 py-3">FY</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      class="bg-white border-b" *ngFor="let initiation of topLateInitiations"
-                    >
-                      <th
-                        scope="row"
-                        class="px-6 py-2 font-medium text-gray-900 whitespace-wrap"
-                      >
-                        {{ initiation?.subjectOfProcurement }}
-                      </th>
-                      <td class="px-6 py-2">
-                        {{ initiation?.entityName }}
+                    <tr class="bg-white border-b" *ngFor="let initiation of topLateInitiations">
+                      <td  class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">                        
+                        <div class="flex flex-col items-left">
+                          <span class="text-sm font-medium text-gray-900">{{initiation?.subjectOfProcurement ?
+                            initiation?.subjectOfProcurement : 'Unknown'}}</span>
+                          <span class="text-xs font-medium text-gray-600">{{initiation?.entityName ?
+                            initiation?.entityName : 'Unknown'}}</span>
+                          <span class="text-xs font-medium text-gray-600">{{initiation?.financialYear ?
+                            initiation?.financialYear
+                            : 'Unknown'}}</span>
+                        </div>
                       </td>
-                      <td class="px-6 py-2">
+                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                         {{ initiation?.requisitionEstimatedAmount }}
-                      </td>
-                      <td class="px-6 py-2">
-                        {{ initiation?.financialYear }}
                       </td>
                     </tr>
                   </tbody>

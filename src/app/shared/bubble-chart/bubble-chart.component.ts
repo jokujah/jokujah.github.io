@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3'
+import { BubbleChart } from 'src/app/utils/bubble-chart';
 
-declare function BubbleChart(data:any):any
+//declare function BubbleChart(data:any):any
 
 @Component({
   selector: 'app-bubble-chart',
@@ -11,12 +12,13 @@ declare function BubbleChart(data:any):any
 export class BubbleChartComponent implements OnInit {
 
   @ViewChild('bubbleChart') bubbleChart: ElementRef;
+  svg
 
   constructor() { }
 
   ngOnInit(): void {
-    let svg = BubbleChart(this.files);
-    this.bubbleChart.nativeElement.innerHTML = svg
+    this.svg = BubbleChart();
+    
   }
 
   files = [

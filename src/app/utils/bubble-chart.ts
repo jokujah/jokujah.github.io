@@ -1,4 +1,5 @@
-// import * as d3 from 'd3';
+import { BubbleChartComponent } from './../shared/bubble-chart/bubble-chart.component';
+import * as d3 from 'd3';
 
 // export function BubbleChart(data, {
 //   name = ([x]) => x, // alias for label
@@ -23,6 +24,29 @@
 //   stroke, // a static stroke around the bubbles
 //   strokeWidth, // the stroke width around the bubbles, if any
 //   strokeOpacity, // the stroke opacity around the bubbles, if any
+// }:{
+//     name?,
+//     label?, // given d in data, returns text to display on the bubble
+//     value?,// given d in data, returns a quantitative size
+//     group?, // given d in data, returns a categorical value for color
+//     title?, // given d in data, returns text to show on hover
+//     link?, // given a node d, its link (if any)
+//     linkTarget?, // the target attribute for links, if any
+//     width?, // outer width, in pixels
+//     height?, // outer height, in pixels
+//     padding?, // padding between circles
+//     margin?, // default margins
+//     marginTop?, // top margin, in pixels
+//     marginRight?, // right margin, in pixels
+//     marginBottom?, // bottom margin, in pixels
+//     marginLeft?, // left margin, in pixels
+//     groups?, // array of group names (the domain of the color scale)
+//     colors?, // an array of colors (for groups)
+//     fill?, // a static fill color, if no group channel is specified
+//     fillOpacity?, // the fill opacity of the bubbles
+//     stroke?, // a static stroke around the bubbles
+//     strokeWidth?, // the stroke width around the bubbles, if any
+//     strokeOpacity?,
 // } = {}) {
 //   // Compute the values.
 //   const D = d3.map(data, d => d);
@@ -98,3 +122,19 @@
 
 //   return Object.assign(svg.node(), {scales: {color}});
 // }
+
+
+
+export function BubbleChart(){
+  let dc =  d3.create("svg")
+    .attr("width", 128)
+    .attr("height", 128)
+  .call(svg => svg.selectAll("circle")
+    .data(d3.range(128, 0, -8))
+    .join("circle")
+      .attr("fill", d3.scaleSequential(d3.interpolateViridis).domain([0, 128]))
+      .attr("r", d => d))
+  .node()
+
+  return dc
+}
