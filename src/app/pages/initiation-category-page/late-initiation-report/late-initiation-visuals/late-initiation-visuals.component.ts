@@ -172,7 +172,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           this.percentageOfInitiation = parseFloat(((numOfLateRequisitions / numOfRequisitions) * 100).toFixed(2));
 
 
-          this.initPercentageInitiationChart(this.percentageOfInitiation ? [this.percentageOfInitiation] : ['0']);
+          // this.initPercentageInitiationChart(this.percentageOfInitiation ? [this.percentageOfInitiation] : ['0']);
           this.initPercentageInitiationChart([numOfRequisitions,numOfLateRequisitions])
           this.initPlannedVsActualInitiationChart([this.initiationEstimatedAmount, this.lateInitiationEstimateAmount]);
 
@@ -244,7 +244,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
         y: {
           formatter: function (val) {
-            return 'UGX ' + convertNumbersWithCommas(val);
+            return  convertNumbersWithCommas(val);
           },
         },
       },
@@ -296,7 +296,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
                 formatter: function (w) {
-                  return `UGX ${convertNumbersWithCommas(
+                  return `${convertNumbersWithCommas(
                     w.globals.seriesTotals.reduce((a, b) => {
                       return a + b;
                     }, 0)
@@ -620,7 +620,11 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          {
            name: title,
            data: [!isNaN(percentage) ? percentage : 0]
-         }
+         },
+         {
+          name: title,
+          data: [!isNaN(percentage) ? percentage : 0]
+        }
        ],
        title: {
          floating: true,
@@ -628,17 +632,17 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
          offsetY: 5,
          text: title
        },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}%`,
-         style: {
-           fontSize: "20px"
-         }
-       },
+      //  subtitle: {
+      //    floating: true,
+      //    align: "right",
+      //    offsetY: 0,
+      //    text: `${!isNaN(percentage) ? percentage : 0}%`,
+      //    style: {
+      //      fontSize: "20px"
+      //    }
+      //  },
        tooltip: {
-         enabled: false
+         enabled: true
        },
        xaxis: {
          categories: [title]
