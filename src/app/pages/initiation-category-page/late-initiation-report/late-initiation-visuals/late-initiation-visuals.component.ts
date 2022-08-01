@@ -173,7 +173,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
 
           this.initPercentageInitiationChart(this.percentageOfInitiation ? [this.percentageOfInitiation] : ['0']);
-
+          this.initPercentageInitiationChart([numOfRequisitions,numOfLateRequisitions])
           this.initPlannedVsActualInitiationChart([this.initiationEstimatedAmount, this.lateInitiationEstimateAmount]);
 
           this.breakdowns = this.getBreakdownPercentages(data);
@@ -237,26 +237,21 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   {
     this.chartOptionsPercentageLateInitiation = {
       series: percentageData,
-      chart: {
-        fontFamily: 'Trebuchet MS',
-        height: 350,
-        type: "radialBar",
-        toolbar: {
-          show: true,
-          offsetY: 20,
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+        y: {
+          formatter: function (val) {
+            return 'UGX ' + convertNumbersWithCommas(val);
+          },
         },
       },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: 70
-          }
-        }
-      },
       title: {
-        text: 'Percentage of Late Initiations',
+        text: 'Initiated Vs Late Initiations by Number',
         align: 'center',
-        margin: 1,
+        margin: 2,
         offsetX: 0,
         offsetY: 0,
         floating: false,
@@ -266,7 +261,144 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           fontFamily: 'Trebuchet MS',
         },
       },
-      labels: ["% of Late Initiations"],
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        type: 'donut',
+        width: '100%',
+        height: 380,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
+      },
+      plotOptions: {
+        pie: {
+          offsetX: 0,
+          offsetY: 30,
+          donut: {
+            size: '70%',
+            labels: {
+              show: true,
+              name: {
+                fontSize: '10px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold',
+              },
+              value: {
+                fontSize: '10px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: (val) => `${convertNumbersWithCommas(val)}`,
+              },
+              total: {
+                show: true,
+                fontSize: '10px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `UGX ${convertNumbersWithCommas(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0)
+                  )}`;
+                },
+              },
+            },
+          },
+        },
+        legend: {
+          position: 'bottom',
+        },
+      },
+      legend: {
+        show: true,
+        offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
+      },
+      labels: ['Initiated', 'Initiated Late'],
+      // responsive: [
+      //   {
+      //     breakpoint: 320,
+      //     options: {
+      //       chart: {
+      //         width: 260,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 480,
+      //     options: {
+      //       chart: {
+      //         width: 280,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '12px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 640,
+      //     options: {
+      //       chart: {
+      //         width: 360,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //       title: {
+      //         style: {
+      //           fontSize: '15px',
+      //         },
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 768,
+      //     options: {
+      //       chart: {
+      //         width: 380,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1024,
+      //     options: {
+      //       chart: {
+      //         width: 400,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      //   {
+      //     breakpoint: 1280,
+      //     options: {
+      //       chart: {
+      //         width: 480,
+      //       },
+      //       legend: {
+      //         position: 'bottom',
+      //       },
+      //     },
+      //   },
+      // ],
       noData: {
         text: visualisationMessages('empty'),
         align: 'center',
