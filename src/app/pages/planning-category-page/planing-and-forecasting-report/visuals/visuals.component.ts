@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import {
   ApexAxisChartSeries,
   ApexDataLabels,
@@ -275,7 +274,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
   getSummaryStatsWithPDE(reportName, financialYear, procuringEntity) {
     this.isLoading = true;
     this.numberOfPlannedContracts = 0;
-    this.noOfPlanCategories = 0;
     this.totalValueofPlannedContracts = 0;
     this.totalValueofPlannedContractsTable = 0;
     this.yearOfPlannedContracts = 0;
@@ -325,7 +323,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
             // }); noOfPlanCategories: "1,800"
 
             this.numberOfPlannedContracts = data[0]?.noOfPlanItems ? sanitizeCurrencyToString(data[0]?.noOfPlanItems) : 0;
-            this.noOfPlanCategories = data[0]?.noOfPlanCategories ? sanitizeCurrencyToString(data[0]?.noOfPlanCategories) : 0;
             this.totalValueofPlannedContracts = data[0]?.estimatedAmount ? sanitizeCurrencyToString(data[0]?.estimatedAmount) : 0;
             this.totalValueofPlannedContractsTable = convertNumbersWithCommas(this.totalValueofPlannedContracts)
             this.yearOfPlannedContracts = financialYear;
@@ -338,7 +335,6 @@ export class VisualsComponent implements OnInit, OnDestroy {
             this.totalValueofPlannedContracts = 0;
             this.yearOfPlannedContracts = 0;
             this.numberOfRegisteredEntities = 0;
-            this.noOfPlanCategories = 0;
             this.isLoading = false;
           }
         },
@@ -1038,6 +1034,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
   getConsolidatedPlanSummary(reportName, financialYear, procuringEntity) {
     this.isLoading = true;
     this.consolidatedPlanSummary = []
+    this.noOfPlanCategories = 0
 
     this.subscription = this._planingCategoryService
       .getSummaryStatsWithPDE(reportName, financialYear, procuringEntity)
@@ -1048,6 +1045,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
          
           if (data.length > 0) { 
             this.consolidatedPlanSummary = data
+            this.noOfPlanCategories = this.consolidatedPlanSummary.length
           } 
         },
         (error) => {
