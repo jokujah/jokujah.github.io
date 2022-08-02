@@ -2,7 +2,7 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div>
-    <div class="hidden md:grid md:grid-cols-4 md:space-y-0 md:space-x-4">
+    <div class="hidden lg:grid lg:grid-cols-4 lg:space-y-0 lg:space-x-4">
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="numberOfRegisteredEntities"  [duration]="1000">
@@ -41,7 +41,8 @@
 
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats flex flex-row">
-          UGX &nbsp;{{ totalValueofPlannedContracts | numberSuffix:2 }}
+          <span>UGX&nbsp;</span>
+          <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span>
           <!-- <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
             {{ totalValueofPlannedContracts | numberSuffix:2 }}
           </animated-digit> -->
@@ -54,7 +55,7 @@
     </div>
 
     <!-- Mobile -->
-    <div class="md:hidden flex flex-col my-2 space-y-4">
+    <div class="lg:hidden flex flex-col my-2 space-y-4">
       <div class="grid grid-cols-2 space-x-4">
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats">
@@ -93,7 +94,8 @@
         </div>
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats flex flex-row">
-            UGX &nbsp;{{ totalValueofPlannedContracts | numberSuffix:2 }}
+            <span>UGX&nbsp;</span>
+            <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span>
             <!-- <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
               {{ totalValueofPlannedContracts | numberSuffix:2 }}
             </animated-digit> -->
@@ -159,9 +161,10 @@
       <app-bubble-chart [data]="data"></app-bubble-chart>
     </div> -->
     <div class="mt-4 mb-4 md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
-        <div *ngIf="!isLoading && plansByFundingSource.length > 0">
-          <div *ngIf="plansByFundingSource.length <= 7" class="flex ">            
+      <div class="flex">
+        <div class="fflex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div *ngIf="!isLoading && plansByFundingSource.length > 0">
+            <div *ngIf="plansByFundingSource.length <= 7" class="flex">
               <div *ngIf="!isLoading && chartFundingOptions" id="chart" class="w-full  ">
                 <apx-chart #chartFunding [series]="chartFundingOptions.series" [chart]="chartFundingOptions.chart"
                   [yaxis]="chartFundingOptions.yaxis" [xaxis]="chartFundingOptions.xaxis"
@@ -170,9 +173,9 @@
                   [fill]="chartFundingOptions.fill" [tooltip]="chartFundingOptions.tooltip"
                   [legend]="chartFundingOptions.legend" [noData]="chartFundingOptions.noData"
                   [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
-              </div>            
-          </div>
-          <div *ngIf="plansByFundingSource.length > 7" class="flex">           
+              </div>
+            </div>
+            <div *ngIf="plansByFundingSource.length > 7" class="flex">
               <div class="w-full">
                 <div *ngIf="!isLoading">
                   <div class="font-bold mb-4 text-center">Estimated Amount By Funding Source</div>
@@ -205,16 +208,17 @@
                     </div>
                   </div>
                 </div>
-              </div>            
+              </div>
+            </div>
           </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
+            <div class="font-bold mb-4 text-center">Estimated Amount By Funding Source</div>
+            <app-empty-state></app-empty-state>
+          </span>
         </div>
-        <span *ngIf="isLoading">
-          <app-loader></app-loader>
-        </span>
-        <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
-          <div class="font-bold mb-4 text-center">Estimated Amount By Funding Source</div>
-          <app-empty-state></app-empty-state>
-        </span>
       </div>
 
       <div class="flex">
@@ -272,8 +276,7 @@
             <span *ngIf="isLoading">
               <app-loader></app-loader>
             </span>            
-          </div>         
-
+          </div>
         </div>
       </div>
     </div>
