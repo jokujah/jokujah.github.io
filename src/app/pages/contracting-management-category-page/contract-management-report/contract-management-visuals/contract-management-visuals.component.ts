@@ -339,7 +339,6 @@ export class ContractManagementVisualsComponent implements OnInit {
         bar: {
           horizontal: true,
           columnWidth: "95%",
-          borderRadius: 2,
           dataLabels: {
             position: 'top'
           }

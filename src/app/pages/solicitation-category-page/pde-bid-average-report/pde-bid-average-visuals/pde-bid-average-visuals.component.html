@@ -180,6 +180,27 @@
       </div>
     </div>
     
+    <div class="mt-4 mb-4">
+      <div>
+        <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
+          <div *ngIf="!isLoading">
+            <div id="chartInitiatedVPublished">
+              <apx-chart [series]="chartOptionsInitiatedVPublished.series" [chart]="chartOptionsInitiatedVPublished.chart"
+                [dataLabels]="chartOptionsInitiatedVPublished.dataLabels" [stroke]="chartOptionsInitiatedVPublished.stroke"
+                [colors]="chartOptionsInitiatedVPublished.colors" [title]="chartOptionsInitiatedVPublished.title"
+                [grid]="chartOptionsInitiatedVPublished.grid" [tooltip]="chartOptionsInitiatedVPublished.tooltip"
+                [plotOptions]="chartOptionsInitiatedVPublished.plotOptions" [yaxis]="chartOptionsInitiatedVPublished.yaxis"
+                [xaxis]="chartOptionsInitiatedVPublished.xaxis" [noData]="chartOptionsInitiatedVPublished.noData">
+              </apx-chart>
+            </div>
+          </div>
+          <div *ngIf="isLoading">
+            <app-loader></app-loader>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Row 1 -->
     <div class="mt-4 mb-4">     
       <div>

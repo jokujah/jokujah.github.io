@@ -4,25 +4,27 @@ import {
 } from "ng-apexcharts";
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { getFinancialYears, getsortedPDEList, sanitizeCurrencyToString } from 'src/app/utils/helpers';
+import { getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortArrayBy, visualisationMessages } from 'src/app/utils/helpers';
 import { PlaningAndForecastingReportService } from 'src/app/services/PlaningCategory/planing-and-forecasting-report.service';
 import { Subscription } from 'rxjs';
+import { ChartOptions } from 'src/app/utils/IChartOptions';
+import _ from 'lodash';
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis | ApexYAxis[];
-  title: ApexTitleSubtitle;
-  labels: string[];
-  stroke: any; // ApexStroke;
-  dataLabels: any; // ApexDataLabels;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  noData:ApexNoData;
-  plotOptions: ApexPlotOptions;
-  legend:ApexLegend;
-};
+// export type ChartOptions = {
+//   series: ApexAxisChartSeries;
+//   chart: ApexChart;
+//   xaxis: ApexXAxis;
+//   yaxis: ApexYAxis | ApexYAxis[];
+//   title: ApexTitleSubtitle;
+//   labels: string[];
+//   stroke: any; // ApexStroke;
+//   dataLabels: any; // ApexDataLabels;
+//   fill: ApexFill;
+//   tooltip: ApexTooltip;
+//   noData:ApexNoData;
+//   plotOptions: ApexPlotOptions;
+//   legend:ApexLegend;
+// };
 
 @Component({
   selector: 'app-pde-bid-average-visuals',
@@ -33,6 +35,9 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
   @ViewChild("chartSolicitationsType") chartSolicitationsType: ChartComponent;
   public chartOptionsSolicitationsType: Partial<ChartOptions>;
+
+  @ViewChild("chartInitiatedVPublished") chartInitiatedVPublished: ChartComponent;
+  public chartOptionsInitiatedVPublished: Partial<ChartOptions>;
 
   @ViewChild('chart') chart!: ChartComponent;
   public optionsProgress1: Partial<ChartOptions> | any;
@@ -83,6 +88,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   averageBidsByMethod = [];
   averageBidsData = [];
 
+  
+
   constructor(
     private _planingCategoryService: PlaningAndForecastingReportService
     ) {
@@ -98,6 +105,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
   }
 
   submit(data) {
@@ -173,6 +181,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           case 'avg-bids-by-method':
             console.log("avg-bids-by-method", data)
             this.averageBidsData = response.data
+
+
             this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avgBids ? data[0]?.avgBids : 0);
             this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avgBids ? data[1]?.avgBids : 0);
             this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avgBids ? data[2]?.avgBids : 0);
@@ -189,14 +199,194 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
             this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avgBids ? data[13]?.avgBids : 0);
             this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avgBids ? data[14]?.avgBids : 0);
             this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avgBids ? data[15]?.avgBids : 0);
+
+            
+            let methodCategories = []
+            let numberOfRequisitions= []
+            let numberOfPublishedBids = []
+
+          sortArrayBy(this.averageBidsData.map(element=>element),'numberOfRequisitions').forEach(element=>{
+              methodCategories?.push(element?.procurementMethod?element?.procurementMethod:'Unknown')
+              numberOfRequisitions?.push(element?.numberOfRequisitions?sanitizeCurrencyToString(element?.numberOfRequisitions):0)
+              numberOfPublishedBids?.push(element?.numberOfPublishedBids?sanitizeCurrencyToString(element?.numberOfPublishedBids)*(-1):0)
+            })
+            console.log(numberOfRequisitions)
+            console.log(numberOfPublishedBids)
+            console.log(methodCategories)
+
+
+            this.initInitiatedVPublished(numberOfRequisitions,numberOfPublishedBids,methodCategories)
             break;
         }
         this.isLoading = false
       },
       (error) => {
+        this.initInitiatedVPublished([],[],[])
         this.isLoadingBidsSummary = false;
       }
     )
+  }
+
+
+
+
+
+  public initInitiatedVPublished(series1?,series2?,categories?){
+    this.chartOptionsInitiatedVPublished = {
+      series: [
+        {
+          name: "Requisitions",
+          data: series1
+        },
+        {
+          name: "Published",
+          data: series2
+        }
+      ],
+      title: {
+        text: "Published Bids Versus Requisitions Made by Procurement Method",
+        align: 'center',
+        margin: 1,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
+      chart: {
+        type: "bar",
+        height: 450,
+        stacked: true,
+        fontFamily:'Trebuchet Ms'
+      },
+      // colors: ["#008FFB", "#FF4560"],
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: "80%",
+          dataLabels: {
+            position: 'top'
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['#333'],
+          fontWeight:'bold',
+          fontSize:'12px'
+        },
+        offsetX:60,
+        formatter:function(val){
+          if(val < 0){
+             return NumberSuffix((val * -1),0)
+          }
+          return NumberSuffix(val ,0)
+        }
+      },
+      stroke: {
+        width: 1,
+        colors: ["#fff"]
+      },
+
+      grid: {
+        show: categories.length > 0 ? true : false,
+        xaxis: {
+          lines: {
+            show: false
+          }
+        }
+      },
+      yaxis: {
+        min: function(){
+          let array1 = series1
+          let array2 = series2.map(element=>element*(-1))
+          return (_.first([...array1,...array2].sort(function (a, b) {            
+            var valueA = parseInt(a)
+            var valueB = parseInt(b)
+        
+            if (valueA > valueB) {
+              return -1;
+            }
+            if (valueA < valueB) {
+              return 1;
+            }
+            return 0;
+          })))  * -1
+        },
+        max:function(){
+          let array1 = series1
+          let array2 = series2.map(element=>element*(-1))
+          return _.first([...array1,...array2].sort(function (a, b) {            
+            var valueA = parseInt(a)
+            var valueB = parseInt(b)
+        
+            if (valueA > valueB) {
+              return -1;
+            }
+            if (valueA < valueB) {
+              return 1;
+            }
+            return 0;
+          }))
+        },
+        title: {
+          text: 'Procurement Methods',
+        },
+        floating:categories.length > 0 ? false:true,
+        axisTicks: {
+          show: categories.length > 0 ? true:false
+        },
+        axisBorder: {
+          show: categories.length > 0 ? true:false
+        },
+        labels: {
+          show: categories.length > 0 ? true:false,
+          style: {             
+            fontSize: "12px"
+          },
+          minWidth: 0,
+          maxWidth: 400
+        }
+      },
+      tooltip: {
+        shared: false,
+        x: {
+          formatter: function(val) {
+            return val.toString();
+          }
+        },
+        y: {
+          formatter: function(val) {
+            return Math.abs(val) + "";
+          }
+        }
+      },
+      xaxis: {
+        floating:categories.length > 0 ? false:true,
+        axisTicks: {
+          show: categories.length > 0 ? true:false
+        },
+        axisBorder: {
+          show: categories.length > 0 ? true:false
+        },
+        categories: categories,
+        title: {
+          text: "Bids"
+        },
+        labels: {
+          formatter: function(val) {
+            return Math.abs(Math.round(parseInt(val, 10))) + "";
+          }
+        }
+      },
+      noData: {
+        text: visualisationMessages('empty')
+      },
+    };
   }
 
   

@@ -123,6 +123,10 @@ export function addArrayValues(data) {
     }
   }
 
+  export function convertNegativeToPositive(arrayObject){
+    return arrayObject.map(element=> element * (-1) )
+  }
+
   export function isNumeric(value): boolean {
     if (value < 0) value = value * -1;
     if (/^-{0,1}\d+$/.test(value)) {
@@ -336,6 +340,10 @@ export function groupBy(objectArray, property) {
 export function removeDuplicates(objectArray,primaryKey){
   return _.uniqBy(objectArray,primaryKey)
 }
+
+// export function getLargestValueInArrays(array1,array2){
+//   _.
+// }
 
 
 export function sortArrayBy(objectArray, property){

@@ -42,10 +42,10 @@
       <div class="statsCard">
         <span *ngIf="!isLoading" class="stats flex flex-row">
           <span>UGX&nbsp;</span>
-          <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span>
-          <!-- <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
+          <!-- <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span> -->
+          <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
             {{ totalValueofPlannedContracts | numberSuffix:2 }}
-          </animated-digit> -->
+          </animated-digit>
         </span>
         <span *ngIf="isLoading">
           <app-loading-pulse></app-loading-pulse>
@@ -95,10 +95,10 @@
         <div class="statsCard">
           <span *ngIf="!isLoading" class="stats flex flex-row">
             <span>UGX&nbsp;</span>
-            <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span>
-            <!-- <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
+            <!-- <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span> -->
+            <animated-digit [digit]="totalValueofPlannedContracts" [duration]="1000">
               {{ totalValueofPlannedContracts | numberSuffix:2 }}
-            </animated-digit> -->
+            </animated-digit>
           </span>
           <span *ngIf="isLoading">
             <app-loading-pulse></app-loading-pulse>
