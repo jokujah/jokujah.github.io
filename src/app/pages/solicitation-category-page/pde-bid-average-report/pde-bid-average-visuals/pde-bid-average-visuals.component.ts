@@ -268,7 +268,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           horizontal: true,
           barHeight: "80%",
           dataLabels: {
-            position: 'top'
+            position: 'top',
           }
         }
       },
@@ -285,7 +285,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
              return NumberSuffix((val * -1),0)
           }
           return NumberSuffix(val ,0)
-        }
+        },
+        distributed:true
       },
       stroke: {
         width: 1,

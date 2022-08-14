@@ -19,10 +19,15 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
       },
       title: {
         text: title,
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          //color: '#1286f3'
+          fontFamily: 'Trebuchet MS',
         },
       },
       chart: {
@@ -243,10 +248,15 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
         },
         title: {
           text: title,
+          align: 'center',
+          margin: 2,
+          offsetX: 0,
+          offsetY: 0,
+          floating: false,
           style: {
             fontSize: '16px',
             fontWeight: 'bold',
-            // color: '#1286f3'
+            fontFamily: 'Trebuchet MS',
           },
         },
         dataLabels: {

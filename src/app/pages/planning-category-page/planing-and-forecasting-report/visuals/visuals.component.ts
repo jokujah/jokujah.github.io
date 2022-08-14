@@ -949,7 +949,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
           });
           this.initRadialChart(fundingSourceData,fundingSources)
 
-          if(plansByFundingSource > 7){
+          if(plansByFundingSource.length > 7){
             this.plansByFundingSource = plansByFundingSource.sort(function (a, b) {
                 let nameA = a?.marketPrice.split(',');
                 let nameB = b?.marketPrice.split(',');

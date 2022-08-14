@@ -17,7 +17,7 @@ import {
   ApexTitleSubtitle,
   ApexGrid
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, sortArrayBy } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, sortArrayBy, addArrayValues } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -60,6 +60,10 @@ export class ContractManagementVisualsComponent implements OnInit {
   contractManagerOfHighestContractValue: any;
   highestContractValueByMethod: any;
   procurementMethodOfHighestContractValue: any;
+  totalValueofContractsPM: any = 0;
+  topTenHighestContractsPM: any = [];
+  topTenHighestNumberOfContractsPM: any = [];
+  totalNumberofContractsPM: any = 0;
   
 
 
@@ -156,37 +160,37 @@ export class ContractManagementVisualsComponent implements OnInit {
             break;
           case 'contract-management-by-procurement-method':
             console.log("contract-management-by-procurement-method", data)
+
             if (response.data.length > 0) {
               let sortedArray = sortArrayBy(data, 'contractAmount')
-              sortedArray.forEach(element => {
-                var valueC = (element?.contractAmount) ? element?.contractAmount.split(',') : ['0']
+              
+              let contractValue = []
+              let actualAmount = []
+
+
+              this.topTenHighestContractsPM = sortArrayBy(data.map(element=>element), 'contractAmount')
+
+              this.topTenHighestContractsPM.forEach(element => {
+                var valueC = (element?.contractAmount)?(element?.contractAmount.split(',')):['0'];
                 var valueD = parseInt(valueC.join(''))
-                var valueE = element?.numberOfContracts
-                subjectOfProcurement.push(capitalizeFirstLetter(element.procurementMethod))
-                estimatedAmount.push(valueD)
-                actualAmount.push(parseInt(valueE))
+                contractValue.push(valueD)
               });
 
-              this.highestContractValueByMethod = estimatedAmount[0]
-              this.procurementMethodOfHighestContractValue = subjectOfProcurement[0]
 
-              this.initChartProcurementMethod(
-                [
-                  {
-                    name: "Contract Value",
-                    type: "column",
-                    data: estimatedAmount
-                  },
-                  {
-                    name: "Number Of Contracts",
-                    type: "area",
-                    data: actualAmount
-                  }
-                ],
-                subjectOfProcurement
-              )
+              this.topTenHighestNumberOfContractsPM = sortArrayBy(data.map(element=>element), 'numberOfContracts')
+
+              this.topTenHighestNumberOfContractsPM.forEach(element => {
+                var valueC = (element?.numberOfContracts)?(element?.numberOfContracts.split(',')):['0'];
+                var valueD = parseInt(valueC.join(''))
+                actualAmount.push(valueD)
+              });
+
+              this.totalValueofContractsPM = addArrayValues(contractValue)
+              this.totalNumberofContractsPM = addArrayValues(actualAmount)           
+              
             } else {
-              this.initChartProcurementMethod([], [])
+              this.topTenHighestNumberOfContractsPM = []
+              this.topTenHighestContractsPM = []
             }
             break;
           }         
@@ -194,7 +198,8 @@ export class ContractManagementVisualsComponent implements OnInit {
         },
       (error) => {
         this.initChartContractManagers([],[]) 
-        this.initChartProcurementMethod([],[])
+        this.topTenHighestNumberOfContractsPM = []
+        this.topTenHighestContractsPM = []
         this.isLoading = false    
         throw error
       }
@@ -421,11 +426,16 @@ export class ContractManagementVisualsComponent implements OnInit {
       },
       title: {
         text: "Contract Managers with Highest Contract Values",
-          style: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            //color: '#1286f3'
-          },
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
       },
       grid: {
         show: labels.length > 0 ? true : false,

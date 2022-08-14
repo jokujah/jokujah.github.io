@@ -36,26 +36,72 @@
   <div>
     <!-- Row 1 -->
     <div class="mt-4 mb-4  md:grid md:grid-cols-2 md:space-x-4 md:space-y-0 flex flex-col space-y-2 ">
-      <div class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">
-        <div *ngIf="!isLoading && chartOptionsFundingSource.series" id="chartFundingSource"  class="w-full  ">
-          <apx-chart #chartFundingSource [series]="chartOptionsFundingSource.series" [chart]="chartOptionsFundingSource.chart" [yaxis]="chartOptionsFundingSource.yaxis"
-            [xaxis]="chartOptionsFundingSource.xaxis" [labels]="chartOptionsFundingSource.labels" [stroke]="chartOptionsFundingSource.stroke"
-            [title]="chartOptionsFundingSource.title" [dataLabels]="chartOptionsFundingSource.dataLabels" [fill]="chartOptionsFundingSource.fill"
-            [tooltip]="chartOptionsFundingSource.tooltip" [noData]="chartOptionsFundingSource.noData" [plotOptions]="chartOptionsFundingSource.plotOptions"></apx-chart>
-        </div>
-        <span *ngIf="isLoading">
-          <app-loader></app-loader>
-        </span>
-        <span *ngIf="!isLoading && !chartOptionsFundingSource.series">
-          <app-empty-state></app-empty-state>
-        </span>
-      </div>
       <div class="flex">
         <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-          <div *ngIf="!isLoading && contractsByFundingSource.length > 0" class="w-full">
-            <div class="font-bold mb-4">Number of Completed Contracts By Funding Source</div>
+          <div *ngIf="!isLoading && plansByFundingSource.length > 0">
+            <div *ngIf="plansByFundingSource.length <= 7" class="flex">
+              <div *ngIf="!isLoading && chartFundingOptions" id="chartFundingOptions" class="w-full  ">
+                <apx-chart #chartFunding [series]="chartFundingOptions.series" [chart]="chartFundingOptions.chart"
+                    [yaxis]="chartFundingOptions.yaxis" [xaxis]="chartFundingOptions.xaxis"
+                    [labels]="chartFundingOptions.labels" [stroke]="chartFundingOptions.stroke"
+                    [title]="chartFundingOptions.title" [dataLabels]="chartFundingOptions.dataLabels"
+                    [fill]="chartFundingOptions.fill" [tooltip]="chartFundingOptions.tooltip"
+                    [legend]="chartFundingOptions.legend" [noData]="chartFundingOptions.noData"
+                    [plotOptions]="chartFundingOptions.plotOptions"></apx-chart>
+              </div>
+            </div>
+            <div *ngIf="plansByFundingSource.length > 7" class="flex">
+              <div class="w-full">
+                <div *ngIf="!isLoading">
+                  <div class="font-bold mb-4 text-center">Completed Contracts By Funding Source</div>
+                  <div class="inline-block min-w-full align-middle ">
+                    <div *ngIf="plansByFundingSource.length > 0"
+                      class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                      <table #myTable4 id="myTable4" class="min-w-full divide-y divide-gray-300 table-auto">
+                        <thead class="bg-gray-50">
+                          <tr>
+                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                              Funding Source
+                            </th>
+                            <th (click)="sortTable(1,'myTable4')" scope="col"
+                              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                              <span class="group inline-flex">
+                                Contract Amount
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                          <tr *ngFor="let item of plansByFundingSource">
+                            <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {{item?.funding_source ? item?.funding_source:'Unknown'}}</td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.total_value_of_completed_contracts ?
+                              item?.total_value_of_completed_contracts : 0}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span *ngIf="isLoading">
+            <app-loader></app-loader>
+          </span>
+          <span *ngIf="!isLoading && (!plansByFundingSource || plansByFundingSource.length <= 0)">
+            <div class="font-bold mb-4 text-center">Completed Contracts By Funding Source</div>
+            <app-empty-state></app-empty-state>
+          </span>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
+          <div *ngIf="!isLoading" class="w-full">
+            <div class="font-bold mb-4 text-center">Number of Completed Contracts By Funding Source</div>
             <div class="inline-block min-w-full align-middle ">
-              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <div *ngIf="contractsByFundingSource.length > 0" class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                 <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
                   <thead class="bg-gray-50">
                     <tr>
@@ -93,14 +139,14 @@
                   </tbody>
                 </table>
               </div>
+              <span *ngIf="!contractsByFundingSource || contractsByFundingSource.length <= 0">
+                <app-empty-state></app-empty-state>
+              </span>
             </div>
           </div>
           <span *ngIf="isLoading">
             <app-loader></app-loader>
-          </span>
-          <span *ngIf="!isLoading && (!contractsByFundingSource || contractsByFundingSource.length <= 0)">
-            <app-empty-state></app-empty-state>
-          </span>
+          </span>          
         </div>
       </div>
     </div>
@@ -145,10 +191,10 @@
     <div class="mt-4 mb-4 ">
       <div class="flex flex-row md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full ">
         <div class="w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-          <div *ngIf="!isLoading && topTenHighestContracts.length > 0" class="w-full">
-            <div class="font-bold mb-4">Top Completed Contracts</div>
+          <div *ngIf="!isLoading" class="w-full">
+            <div class="font-bold mb-4 text-center">Top Completed Contracts</div>
             <div class="inline-block min-w-full align-middle ">
-              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <div *ngIf="topTenHighestContracts.length > 0" class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                 <table #myTable1 id="myTable1" class="min-w-full divide-y divide-gray-300 table-auto">
                   <thead class="bg-gray-50">
                     <tr>
@@ -196,47 +242,16 @@
                   </tbody>
                 </table>
               </div>
+              <span *ngIf="!topTenHighestContracts || topTenHighestContracts.length <= 0">
+                <app-empty-state></app-empty-state>
+              </span>
             </div>
           </div>
           <span *ngIf="isLoading">
             <app-loader></app-loader>
-          </span>
-          <span *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
-            <app-empty-state></app-empty-state>
-          </span>
-        </div>
-    
-        <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            
-          <div class="overflow-hidden p-5 bg-white rounded-lg shadow">
-            <div *ngIf="!isLoading" class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Average Value of Completed Contracts</span>
-              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{ (averageValueOfContracts ? averageValueOfContracts : 0) |
-                numberSuffix:1}}</span>
-            </div>
-            <span *ngIf="isLoading">
-              <app-loader></app-loader>
-            </span>   
-          </div>
-          <div  class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-            <div *ngIf="!isLoading && topTenHighestContracts" class="flex flex-col items-center">
-              <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">Highest Completed Contract
-                Value</span>
-              <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">UGX {{
-                highestContractValueofCompletedContracts | numberSuffix:1}}</span>
-              <span
-                class="text-sm  md:text-sm font-normal text-gray-500 text-center flex">{{topTenHighestContracts[0]?.subject_of_procurement
-                ? topTenHighestContracts[0]?.subject_of_procurement : 'Unknown'}}</span>
-            </div>
-            <span *ngIf="isLoading">
-              <app-loader></app-loader>
-            </span>  
-            <span *ngIf="!isLoading && (!topTenHighestContracts || topTenHighestContracts.length <= 0)">
-              <app-empty-state></app-empty-state>
-            </span>
-          </div>
-                 
-        </div> -->
-      </div>
+          </span>          
+        </div>    
+       </div>
     </div>
     
   </div>

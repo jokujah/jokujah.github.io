@@ -43,10 +43,10 @@
         </div>
         <div class="flex">
           <div class="flex flex-col w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-            <div *ngIf="!isLoading && (awardedContractsByContractType.length > 0)" class="w-full">
-              <div class="font-bold mb-4">Awarded Contracts By Contract Type</div>
+            <div *ngIf="!isLoading" class="w-full">
+              <div class="font-bold mb-4 text-center">Awarded Contracts By Contract Type</div>
               <div class="inline-block min-w-full align-middle ">
-                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <div *ngIf="awardedContractsByContractType.length > 0" class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                   <table #myTable1 id="myTable1" class="min-w-full divide-y divide-gray-300 table-auto">
                     <thead class="bg-gray-50">
                       <tr>
@@ -84,14 +84,14 @@
                     </tbody>
                   </table>
                 </div>
+                <span *ngIf="!awardedContractsByContractType || awardedContractsByContractType.length <= 0">
+                  <app-empty-state></app-empty-state>
+                </span>
               </div>
             </div>
             <span *ngIf="isLoading">
               <app-loader></app-loader>
-            </span>
-            <span *ngIf="!isLoading && (!awardedContractsByContractType || awardedContractsByContractType.length <= 0)">
-              <app-empty-state></app-empty-state>
-            </span>
+            </span>           
           </div>
         </div>
       </div>
@@ -99,10 +99,10 @@
       <div class="mt-4 mb-4">
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
           <div class="w-full p-5 bg-white shadow rounded-lg overflow-hidden">
-            <div>
-              <div class="font-bold mb-4">Awarded Contracts By Procurement Method</div>
-              <div *ngIf="!isLoading && awardedContractsByProcurementMethod.length > 0" class="inline-block min-w-full align-middle ">
-                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <div *ngIf="!isLoading">
+              <div class="font-bold mb-4 text-center">Awarded Contracts By Procurement Method</div>
+              <div  class="inline-block min-w-full align-middle ">
+                <div *ngIf="awardedContractsByProcurementMethod.length > 0" class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                   <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
                     <thead class="bg-gray-50">
                       <tr>
@@ -170,14 +170,15 @@
                     </tbody>
                   </table>
                 </div>
+                <span *ngIf="!awardedContractsByProcurementMethod || awardedContractsByProcurementMethod.length <= 0">
+                  <app-empty-state></app-empty-state>
+                </span>
               </div>
             </div>
             <span *ngIf="isLoading">
               <app-loader></app-loader>
             </span>
-            <span *ngIf="!isLoading &&(!awardedContractsByProcurementMethod || awardedContractsByProcurementMethod.length <= 0)">
-              <app-empty-state></app-empty-state>
-            </span>
+            
           </div>
           
           <!-- <div class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between space-x-4 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">            

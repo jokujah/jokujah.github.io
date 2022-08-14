@@ -17,7 +17,7 @@ import {
   ApexTitleSubtitle,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortTable, visualisationMessages } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, convertNumberSuffixWithCommas, convertNumbersWithCommas, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, sortArrayBy, sortTable, visualisationMessages } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { initRadarChart, initRadialChart } from 'src/app/utils/chartsApex';
 import { ChartOptions } from 'src/app/utils/IChartOptions';
@@ -60,6 +60,9 @@ export class CompletedContractsVisualsComponent implements OnInit {
   public chartOptionsRadarFundingSource: Partial<ChartOptions>;
 
 
+  @ViewChild("chartFunding") chartFunding: ChartComponent;
+  public chartFundingOptions: Partial<ChartOptions>;
+
   isLoading:boolean = false 
   cardValue1;
   cardValue2;
@@ -75,6 +78,7 @@ export class CompletedContractsVisualsComponent implements OnInit {
   averageValueOfContracts: number;
   highestContractValueofCompletedContracts: any;
   contractsByFundingSource: any;
+  plansByFundingSource = []
   
 
 
@@ -282,58 +286,47 @@ export class CompletedContractsVisualsComponent implements OnInit {
             break;
           case 'completed-contracts-by-funding-source-summary':
             console.log("completed-contracts-by-funding-source-summary", data)
-
-            // sortedData = data.sort(function (a, b) {
-            //   var nameA = a?.estimatedAmount.split(',')
-            //   var nameB = b?.estimatedAmount.split(',')
-            //   var valueA = parseInt(nameA.join(''))
-            //   var valueB = parseInt(nameB.join(''))
-
-            //   if (valueA > valueB) {
-            //     return -1;
-            //   }
-            //   if (valueA < valueB) {
-            //     return 1;
-            //   }
-            //   return 0;
-            // })
-
+            let plansByFundingSource = response.data
             if (data.length > 0) {
-              data.forEach(element => {
-                var valueC = (element?.total_actual_cost) ? element?.total_actual_cost.split(',') : ['0']
-                var valueD = parseInt(valueC.join(''))
-                var valueE = sanitizeCurrencyToString(element?.total_value_of_completed_contracts)
-                // var valueF = parseInt(valueE.join(''))
 
-                numOfContracts.push(parseInt(element?.no_of_completed_contracts))
-                subjectOfProcurement.push(capitalizeFirstLetter(element.funding_source))
-                estimatedAmount.push(valueD)
-                actualAmount.push(valueE)
-                percentage.push(Math.floor((parseInt(element?.no_of_completed_contracts) / parseInt(element?.number_of_contracts)) * 100))
+              this.plansByFundingSource = sortArrayBy(data,'no_of_completed_contracts')
+
+              const fundingSourceData = [];
+              const fundingSources = [];
+
+              console.log(plansByFundingSource.map(element =>element.number_of_contracts))
+
+              plansByFundingSource.forEach((item: any) => {
+                fundingSourceData.push(
+                  parseInt(item?.total_value_of_completed_contracts.split(',').join(''))
+                );
+                fundingSources.push(item?.funding_source?item?.funding_source:'Unknown');
               });
 
-              this.contractsByFundingSource = data
+              this.initRadialChart(fundingSourceData,fundingSources)
 
-              this.chartOptionsFundingSource = initRadialChart(
-                actualAmount, subjectOfProcurement, 'Completed Contracts by Funding Source'
-              )
 
-              let serieValue = [
-                {
-                  name: 'Number Of Completed Contracts',
-                  data: numOfContracts
-                }
-              ]
-
-              let categorieValue = subjectOfProcurement
-
-              this.chartOptionsRadarFundingSource = initRadarChart(
-                serieValue,
-                categorieValue,
-                'Number Of Completed Contracts by Funding Source'
-              )
-            }else{
-              this.chartOptionsFundingSource = {}
+              if(plansByFundingSource.length > 7){
+                this.plansByFundingSource = plansByFundingSource.sort(function (a, b) {
+                    let nameA = a?.total_value_of_completed_contracts.split(',');
+                    let nameB = b?.total_value_of_completed_contracts.split(',');
+                    let valueA = parseInt(nameA.join(''));
+                    let valueB = parseInt(nameB.join(''));
+      
+                    if (valueA > valueB) {
+                      return -1;
+                    }
+                    if (valueA < valueB) {
+                      return 1;
+                    }
+                    return 0;
+                  });
+              }
+              this.contractsByFundingSource = data 
+            }
+            else{
+              this.plansByFundingSource = []
+              this.contractsByFundingSource = []
             }
             break;
           case 'completed-contracts-by-contract-type-summary':
@@ -464,6 +457,119 @@ export class CompletedContractsVisualsComponent implements OnInit {
 
   getFontSize() {
     return Math.max(10, 12);
+  }
+
+  initRadialChart(series?, categories?) {
+    this.chartFundingOptions = {
+      series: series,
+      tooltip: {
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+        y: {
+          formatter: function (val) {
+            return 'UGX ' + convertNumberSuffixWithCommas(NumberSuffix(val,2));
+          },
+        },
+      },
+      title: {
+        text: "Completed Contracts Value By Funding Source ",
+        align: 'center',
+        margin: 2,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
+      chart: {
+        fontFamily: 'Trebuchet MS',
+        type: 'donut',
+        width: '100%',
+        height: 350,
+        toolbar: {
+          show: true,
+          offsetY: 20,
+        },
+      },
+      plotOptions: {
+        pie: {
+          offsetX: 0,
+          offsetY: 30,
+          donut: {
+            size: '65%',
+            labels: {
+              show: true,
+              name: {
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold',
+              },
+              value: {
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: (val) => `UGX ${convertNumberSuffixWithCommas(NumberSuffix(val,2))}`,
+              },
+              total: {
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `UGX ${convertNumbersWithCommas(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0)
+                  )}`;
+                },
+              },
+            }
+          }
+        }
+      },
+      legend: {
+        show: true,
+        offsetX: 0,
+        offsetY: 15,
+        position: 'bottom',
+        itemMargin: {
+          horizontal: 5,
+          vertical: 10,
+        },
+      },
+      labels: categories,
+      dataLabels:{
+        enabled: true,
+        formatter: function (val) {
+          return val.toFixed(1) + "%"
+        },
+      },    
+     
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+        }
+      },
+      noData: {
+        text: visualisationMessages('empty'),
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Trebuchet MS',
+        },
+      }
+    };
   }
 
   initCharts(){
