@@ -426,7 +426,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
          floating: true,
          offsetX: -10,
          offsetY: 5,
-         text: title
+         text: title,
        },
        subtitle: {
          floating: true,
@@ -449,12 +449,108 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
        fill: {
          opacity: 1
        },
+       responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ]
      };
   }
 
   public initAvgBidsChart2(title?: string, percentage?: number)
   {
     this.optionsProgress2 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -515,7 +611,55 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart3(title?: string, percentage?: number)
   {
     this.optionsProgress3 = {
-       chart: {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
+       chart: {        
          fontFamily: 'Trebuchet MS',
          height: 70,
          type: "bar",
@@ -575,6 +719,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart4(title?: string, percentage?: number)
   {
     this.optionsProgress4 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -635,6 +827,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart5(title?: string, percentage?: number)
   {
     this.optionsProgress5 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -695,6 +935,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart6(title?: string, percentage?: number)
   {
     this.optionsProgress6 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -755,6 +1043,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart7(title?: string, percentage?: number)
   {
     this.optionsProgress7 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -815,6 +1151,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart8(title?: string, percentage?: number)
   {
     this.optionsProgress8 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -875,6 +1259,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart9(title?: string, percentage?: number)
   {
     this.optionsProgress9 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -935,6 +1367,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart10(title?: string, percentage?: number)
   {
     this.optionsProgress10 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -995,6 +1475,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart11(title?: string, percentage?: number)
   {
     this.optionsProgress11 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -1055,6 +1583,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart12(title?: string, percentage?: number)
   {
     this.optionsProgress12 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -1115,6 +1691,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart13(title?: string, percentage?: number)
   {
     this.optionsProgress13 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -1175,6 +1799,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart14(title?: string, percentage?: number)
   {
     this.optionsProgress14 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -1235,6 +1907,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart15(title?: string, percentage?: number)
   {
     this.optionsProgress15 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
@@ -1295,6 +2015,54 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public initAvgBidsChart16(title?: string, percentage?: number)
   {
     this.optionsProgress16 = {
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "12px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "12px"
+              }
+            },
+          }
+        },
+        {
+          breakpoint: 350,
+          options: {
+            title: {
+              floating: true,
+              offsetX: -10,
+              offsetY: 5,
+              text: title,
+              style: {
+                fontSize: "10px"
+              }
+            },
+            subtitle: {
+              floating: true,
+              align: "right",
+              offsetY: 0,
+              text: `${!isNaN(percentage) ? percentage : 0}`,
+              style: {
+                fontSize: "10px"
+              }
+            },
+          }
+        }
+      ],
        chart: {
          fontFamily: 'Trebuchet MS',
          height: 70,
