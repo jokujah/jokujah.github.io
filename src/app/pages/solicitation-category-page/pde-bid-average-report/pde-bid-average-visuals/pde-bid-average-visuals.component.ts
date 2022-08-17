@@ -202,20 +202,20 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
             
             let methodCategories = []
-            let numberOfRequisitions= []
+            let numberOfBidsRespondedTo= []
             let numberOfPublishedBids = []
 
-          sortArrayBy(this.averageBidsData.map(element=>element),'numberOfRequisitions').forEach(element=>{
+          sortArrayBy(this.averageBidsData.map(element=>element),'numberOfBidsRespondedTo').forEach(element=>{
               methodCategories?.push(element?.procurementMethod?element?.procurementMethod:'Unknown')
-              numberOfRequisitions?.push(element?.numberOfRequisitions?sanitizeCurrencyToString(element?.numberOfRequisitions):0)
+              numberOfBidsRespondedTo?.push(element?.numberOfBidsRespondedTo?sanitizeCurrencyToString(element?.numberOfBidsRespondedTo):0)
               numberOfPublishedBids?.push(element?.numberOfPublishedBids?sanitizeCurrencyToString(element?.numberOfPublishedBids)*(-1):0)
             })
-            console.log(numberOfRequisitions)
+            console.log(numberOfBidsRespondedTo)
             console.log(numberOfPublishedBids)
             console.log(methodCategories)
 
 
-            this.initInitiatedVPublished(numberOfRequisitions,numberOfPublishedBids,methodCategories)
+            this.initInitiatedVPublished(numberOfBidsRespondedTo,numberOfPublishedBids,methodCategories)
             break;
         }
         this.isLoading = false
@@ -235,7 +235,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
     this.chartOptionsInitiatedVPublished = {
       series: [
         {
-          name: "Requisitions",
+          name: "Responded To",
           data: series1
         },
         {
@@ -244,7 +244,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         }
       ],
       title: {
-        text: "Published Bids Versus Requisitions Made by Procurement Method",
+        text: "Bids Responded To Versus Published Bids Made by Procurement Method",
         align: 'center',
         margin: 1,
         offsetX: 0,
