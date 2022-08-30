@@ -10,10 +10,6 @@ export class ContractManagementReportsListComponent implements OnInit {
 
   reportsList  = [
     {
-      "name":'Cancelled Tender Report',
-      "route":'cancelled-tender-report'
-    },
-    {
       "name":'Completed Contracts Report',
       "route":'completed-contracts-report'
     },

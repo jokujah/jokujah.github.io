@@ -8,6 +8,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class EvaluationReportsListComponent implements OnInit {
 
+  reportsList  = [
+    {
+      "name":'Due Diligence Report',
+      "route":'due-diligence-report'
+    },
+    {
+      "name":'Cancelled Tender Report',
+      "route":'cancelled-tender-report'
+    } 
+    
+  ]
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

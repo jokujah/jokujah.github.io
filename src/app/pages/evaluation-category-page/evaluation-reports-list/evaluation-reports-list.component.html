@@ -2,13 +2,13 @@
   <div class="mt-2 max-w-full mx-auto px-4 sm:px-6 lg:px-8 ">
     <div class="bg-white shadow overflow-hidden sm:rounded-md">
       <ul role="list" class="divide-y divide-gray-200">
-        <li>
-          <a (click)="onClickReport('due-diligence-report')">
+        <li *ngFor="let report of reportsList">
+          <a (click)="onClickReport(report?.route)">
             <div class="px-4 py-4 sm:px-6">
               <div class="flex items-center justify-between">
                 <p
                   class="text-sm font-medium text-gray-600 cursor-pointer truncate transform transition hover:scale-95 hover:text-gray-700 duration-300 ease-in-out">
-                  Due Diligence Report</p>
+                  {{report?.name}}</p>
               </div>
             </div>
           </a>

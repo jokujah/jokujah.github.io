@@ -233,7 +233,27 @@ const routes: Routes = [
               },
             ]
           },
-
+          {
+            path: 'cancelled-tender-report',
+            component:CancelledTenderReportComponent,
+            children: [
+              {
+                path: 'visuals',
+                component:CancelledTenderVisualsComponent,
+              },
+              {
+                path: '',
+                 redirectTo: 'reports',
+                pathMatch: 'full',
+              },
+              {
+                path: 'reports',
+                component:ReportPageComponent,
+                data:{reportUrl:'cancelled-tenders'}
+                
+              },
+            ]
+          },
         ]       
       },
 
