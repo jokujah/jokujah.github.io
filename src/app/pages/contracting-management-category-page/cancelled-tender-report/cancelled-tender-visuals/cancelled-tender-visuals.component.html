@@ -63,9 +63,21 @@
                         <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Subject of Procurement
                         </th>
                         <th  scope="col"
-                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           <span class="group inline-flex">
                             PDE
+                          </span>
+                        </th>
+                        <th  scope="col"
+                          class="hidden md:visible px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          <span class="group inline-flex">
+                            Reason
+                          </span>
+                        </th>
+                        <th  scope="col"
+                          class="hidden md:visible px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          <span class="group inline-flex">
+                            Cancellation Date
                           </span>
                         </th>
                         <th (click)="sortTable(2,'myTable2')" scope="col"
@@ -89,18 +101,23 @@
                               </svg>
                             </span>
                           </span>
-                        </th>
-                        <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Average  Value</th> -->
+                        </th>                        
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                       <!-- Odd row -->
                       <tr *ngFor="let item of topCancelledContracts">
                         <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {{item?.subjectOfProcurement?item?.subjectOfProcurement:'Unknown'}}</td>
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.pdeName}}</td>
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.contractValue?item.contractValue:0}}</td>
-                        <!-- <td class="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{{((item?.contractValue)/(item?.numberOfContracts)) *100}}</td>                                           -->
+                          <div class="flex flex-col items-left">
+                            <span class="text-sm font-medium text-gray-900">{{item?.subjectOfProcurement?item?.subjectOfProcurement:'Unknown'}}</span>
+                            <span class="text-xs font-medium text-gray-600">{{item?.financialYear ?
+                              item?.financialYear : 'Unknown'}}</span>
+                          </div>                        
+                        </td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.pdeName ? item?.pdeName:'Unknown'}}</td>
+                        <td class="whitespace-normal hidden md:visible px-3 py-1 text-sm text-gray-500">{{item?.reasonForCancellation ? item?.reasonForCancellation:'Unknown'}}</td>  
+                        <td class="whitespace-normal hidden md:visible px-3 py-1 text-sm text-gray-500">{{item?.dateOfCancellation ? item?.dateOfCancellation:'Unknown'}}</td>  
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.contractValue?item.contractValue:0}}</td>                                                                
                       </tr>
           
                       <!-- More people... -->
