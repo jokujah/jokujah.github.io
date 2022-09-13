@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { ApexAxisChartSeries, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexNoData, ApexPlotOptions, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
@@ -6,7 +7,7 @@ import {
 } from "ng-apexcharts";
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sortTable, visualisationMessages } from 'src/app/utils/helpers';
+import { NumberSuffix, addArrayValues, getFinancialYears, getsortedPDEList, sortTable, visualisationMessages, getDays } from 'src/app/utils/helpers';
 
 import { ChartType } from 'angular-google-charts';
 import html2canvas from 'html2canvas';
@@ -105,15 +106,33 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
   }
 
   getVisualisation(reportName,financialYear,procuringEntity){
-    this.isLoading=true   
+    this.isLoading=true 
+    this.suspendedProviders = [];  
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{
         let data = response.data
+        if(data.length > 0){
           switch (reportName) {
             case'suspended-suppliers-list-summary':
-              this.suspendedProviders = data  
+              this.suspendedProviders = response.data.map((element)=>{
+
+                var numberOfSuspensionDaysLeft = (element?.suspensionStartDate && element?.suspensionEndDate)?getDays(element?.suspensionStartDate,element?.suspensionEndDate):'Unknown';
+
+                if ((numberOfSuspensionDaysLeft == 'Unknown') || (numberOfSuspensionDaysLeft < 0) || !(numberOfSuspensionDaysLeft == NaN)){
+                  return {
+                    ...element,
+                    numberOfSuspensionDaysLeft:0
+                  }
+                }
+                return {
+                  ...element,
+                  numberOfSuspensionDaysLeft:numberOfSuspensionDaysLeft
+                }
+              })  
             break;
+          }}else{
+            this.suspendedProviders = [];
           }
 
         this.isLoading = false

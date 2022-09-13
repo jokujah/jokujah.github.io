@@ -37,6 +37,19 @@
                   <thead class="bg-gray-50">
                     <tr>
                       <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Supplier Name</th>
+                      <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                        <span class="group inline-flex">
+                          Started On                          
+                        </span>
+                      </th>
+                      <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
+                        <span class="group inline-flex">
+                          Ended On                          
+                        </span>
+                      </th>
+                      
                       <th (click)="sortTable(1,'myTable2')" scope="col"
                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                         <span class="group inline-flex">
@@ -66,7 +79,9 @@
                     <tr *ngFor="let item of suspendedProviders">
                       <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                         {{item?.providerName?item?.providerName:'Unknown'}}</td>
-                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">0</td>
+                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.suspensionStartDate?(item?.suspensionStartDate ):'Unknown'}}</td>
+                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.suspensionEndDate?(item?.suspensionEndDate ):'Unknown'}}</td>
+                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.numberOfSuspensionDaysLeft}}</td>
                     </tr>
                     <!-- More people... -->
                   </tbody>
