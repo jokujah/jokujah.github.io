@@ -3,7 +3,10 @@
 
   <div class="mt-4">
     <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
-      <div class="statsCard">
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="{{numberOfRequisitions |convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoadingSummary" class="stats">
           <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
             {{ numberOfRequisitions | numberSuffix: 1 }}
@@ -15,7 +18,10 @@
         <span class="statsText">Late Initiations</span>
       </div>
 
-      <div class="statsCard">
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="UGX {{requisitionEstimatedAmount |convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
           UGX &nbsp;<animated-digit [digit]="requisitionEstimatedAmount" [duration]="1000">
             {{ requisitionEstimatedAmount | numberSuffix: 2 }}
@@ -61,7 +67,11 @@
     <!-- Mobile -->
     <div class="md:hidden flex flex-col my-2 space-y-4">
       <div class="grid grid-cols-2 space-x-4">
-        <div class="statsCard">
+        <div #tooltip1="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{numberOfRequisitions | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip1.toggle()">
           <span *ngIf="!isLoadingSummary" class="stats">
             <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
               {{ numberOfRequisitions | numberSuffix: 1 }}
@@ -73,7 +83,11 @@
           <span class="statsText">Late Initiations</span>
         </div>
 
-        <div class="statsCard">
+        <div #tooltip2="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="UGX {{requisitionEstimatedAmount | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip2.toggle()">
           <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
             <span>UGX</span>&nbsp;<animated-digit [digit]="requisitionEstimatedAmount" [duration]="1000">
               {{ requisitionEstimatedAmount | numberSuffix: 2 }}

@@ -1,7 +1,10 @@
 <div class="max-w-full mx-auto">
   <div>
-    <div class="grid grid-cols-2 space-x-4 my-2">
-      <div class="flex flex-col items-center px-4 py-2 bg-white rounded-md shadow overflow-hiddsen">
+    <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="{{cardValue1 | convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoading" class="stats">        
           <animated-digit [digit]="cardValue1"  [duration]="1000"></animated-digit>
         </span>
@@ -11,7 +14,10 @@
         <span class="statsText">Active Suppliers </span>
       </div>
 
-      <div class="flex flex-col items-center px-4 py-2 overflow-hidden bg-white rounded-md shadow">        
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="{{cardValue2 | convertNumbersWithCommas}}"  
+      matTooltipPosition="above">        
           <span *ngIf="!isLoading" class="stats">        
             <animated-digit [digit]="cardValue2"  [duration]="1000"></animated-digit>
           </span>
@@ -21,6 +27,45 @@
         <span class="statsText">Suspended Suppliers</span>
       </div>
     </div>
+
+    <!-- Mobile -->
+    <div class="md:hidden flex flex-col my-2 space-y-4">
+      <div class="grid grid-cols-2 space-x-4">
+        <div #tooltip1="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{cardValue1 | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip1.toggle()">
+          <span *ngIf="!isLoading" class="stats">
+            <animated-digit [digit]="cardValue1" [duration]="1000">
+              {{ cardValue1  }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Active Suppliers</span>
+        </div>
+
+        <div #tooltip2="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{cardValue2 | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip2.toggle()">
+          <span *ngIf="!isLoading" class="stats flex flex-row">
+            <animated-digit [digit]="cardValue2" [duration]="1000">
+              {{ cardValue2  }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Suspended Suppliers</span>
+        </div>
+      </div>
+     </div>
+
+
   </div>
 
   <!-- Graphs -->

@@ -20,6 +20,7 @@
         [title]="'Contracts Under Review '" 
         [isLoading]="isLoading" 
         [value]="numberOfReviewedContracts"
+        [numberWithCommas]="numberOfReviewedContracts | convertNumbersWithCommas"
       ></app-stats-card>
 
         <app-stats-card 
@@ -27,6 +28,7 @@
           [isLoading]="isLoading" 
           [value]="valueOfReviewedContracts"
           [prefix]="'UGX'"
+          [numberWithCommas]="valueOfReviewedContracts | convertNumbersWithCommas"
         ></app-stats-card>
 
       </div>

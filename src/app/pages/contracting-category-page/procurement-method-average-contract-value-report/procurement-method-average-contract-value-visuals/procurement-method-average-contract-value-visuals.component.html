@@ -8,6 +8,7 @@
           [title]="'Contracts'" 
           [isLoading]="isLoading" 
           [value]="numberOfContracts"
+          [numberWithCommas]="numberOfContracts | convertNumbersWithCommas"
         ></app-stats-card>
 
         <app-stats-card 
@@ -15,6 +16,7 @@
           [isLoading]="isLoading" 
           [value]="valueOfContracts"
           [prefix]="'UGX'"
+          [numberWithCommas]="valueOfContracts | convertNumbersWithCommas"
         ></app-stats-card>
 
         <app-stats-card 
@@ -22,6 +24,7 @@
         [isLoading]="isLoading" 
         [value]="averageValueOfContracts"
         [prefix]="'UGX'"
+        [numberWithCommas]="averageValueOfContracts | convertNumbersWithCommas"
       ></app-stats-card>
     </div>
   
@@ -32,6 +35,7 @@
         [title]="'Contracts'" 
         [isLoading]="isLoading" 
         [value]="numberOfContracts"
+        [numberWithCommas]="numberOfContracts | convertNumbersWithCommas"
       ></app-stats-card>
 
       <app-stats-card 
@@ -39,6 +43,7 @@
         [isLoading]="isLoading" 
         [value]="valueOfContracts"
         [prefix]="'UGX'"
+        [numberWithCommas]="valueOfContracts | convertNumbersWithCommas"
       ></app-stats-card>
       </div>
       <div class="grid grid-cols-1">
@@ -47,6 +52,7 @@
         [isLoading]="isLoading" 
         [value]="averageValueOfContracts"
         [prefix]="'UGX'"
+        [numberWithCommas]="averageValueOfContracts | convertNumbersWithCommas"
       ></app-stats-card>
       </div>
     </div>

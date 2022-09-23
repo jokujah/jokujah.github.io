@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NumberSuffix } from './helpers';
+import { convertNumbersWithCommas, NumberSuffix } from './helpers';
 
 @Pipe({
   name: 'numberSuffix'
@@ -11,3 +11,16 @@ export class NumberSuffixPipe implements PipeTransform {
     return NumberSuffix(input,args)
   }
 }
+
+
+@Pipe({
+  name: 'convertNumbersWithCommas'
+})
+export class ConvertNumbersWithCommasPipe implements PipeTransform {
+  
+  transform(input: any): any {
+
+    return convertNumbersWithCommas(input)
+  }
+}
+

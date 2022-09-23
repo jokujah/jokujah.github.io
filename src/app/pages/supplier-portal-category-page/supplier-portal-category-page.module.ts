@@ -6,6 +6,7 @@ import { SuspendedProvidersReportComponent } from './suspended-providers-report/
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SuspendedProvidersVisualsComponent } from './suspended-providers-report/suspended-providers-visuals/suspended-providers-visuals.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -20,6 +21,7 @@ import { SuspendedProvidersVisualsComponent } from './suspended-providers-report
     CommonModule,
     RouterModule,
     SharedModule,
+    MatTooltipModule
   ]
 })
 export class SupplierPortalCategoryPageModule { }

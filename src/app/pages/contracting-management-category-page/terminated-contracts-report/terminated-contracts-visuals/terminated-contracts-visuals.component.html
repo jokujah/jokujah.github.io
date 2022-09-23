@@ -7,6 +7,7 @@
       [title]="'Terminated Contracts'" 
       [isLoading]="isLoading" 
       [value]="cardValue1"
+      [numberWithCommas]="cardValue1 | convertNumbersWithCommas"
       ></app-stats-card>
 
       <app-stats-card 
@@ -14,6 +15,7 @@
       [isLoading]="isLoading" 
       [value]="cardValue3"
       [prefix]="'UGX'"
+      [numberWithCommas]="cardValue3 | convertNumbersWithCommas"
     ></app-stats-card>
 
       <app-stats-card 
@@ -21,6 +23,7 @@
         [isLoading]="isLoading" 
         [value]="cardValue2"
         [prefix]="'UGX'"
+        [numberWithCommas]="cardValue2 | convertNumbersWithCommas"
       ></app-stats-card>
     </div>
 
@@ -31,6 +34,7 @@
           [title]="'Terminated Contracts'" 
           [isLoading]="isLoading" 
           [value]="cardValue1"
+          [numberWithCommas]="cardValue1 | convertNumbersWithCommas"
           ></app-stats-card>
 
           <app-stats-card 
@@ -38,6 +42,7 @@
           [isLoading]="isLoading" 
           [value]="cardValue3"
           [prefix]="'UGX'"
+          [numberWithCommas]="cardValue3 | convertNumbersWithCommas"
         ></app-stats-card>
       </div>
       <div class="grid grid-cols-1">
@@ -46,6 +51,7 @@
         [isLoading]="isLoading" 
         [value]="cardValue2"
         [prefix]="'UGX'"
+        [numberWithCommas]="cardValue2 | convertNumbersWithCommas"
       ></app-stats-card>
       </div>
     </div>

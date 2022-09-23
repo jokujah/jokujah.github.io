@@ -20,6 +20,7 @@
           [title]="'Completed Contracts'" 
           [isLoading]="isLoading" 
           [value]="cardValue3"
+          [numberWithCommas]="cardValue3 | convertNumbersWithCommas"
         ></app-stats-card>
 
         <app-stats-card 
@@ -27,6 +28,7 @@
           [isLoading]="isLoading" 
           [value]="cardValue4"
           [prefix]="'UGX'"
+          [numberWithCommas]="cardValue4 | convertNumbersWithCommas"
         ></app-stats-card>
 
     </div>

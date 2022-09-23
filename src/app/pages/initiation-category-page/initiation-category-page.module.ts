@@ -6,6 +6,7 @@ import { LateInitiationReportComponent } from './late-initiation-report/late-ini
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { LateInitiationVisualsComponent } from './late-initiation-report/late-initiation-visuals/late-initiation-visuals.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -20,6 +21,7 @@ import { LateInitiationVisualsComponent } from './late-initiation-report/late-in
     CommonModule,
     RouterModule,
     SharedModule,
+    MatTooltipModule
   ]
 })
 export class InitiationCategoryPageModule { }

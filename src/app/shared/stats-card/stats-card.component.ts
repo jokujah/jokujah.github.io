@@ -1,3 +1,4 @@
+import { convertNumbersWithCommas } from 'src/app/utils/helpers';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -13,12 +14,16 @@ export class StatsCardComponent implements OnInit {
   @Input() isLoading:boolean = false
   @Input() prefix:string = ''
   @Input() info:string = ''
+  @Input() numberWithCommas:string = ''
 
+ // numberWithCommas = convertNumbersWithCommas(this.value) ;
+ 
   constructor() {
-    console.log('App stats card',this.value)
+    
    }
 
   ngOnInit(): void {
+    //this.numberWithCommas = convertNumbersWithCommas(this.value)
   }
 
 }

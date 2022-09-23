@@ -1,9 +1,12 @@
 <div class="max-w-full mx-auto">
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
   <div>
-    <div>
-      <div class=" mt-4 grid grid-cols-2 space-x-4">
-        <div class="statsCard">
+    <div class="mt-4">
+      <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
+        <div class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{successfullEvaluatedBidders | convertNumbersWithCommas}}"  
+        matTooltipPosition="above">
           <span *ngIf="!isLoading" class="stats">
             <animated-digit [digit]="successfullEvaluatedBidders" [duration]="1000"></animated-digit>
           </span>
@@ -13,7 +16,10 @@
           <span class="statsText">Post-Qualification Bids</span>
         </div>
 
-        <div class="statsCard">
+        <div class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="UGX {{valueOfBids | convertNumbersWithCommas}}"  
+        matTooltipPosition="above">
           <span *ngIf="!isLoading" class="stats ">
             <div class="flex flex-row">
               <span>UGX </span>&nbsp;
@@ -28,6 +34,43 @@
           <span class="statsText">Estimate Bid Value</span>
         </div>       
       </div>
+
+       <!-- Mobile -->
+    <div class="md:hidden flex flex-col my-2 space-y-4">
+      <div class="grid grid-cols-2 space-x-4">
+        <div #tooltip1="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{successfullEvaluatedBidders | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip1.toggle()">
+          <span *ngIf="!isLoading" class="stats">
+            <animated-digit [digit]="successfullEvaluatedBidders" [duration]="1000">
+              {{ successfullEvaluatedBidders  }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Post-Qualification Bids</span>
+        </div>
+
+        <div #tooltip2="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="UGX {{valueOfBids | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip2.toggle()">
+          <span *ngIf="!isLoading" class="stats flex flex-row">
+            <span>UGX</span>&nbsp;<animated-digit [digit]="valueOfBids" [duration]="1000">
+              {{ valueOfBids  }}
+            </animated-digit>
+          </span>
+          <span *ngIf="isLoading">
+            <app-loading-pulse></app-loading-pulse>
+          </span>
+          <span class="statsText">Estimate Bid Value</span>
+        </div>
+      </div>
+     </div>
     </div>
 
     <!-- Graphs -->

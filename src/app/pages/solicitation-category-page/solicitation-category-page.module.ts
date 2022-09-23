@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SolicitationReportsListComponent } from './solicitation-reports-list/solicitation-reports-list.component';
 import { PdeBidAverageVisualsComponent } from './pde-bid-average-report/pde-bid-average-visuals/pde-bid-average-visuals.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -20,6 +21,7 @@ import { PdeBidAverageVisualsComponent } from './pde-bid-average-report/pde-bid-
     CommonModule,
     RouterModule,
     SharedModule,
+    MatTooltipModule
   ]
 })
 export class SolicitationCategoryPageModule { }

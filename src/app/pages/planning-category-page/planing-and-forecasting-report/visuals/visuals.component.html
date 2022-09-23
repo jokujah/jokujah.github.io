@@ -3,7 +3,10 @@
 
   <div>
     <div class="hidden lg:grid lg:grid-cols-4 lg:space-y-0 lg:space-x-4">
-      <div class="statsCard">
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="{{numberOfRegisteredEntities |convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="numberOfRegisteredEntities"  [duration]="1000">
             {{numberOfRegisteredEntities | numberSuffix: 0 }}
@@ -15,7 +18,10 @@
         <span class="statsText">{{entityOrDept}}</span>
       </div>     
 
-      <div class="statsCard">
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="{{numberOfPlannedContracts | convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
             {{ numberOfPlannedContracts | numberSuffix: 0 }}
@@ -27,7 +33,10 @@
         <span class="statsText">Plan Items</span>
       </div>
 
-      <div class="statsCard">
+      <div class="statsCard" 
+      matTooltipClass = "statsToolTip" 
+      matTooltip="{{noOfPlanCategories | convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoading" class="stats">
           <animated-digit [digit]="noOfPlanCategories" [duration]="1000">
             {{ noOfPlanCategories | numberSuffix: 0 }}
@@ -39,7 +48,9 @@
         <span class="statsText">Plan Categories</span>
       </div>
 
-      <div class="statsCard">
+      <div class="statsCard" matTooltipClass = "statsToolTip" 
+      matTooltip="UGX {{totalValueofPlannedContracts | convertNumbersWithCommas}}"  
+      matTooltipPosition="above">
         <span *ngIf="!isLoading" class="stats flex flex-row">
           <span>UGX&nbsp;</span>
           <!-- <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span> -->
@@ -57,7 +68,11 @@
     <!-- Mobile -->
     <div class="lg:hidden flex flex-col my-2 space-y-4">
       <div class="grid grid-cols-2 space-x-4">
-        <div class="statsCard">
+        <div #tooltip1="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{numberOfRegisteredEntities | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip1.toggle()">
           <span *ngIf="!isLoading" class="stats">
             <animated-digit [digit]="numberOfRegisteredEntities" [duration]="1000">
               {{numberOfRegisteredEntities | numberSuffix: 0 }}
@@ -68,7 +83,11 @@
           </span>
           <span class="statsText">{{entityOrDept}}</span>
         </div>
-        <div class="statsCard">
+        <div #tooltip2="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{numberOfPlannedContracts | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip2.toggle()">
           <span *ngIf="!isLoading" class="stats">
             <animated-digit [digit]="numberOfPlannedContracts" [duration]="1000">
               {{ numberOfPlannedContracts | numberSuffix: 0 }}
@@ -81,7 +100,11 @@
         </div>
       </div>
       <div class="grid grid-cols-2 space-x-4">
-        <div class="statsCard">
+        <div #tooltip3="matTooltip" 
+        class="statsCard" 
+        matTooltipClass = "statsToolTip" 
+        matTooltip="{{noOfPlanCategories | convertNumbersWithCommas}}"  
+        matTooltipPosition="above" (click)="tooltip3.toggle()">
           <span *ngIf="!isLoading" class="stats">
             <animated-digit [digit]="noOfPlanCategories" [duration]="1000">
               {{ noOfPlanCategories | numberSuffix: 0 }}
@@ -92,7 +115,12 @@
           </span>
           <span class="statsText">Plan Categories</span>
         </div>
-        <div class="statsCard">
+        <div 
+          #tooltip4="matTooltip" 
+          class="statsCard" 
+          matTooltipClass = "statsToolTip" 
+          matTooltip="UGX {{totalValueofPlannedContracts | convertNumbersWithCommas}}"  
+          matTooltipPosition="above" (click)="tooltip4.toggle()">
           <span *ngIf="!isLoading" class="stats flex flex-row">
             <span>UGX&nbsp;</span>
             <!-- <span>{{ totalValueofPlannedContracts | numberSuffix:2 }}</span> -->

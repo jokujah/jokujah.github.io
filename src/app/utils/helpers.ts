@@ -158,7 +158,10 @@ export function capitalizeFirstLetter(stringToCheck) {
 }
 
 export function convertNumbersWithCommas(number: number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  let splitNumber = number.toString().split('.')
+  let numberWithCommas = splitNumber[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  let fullNumberWithCommas = numberWithCommas +  (splitNumber[1]?('.' +splitNumber[1]):'');
+  return fullNumberWithCommas;
 }
 
 export function convertNumberSuffixWithCommas(numberWithSuffix) {

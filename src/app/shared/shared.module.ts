@@ -23,7 +23,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatSelectSearchModule } from './mat-select-search/mat-select-search.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgModule } from '@angular/core';
-import { NumberSuffixPipe } from '../utils/pipes';
+import { ConvertNumbersWithCommasPipe, NumberSuffixPipe } from '../utils/pipes';
 import { VisualizationTableComponent } from './visualization-table/visualization-table.component';
 import { EmptyStateDetailedReportComponent } from "./empty-state-detailed-report/empty-state-detailed-report.component";
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -37,6 +37,7 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
 @NgModule({
   declarations: [
     NumberSuffixPipe,
+    ConvertNumbersWithCommasPipe,
     EmptyStateComponent,
     LoaderComponent,
     VisualizationTableComponent,
@@ -54,6 +55,7 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
   exports:[
     FusionChartsModule,
     NumberSuffixPipe,
+    ConvertNumbersWithCommasPipe,
     GoogleChartsModule,
     NgApexchartsModule,
     LoadingIconModule,

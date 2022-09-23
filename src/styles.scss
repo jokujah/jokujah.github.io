@@ -75,6 +75,10 @@ html {
     @apply flex flex-col px-4 py-2 overflow-hidden rounded-md bg-white items-center shadow transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-100 hover:text-primary-50
   }
 
+  .statsToolTip{
+    @apply bg-purple-500 text-white 
+  }
+
 
 
   .example-tooltip-blue {

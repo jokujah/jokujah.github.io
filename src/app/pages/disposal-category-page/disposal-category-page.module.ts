@@ -1,3 +1,4 @@
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DisposalCategoryPageComponent } from './disposal-category-page.component';
@@ -20,6 +21,7 @@ import { DisposalVisualsComponent } from './disposal-report/disposal-visuals/dis
     CommonModule,
     RouterModule,
     SharedModule,
+    MatTooltipModule
   ]
 })
 export class DisposalCategoryPageModule { }

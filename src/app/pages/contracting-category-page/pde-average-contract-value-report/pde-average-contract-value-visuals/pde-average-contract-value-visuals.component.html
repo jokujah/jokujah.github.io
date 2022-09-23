@@ -3,27 +3,46 @@
   
   <div class="mt-4">
     <div class="hidden md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
-      <app-stats-card [title]="'Contracts'" [isLoading]="isLoading" [value]="numberOfContracts">
+      <app-stats-card 
+      [title]="'Contracts'" 
+      [isLoading]="isLoading" 
+      [value]="numberOfContracts"
+      [numberWithCommas]="numberOfContracts | convertNumbersWithCommas"
+      >
       </app-stats-card>
   
-      <app-stats-card [title]="'Contract Value'" [isLoading]="isLoading" [value]="valueOfContracts"
-        [prefix]="'UGX'"></app-stats-card>
+      <app-stats-card [title]="'Contract Value'" 
+      [isLoading]="isLoading" [value]="valueOfContracts"
+        [prefix]="'UGX'"
+        [numberWithCommas]="valueOfContracts | convertNumbersWithCommas"></app-stats-card>
   
-      <app-stats-card [title]="'Average Contract Value'" [isLoading]="isLoading" [value]="cardValue4" [prefix]="'UGX'">
+      <app-stats-card [title]="'Average Contract Value'" [isLoading]="isLoading" [value]="cardValue4" [prefix]="'UGX'"
+      [numberWithCommas]="cardValue4 | convertNumbersWithCommas">
       </app-stats-card>
     </div>
   
     <!-- Mobile -->
     <div class="md:hidden flex flex-col my-2 space-y-4">
       <div class="grid grid-cols-2 space-x-4">
-        <app-stats-card [title]="'Contracts'" [isLoading]="isLoading" [value]="numberOfContracts">
+        <app-stats-card 
+        [title]="'Contracts'" 
+        [isLoading]="isLoading" 
+        [value]="numberOfContracts"
+        [numberWithCommas]="numberOfContracts | convertNumbersWithCommas"
+        >
         </app-stats-card>
   
-        <app-stats-card [title]="'Contract Value'" [isLoading]="isLoading" [value]="valueOfContracts"
+        <app-stats-card [title]="'Contract Value'" 
+        [isLoading]="isLoading" [value]="valueOfContracts"
+        [numberWithCommas]="valueOfContracts | convertNumbersWithCommas"
           [prefix]="'UGX'"></app-stats-card>
       </div>
       <div class="grid grid-cols-1">
-        <app-stats-card [title]="'Average Contract Value'" [isLoading]="isLoading" [value]="cardValue4" [prefix]="'UGX'">
+        <app-stats-card [title]="'Average Contract Value'" 
+        [isLoading]="isLoading" 
+        [value]="cardValue4" [prefix]="'UGX'"
+        [numberWithCommas]="cardValue4 | convertNumbersWithCommas"
+        >
         </app-stats-card>
       </div>
     </div>

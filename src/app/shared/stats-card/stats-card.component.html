@@ -1,4 +1,8 @@
-<div class="statsCard">
+<div #tooltip1="matTooltip" 
+class="statsCard" 
+matTooltipClass = "statsToolTip" 
+matTooltip="{{prefix}} {{numberWithCommas}}"  
+matTooltipPosition="above" (click)="tooltip1.toggle()">
     <span *ngIf="!isLoading" class="stats flex flex-row">
         <span *ngIf="prefix">{{prefix}}&nbsp;</span>
         <animated-digit [digit]="value" [duration]="1000"></animated-digit>
