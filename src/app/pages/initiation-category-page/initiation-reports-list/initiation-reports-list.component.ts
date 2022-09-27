@@ -10,7 +10,7 @@ export class InitiationReportsListComponent implements OnInit {
 
   reportsList  = [
     {
-      "name":'Late Initiation Report',
+      "name":'Initiation Report',
       "route":'late-initiation-report'
     }
     

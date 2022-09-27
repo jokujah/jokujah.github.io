@@ -259,6 +259,9 @@ export class DashboardComponent implements OnInit {
         case 'procurement-method-average-contract-value-report':
           this.reportNameDisplay = "Number of Contracts, Total Value, Average Value by Procuring Method"
           break;
+        case 'late-initiation-report':
+          this.reportNameDisplay = "Initiation Report"
+          break;
         default:
           let splitName = [] = this.reportName.split('-')
 
