@@ -249,7 +249,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
       },
       title: {
-        text: 'Initiated Vs Late Initiations by Number',
+        text: 'On Time Vs Late Initiations by Number',
         align: 'center',
         margin: 2,
         offsetX: 0,
@@ -294,6 +294,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
                 show: true,
                 fontSize: '10px',
                 fontFamily: 'Trebuchet MS',
+                label:'Total Number',
                 fontWeight: '500',
                 formatter: function (w) {
                   return `${convertNumbersWithCommas(
@@ -320,7 +321,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           vertical: 10,
         },
       },
-      labels: ['Initiated', 'Initiated Late'],
+      labels: ['On Time', 'Late Initiation'],
       // responsive: [
       //   {
       //     breakpoint: 320,
@@ -428,7 +429,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         },
       },
       title: {
-        text: 'Initiated Vs Late Initiations by Value',
+        text: 'On Time Vs Late Initiations by Value',
         align: 'center',
         margin: 2,
         offsetX: 0,
@@ -474,6 +475,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
                 fontSize: '9px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
+                label:'Total Value',
                 formatter: function (w) {
                   return `UGX ${convertNumbersWithCommas(
                     w.globals.seriesTotals.reduce((a, b) => {
@@ -499,7 +501,7 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           vertical: 10,
         },
       },
-      labels: ['Initiated', 'Initiated Late'],
+      labels: ['On Time', 'Late Initiation'],
       // responsive: [
       //   {
       //     breakpoint: 320,

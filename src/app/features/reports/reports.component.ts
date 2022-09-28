@@ -185,7 +185,7 @@ export class ReportsComponent implements OnInit {
         value = 'Disposals Report'
       break;
       case 'late-initiations' :
-        value = 'Late Initiations Report'
+        value = 'Initiations Report'
       break;
       case 'suspended-providers' :
         value = 'Suspended Providers Report'
