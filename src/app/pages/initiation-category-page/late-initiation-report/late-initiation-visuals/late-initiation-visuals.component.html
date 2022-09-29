@@ -5,11 +5,11 @@
     <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
       <div class="statsCard" 
       matTooltipClass = "statsToolTip" 
-      matTooltip="{{numberOfRequisitions |convertNumbersWithCommas}}"  
+      matTooltip="{{totalNumberOfRequisitions |convertNumbersWithCommas}}"  
       matTooltipPosition="above">
         <span *ngIf="!isLoadingSummary" class="stats">
-          <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
-            {{ numberOfRequisitions | numberSuffix: 1 }}
+          <animated-digit [digit]="totalNumberOfRequisitions" [duration]="1000">
+            {{ totalNumberOfRequisitions | numberSuffix: 1 }}
           </animated-digit>
         </span>
         <span *ngIf="isLoadingSummary">
@@ -20,11 +20,11 @@
 
       <div class="statsCard" 
       matTooltipClass = "statsToolTip" 
-      matTooltip="UGX {{requisitionEstimatedAmount |convertNumbersWithCommas}}"  
+      matTooltip="UGX {{totalEstimatedAmount |convertNumbersWithCommas}}"  
       matTooltipPosition="above">
         <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
-          UGX &nbsp;<animated-digit [digit]="requisitionEstimatedAmount" [duration]="1000">
-            {{ requisitionEstimatedAmount | numberSuffix: 2 }}
+          UGX &nbsp;<animated-digit [digit]="totalEstimatedAmount" [duration]="1000">
+            {{ totalEstimatedAmount | numberSuffix: 2 }}
           </animated-digit>
         </span>
         <span *ngIf="isLoadingSummary">
@@ -70,27 +70,27 @@
         <div #tooltip1="matTooltip" 
         class="statsCard" 
         matTooltipClass = "statsToolTip" 
-        matTooltip="{{numberOfRequisitions | convertNumbersWithCommas}}"  
+        matTooltip="{{totalNumberOfRequisitions | convertNumbersWithCommas}}"  
         matTooltipPosition="above" (click)="tooltip1.toggle()">
           <span *ngIf="!isLoadingSummary" class="stats">
-            <animated-digit [digit]="numberOfRequisitions" [duration]="1000">
-              {{ numberOfRequisitions | numberSuffix: 1 }}
+            <animated-digit [digit]="totalNumberOfRequisitions" [duration]="1000">
+              {{ totalNumberOfRequisitions | numberSuffix: 1 }}
             </animated-digit>
           </span>
           <span *ngIf="isLoadingSummary">
             <app-loading-pulse></app-loading-pulse>
           </span>
-          <span class="statsText">Late Initiations</span>
+          <span class="statsText">All Initiations</span>
         </div>
 
         <div #tooltip2="matTooltip" 
         class="statsCard" 
         matTooltipClass = "statsToolTip" 
-        matTooltip="UGX {{requisitionEstimatedAmount | convertNumbersWithCommas}}"  
+        matTooltip="UGX {{totalEstimatedAmount | convertNumbersWithCommas}}"  
         matTooltipPosition="above" (click)="tooltip2.toggle()">
           <span *ngIf="!isLoadingSummary" class="stats flex flex-row">
-            <span>UGX</span>&nbsp;<animated-digit [digit]="requisitionEstimatedAmount" [duration]="1000">
-              {{ requisitionEstimatedAmount | numberSuffix: 2 }}
+            <span>UGX</span>&nbsp;<animated-digit [digit]="totalEstimatedAmount" [duration]="1000">
+              {{ totalEstimatedAmount | numberSuffix: 2 }}
             </animated-digit>
           </span>
           <span *ngIf="isLoadingSummary">

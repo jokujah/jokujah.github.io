@@ -78,6 +78,8 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   breakdownIndicators = [];
   breakdowns: any;
   topLateInitiations: any = [];
+  totalNumberOfRequisitions: number = 0;
+  totalEstimatedAmount: number = 0;
 
   constructor(
     private _planingCategoryService: PlaningAndForecastingReportService) {
@@ -97,13 +99,13 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   submit(data) {
     this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
-    this.getPlannedVsActualLateInitiations('actual-vs-late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
+    this.getPlannedVsActualLateInitiations('late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
     this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE);
   }
 
   reset(data){
      this.getSummaryStats('late-initiations-summary',data?.selectedFinancialYear,data?.selectedPDE)
-     this.getPlannedVsActualLateInitiations('actual-vs-late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
+     this.getPlannedVsActualLateInitiations('late-initiations-summary', data?.selectedFinancialYear,data?.selectedPDE);
      this.getVisualisation('top-late-initiations',data?.selectedFinancialYear,data?.selectedPDE);
   }
 
@@ -115,18 +117,23 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
     this.numberOfCancelledRequisitions= 0
     this.requisitionEstimatedAmount= 0
     this.cancelledRequisitionEstimatedAmount= 0
+    this.totalNumberOfRequisitions= 0
+    this.totalEstimatedAmount = 0
 
     this._planingCategoryService.getSummaryStatsWithPDE(reportName, financialYear, procuringEntity).subscribe(
       (response) => {
         this.isLoadingSummary = false;
-        let data = response.data[0]
+        let data = response.data;
 
         if (response.data.length > 0) {
-          this.marketPrice = data.marketPrice ? sanitizeCurrencyToString(data.marketPrice) : 0;
-          this.numberOfRequisitions = data.numberOfRequisitions ? sanitizeCurrencyToString(data.numberOfRequisitions) : 0;
-          this.numberOfCancelledRequisitions = data.numberOfCancelledRequisitions ? sanitizeCurrencyToString(data.numberOfCancelledRequisitions) : 0;
-          this.requisitionEstimatedAmount = data.requisitionEstimatedAmount ?sanitizeCurrencyToString(data.requisitionEstimatedAmount) : 0;
-          this.cancelledRequisitionEstimatedAmount = data.cancelledRequisitionEstimatedAmount ? sanitizeCurrencyToString(data.cancelledRequisitionEstimatedAmount) : 0;
+          this.marketPrice = data[0].estimatedAmount ? data[0].estimatedAmount : 0;
+          this.numberOfRequisitions = data[0].numberOfRequisitions ? data[0].numberOfRequisitions : 0;
+          this.numberOfCancelledRequisitions = data[1].estimatedAmount ? data[1].estimatedAmount : 0;
+          this.requisitionEstimatedAmount = data[1].numberOfRequisitions ? data[1].numberOfRequisitions : 0;
+
+          this.totalNumberOfRequisitions= data[0]?.numberOfRequisitions + data[1]?.numberOfRequisitions;
+          this.totalEstimatedAmount = data[0]?.estimatedAmount + data[1]?.estimatedAmount;
+          //this.cancelledRequisitionEstimatedAmount = data.cancelledRequisitionEstimatedAmount ? sanitizeCurrencyToString(data.cancelledRequisitionEstimatedAmount) : 0;
         }
 
       },
@@ -160,29 +167,29 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
       (res) => {
         this.isLoadingPercentageSummary = false;
 
-        let data = res.data[0];
+        let data = res.data;
 
         if(res.data?.length > 0) {
-          this.initiationEstimatedAmount = data?.requisitionEstimatedAmount ? sanitizeCurrencyToString(data?.requisitionEstimatedAmount) : 0;
-          this.lateInitiationEstimateAmount = data?.lateRequisitionEstimatedAmount ? sanitizeCurrencyToString(data?.lateRequisitionEstimatedAmount) : 0;
+          this.initiationEstimatedAmount = data[1]?.estimatedAmount ? data[1]?.estimatedAmount : 0;
+          this.lateInitiationEstimateAmount = data[0]?.estimatedAmount ? data[0]?.estimatedAmount : 0;
 
-          let numOfLateRequisitions = data?.numberOfLateRequisitions ? sanitizeCurrencyToString(data?.numberOfLateRequisitions) : 0;
-          let numOfRequisitions = data?.numberOfRequisitions ? sanitizeCurrencyToString(data?.numberOfRequisitions) : 0;
+          let numOfLateRequisitions = data[0]?.numberOfRequisitions ? data[0]?.numberOfRequisitions : 0;
+          let numOfRequisitions = data[1]?.numberOfRequisitions ? data[1]?.numberOfRequisitions : 0;
 
-          this.percentageOfInitiation = parseFloat(((numOfLateRequisitions / numOfRequisitions) * 100).toFixed(2));
+          //this.percentageOfInitiation = parseFloat(((numOfLateRequisitions / numOfRequisitions) * 100).toFixed(2));
 
 
           // this.initPercentageInitiationChart(this.percentageOfInitiation ? [this.percentageOfInitiation] : ['0']);
           this.initPercentageInitiationChart([numOfRequisitions,numOfLateRequisitions])
           this.initPlannedVsActualInitiationChart([this.initiationEstimatedAmount, this.lateInitiationEstimateAmount]);
 
-          this.breakdowns = this.getBreakdownPercentages(data);
+          //this.breakdowns = this.getBreakdownPercentages(data);
 
-          this.initLateInitiationBreakdownChart1(this.breakdowns[0]?.title, this.breakdowns[0]?.percentage);
-          this.initLateInitiationBreakdownChart2(this.breakdowns[1]?.title, this.breakdowns[1]?.percentage);
-          this.initLateInitiationBreakdownChart3(this.breakdowns[2]?.title, this.breakdowns[2]?.percentage);
-          this.initLateInitiationBreakdownChart4(this.breakdowns[3]?.title, this.breakdowns[3]?.percentage);
-          this.initLateInitiationBreakdownChart5(this.breakdowns[4]?.title, this.breakdowns[4]?.percentage);
+          // this.initLateInitiationBreakdownChart1(this.breakdowns[0]?.title, this.breakdowns[0]?.percentage);
+          // this.initLateInitiationBreakdownChart2(this.breakdowns[1]?.title, this.breakdowns[1]?.percentage);
+          // this.initLateInitiationBreakdownChart3(this.breakdowns[2]?.title, this.breakdowns[2]?.percentage);
+          // this.initLateInitiationBreakdownChart4(this.breakdowns[3]?.title, this.breakdowns[3]?.percentage);
+          // this.initLateInitiationBreakdownChart5(this.breakdowns[4]?.title, this.breakdowns[4]?.percentage);
         }
       },
       (error) => {
