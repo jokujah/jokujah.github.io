@@ -58,11 +58,11 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
   downloading = false
   isLoading:boolean = false
 
-  marketPrice ;
+  lateEstimatedAmount ;
   numberOfRequisitions;
-  numberOfCancelledRequisitions;
-  requisitionEstimatedAmount;
-  cancelledRequisitionEstimatedAmount;
+  lateNumberOfRequisitions;
+  onTimeEstimatedAmount;
+  onTimeNumberOfRequisitions;
 
   initiationEstimatedAmount: number = 0;
   lateInitiationEstimateAmount: number = 0;
@@ -112,11 +112,11 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
 
   getSummaryStats(reportName, financialYear, procuringEntity) {
     this.isLoadingSummary = true
-    this.marketPrice = 0 
+    this.lateEstimatedAmount = 0 
     this.numberOfRequisitions= 0
-    this.numberOfCancelledRequisitions= 0
-    this.requisitionEstimatedAmount= 0
-    this.cancelledRequisitionEstimatedAmount= 0
+    this.lateNumberOfRequisitions= 0
+    this.onTimeEstimatedAmount= 0
+    this.onTimeNumberOfRequisitions= 0
     this.totalNumberOfRequisitions= 0
     this.totalEstimatedAmount = 0
 
@@ -126,14 +126,13 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
         let data = response.data;
 
         if (response.data.length > 0) {
-          this.marketPrice = data[0].estimatedAmount ? data[0].estimatedAmount : 0;
-          this.numberOfRequisitions = data[0].numberOfRequisitions ? data[0].numberOfRequisitions : 0;
-          this.numberOfCancelledRequisitions = data[1].estimatedAmount ? data[1].estimatedAmount : 0;
-          this.requisitionEstimatedAmount = data[1].numberOfRequisitions ? data[1].numberOfRequisitions : 0;
+          this.lateEstimatedAmount = data[0].estimatedAmount ? data[0].estimatedAmount : 0;
+          this.lateNumberOfRequisitions = data[0].numberOfRequisitions ? data[0].numberOfRequisitions : 0;
+          this.onTimeEstimatedAmount = data[1].estimatedAmount ? data[1].estimatedAmount : 0;
+          this.onTimeNumberOfRequisitions = data[1].numberOfRequisitions ? data[1].numberOfRequisitions : 0;
 
-          this.totalNumberOfRequisitions= data[0]?.numberOfRequisitions + data[1]?.numberOfRequisitions;
-          this.totalEstimatedAmount = data[0]?.estimatedAmount + data[1]?.estimatedAmount;
-          //this.cancelledRequisitionEstimatedAmount = data.cancelledRequisitionEstimatedAmount ? sanitizeCurrencyToString(data.cancelledRequisitionEstimatedAmount) : 0;
+          this.totalNumberOfRequisitions= this.onTimeNumberOfRequisitions + this.lateNumberOfRequisitions;
+          this.totalEstimatedAmount = this.lateEstimatedAmount + this.onTimeEstimatedAmount;
         }
 
       },
@@ -190,6 +189,10 @@ export class LateInitiationVisualsComponent implements OnInit, OnDestroy {
           // this.initLateInitiationBreakdownChart3(this.breakdowns[2]?.title, this.breakdowns[2]?.percentage);
           // this.initLateInitiationBreakdownChart4(this.breakdowns[3]?.title, this.breakdowns[3]?.percentage);
           // this.initLateInitiationBreakdownChart5(this.breakdowns[4]?.title, this.breakdowns[4]?.percentage);
+        }else{
+          this.initPercentageInitiationChart([]);
+
+          this.initPlannedVsActualInitiationChart([]);
         }
       },
       (error) => {
