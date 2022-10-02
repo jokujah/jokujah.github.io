@@ -211,7 +211,7 @@
     <div  class="mt-4 mb-4 invisible md:visible">
       <div>
         <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div *ngIf="!isLoading">
+          <div *ngIf="!isLoading && chartOptionsInitiatedVPublished">
             <div id="chartInitiatedVPublished">
               <apx-chart [series]="chartOptionsInitiatedVPublished.series" [chart]="chartOptionsInitiatedVPublished.chart"
                 [dataLabels]="chartOptionsInitiatedVPublished.dataLabels" [stroke]="chartOptionsInitiatedVPublished.stroke"
