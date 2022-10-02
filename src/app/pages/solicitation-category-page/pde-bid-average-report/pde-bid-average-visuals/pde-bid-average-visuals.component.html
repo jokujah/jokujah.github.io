@@ -2,7 +2,7 @@
   <app-filter (filterEvent)="submit($event)" (resetEvent)="reset($event)"></app-filter>
 
   <div class="mt-4">
-    <div class="hidden md:grid md:grid-cols-4 md:space-y-0 md:space-x-4">
+    <div class="hidden md:grid md:grid-cols-3 md:space-y-0 md:space-x-4">
       <div class="statsCard" 
       matTooltipClass = "statsToolTip" 
       matTooltip="{{cardValue1 |convertNumbersWithCommas}}"  
@@ -32,7 +32,7 @@
         <span class="statsText">Bids Responded To</span>
       </div>
 
-      <div class="statsCard" 
+      <!-- <div class="statsCard" 
       matTooltipClass = "statsToolTip" 
       matTooltip="{{cardValue4 |convertNumbersWithCommas}}"  
       matTooltipPosition="above">
@@ -44,7 +44,7 @@
           <app-loading-pulse></app-loading-pulse>
         </span>
         <span class="statsText">Bids Responses</span>
-      </div>
+      </div> -->
 
       <div class="statsCard" 
       matTooltipClass = "statsToolTip" 
@@ -95,8 +95,8 @@
           <span class="statsText">Bids Responded To</span>
         </div>
       </div>
-      <div class="grid grid-cols-2 space-x-4">
-        <div #tooltip3="matTooltip" 
+      <div class="grid grid-cols-1 space-x-4">
+        <!-- <div #tooltip3="matTooltip" 
         class="statsCard" 
         matTooltipClass = "statsToolTip" 
         matTooltip="{{cardValue4 | convertNumbersWithCommas}}"  
@@ -109,7 +109,7 @@
             <app-loading-pulse></app-loading-pulse>
           </span>
           <span class="statsText">Bids Responses</span>
-        </div>
+        </div> -->
   
         <div #tooltip4="matTooltip" 
         class="statsCard" 
@@ -136,7 +136,7 @@
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
           <div class=" w-full  p-5 bg-white shadow rounded-lg overflow-hidden">
             <div *ngIf="!isLoading">
-              <div class="font-bold mb-4 text-center">Highest Number Of Published Bids</div>
+              <div class="font-bold mb-4 text-center">Highest Number Of Bids Published </div>
               <div *ngIf="topTenHighestContracts.length > 0" class="inline-block min-w-full align-middle ">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                   <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">

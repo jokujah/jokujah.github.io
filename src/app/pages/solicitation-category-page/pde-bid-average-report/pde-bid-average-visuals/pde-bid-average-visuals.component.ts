@@ -183,39 +183,39 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
             this.averageBidsData = response.data
 
 
-            this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avgBids ? data[0]?.avgBids : 0);
-            this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avgBids ? data[1]?.avgBids : 0);
-            this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avgBids ? data[2]?.avgBids : 0);
-            this.initAvgBidsChart4(data[3]?.procurementMethod ? data[3]?.procurementMethod : 'N/A', data[3]?.avgBids ? data[3]?.avgBids : 0);
-            this.initAvgBidsChart5(data[4]?.procurementMethod ? data[4]?.procurementMethod : 'N/A', data[4]?.avgBids ? data[4]?.avgBids : 0);
-            this.initAvgBidsChart6(data[5]?.procurementMethod ? data[5]?.procurementMethod : 'N/A', data[5]?.avgBids ? data[5]?.avgBids : 0);
-            this.initAvgBidsChart7(data[6]?.procurementMethod ? data[6]?.procurementMethod : 'N/A', data[6]?.avgBids ? data[6]?.avgBids : 0);
-            this.initAvgBidsChart8(data[7]?.procurementMethod ? data[7]?.procurementMethod : 'N/A', data[7]?.avgBids ? data[7]?.avgBids : 0);
-            this.initAvgBidsChart9(data[8]?.procurementMethod ? data[8]?.procurementMethod : 'N/A', data[8]?.avgBids ? data[8]?.avgBids : 0);
-            this.initAvgBidsChart10(data[9]?.procurementMethod ? data[9]?.procurementMethod : 'N/A', data[9]?.avgBids ? data[9]?.avgBids : 0);
-            this.initAvgBidsChart11(data[10]?.procurementMethod ? data[10]?.procurementMethod : 'N/A', data[10]?.avgBids ? data[10]?.avgBids : 0);
-            this.initAvgBidsChart12(data[11]?.procurementMethod ? data[11]?.procurementMethod : 'N/A', data[11]?.avgBids ? data[11]?.avgBids : 0);
-            this.initAvgBidsChart13(data[12]?.procurementMethod ? data[12]?.procurementMethod : 'N/A', data[12]?.avgBids ? data[12]?.avgBids : 0);
-            this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avgBids ? data[13]?.avgBids : 0);
-            this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avgBids ? data[14]?.avgBids : 0);
-            this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avgBids ? data[15]?.avgBids : 0);
+            this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avg_bids ? data[0]?.avg_bids : 0);
+            this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avg_bids ? data[1]?.avg_bids : 0);
+            this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avg_bids ? data[2]?.avg_bids : 0);
+            this.initAvgBidsChart4(data[3]?.procurementMethod ? data[3]?.procurementMethod : 'N/A', data[3]?.avg_bids ? data[3]?.avg_bids : 0);
+            this.initAvgBidsChart5(data[4]?.procurementMethod ? data[4]?.procurementMethod : 'N/A', data[4]?.avg_bids ? data[4]?.avg_bids : 0);
+            this.initAvgBidsChart6(data[5]?.procurementMethod ? data[5]?.procurementMethod : 'N/A', data[5]?.avg_bids ? data[5]?.avg_bids : 0);
+            this.initAvgBidsChart7(data[6]?.procurementMethod ? data[6]?.procurementMethod : 'N/A', data[6]?.avg_bids ? data[6]?.avg_bids : 0);
+            this.initAvgBidsChart8(data[7]?.procurementMethod ? data[7]?.procurementMethod : 'N/A', data[7]?.avg_bids ? data[7]?.avg_bids : 0);
+            this.initAvgBidsChart9(data[8]?.procurementMethod ? data[8]?.procurementMethod : 'N/A', data[8]?.avg_bids ? data[8]?.avg_bids : 0);
+            this.initAvgBidsChart10(data[9]?.procurementMethod ? data[9]?.procurementMethod : 'N/A', data[9]?.avg_bids ? data[9]?.avg_bids : 0);
+            this.initAvgBidsChart11(data[10]?.procurementMethod ? data[10]?.procurementMethod : 'N/A', data[10]?.avg_bids ? data[10]?.avg_bids : 0);
+            this.initAvgBidsChart12(data[11]?.procurementMethod ? data[11]?.procurementMethod : 'N/A', data[11]?.avg_bids ? data[11]?.avg_bids : 0);
+            this.initAvgBidsChart13(data[12]?.procurementMethod ? data[12]?.procurementMethod : 'N/A', data[12]?.avg_bids ? data[12]?.avg_bids : 0);
+            this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avg_bids ? data[13]?.avg_bids : 0);
+            this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avg_bids ? data[14]?.avg_bids : 0);
+            this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avg_bids ? data[15]?.avg_bids : 0);
 
             
             let methodCategories = []
             let numberOfBidsRespondedTo= []
-            let numberOfPublishedBids = []
+            let numberOfBidsPublished = []
 
           sortArrayBy(this.averageBidsData.map(element=>element),'numberOfBidsRespondedTo').forEach(element=>{
               methodCategories?.push(element?.procurementMethod?element?.procurementMethod:'Unknown')
               numberOfBidsRespondedTo?.push(element?.numberOfBidsRespondedTo?sanitizeCurrencyToString(element?.numberOfBidsRespondedTo):0)
-              numberOfPublishedBids?.push(element?.numberOfPublishedBids?sanitizeCurrencyToString(element?.numberOfPublishedBids)*(-1):0)
+              numberOfBidsPublished?.push(element?.numberOfBidsPublished?sanitizeCurrencyToString(element?.numberOfBidsPublished)*(-1):0)
             })
             console.log(numberOfBidsRespondedTo)
-            console.log(numberOfPublishedBids)
+            console.log(numberOfBidsPublished)
             console.log(methodCategories)
 
 
-            this.initInitiatedVPublished(numberOfBidsRespondedTo,numberOfPublishedBids,methodCategories)
+            this.initInitiatedVPublished(numberOfBidsRespondedTo,numberOfBidsPublished,methodCategories)
             break;
         }
         this.isLoading = false
@@ -235,16 +235,16 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
     this.chartOptionsInitiatedVPublished = {
       series: [
         {
-          name: "Responded To",
+          name: "Bids Responded To",
           data: series1
         },
         {
-          name: "Published",
+          name: "Bids Published",
           data: series2
         }
       ],
       title: {
-        text: "Bids Responded To Versus Published Bids Made by Procurement Method",
+        text: "Bids Responded To Versus Bids Published by Procurement Method",
         align: 'center',
         margin: 1,
         offsetX: 0,
@@ -258,7 +258,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       },
       chart: {
         type: "bar",
-        height: 450,
+        height: 600,
         stacked: true,
         fontFamily:'Trebuchet Ms'
       },
@@ -279,7 +279,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           fontWeight:'bold',
           fontSize:'12px'
         },
-        offsetX:60,
+        offsetX:20,
         formatter:function(val){
           if(val < 0){
              return NumberSuffix((val * -1),0)
