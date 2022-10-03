@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { ApexAxisChartSeries, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import {
   ApexChart,
@@ -40,23 +41,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   public chartOptionsInitiatedVPublished: Partial<ChartOptions>;
 
   @ViewChild('chart') chart!: ChartComponent;
-  public optionsProgress1: Partial<ChartOptions> | any;
-  public optionsProgress2: Partial<ChartOptions> | any;
-  public optionsProgress3: Partial<ChartOptions> | any;
-  public optionsProgress4: Partial<ChartOptions> | any;
-  public optionsProgress5: Partial<ChartOptions> | any;
-  public optionsProgress6: Partial<ChartOptions> | any;
-  public optionsProgress7: Partial<ChartOptions> | any;
-  public optionsProgress8: Partial<ChartOptions> | any;
-  public optionsProgress9: Partial<ChartOptions> | any;
-  public optionsProgress10: Partial<ChartOptions> | any;
-  public optionsProgress11: Partial<ChartOptions> | any;
-  public optionsProgress12: Partial<ChartOptions> | any;
-  public optionsProgress13: Partial<ChartOptions> | any;
-  public optionsProgress14: Partial<ChartOptions> | any;
-  public optionsProgress15: Partial<ChartOptions> | any;
-  public optionsProgress16: Partial<ChartOptions> | any;
-
+  public optionsProgress: Partial<ChartOptions> | any;
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
@@ -182,25 +167,16 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
             console.log("avg-bids-by-method", data)
             this.averageBidsData = response.data
 
+            let avgProcurementMethod = []
+            let avgBids = []
 
-            this.initAvgBidsChart1(data[0]?.procurementMethod ? data[0]?.procurementMethod : 'N/A', data[0]?.avg_bids ? data[0]?.avg_bids : 0);
-            this.initAvgBidsChart2(data[1]?.procurementMethod ? data[1]?.procurementMethod : 'N/A', data[1]?.avg_bids ? data[1]?.avg_bids : 0);
-            this.initAvgBidsChart3(data[2]?.procurementMethod ? data[2]?.procurementMethod : 'N/A', data[2]?.avg_bids ? data[2]?.avg_bids : 0);
-            this.initAvgBidsChart4(data[3]?.procurementMethod ? data[3]?.procurementMethod : 'N/A', data[3]?.avg_bids ? data[3]?.avg_bids : 0);
-            this.initAvgBidsChart5(data[4]?.procurementMethod ? data[4]?.procurementMethod : 'N/A', data[4]?.avg_bids ? data[4]?.avg_bids : 0);
-            this.initAvgBidsChart6(data[5]?.procurementMethod ? data[5]?.procurementMethod : 'N/A', data[5]?.avg_bids ? data[5]?.avg_bids : 0);
-            this.initAvgBidsChart7(data[6]?.procurementMethod ? data[6]?.procurementMethod : 'N/A', data[6]?.avg_bids ? data[6]?.avg_bids : 0);
-            this.initAvgBidsChart8(data[7]?.procurementMethod ? data[7]?.procurementMethod : 'N/A', data[7]?.avg_bids ? data[7]?.avg_bids : 0);
-            this.initAvgBidsChart9(data[8]?.procurementMethod ? data[8]?.procurementMethod : 'N/A', data[8]?.avg_bids ? data[8]?.avg_bids : 0);
-            this.initAvgBidsChart10(data[9]?.procurementMethod ? data[9]?.procurementMethod : 'N/A', data[9]?.avg_bids ? data[9]?.avg_bids : 0);
-            this.initAvgBidsChart11(data[10]?.procurementMethod ? data[10]?.procurementMethod : 'N/A', data[10]?.avg_bids ? data[10]?.avg_bids : 0);
-            this.initAvgBidsChart12(data[11]?.procurementMethod ? data[11]?.procurementMethod : 'N/A', data[11]?.avg_bids ? data[11]?.avg_bids : 0);
-            this.initAvgBidsChart13(data[12]?.procurementMethod ? data[12]?.procurementMethod : 'N/A', data[12]?.avg_bids ? data[12]?.avg_bids : 0);
-            this.initAvgBidsChart14(data[13]?.procurementMethod ? data[13]?.procurementMethod : 'N/A', data[13]?.avg_bids ? data[13]?.avg_bids : 0);
-            this.initAvgBidsChart15(data[14]?.procurementMethod ? data[14]?.procurementMethod : 'N/A', data[14]?.avg_bids ? data[14]?.avg_bids : 0);
-            this.initAvgBidsChart16(data[15]?.procurementMethod ? data[15]?.procurementMethod : 'N/A', data[15]?.avg_bids ? data[15]?.avg_bids : 0);
+            this.averageBidsData.map(element => element).forEach(element=>{
+              avgProcurementMethod.push(element?.procurementMethod ? element?.procurementMethod:'Unknown');
+              avgBids.push(element?.avg_bids ? element?.avg_bids : 0);
+            })
 
-            
+            this.initAvgBidsChart(avgBids,avgProcurementMethod)
+
             let methodCategories = []
             let numberOfBidsRespondedTo= []
             let numberOfBidsPublished = []
@@ -258,7 +234,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       },
       chart: {
         type: "bar",
-        height: 600,
+        height: 450,
         stacked: true,
         fontFamily:'Trebuchet Ms'
       },
@@ -279,7 +255,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           fontWeight:'bold',
           fontSize:'12px'
         },
-        offsetX:20,
+        offsetX:25,
         formatter:function(val){
           if(val < 0){
              return NumberSuffix((val * -1),0)
@@ -302,38 +278,162 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         }
       },
       yaxis: {
-        min: function(){
-          let array1 = series1
-          let array2 = series2.map(element=>element*(-1))
-          return (_.first([...array1,...array2].sort(function (a, b) {            
-            var valueA = parseInt(a)
-            var valueB = parseInt(b)
+        // min: function(){
+        //   let array1 = series1
+        //   let array2 = series2.map(element=>element*(-1))
+        //   return (_.first([...array1,...array2].sort(function (a, b) {            
+        //     var valueA = parseInt(a)
+        //     var valueB = parseInt(b)
         
-            if (valueA > valueB) {
-              return -1;
-            }
-            if (valueA < valueB) {
-              return 1;
-            }
-            return 0;
-          })))  * -1
-        },
-        max:function(){
-          let array1 = series1
-          let array2 = series2.map(element=>element*(-1))
-          return _.first([...array1,...array2].sort(function (a, b) {            
-            var valueA = parseInt(a)
-            var valueB = parseInt(b)
+        //     if (valueA > valueB) {
+        //       return -1;
+        //     }
+        //     if (valueA < valueB) {
+        //       return 1;
+        //     }
+        //     return 0;
+        //   })))  * -1
+        // },
+        // max:function(){
+        //   let array1 = series1
+        //   let array2 = series2.map(element=>element*(-1))
+        //   return _.first([...array1,...array2].sort(function (a, b) {            
+        //     var valueA = parseInt(a)
+        //     var valueB = parseInt(b)
         
-            if (valueA > valueB) {
-              return -1;
-            }
-            if (valueA < valueB) {
-              return 1;
-            }
-            return 0;
-          }))
+        //     if (valueA > valueB) {
+        //       return -1;
+        //     }
+        //     if (valueA < valueB) {
+        //       return 1;
+        //     }
+        //     return 0;
+        //   }))
+        // },
+        title: {
+          text: 'Procurement Methods',
         },
+        floating:categories.length > 0 ? false:true,
+        axisTicks: {
+          show: categories.length > 0 ? true:false
+        },
+        axisBorder: {
+          show: categories.length > 0 ? true:false
+        },
+        labels: {
+          show: categories.length > 0 ? true:false,
+          style: {             
+            fontSize: "12px"
+          },
+          minWidth: 0,
+          maxWidth: 400,
+          offsetX: -20
+        }
+      },
+      tooltip: {
+        shared: false,
+        x: {
+          formatter: function(val) {
+            return val.toString();
+          }
+        },
+        y: {
+          formatter: function(val) {
+            return Math.abs(val) + "";
+          }
+        }
+      },
+      xaxis: {
+        floating:categories.length > 0 ? false:true,
+        axisTicks: {
+          show: categories.length > 0 ? true:false
+        },
+        axisBorder: {
+          show: categories.length > 0 ? true:false
+        },
+        categories: categories,
+        title: {
+          text: "Bids"
+        },
+        labels: {
+          formatter: function(val) {
+            return Math.abs(Math.round(parseInt(val, 10))) + "";
+          }
+        }
+      },
+      noData: {
+        text: visualisationMessages('empty')
+      },
+    };
+  }
+
+  public initAvgBidsChart(series1?,categories?){
+    this.optionsProgress = {
+      series: [
+        {
+          name: "Bid Average",
+          data: series1
+        }
+      ],
+      title: {
+        text: "Bid Average By Procurement Method(Bids Published / Quotations Received)",
+        align: 'center',
+        margin: 1,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          fontFamily: 'Trebuchet MS',
+        },
+      },
+      chart: {
+        type: "bar",
+        height: 450,
+        stacked: true,
+        fontFamily:'Trebuchet Ms'
+      },
+      // colors: ["#008FFB", "#FF4560"],
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: "80%",
+          dataLabels: {
+            position: 'top',
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['#333'],
+          fontWeight:'bold',
+          fontSize:'12px'
+        },
+        offsetX:40,
+        formatter:function(val){
+          if(val < 0){
+             return NumberSuffix((val * -1),0)
+          }
+          return NumberSuffix(val ,0)
+        },
+        distributed:true
+      },
+      stroke: {
+        width: 1,
+        colors: ["#fff"]
+      },
+
+      grid: {
+        show: categories.length > 0 ? true : false,
+        xaxis: {
+          lines: {
+            show: false
+          }
+        }
+      },
+      yaxis: {
         title: {
           text: 'Procurement Methods',
         },
@@ -376,7 +476,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         },
         categories: categories,
         title: {
-          text: "Bids"
+          text: "Bid Average"
         },
         labels: {
           formatter: function(val) {
@@ -389,1736 +489,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       },
     };
   }
-
   
-
-  public initAvgBidsChart1(title?: string, percentage?: number)
-  {
-    this.optionsProgress1 = {
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title,
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-       responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ]
-     };
-  }
-
-  public initAvgBidsChart2(title?: string, percentage?: number)
-  {
-    this.optionsProgress2 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart3(title?: string, percentage?: number)
-  {
-    this.optionsProgress3 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {        
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart4(title?: string, percentage?: number)
-  {
-    this.optionsProgress4 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart5(title?: string, percentage?: number)
-  {
-    this.optionsProgress5 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart6(title?: string, percentage?: number)
-  {
-    this.optionsProgress6 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart7(title?: string, percentage?: number)
-  {
-    this.optionsProgress7 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart8(title?: string, percentage?: number)
-  {
-    this.optionsProgress8 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart9(title?: string, percentage?: number)
-  {
-    this.optionsProgress9 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart10(title?: string, percentage?: number)
-  {
-    this.optionsProgress10 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart11(title?: string, percentage?: number)
-  {
-    this.optionsProgress11 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart12(title?: string, percentage?: number)
-  {
-    this.optionsProgress12 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart13(title?: string, percentage?: number)
-  {
-    this.optionsProgress13 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart14(title?: string, percentage?: number)
-  {
-    this.optionsProgress14 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart15(title?: string, percentage?: number)
-  {
-    this.optionsProgress15 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
-
-  public initAvgBidsChart16(title?: string, percentage?: number)
-  {
-    this.optionsProgress16 = {
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "12px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "12px"
-              }
-            },
-          }
-        },
-        {
-          breakpoint: 350,
-          options: {
-            title: {
-              floating: true,
-              offsetX: -10,
-              offsetY: 5,
-              text: title,
-              style: {
-                fontSize: "10px"
-              }
-            },
-            subtitle: {
-              floating: true,
-              align: "right",
-              offsetY: 0,
-              text: `${!isNaN(percentage) ? percentage : 0}`,
-              style: {
-                fontSize: "10px"
-              }
-            },
-          }
-        }
-      ],
-       chart: {
-         fontFamily: 'Trebuchet MS',
-         height: 70,
-         type: "bar",
-         stacked: true,
-         sparkline: {
-           enabled: true
-         }
-       },
-       plotOptions: {
-         bar: {
-           horizontal: true,
-           barHeight: "15%",
-           colors: {
-             backgroundBarColors: ['rgb(241 245 249)']
-           }
-         }
-       },
-       stroke: {
-         width: 0
-       },
-       series: [
-         {
-           name: title,
-           data: [!isNaN(percentage) ? percentage : 0]
-         }
-       ],
-       title: {
-         floating: true,
-         offsetX: -10,
-         offsetY: 5,
-         text: title
-       },
-       subtitle: {
-         floating: true,
-         align: "right",
-         offsetY: 0,
-         text: `${!isNaN(percentage) ? percentage : 0}`,
-         style: {
-           fontSize: "20px"
-         }
-       },
-       tooltip: {
-         enabled: false
-       },
-       xaxis: {
-         categories: [title]
-       },
-       yaxis: {
-         max: 50
-       },
-       fill: {
-         opacity: 1
-       },
-     };
-  }
 }
 
 
