@@ -40,8 +40,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   @ViewChild("chartInitiatedVPublished") chartInitiatedVPublished: ChartComponent;
   public chartOptionsInitiatedVPublished: Partial<ChartOptions>;
 
-  @ViewChild('chart') chart!: ChartComponent;
-  public optionsProgress: Partial<ChartOptions> | any;
+  @ViewChild('chartBidAverage') chartBidAverage: ChartComponent;
+  public chartOptionsBidAverage: Partial<ChartOptions>;
 
   pde = getsortedPDEList()
   financialYears = getFinancialYears()
@@ -234,7 +234,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       },
       chart: {
         type: "bar",
-        height: 450,
+        height: series1.length > 4 ? 450 : 250,
         stacked: true,
         fontFamily:'Trebuchet Ms'
       },
@@ -327,7 +327,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           },
           minWidth: 0,
           maxWidth: 400,
-          offsetX: -20
+          offsetX: -8
         }
       },
       tooltip: {
@@ -368,7 +368,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
   }
 
   public initAvgBidsChart(series1?,categories?){
-    this.optionsProgress = {
+    this.chartOptionsBidAverage = {
       series: [
         {
           name: "Bid Average",
@@ -390,8 +390,8 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       },
       chart: {
         type: "bar",
-        height: 450,
-        stacked: true,
+        height: series1.length > 4 ? 450 : 250,
+        stacked: false,
         fontFamily:'Trebuchet Ms'
       },
       // colors: ["#008FFB", "#FF4560"],
@@ -478,11 +478,11 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         title: {
           text: "Bid Average"
         },
-        labels: {
-          formatter: function(val) {
-            return Math.abs(Math.round(parseInt(val, 10))) + "";
-          }
-        }
+        // labels: {
+        //   formatter: function(val) {
+        //     return val + "";
+        //   }
+        // }
       },
       noData: {
         text: visualisationMessages('empty')

@@ -208,7 +208,7 @@
       </div>
     </div>
     
-    <div  class="mt-4 mb-4 invisible md:visible">
+    <div  class="mt-4 mb-4 hidden md:grid md:grid-cols-1">
       <div>
         <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
           <div *ngIf="!isLoading && chartOptionsInitiatedVPublished">
@@ -230,24 +230,18 @@
     </div>
     
     <!-- Row 1 -->
-    <div class="mt-4 mb-4">     
+    <div class="mt-4 mb-4 hidden md:grid md:grid-cols-1">     
       <div>
         <div class="flex flex-col w-full p-5 overflow-hidden bg-white rounded-lg shadow">
-          <div *ngIf="!isLoadingBidsSummary">
-            <!-- <div class="flex justify-center font-bold text-[18px] text-[#000000] text-opacity-[1]">
-             Bid Average By Procurement Method
-            </div> -->
-            <div class="px-4 mt-8" *ngIf="averageBidsData.length > 0">
-              <apx-chart *ngIf="optionsProgress?.title.text !== 'Unknown'" [series]="optionsProgress.series"
-                [chart]="optionsProgress.chart" [dataLabels]="optionsProgress.dataLabels"
-                [plotOptions]="optionsProgress.plotOptions" [yaxis]="optionsProgress.yaxis" [legend]="optionsProgress.legend"
-                [fill]="optionsProgress.fill" [stroke]="optionsProgress.stroke" [tooltip]="optionsProgress.tooltip"
-                [xaxis]="optionsProgress.xaxis" [title]="optionsProgress.title" [subtitle]="optionsProgress.subtitle" [responsive]="optionsProgress.responsive"
-                [noData]="optionsProgress.noData">
+          <div *ngIf="!isLoadingBidsSummary && chartOptionsBidAverage">
+            <div id="chartBidAverage">
+              <apx-chart [series]="chartOptionsBidAverage.series"
+                [chart]="chartOptionsBidAverage.chart" [dataLabels]="chartOptionsBidAverage.dataLabels"
+                [plotOptions]="chartOptionsBidAverage.plotOptions" [yaxis]="chartOptionsBidAverage.yaxis" [legend]="chartOptionsBidAverage.legend"
+                [fill]="chartOptionsBidAverage.fill" [stroke]="chartOptionsBidAverage.stroke" [tooltip]="chartOptionsBidAverage.tooltip"
+                [xaxis]="chartOptionsBidAverage.xaxis" [title]="chartOptionsBidAverage.title" [subtitle]="chartOptionsBidAverage.subtitle" [responsive]="chartOptionsBidAverage.responsive"
+                [noData]="chartOptionsBidAverage.noData">
               </apx-chart>
-            </div>
-            <div *ngIf="!averageBidsData || averageBidsData.length <= 0">
-              <app-empty-state></app-empty-state>
             </div>
           </div>
           <div *ngIf="isLoadingBidsSummary">
