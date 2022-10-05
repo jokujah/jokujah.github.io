@@ -172,7 +172,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
 
             this.averageBidsData.map(element => element).forEach(element=>{
               avgProcurementMethod.push(element?.procurementMethod ? element?.procurementMethod:'Unknown');
-              avgBids.push(element?.avg_bids ? element?.avg_bids : 0);
+              avgBids.push(element?.average_no_of_bids ? element?.average_no_of_bids : 0);
             })
 
             this.initAvgBidsChart(avgBids,avgProcurementMethod)
@@ -325,7 +325,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           style: {             
             fontSize: "12px"
           },
-          minWidth: 0,
+          minWidth: 100,
           maxWidth: 400,
           offsetX: -8
         }
