@@ -1,4 +1,4 @@
-import { convertNumberSuffixWithCommas, visualisationMessages } from 'src/app/utils/helpers';
+import { convertNumberSuffixWithCommas, visualisationMessages, convertNumbersWithCommas } from 'src/app/utils/helpers';
 import { ChartOptions } from './IChartOptions';
 import { NumberSuffix } from "./helpers";
 import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font-family';
@@ -67,11 +67,11 @@ export function initRadialChart(series?, categories?, title?):Partial<ChartOptio
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
                 formatter: function (w) {
-                  return `${convertNumberSuffixWithCommas(NumberSuffix(
+                  return `${convertNumbersWithCommas(
                     w.globals.seriesTotals.reduce((a, b) => {
                       return a + b;
-                    }, 0),2
-                  ))}`;
+                    }, 0)
+                  )}`;
                 },
               },
             }
@@ -239,7 +239,7 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
         tooltip: {
           y: {
             formatter: function(val) {
-              return "UGX " + NumberSuffix(val,2) ;
+              return "UGX " + convertNumbersWithCommas (val) ;
             }
           }
         },
@@ -272,7 +272,7 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
           }
         },
         grid: {
-          show: labels.length > 0 ? true : false,
+          //show: labels.length > 0 ? true : false,
           xaxis: {
             lines: {
               show:  false,
@@ -280,7 +280,7 @@ export function initColumnChart(series?: Array<any>, labels?: Array<any>, title?
           },
           yaxis: {
             lines: {
-              show: labels.length > 0 ? true : false,
+              show: false,
             }
           }
         }
@@ -361,7 +361,7 @@ export function initColumnChart2(series?: Array<any>, labels?: Array<any>, title
       tooltip: {
         y: {
           formatter: function(val) {
-            return "UGX " + NumberSuffix(val,2) ;
+            return "UGX " + convertNumbersWithCommas(val) ;
           }
         }
       },
@@ -389,7 +389,7 @@ export function initColumnChart2(series?: Array<any>, labels?: Array<any>, title
         }
       },
       grid: {
-        show: labels.length > 0 ? true : false,
+        //show: labels.length > 0 ? true : false,
         xaxis: {
           lines: {
             show:  false,
@@ -397,7 +397,7 @@ export function initColumnChart2(series?: Array<any>, labels?: Array<any>, title
         },
         yaxis: {
           lines: {
-            show: labels.length > 0 ? true : false,
+            show:  false,
           }
         }
       }

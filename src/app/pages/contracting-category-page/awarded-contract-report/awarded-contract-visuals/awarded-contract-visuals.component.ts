@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexNoData, ApexPlotOptions, ApexResponsive, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 import { DueDeligenceReportService } from 'src/app/services/EvaluationCategory/due-deligence-report.service';
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, emptyVisualisation, visualisationMessages, convertNumberSuffixWithCommas } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, emptyVisualisation, visualisationMessages, convertNumberSuffixWithCommas, convertNumbersWithCommas } from 'src/app/utils/helpers';
 import ROP from './../../../../../assets/ROP.json'
 import { Toast, ToastrService } from 'ngx-toastr';
 import { initRadialChart } from 'src/app/utils/chartsApex';
@@ -294,7 +294,7 @@ export class AwardedContractVisualsComponent implements OnInit {
         },
         y: {
           formatter: function (val) {
-            return 'UGX ' + convertNumberSuffixWithCommas(NumberSuffix(val,2));
+            return 'UGX ' + convertNumbersWithCommas(val);
           },
         },
       },
@@ -338,7 +338,7 @@ export class AwardedContractVisualsComponent implements OnInit {
                 fontSize: '12px',
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
-                formatter: (val) => `UGX ${convertNumberSuffixWithCommas(NumberSuffix(val,2))}`,
+                formatter: (val) => `UGX ${convertNumbersWithCommas(sanitizeCurrencyToString(val))}`,
               },
               total: {
                 show: true,
@@ -346,11 +346,11 @@ export class AwardedContractVisualsComponent implements OnInit {
                 fontFamily: 'Trebuchet MS',
                 fontWeight: '500',
                 formatter: function (w) {
-                  return `UGX ${convertNumberSuffixWithCommas(NumberSuffix(
+                  return `UGX ${convertNumbersWithCommas(
                     w.globals.seriesTotals.reduce((a, b) => {
                       return a + b;
-                    }, 0),2
-                  ))}`;
+                    }, 0)
+                  )}`;
                 },
               },
             }

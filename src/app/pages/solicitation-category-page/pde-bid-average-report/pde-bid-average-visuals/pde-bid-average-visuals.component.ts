@@ -211,13 +211,14 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
     this.chartOptionsInitiatedVPublished = {
       series: [
         {
+          name: "Bids Published",
+          data: series2
+        },
+        {
           name: "Bids Responded To",
           data: series1
         },
-        {
-          name: "Bids Published",
-          data: series2
-        }
+        
       ],
       title: {
         text: "Bids Responded To Versus Bids Published by Procurement Method",
@@ -269,11 +270,16 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         colors: ["#fff"]
       },
 
-      grid: {
-        show: categories.length > 0 ? true : false,
+      grid: {       
         xaxis: {
           lines: {
             show: false
+          }
+        },
+        yaxis: {
+          lines: {
+            show: false,
+            //show: categories.length > 0 ? true : false,
           }
         }
       },
@@ -325,7 +331,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           style: {             
             fontSize: "12px"
           },
-          minWidth: 100,
+          minWidth: 0,
           maxWidth: 400,
           offsetX: -8
         }
@@ -426,8 +432,13 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
       },
 
       grid: {
-        show: categories.length > 0 ? true : false,
+        //show: categories.length > 0 ? true : false,
         xaxis: {
+          lines: {
+            show: false
+          }
+        },
+        yaxis: {
           lines: {
             show: false
           }

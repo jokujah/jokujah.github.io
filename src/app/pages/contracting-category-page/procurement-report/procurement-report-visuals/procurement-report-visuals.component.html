@@ -29,7 +29,7 @@
             <apx-chart #chartProcurementType [series]="chartOptionsProcurementType.series" [chart]="chartOptionsProcurementType.chart" [yaxis]="chartOptionsProcurementType.yaxis"
               [xaxis]="chartOptionsProcurementType.xaxis" [labels]="chartOptionsProcurementType.labels" [stroke]="chartOptionsProcurementType.stroke"
               [title]="chartOptionsProcurementType.title" [dataLabels]="chartOptionsProcurementType.dataLabels" [fill]="chartOptionsProcurementType.fill"
-              [tooltip]="chartOptionsProcurementType.tooltip" [legend]="chartOptionsProcurementType.legend" [noData]="chartOptionsProcurementType.noData" [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
+              [tooltip]="chartOptionsProcurementType.tooltip"  [legend]="chartOptionsProcurementType.legend" [noData]="chartOptionsProcurementType.noData" [plotOptions]="chartOptionsProcurementType.plotOptions"></apx-chart>
           </div>
           <!-- <span *ngIf="isLoading">
             <app-loader></app-loader>
@@ -42,7 +42,7 @@
       <div class="flex ">
         <div  class="flex flex-col w-full bg-white shadow rounded-lg overflow-hidden p-5 items-center">          
           <div  id="chartProcurementTypeValue"  class="w-full  ">
-            <apx-chart #chartProcurementTypeValue [series]="chartOptionsProcurementTypeValue.series" [chart]="chartOptionsProcurementTypeValue.chart" [yaxis]="chartOptionsProcurementTypeValue.yaxis"
+            <apx-chart #chartProcurementTypeValue [series]="chartOptionsProcurementTypeValue.series" [grid] = "chartOptionsProcurementTypeValue.grid" [chart]="chartOptionsProcurementTypeValue.chart" [yaxis]="chartOptionsProcurementTypeValue.yaxis"
               [xaxis]="chartOptionsProcurementTypeValue.xaxis" [labels]="chartOptionsProcurementTypeValue.labels" [stroke]="chartOptionsProcurementTypeValue.stroke"
               [title]="chartOptionsProcurementTypeValue.title" [dataLabels]="chartOptionsProcurementTypeValue.dataLabels" [fill]="chartOptionsProcurementTypeValue.fill"
               [tooltip]="chartOptionsProcurementTypeValue.tooltip" [noData]="chartOptionsProcurementTypeValue.noData" [plotOptions]="chartOptionsProcurementTypeValue.plotOptions"></apx-chart>

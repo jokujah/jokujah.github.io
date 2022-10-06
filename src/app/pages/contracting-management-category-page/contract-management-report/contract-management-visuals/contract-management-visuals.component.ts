@@ -17,7 +17,7 @@ import {
   ApexTitleSubtitle,
   ApexGrid
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, sortArrayBy, addArrayValues } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, getFinancialYears, getsortedPDEList, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, sortArrayBy, addArrayValues, convertNumbersWithCommas } from 'src/app/utils/helpers';
 import { AwardedContractReportService } from 'src/app/services/ContractCategory/awarded-contract-report.service';
 
 export type ChartOptions = {
@@ -213,7 +213,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       series: series,
       chart: {
         fontFamily:'Trebuchet Ms',
-        height: 450,
+        height: labels.length > 4 ? 450:250 ,
         type: "line"
       },
       stroke: {
@@ -317,7 +317,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         text: noDataMessage?noDataMessage:visualisationMessages('empty')
       },
       grid: {
-        show: labels.length > 0 ? true : false,
+        //show: labels.length > 0 ? true : false,
         xaxis: {
           lines: {
             show:  false,
@@ -337,7 +337,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       series: series,
       chart: {
         type: "bar",
-        height: '450px',
+        height: labels.length > 4 ? 450:250,
         fontFamily:'Trebuchet Ms'
       },
       plotOptions: {
@@ -358,7 +358,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         },
         offsetX:60,
         formatter:function(val){
-          return NumberSuffix(val,0)
+          return NumberSuffix(val,2)
         }
       },
       stroke: {
@@ -417,7 +417,7 @@ export class ContractManagementVisualsComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return "UGX " + NumberSuffix(val,0) ;
+            return "UGX " + convertNumbersWithCommas(val) ;
           }
         }
       },
@@ -438,7 +438,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         },
       },
       grid: {
-        show: labels.length > 0 ? true : false,
+        //show: labels.length > 0 ? true : false,
         xaxis: {
           lines: {
             show:  false,
@@ -446,7 +446,7 @@ export class ContractManagementVisualsComponent implements OnInit {
         },
         yaxis: {
           lines: {
-            show: labels.length > 0 ? true : false,
+            show:  false,
           }
         }
       }

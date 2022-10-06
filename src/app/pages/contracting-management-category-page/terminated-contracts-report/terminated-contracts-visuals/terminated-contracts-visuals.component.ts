@@ -20,7 +20,7 @@ import {
   ApexResponsive,
   ApexNonAxisChartSeries
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation, sortTable, emptyVisualisationNonAxis } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, visualisationMessages, emptyVisualisation, sortTable, emptyVisualisationNonAxis, convertNumbersWithCommas } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -364,15 +364,36 @@ export class TerminatedContractsVisualsComponent implements OnInit {
               show: true,
               name: {
                 show:true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: 'bold'
               },
               value: {
                 show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
                 formatter: function (val) {
-                  return 'UGX'+NumberSuffix(val,2)
+                  return 'UGX'+convertNumbersWithCommas(sanitizeCurrencyToString(val) )
                 }
-              }
+              },
+              total: {
+                show: true,
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS',
+                fontWeight: '500',
+                formatter: function (w) {
+                  return `${convertNumbersWithCommas(
+                    w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0)
+                  )}`;
+                },
+              },
             }
           }
+
+        
         }
       },
       labels: labels,
