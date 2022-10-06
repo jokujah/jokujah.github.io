@@ -118,10 +118,10 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         let data = response.data[0];
         if (response.data.length > 0) {
-          this.cardValue1 = data.numberOfBids ? sanitizeCurrencyToString(data.numberOfBids) : 0;
-          this.cardValue2 = data.numberOfBidsRespondedTo ? sanitizeCurrencyToString(data.numberOfBidsRespondedTo) : 0
-          this.cardValue3 = data.numberOfProvidersThatResponded ? sanitizeCurrencyToString(data.numberOfProvidersThatResponded) : 0
-          this.cardValue4 = data.noOfNoticeResponses ? sanitizeCurrencyToString(data.noOfNoticeResponses) : 0
+          this.cardValue1 = data.numberOfBids ? data.numberOfBids : 0;
+          this.cardValue2 = data.numberOfBidsRespondedTo ? data.numberOfBidsRespondedTo : 0
+          this.cardValue3 = data.numberOfProvidersThatResponded ? data.numberOfProvidersThatResponded : 0
+          this.cardValue4 = data.noOfNoticeResponses ? data.noOfNoticeResponses : 0
         }
       },
       (error) => {
@@ -184,7 +184,7 @@ export class PdeBidAverageVisualsComponent implements OnInit, OnDestroy {
           sortArrayBy(this.averageBidsData.map(element=>element),'numberOfBidsRespondedTo').forEach(element=>{
               methodCategories?.push(element?.procurementMethod?element?.procurementMethod:'Unknown')
               numberOfBidsRespondedTo?.push(element?.numberOfBidsRespondedTo?sanitizeCurrencyToString(element?.numberOfBidsRespondedTo):0)
-              numberOfBidsPublished?.push(element?.numberOfBidsPublished?sanitizeCurrencyToString(element?.numberOfBidsPublished)*(-1):0)
+              numberOfBidsPublished?.push(element?.numberOfBids?sanitizeCurrencyToString(element?.numberOfBids)*(-1):0)
             })
             console.log(numberOfBidsRespondedTo)
             console.log(numberOfBidsPublished)
