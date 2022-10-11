@@ -79,7 +79,6 @@ export class DueDeligenceVisualsComponent implements OnInit {
     this.yearOfBids = financialYear
     
 
-    console.log(reportName)
 
     this._service.getSummaryStatsWithPDE(reportName,financialYear,procuringEntity).subscribe(
       (response )=>{ 
@@ -114,8 +113,8 @@ export class DueDeligenceVisualsComponent implements OnInit {
             console.log("due-diligence-list-summary", data)
             if (response.data.length > 0) {
               this.topTenHighestContracts = data.sort(function (a, b) {
-                var valueA = a.estimated_amount
-                var valueB = b.estimated_amount
+                var valueA = a.evaluated_total
+                var valueB = b.evaluated_total
             
                 if (valueA > valueB) {
                   return -1;
@@ -128,7 +127,7 @@ export class DueDeligenceVisualsComponent implements OnInit {
               .map((element)=>{
                 return {
                   ...element,
-                  estimated_amount:convertNumbersWithCommas(element?.estimated_amount)
+                  estimated_amount:convertNumbersWithCommas(element?.evaluated_total)
                 }
               })
 

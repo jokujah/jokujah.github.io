@@ -144,7 +144,7 @@
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500 hidden  md:table-cell">{{item?.pde_name}}</td>
                         <!-- <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.name_of_provider}}</td>
                         <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.estimated_amount}}</td> -->
-                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.bidder_performance}}</td>
+                        <td class="whitespace-normal px-3 py-2 text-sm text-gray-500">{{item?.bidder_performance?item?.bidder_performance:'N/A'}}</td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500 hidden md:table-cell">{{item?.team_that_carried_out_dd}}
                         </td>
                         <td class="whitespace-normal px-3 py-2 text-sm text-gray-500 hidden md:table-cell">{{item?.date_of_due_diligence}}
