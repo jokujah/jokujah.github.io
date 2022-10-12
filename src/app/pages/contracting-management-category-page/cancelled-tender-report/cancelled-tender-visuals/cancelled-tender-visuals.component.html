@@ -11,7 +11,7 @@
         ></app-stats-card>
 
         <app-stats-card 
-          [title]="'Contract Value'" 
+          [title]="'EvaluatedValue'" 
           [isLoading]="isLoading" 
           [value]="cardValue2"
           [prefix]="'UGX'"
@@ -56,7 +56,7 @@
         <div class="flex flex-col md:space-x-4 space-y-4 md:space-y-0 md:flex-row w-full">         
           <div class=" w-full p-5 bg-white shadow rounded-lg overflow-hidden">
             <div *ngIf="!isLoading">
-              <div  class="font-bold mb-4 text-center">Top Cancelled Contracts by Contract Value</div>
+              <div  class="font-bold mb-4 text-center">Top 10 Cancelled Tenders(By Evaluated Value)</div>
               <div *ngIf="topCancelledContracts.length > 0" class="inline-block min-w-full align-middle ">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                   <table #myTable2 id="myTable2" class="min-w-full divide-y divide-gray-300 table-auto">
@@ -85,7 +85,7 @@
                         <th (click)="sortTable(2,'myTable2')" scope="col"
                           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 cursor-pointer">
                           <span class="group inline-flex">
-                            Cost(UGX)
+                            Evaluated Value(UGX)
                             <!-- Active: "bg-gray-200 text-gray-900 group-hover:bg-gray-300", Not Active: "invisible text-gray-400 group-hover:visible group-focus:visible" -->
                             <span class="ml-2 flex-none rounded text-gray-400 ">
                               <!-- Heroicon name: solid/chevron-down -->

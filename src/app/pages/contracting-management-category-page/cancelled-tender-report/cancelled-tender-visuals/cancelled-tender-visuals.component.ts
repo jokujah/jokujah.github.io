@@ -18,7 +18,7 @@ import {
   ApexGrid,
   ChartComponent
 } from "ng-apexcharts";
-import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, sortTable } from 'src/app/utils/helpers';
+import { capitalizeFirstLetter, NumberSuffix, sanitizeCurrencyToString, sortTable, sortArrayBy } from 'src/app/utils/helpers';
 
 
 export type ChartOptions = {
@@ -162,7 +162,9 @@ export class CancelledTenderVisualsComponent implements OnInit {
             //   return 0;
             // })
 
-            this.topCancelledContracts = data
+            this.topCancelledContracts =sortArrayBy(data,'contractValue')
+
+            //var sortedTender = sortArrayBy(this.topCancelledContracts,contractValue)
             
             data.forEach(element => {
               console.log(element)
