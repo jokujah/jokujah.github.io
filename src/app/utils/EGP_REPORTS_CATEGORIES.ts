@@ -38,10 +38,10 @@ export function getEGPCategories() {
           'name': 'Due Diligence Report',
           'route': 'due-diligence-report'
         },        
-        {
-          "name": 'Cancelled Tender Report',
-          "route": 'cancelled-tender-report'
-        },
+        // {
+        //   "name": 'Cancelled Tender Report',
+        //   "route": 'cancelled-tender-report'
+        // },
       ]
     },
     {
