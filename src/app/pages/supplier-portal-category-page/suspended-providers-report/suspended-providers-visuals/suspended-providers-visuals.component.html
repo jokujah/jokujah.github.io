@@ -1,5 +1,5 @@
 <div class="max-w-full mx-auto">
-  <div>
+  <div class="mt-4">
     <div class="hidden md:grid md:grid-cols-2 md:space-y-0 md:space-x-4">
       <div class="statsCard" 
       matTooltipClass = "statsToolTip" 
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Mobile -->
-    <div class="md:hidden flex flex-col my-2 space-y-4">
+    <div class="md:hidden flex flex-col">
       <div class="grid grid-cols-2 space-x-4">
         <div #tooltip1="matTooltip" 
         class="statsCard" 
@@ -64,8 +64,6 @@
         </div>
       </div>
      </div>
-
-
   </div>
 
   <!-- Graphs -->
@@ -126,7 +124,7 @@
                         {{item?.providerName?item?.providerName:'Unknown'}}</td>
                       <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.suspensionStartDate?(item?.suspensionStartDate ):'Unknown'}}</td>
                       <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.suspensionEndDate?(item?.suspensionEndDate ):'Unknown'}}</td>
-                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.numberOfSuspensionDaysLeft}}</td>
+                      <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.daysLeft}}</td>
                     </tr>
                     <!-- More people... -->
                   </tbody>
@@ -140,25 +138,6 @@
           <span *ngIf="isLoading">
             <app-loader></app-loader>
           </span>
-        </div>
-        <div class="hidden">
-          <div
-            class="md:w-1/4 flex flex-row sm:space-y-0 sm:place-content-between sm:space-x-8 md:space-x-0 md:space-y-4  md:grid md:grid-cols-1 md:content-start ">
-            <div class="overflow-hidden p-5 bg-white rounded-lg shadow w-full">
-              <div *ngIf="!isLoading && percentageOfSuspendedProviders" class="flex flex-col items-center">
-                <span class="text-sm  md:text-base font-bold text-gray-500 text-center flex mb-8">% of Suspended
-                  Suppliers</span>
-                <span class="text-2xl md:text-4xl text-gray-700 font-normal text-center flex mb-2">{{
-                  percentageOfSuspendedProviders}} %</span>
-              </div>
-              <span *ngIf="isLoading">
-                <app-loader></app-loader>
-              </span>
-              <span *ngIf="!isLoading && !percentageOfSuspendedProviders">
-                <app-empty-state></app-empty-state>
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

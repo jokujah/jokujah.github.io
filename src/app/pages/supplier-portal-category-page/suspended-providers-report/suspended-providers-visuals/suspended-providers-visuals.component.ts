@@ -115,21 +115,7 @@ export class SuspendedProvidersVisualsComponent implements OnInit {
         if(data.length > 0){
           switch (reportName) {
             case'suspended-suppliers-list-summary':
-              this.suspendedProviders = response.data.map((element)=>{
-
-                var numberOfSuspensionDaysLeft = (element?.suspensionStartDate && element?.suspensionEndDate)?getDays(element?.suspensionStartDate,element?.suspensionEndDate):'Unknown';
-
-                if ((numberOfSuspensionDaysLeft == 'Unknown') || (numberOfSuspensionDaysLeft < 0) || !(numberOfSuspensionDaysLeft == NaN)){
-                  return {
-                    ...element,
-                    numberOfSuspensionDaysLeft:0
-                  }
-                }
-                return {
-                  ...element,
-                  numberOfSuspensionDaysLeft:numberOfSuspensionDaysLeft
-                }
-              })  
+              this.suspendedProviders = response.data
             break;
           }}else{
             this.suspendedProviders = [];
