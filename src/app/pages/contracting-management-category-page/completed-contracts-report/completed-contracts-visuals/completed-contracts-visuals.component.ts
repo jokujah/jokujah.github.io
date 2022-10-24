@@ -219,34 +219,16 @@ export class CompletedContractsVisualsComponent implements OnInit {
         switch (reportName) {
           case 'top-completed-contracts-summary':
             console.log("top-completed-contracts-summary", data)
-
-            // sortedData = data.sort(function (a, b) {
-            //   var nameA = a?.estimatedAmount.split(',')
-            //   var nameB = b?.estimatedAmount.split(',')
-            //   var valueA = parseInt(nameA.join(''))
-            //   var valueB = parseInt(nameB.join(''))
-
-            //   if (valueA > valueB) {
-            //     return -1;
-            //   }
-            //   if (valueA < valueB) {
-            //     return 1;
-            //   }
-            //   return 0;
-            // })
-
             if (data.length > 0) {
-              let i;
-              for (i = 0; i < 6; i++) {
-                var valueC = (data[i]?.value_of_completed_contracts) ? data[i]?.value_of_completed_contracts.split(',') : ['0']
-                var valueD = parseInt(valueC.join(''))
-                // var valueE = element?.actualCost.split(',')
-                // var valueF = parseInt(valueE.join(''))
-                subjectOfProcurement.push(capitalizeFirstLetter(data[i]?.pde_name))
-                estimatedAmount.push(valueD)
-                // actualAmount.push(valueF)
-              }
-              this.topTenHighestContracts = data.slice(0, 9)
+              // let i;
+              // for (i = 0; i < 6; i++) {
+              //   var valueC = (data[i]?.value_of_completed_contracts) ? data[i]?.value_of_completed_contracts.split(',') : ['0']
+              //   var valueD = parseInt(valueC.join(''))
+              //   subjectOfProcurement.push(capitalizeFirstLetter(data[i]?.pde_name))
+              //   estimatedAmount.push(valueD)
+              // }
+
+              this.topTenHighestContracts = data.slice(0, 10)
               this.highestContractValueofCompletedContracts = sanitizeCurrencyToString(data[0].value_of_completed_contracts)
               // data.forEach(element => {
               //   var valueC = (element?.contractAmount)?element?.contractAmount.split(','):['0']

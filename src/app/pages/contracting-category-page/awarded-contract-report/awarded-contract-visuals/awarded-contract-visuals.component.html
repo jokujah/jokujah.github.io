@@ -79,7 +79,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                       <tr *ngFor="let item of awardedContractsByContractType">
-                        <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <td class="whitespace-normal py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 first-letter:uppercase">
                           {{item?.contractType}}</td>
                         <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{item?.numberOfContracts}}</td>
                       </tr>

@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { BubbleChartModule } from './bubble-chart/bubble-chart.module';
 import { ProgressBarGraphModule } from './progress-bar-graph/progress-bar-graph.module';
 import { AnimatedDigitModule } from './animated-digit/animated-digit.module';
@@ -75,7 +76,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme,excel);
     StatsCardModule,
     AnimatedDigitModule,
     ProgressBarGraphModule,
-    BubbleChartModule
+    BubbleChartModule,
+    MatIconModule
   ]
 })
 export class SharedModule { }

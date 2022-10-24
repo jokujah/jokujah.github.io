@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginPageComponent implements OnInit {
   loginForm!: FormGroup;
   isLoading: boolean;
+  public showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -44,20 +45,21 @@ export class LoginPageComponent implements OnInit {
       'email': form.controls.email.value,
       'password': form.controls.password.value
     }
-    console.log('clicked')
 
      this._authService.login(credentials).subscribe(
       (res) => {
-        console.log('clicked 12')
         this.isLoading = false;
         this.router.navigate(['/dashboard']);
       },
       (error) => {
         this.isLoading = false;
-        console.log('clicked 123')
         throw error        
       }
     );
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
 }
